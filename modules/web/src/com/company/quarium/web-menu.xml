@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <menu-config xmlns="http://schemas.haulmont.com/cuba/menu.xsd">
     <menu id="application-quarium" insertBefore="administration" caption="mainMsg://menu_config.application-quarium">
+        <item screen="quarium_Qa.browse" caption="mainMsg://menu_config.quarium_Qa.browse"/>
+        <item screen="quarium_Project.browse" caption="mainMsg://menu_config.quarium_Project.browse"/>
     </menu>
 </menu-config>

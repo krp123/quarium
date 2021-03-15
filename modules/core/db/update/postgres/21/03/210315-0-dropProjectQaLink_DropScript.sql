@@ -1,0 +1,1 @@
+drop table if exists QUARIUM_PROJECT_QA_LINK__U43464 cascade ;

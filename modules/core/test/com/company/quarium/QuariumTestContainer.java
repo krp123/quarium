@@ -3,7 +3,6 @@ package com.company.quarium;
 import com.haulmont.cuba.testsupport.TestContainer;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class QuariumTestContainer extends TestContainer {
@@ -11,10 +10,9 @@ public class QuariumTestContainer extends TestContainer {
     public QuariumTestContainer() {
         super();
         //noinspection ArraysAsListWithZeroOrOneArgument
-        appComponents = new ArrayList<>(Arrays.asList(
-                // list add-ons here: "com.haulmont.reports", "com.haulmont.addon.bproc", etc.
-                "com.haulmont.cuba"
-        ));
+        appComponents = Arrays.asList(
+                "com.haulmont.cuba",
+                "com.haulmont.addon.helium");
         appPropertiesFiles = Arrays.asList(
                 // List the files defined in your web.xml
                 // in appPropertiesConfig context parameter of the core module

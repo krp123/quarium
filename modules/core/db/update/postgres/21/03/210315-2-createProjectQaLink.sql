@@ -1,0 +1,2 @@
+alter table QUARIUM_PROJECT_QA_LINK add constraint FK_PROQA_ON_QA foreign key (QA_ID) references QUARIUM_QA(ID);
+alter table QUARIUM_PROJECT_QA_LINK add constraint FK_PROQA_ON_PROJECT foreign key (PROJECT_ID) references QUARIUM_PROJECT(ID);

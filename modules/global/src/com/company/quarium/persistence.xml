@@ -3,5 +3,7 @@
     <persistence-unit name="quarium" transaction-type="RESOURCE_LOCAL">
 
         <class>com.company.quarium.entity.Project</class>
+        <class>com.company.quarium.entity.Qa</class>
+        <class>com.company.quarium.entity.QaProjectRelationship</class>
     </persistence-unit>
 </persistence>

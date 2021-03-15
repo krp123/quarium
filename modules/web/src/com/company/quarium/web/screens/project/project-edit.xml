@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://projectEdit.caption"
+        focusComponent="form"
+        messagesPack="com.company.quarium.web.screens.project">
+    <data>
+        <instance id="projectDc"
+                  class="com.company.quarium.entity.Project">
+            <view extends="_local">
+                <property name="qa" view="_minimal"/>
+            </view>
+            <loader/>
+            <collection id="qaProjectDc" property="qa"/>
+        </instance>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="editActions" spacing="true">
+        <form id="form" dataContainer="projectDc">
+            <column width="350px">
+                <textField id="projectNameField" property="projectName"/>
+                <textArea id="descriptionField" property="description" rows="5"/>
+            </column>
+        </form>
+        <groupBox id="qaBox" caption="msg://com.company.quarium.entity/Project.qa">
+            <table id="qaProjectRelationshipsTable"
+                   dataContainer="qaProjectDc"
+                   width="400px"
+                   height="200px">
+                <actions>
+                    <action id="addQa" type="add"/>
+                    <action id="remove" type="remove"></action>
+                </actions>
+                <columns>
+                    <column id="qa"/>
+                </columns>
+                <buttonsPanel>
+                    <button action="qaProjectRelationshipsTable.addQa"/>
+                    <button action="qaProjectRelationshipsTable.remove"/>
+                </buttonsPanel>
+            </table>
+        </groupBox>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

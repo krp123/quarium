@@ -2,16 +2,14 @@ package com.company.quarium;
 
 import com.haulmont.cuba.web.testsupport.TestContainer;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class QuariumWebTestContainer extends TestContainer {
 
     public QuariumWebTestContainer() {
-        appComponents = new ArrayList<>(Arrays.asList(
-                "com.haulmont.cuba"
-                // add CUBA add-ons and custom app components here
-        ));
+        appComponents = Arrays.asList(
+                "com.haulmont.cuba",
+                "com.haulmont.addon.helium");
         appPropertiesFiles = Arrays.asList(
                 // List the files defined in your web.xml
                 // in appPropertiesConfig context parameter of the web module
