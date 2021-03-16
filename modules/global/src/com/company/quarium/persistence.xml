@@ -5,5 +5,7 @@
         <class>com.company.quarium.entity.Project</class>
         <class>com.company.quarium.entity.Qa</class>
         <class>com.company.quarium.entity.QaProjectRelationship</class>
+        <class>com.company.quarium.entity.Priority</class>
+        <class>com.company.quarium.entity.Statement</class>
     </persistence-unit>
 </persistence>

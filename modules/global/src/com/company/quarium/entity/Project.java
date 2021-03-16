@@ -10,7 +10,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@Table(name = "QUARIUM_PROJECT")
+@Table(name = "QUARIUM_PROJECT", indexes = {
+        @Index(name = "IDX_QUARIUM_PROJECT", columnList = "PROJECT_NAME, DESCRIPTION")
+})
 @Entity(name = "quarium_Project")
 @NamePattern("%s|projectName")
 public class Project extends StandardEntity {

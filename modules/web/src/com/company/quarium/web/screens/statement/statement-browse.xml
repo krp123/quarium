@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://statementBrowse.caption"
+        focusComponent="statementsTable"
+        messagesPack="com.company.quarium.web.screens.statement">
+    <data readOnly="true">
+        <collection id="statementsDc"
+                    class="com.company.quarium.entity.Statement">
+            <view extends="_local"/>
+            <loader id="statementsDl">
+                <query>
+                    <![CDATA[select e from quarium_Statement e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="statementsTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="statementsTable"
+                dataLoader="statementsDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="statementsTable"
+                    width="100%"
+                    dataContainer="statementsDc">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+            </actions>
+            <columns>
+                <column id="name"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="statementsTable.create"/>
+                <button id="editBtn" action="statementsTable.edit"/>
+                <button id="removeBtn" action="statementsTable.remove"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

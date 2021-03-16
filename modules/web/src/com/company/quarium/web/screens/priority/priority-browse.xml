@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://priorityBrowse.caption"
+        focusComponent="prioritiesTable"
+        messagesPack="com.company.quarium.web.screens.priority">
+    <data readOnly="true">
+        <collection id="prioritiesDc"
+                    class="com.company.quarium.entity.Priority">
+            <view extends="_local"/>
+            <loader id="prioritiesDl">
+                <query>
+                    <![CDATA[select e from quarium_Priority e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="prioritiesTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="prioritiesTable"
+                dataLoader="prioritiesDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="prioritiesTable"
+                    width="100%"
+                    dataContainer="prioritiesDc">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+            </actions>
+            <columns>
+                <column id="name"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="prioritiesTable.create"/>
+                <button id="editBtn" action="prioritiesTable.edit"/>
+                <button id="removeBtn" action="prioritiesTable.remove"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>
