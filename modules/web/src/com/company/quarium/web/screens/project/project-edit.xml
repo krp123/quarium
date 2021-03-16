@@ -7,7 +7,8 @@
         <instance id="projectDc"
                   class="com.company.quarium.entity.Project">
             <view extends="_local">
-                <property name="qa" view="_minimal"/>
+                <property name="qa" view="edit"/>
+                <property name="createTs"/>
             </view>
             <loader/>
             <collection id="qaProjectDc" property="qa"/>

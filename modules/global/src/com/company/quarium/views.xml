@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <views xmlns="http://schemas.haulmont.com/cuba/view.xsd">
-
+    <view entity="quarium_QaProjectRelationship" name="edit">
+        <property name="qa"/>
+        <property name="project"/>
+    </view>
 </views>
