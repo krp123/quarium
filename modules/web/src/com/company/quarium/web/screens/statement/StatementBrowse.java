@@ -1,6 +1,6 @@
 package com.company.quarium.web.screens.statement;
 
-import com.company.quarium.entity.Statement;
+import com.company.quarium.entity.references.Statement;
 import com.haulmont.cuba.gui.screen.*;
 
 @UiController("quarium_Statement.browse")

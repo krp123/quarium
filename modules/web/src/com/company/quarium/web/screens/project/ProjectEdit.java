@@ -1,8 +1,8 @@
 package com.company.quarium.web.screens.project;
 
-import com.company.quarium.entity.Project;
-import com.company.quarium.entity.Qa;
-import com.company.quarium.entity.QaProjectRelationship;
+import com.company.quarium.entity.project.Project;
+import com.company.quarium.entity.project.QaProjectRelationship;
+import com.company.quarium.entity.references.Qa;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.components.Action;
 import com.haulmont.cuba.gui.model.CollectionContainer;

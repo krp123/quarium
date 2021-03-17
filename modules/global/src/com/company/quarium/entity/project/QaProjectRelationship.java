@@ -1,5 +1,6 @@
-package com.company.quarium.entity;
+package com.company.quarium.entity.project;
 
+import com.company.quarium.entity.references.Qa;
 import com.haulmont.cuba.core.entity.StandardEntity;
 
 import javax.persistence.*;

@@ -1,5 +1,6 @@
-package com.company.quarium.entity;
+package com.company.quarium.entity.references;
 
+import com.company.quarium.entity.project.QaProjectRelationship;
 import com.haulmont.chile.core.annotations.Composition;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;

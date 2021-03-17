@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <menu-config xmlns="http://schemas.haulmont.com/cuba/menu.xsd">
-    <menu id="project_job" insertBefore="administration" caption="mainMsg://menu_config.project_job">
+    <menu id="projects" insertBefore="administration" caption="mainMsg://menu_config.projects">
         <item screen="quarium_Project.browse" caption="mainMsg://menu_config.quarium_Project.browse"/>
+    </menu>
+    <menu id="checklists" insertBefore="administration" caption="mainMsg://menu_config.checklists">
+        <item screen="quarium_Checklist.browse" caption="mainMsg://menu_config.quarium_Checklist.browse"/>
     </menu>
     <menu id="references" insertBefore="administration" caption="mainMsg://menu_config.references">
         <item screen="quarium_Qa.browse" caption="mainMsg://menu_config.quarium_Qa.browse"/>

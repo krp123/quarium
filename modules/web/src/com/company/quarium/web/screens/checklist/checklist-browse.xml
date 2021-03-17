@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://checklistBrowse.caption"
+        focusComponent="checklistsTable"
+        messagesPack="com.company.quarium.web.screens.checklist">
+    <data readOnly="true">
+        <collection id="checklistsDc"
+                    class="com.company.quarium.entity.checklist.Checklist">
+            <view extends="_local"/>
+            <loader id="checklistsDl">
+                <query>
+                    <![CDATA[select e from quarium_Checklist e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="checklistsTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="checklistsTable"
+                dataLoader="checklistsDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="checklistsTable"
+                    width="100%"
+                    dataContainer="checklistsDc">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="refresh" type="refresh"/>
+                <action id="excel" type="excel"/>
+            </actions>
+            <columns>
+                <column id="name"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="checklistsTable.create"/>
+                <button id="editBtn" action="checklistsTable.edit"/>
+                <button id="removeBtn" action="checklistsTable.remove"/>
+                <button id="refreshBtn" action="checklistsTable.refresh"/>
+                <button id="excelBtn" action="checklistsTable.excel"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

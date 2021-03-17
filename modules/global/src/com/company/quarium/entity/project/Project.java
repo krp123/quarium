@@ -1,4 +1,4 @@
-package com.company.quarium.entity;
+package com.company.quarium.entity.project;
 
 import com.haulmont.chile.core.annotations.Composition;
 import com.haulmont.chile.core.annotations.NamePattern;

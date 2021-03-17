@@ -2,10 +2,11 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
     <persistence-unit name="quarium" transaction-type="RESOURCE_LOCAL">
 
-        <class>com.company.quarium.entity.Project</class>
-        <class>com.company.quarium.entity.Qa</class>
-        <class>com.company.quarium.entity.QaProjectRelationship</class>
-        <class>com.company.quarium.entity.Priority</class>
-        <class>com.company.quarium.entity.Statement</class>
+        <class>com.company.quarium.entity.project.Project</class>
+        <class>com.company.quarium.entity.references.Qa</class>
+        <class>com.company.quarium.entity.project.QaProjectRelationship</class>
+        <class>com.company.quarium.entity.references.Priority</class>
+        <class>com.company.quarium.entity.references.Statement</class>
+        <class>com.company.quarium.entity.checklist.Checklist</class>
     </persistence-unit>
 </persistence>

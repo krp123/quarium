@@ -1,6 +1,6 @@
 package com.company.quarium.web.screens.priority;
 
-import com.company.quarium.entity.Priority;
+import com.company.quarium.entity.references.Priority;
 import com.haulmont.cuba.gui.screen.*;
 
 @UiController("quarium_Priority.edit")
