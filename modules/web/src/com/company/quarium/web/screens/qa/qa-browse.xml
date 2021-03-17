@@ -5,7 +5,7 @@
         messagesPack="com.company.quarium.web.screens.qa">
     <data readOnly="true">
         <collection id="qasDc"
-                    class="com.company.quarium.entity.Qa">
+                    class="com.company.quarium.entity.references.Qa">
             <view extends="_local"/>
             <loader id="qasDl">
                 <query>

@@ -5,7 +5,7 @@
         messagesPack="com.company.quarium.web.screens.statement">
     <data readOnly="true">
         <collection id="statementsDc"
-                    class="com.company.quarium.entity.Statement">
+                    class="com.company.quarium.entity.references.Statement">
             <view extends="_local"/>
             <loader id="statementsDl">
                 <query>

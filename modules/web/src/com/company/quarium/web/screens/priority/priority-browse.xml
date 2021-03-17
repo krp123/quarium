@@ -5,7 +5,7 @@
         messagesPack="com.company.quarium.web.screens.priority">
     <data readOnly="true">
         <collection id="prioritiesDc"
-                    class="com.company.quarium.entity.Priority">
+                    class="com.company.quarium.entity.references.Priority">
             <view extends="_local"/>
             <loader id="prioritiesDl">
                 <query>

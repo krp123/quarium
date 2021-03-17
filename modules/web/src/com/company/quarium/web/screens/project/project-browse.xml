@@ -5,7 +5,7 @@
         messagesPack="com.company.quarium.web.screens.project">
     <data readOnly="true">
         <collection id="projectsDc"
-                    class="com.company.quarium.entity.Project">
+                    class="com.company.quarium.entity.project.Project">
             <view extends="_local"/>
             <loader id="projectsDl">
                 <query>

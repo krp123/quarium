@@ -1,0 +1,1 @@
+create unique index IDX_QUARIUM_CHECKLIST_UK_NAME on QUARIUM_CHECKLIST (NAME) where DELETE_TS is null ;
