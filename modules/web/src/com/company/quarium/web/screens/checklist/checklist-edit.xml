@@ -15,7 +15,7 @@
             <view extends="_local"/>
             <loader id="testCasesDl">
                 <query>
-                    <![CDATA[select e from quarium_TestCase e]]>
+                    <![CDATA[select e from quarium_TestCase e where e.checklist = :checklist]]>
                 </query>
             </loader>
         </collection>

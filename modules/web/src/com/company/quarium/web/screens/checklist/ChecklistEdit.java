@@ -21,7 +21,6 @@ import com.haulmont.cuba.gui.screen.*;
 import com.haulmont.cuba.gui.util.OperationResult;
 import com.haulmont.cuba.security.entity.EntityOp;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.util.Collections;
 
@@ -33,7 +32,6 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
     protected boolean editing;
     protected boolean creating;
     protected boolean justLocked;
-    //private ScreenContext screenContext;
 
 
     @Inject
@@ -42,15 +40,8 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
     private GroupTable<TestCase> table;
     @Inject
     private VBoxLayout editBox;
-
-    @Nullable
-    protected TabSheet getTabSheet() {
-        return (TabSheet) getWindow().getComponent("tabSheet");
-    }
-
-//    ScreenContext getScreenContext() {
-//        return screenContext;
-//    }
+    @Inject
+    private CollectionLoader<TestCase> testCasesDl;
 
     @Subscribe
     protected void onInit(InitEvent event) {
@@ -59,18 +50,19 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
 
     protected ListComponent<TestCase> getTable() {
         return (ListComponent) table;
-        //return (ListComponent) getWindow().getComponentNN("table");
     }
 
     protected Form getForm() {
         return (Form) getWindow().getComponentNN("form");
     }
 
-//    protected InstanceContainer<TestCase> getEditContainer() {
-//        return ((ContainerValueSourceProvider) getForm().getValueSourceProvider()).getContainer();
-//    }
+    @Subscribe
+    protected void onBeforeShow(BeforeShowEvent event) {
+        testCasesDl.setParameter("checklist", getEditedEntity());
+    }
 
     protected void initMasterDetailScreen(@SuppressWarnings("unused") InitEvent event) {
+
         initDataComponents();
         initOkCancelActions();
         initBrowseItemChangeListener();
