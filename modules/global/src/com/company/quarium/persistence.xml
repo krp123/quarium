@@ -8,5 +8,6 @@
         <class>com.company.quarium.entity.references.Priority</class>
         <class>com.company.quarium.entity.references.Statement</class>
         <class>com.company.quarium.entity.checklist.Checklist</class>
+        <class>com.company.quarium.entity.checklist.TestCase</class>
     </persistence-unit>
 </persistence>

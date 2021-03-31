@@ -5,7 +5,7 @@
         messagesPack="com.company.quarium.web.screens.statement">
     <data>
         <instance id="statementDc"
-                  class="com.company.quarium.entity.Statement">
+                  class="com.company.quarium.entity.references.Statement">
             <view extends="_local"/>
             <loader/>
         </instance>

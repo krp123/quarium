@@ -1,15 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
-        caption="msg://checklistEdit.caption"
-        focusComponent="form"
-        messagesPack="com.company.quarium.web.screens.checklist">
+        caption="msg://testCaseBrowse.caption"
+        focusComponent="table"
+        messagesPack="com.company.quarium.web.screens.testcase">
     <data>
-        <instance id="checklistDc"
-                  class="com.company.quarium.entity.checklist.Checklist">
-            <view extends="_local"/>
-            <loader/>
-        </instance>
-
         <collection id="testCasesDc"
                     class="com.company.quarium.entity.checklist.TestCase">
             <view extends="_local"/>
@@ -19,7 +12,6 @@
                 </query>
             </loader>
         </collection>
-
         <instance id="testCaseDc"
                   class="com.company.quarium.entity.checklist.TestCase">
             <view extends="_local"/>
@@ -30,21 +22,17 @@
         <action id="save" icon="icons/ok.png" caption="mainMsg://actions.Ok" shortcut="CTRL-ENTER"/>
         <action id="cancel" icon="icons/cancel.png" caption="mainMsg://actions.Cancel" description="Esc"/>
     </actions>
-    <dialogMode height="600"
-                width="800"/>
-    <layout expand="editActions" spacing="true">
-        <form id="form" dataContainer="checklistDc">
-            <column width="350px">
-                <textField id="nameField" property="name"/>
-            </column>
-        </form>
-        <split id="split" height="400" orientation="horizontal" reversePosition="true" width="100%">
+    <dialogMode height="600" width="800"/>
+    <layout>
+        <split id="split" height="100%" orientation="horizontal" reversePosition="true" width="100%">
             <vbox id="lookupBox" expand="table" height="100%" margin="false,true,false,false" spacing="true">
+                <filter id="filter" applyTo="table" dataLoader="testCasesDl">
+                    <properties include=".*"/>
+                </filter>
                 <groupTable id="table"
                             width="100%"
                             dataContainer="testCasesDc"
-                            multiselect="true"
-                            presentations="true">
+                            multiselect="true">
                     <actions>
                         <action id="create" type="create"/>
                         <action id="edit" type="edit"/>
@@ -63,30 +51,26 @@
                         <button id="removeBtn" action="table.remove"/>
                     </buttonsPanel>
                 </groupTable>
-                <!--                <hbox id="lookupActions" spacing="true" visible="false">-->
-                <!--                    <button action="lookupSelectAction"/>-->
-                <!--                    <button action="lookupCancelAction"/>-->
-                <!--                </hbox>-->
+                <hbox id="lookupActions" spacing="true" visible="false">
+                    <button action="lookupSelectAction"/>
+                    <button action="lookupCancelAction"/>
+                </hbox>
             </vbox>
             <vbox id="editBox" height="100%" margin="false,false,false,true" expand="fieldGroupBox" spacing="true">
                 <scrollBox id="fieldGroupBox">
-                    <form id="caseForm" dataContainer="testCaseDc">
+                    <form id="form" dataContainer="testCaseDc">
                         <column width="350px">
-                            <textField id="caseNameField" property="name"/>
+                            <textField id="nameField" property="name"/>
                             <textField id="stepField" property="step"/>
                             <textArea id="expectedResultField" property="expectedResult" rows="5"/>
                         </column>
                     </form>
                 </scrollBox>
-                <hbox id="actionsPane" spacing="true" visible="true">
+                <hbox id="actionsPane" spacing="true" visible="false">
                     <button id="saveBtn" action="save"/>
                     <button id="cancelBtn" action="cancel"/>
                 </hbox>
             </vbox>
         </split>
-        <hbox id="editActions" spacing="true" align="BOTTOM_LEFT">
-            <button id="commitAndCloseBtn" action="windowCommitAndClose" align="BOTTOM_CENTER"/>
-            <button id="closeBtn" action="windowClose" align="BOTTOM_CENTER"/>
-        </hbox>
     </layout>
 </window>

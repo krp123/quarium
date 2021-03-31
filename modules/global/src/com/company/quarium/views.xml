@@ -4,4 +4,5 @@
         <property name="qa"/>
         <property name="project"/>
     </view>
+    <view entity="quarium_TestCase" name="testCase-view" extends="_local"/>
 </views>

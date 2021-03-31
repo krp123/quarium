@@ -97,3 +97,22 @@ create table QUARIUM_CHECKLIST (
     primary key (ID)
 )^
 -- end QUARIUM_CHECKLIST
+-- begin QUARIUM_TEST_CASE
+create table QUARIUM_TEST_CASE (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    NAME varchar(255) not null,
+    STEP varchar(255),
+    EXPECTED_RESULT text,
+    CHECKLIST_ID uuid not null,
+    --
+    primary key (ID)
+)^
+-- end QUARIUM_TEST_CASE

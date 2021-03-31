@@ -5,7 +5,7 @@
         messagesPack="com.company.quarium.web.screens.project">
     <data>
         <instance id="projectDc"
-                  class="com.company.quarium.entity.Project">
+                  class="com.company.quarium.entity.project.Project">
             <view extends="_local">
                 <property name="qa" view="edit"/>
                 <property name="createTs"/>

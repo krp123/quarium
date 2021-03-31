@@ -2,6 +2,7 @@
 <menu-config xmlns="http://schemas.haulmont.com/cuba/menu.xsd">
     <menu id="projects" insertBefore="administration" caption="mainMsg://menu_config.projects">
         <item screen="quarium_Project.browse" caption="mainMsg://menu_config.quarium_Project.browse"/>
+        <item screen="quarium_TestCase.browse" caption="mainMsg://menu_config.quarium_TestCase.browse"/>
     </menu>
     <menu id="checklists" insertBefore="administration" caption="mainMsg://menu_config.checklists">
         <item screen="quarium_Checklist.browse" caption="mainMsg://menu_config.quarium_Checklist.browse"/>
