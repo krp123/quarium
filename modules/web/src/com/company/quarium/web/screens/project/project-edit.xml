@@ -58,33 +58,31 @@
                 </vbox>
             </tab>
 
-            <tab id="testPlanTab" caption="msg://projectEdit.testPlan">
-                <vbox margin="true" width="auto">
-                    <groupBox id="checklistBox" caption="msg://com.company.quarium.entity/Project.checklists"
-                              width="AUTO">
-                        <groupTable id="table"
-                                    width="450px"
-                                    height="250px"
-                                    dataContainer="checklistsDc"
-                                    multiselect="true"
-                                    presentations="true">
-                            <actions>
-                                <action id="create" type="create"/>
-                                <action id="edit" type="edit"/>
-                                <action id="remove" type="remove"/>
-                            </actions>
-                            <columns>
-                                <column id="name"/>
-                            </columns>
-                            <rowsCount/>
-                            <buttonsPanel id="buttonsPanel"
-                                          alwaysVisible="true">
-                                <button id="createBtn" action="table.create"/>
-                                <button id="editBtn" action="table.edit"/>
-                                <button id="removeBtn" action="table.remove"/>
-                            </buttonsPanel>
-                        </groupTable>
-                    </groupBox>
+            <tab id="testPlanTab" caption="msg://projectEdit.testPlan" spacing="true" margin="true">
+                <vbox id="checklistBox" caption="msg://com.company.quarium.entity/Project.checklists"
+                      width="AUTO" margin="true">
+                    <groupTable id="table"
+                                width="450px"
+                                height="250px"
+                                dataContainer="checklistsDc"
+                                multiselect="true"
+                                presentations="true">
+                        <actions>
+                            <action id="create" type="create"/>
+                            <action id="edit" type="edit"/>
+                            <action id="remove" type="remove"/>
+                        </actions>
+                        <columns>
+                            <column id="name"/>
+                        </columns>
+                        <rowsCount/>
+                        <buttonsPanel id="buttonsPanel"
+                                      alwaysVisible="true">
+                            <button id="createBtn" action="table.create"/>
+                            <button id="editBtn" action="table.edit"/>
+                            <button id="removeBtn" action="table.remove"/>
+                        </buttonsPanel>
+                    </groupTable>
                 </vbox>
             </tab>
         </tabSheet>
