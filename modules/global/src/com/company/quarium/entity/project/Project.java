@@ -1,9 +1,11 @@
 package com.company.quarium.entity.project;
 
+import com.company.quarium.entity.checklist.Checklist;
 import com.haulmont.chile.core.annotations.Composition;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
+import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
 import com.haulmont.cuba.core.global.DeletePolicy;
 
 import javax.persistence.*;
@@ -23,6 +25,12 @@ public class Project extends StandardEntity {
     private String projectName;
 
     @Composition
+    @OnDeleteInverse(DeletePolicy.CASCADE)
+    @OnDelete(DeletePolicy.CASCADE)
+    @OneToMany(mappedBy = "project")
+    private List<Checklist> checklist;
+
+    @Composition
     @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "project")
     private List<QaProjectRelationship> qa;
@@ -30,6 +38,14 @@ public class Project extends StandardEntity {
     @Lob
     @Column(name = "DESCRIPTION")
     private String description;
+
+    public List<Checklist> getChecklist() {
+        return checklist;
+    }
+
+    public void setChecklist(List<Checklist> checklist) {
+        this.checklist = checklist;
+    }
 
     public List<QaProjectRelationship> getQa() {
         return qa;
