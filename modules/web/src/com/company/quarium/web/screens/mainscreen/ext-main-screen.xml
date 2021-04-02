@@ -57,15 +57,9 @@
                       height="100%">
                 <initialLayout margin="true"
                                spacing="true">
-                    <label id="welcomeLabel"
-                           align="MIDDLE_CENTER"
-                           width="100%"
-                           stylename="c-welcome-text"
-                           value="mainMsg://application.welcomeText"/>
-                    <!--
-                        This is the work area - central part of the screen.
-                        Put your components here.
-                    -->
+                    <image align="MIDDLE_CENTER">
+                        <theme path="branding/quarium_logo_full.png"/>
+                    </image>
                 </initialLayout>
             </workArea>
         </hbox>
