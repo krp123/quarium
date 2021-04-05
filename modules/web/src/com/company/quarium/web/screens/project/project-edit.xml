@@ -8,23 +8,13 @@
                   class="com.company.quarium.entity.project.Project">
             <view extends="_local">
                 <property name="qa" view="edit"/>
-                <property name="checklist" view="edit"/>
+                <property name="checklist" view="edit"/>f
                 <property name="createTs"/>
             </view>
             <loader/>
             <collection id="qaProjectDc" property="qa"/>
             <collection id="checklistsDc" property="checklist"/>
         </instance>
-
-        <!--        <collection id="checklistsDc"-->
-        <!--                    class="com.company.quarium.entity.checklist.Checklist">-->
-        <!--            <view extends="_local"/>-->
-        <!--            <loader id="checklistsDl">-->
-        <!--                <query>-->
-        <!--                    <![CDATA[select e from quarium_Checklist e where e.project = :project]]>-->
-        <!--                </query>-->
-        <!--            </loader>-->
-        <!--        </collection>-->
     </data>
     <dialogMode height="600"
                 width="800"/>

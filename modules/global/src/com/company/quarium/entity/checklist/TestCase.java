@@ -16,7 +16,7 @@ public class TestCase extends StandardEntity {
     private static final long serialVersionUID = -2660701620585662317L;
 
     @NotNull
-    @Column(name = "NAME", nullable = false, unique = false)
+    @Column(name = "NAME", nullable = false)
     private String name;
 
     @Column(name = "STEP")
@@ -26,10 +26,10 @@ public class TestCase extends StandardEntity {
     @Column(name = "EXPECTED_RESULT")
     private String expectedResult;
 
-    @OnDeleteInverse(DeletePolicy.CASCADE)
     @OnDelete(DeletePolicy.UNLINK)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CHECKLIST_ID")
+    @OnDeleteInverse(DeletePolicy.CASCADE)
     private Checklist checklist;
 
     public Checklist getChecklist() {

@@ -2,6 +2,7 @@ package com.company.quarium.web.screens.checklist;
 
 import com.company.quarium.entity.checklist.Checklist;
 import com.company.quarium.entity.checklist.TestCase;
+import com.haulmont.cuba.core.app.EntitySnapshotService;
 import com.haulmont.cuba.core.app.LockService;
 import com.haulmont.cuba.core.entity.BaseGenericIdEntity;
 import com.haulmont.cuba.core.entity.Entity;
@@ -9,6 +10,7 @@ import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.actions.list.CreateAction;
 import com.haulmont.cuba.gui.actions.list.EditAction;
+import com.haulmont.cuba.gui.app.core.entitydiff.EntityDiffViewer;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.actions.BaseAction;
 import com.haulmont.cuba.gui.components.data.DataUnit;
@@ -43,14 +45,38 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
     private GroupTable<TestCase> table;
 
     @Inject
-    private VBoxLayout editBox;
+    private CollectionLoader<TestCase> testCasesDl;
 
     @Inject
-    private CollectionLoader<TestCase> testCasesDl;
+    private InstanceContainer<Checklist> checklistDc;
+
+    @Inject
+    protected EntitySnapshotService entitySnapshotService;
+
+    @Inject
+    private EntityStates entityStates;
+
+    @Inject
+    protected EntityDiffViewer diffFrame;
+
+    @Inject
+    private CollectionContainer<TestCase> testCasesDc;
 
     @Subscribe
     protected void onInit(InitEvent event) {
         initMasterDetailScreen(event);
+    }
+
+    @Subscribe
+    public void onAfterCommitChanges(AfterCommitChangesEvent event) {
+        entitySnapshotService.createSnapshot(checklistDc.getItem(), checklistDc.getView());
+    }
+
+    @Subscribe
+    protected void afterInit(AfterShowEvent event) {
+        if (!entityStates.isNew(checklistDc.getItem())) {
+            diffFrame.loadVersions(checklistDc.getItem());
+        }
     }
 
     protected ListComponent<TestCase> getTable() {

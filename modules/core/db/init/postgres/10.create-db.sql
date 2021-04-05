@@ -112,7 +112,7 @@ create table QUARIUM_TEST_CASE (
     NAME varchar(255) not null,
     STEP varchar(255),
     EXPECTED_RESULT text,
-    CHECKLIST_ID uuid not null,
+    CHECKLIST_ID uuid,
     --
     primary key (ID)
 )^
