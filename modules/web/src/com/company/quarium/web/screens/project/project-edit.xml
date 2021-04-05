@@ -19,7 +19,7 @@
             <view extends="_local"/>
             <loader id="checklistsDl">
                 <query>
-                    <![CDATA[select e from quarium_Checklist e]]>
+                    <![CDATA[select e from quarium_Checklist e where e.project = :project]]>
                 </query>
             </loader>
         </collection>
@@ -60,15 +60,16 @@
 
             <tab id="testPlanTab" caption="msg://projectEdit.testPlan" spacing="true" margin="true">
                 <vbox id="checklistBox" caption="msg://com.company.quarium.entity/Project.checklists"
-                      width="AUTO" margin="true">
-                    <groupTable id="table"
-                                width="450px"
-                                height="250px"
+                      width="100%" height="100%" margin="true">
+                    <groupTable id="checklistsTable"
+                                width="100%"
+                                height="460px"
                                 dataContainer="checklistsDc"
                                 multiselect="true"
                                 presentations="true">
                         <actions>
                             <action id="create" type="create"/>
+                            <action id="addChecklist" type="add"/>
                             <action id="edit" type="edit"/>
                             <action id="remove" type="remove"/>
                         </actions>
@@ -78,9 +79,10 @@
                         <rowsCount/>
                         <buttonsPanel id="buttonsPanel"
                                       alwaysVisible="true">
-                            <button id="createBtn" action="table.create"/>
-                            <button id="editBtn" action="table.edit"/>
-                            <button id="removeBtn" action="table.remove"/>
+                            <button id="createBtn" action="checklistsTable.create"/>
+                            <button id="addBtn" action="checklistsTable.addChecklist"/>
+                            <button id="editBtn" action="checklistsTable.edit"/>
+                            <button id="removeBtn" action="checklistsTable.remove"/>
                         </buttonsPanel>
                     </groupTable>
                 </vbox>

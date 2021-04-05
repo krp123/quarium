@@ -18,13 +18,14 @@ public class Checklist extends StandardEntity {
     private static final long serialVersionUID = 3978033432072095464L;
 
     @NotNull
-    @Column(name = "NAME", nullable = false, unique = true)
+    @Column(name = "NAME", nullable = false)
     private String name;
 
     @OnDeleteInverse(DeletePolicy.UNLINK)
     @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "checklist")
     private List<TestCase> testCase;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PROJECT_ID")
     private Project project;

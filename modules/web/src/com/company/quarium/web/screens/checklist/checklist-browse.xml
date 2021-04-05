@@ -9,7 +9,7 @@
             <view extends="_local"/>
             <loader id="checklistsDl">
                 <query>
-                    <![CDATA[select e from quarium_Checklist e]]>
+                    <![CDATA[select e from quarium_Checklist e where e.project IS NULL]]>
                 </query>
             </loader>
         </collection>

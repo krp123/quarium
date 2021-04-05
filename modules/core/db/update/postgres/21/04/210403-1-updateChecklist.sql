@@ -1,0 +1,1 @@
+drop index IDX_QUARIUM_CHECKLIST_UK_NAME ;

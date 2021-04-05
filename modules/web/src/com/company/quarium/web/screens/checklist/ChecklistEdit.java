@@ -29,17 +29,22 @@ import java.util.Collections;
 @EditedEntityContainer("checklistDc")
 @LoadDataBeforeShow
 public class ChecklistEdit extends StandardEditor<Checklist> {
-    protected boolean editing;
-    protected boolean creating;
-    protected boolean justLocked;
 
+    protected boolean editing;
+
+    protected boolean creating;
+
+    protected boolean justLocked;
 
     @Inject
     private InstanceContainer<TestCase> testCaseDc;
+
     @Inject
     private GroupTable<TestCase> table;
+
     @Inject
     private VBoxLayout editBox;
+
     @Inject
     private CollectionLoader<TestCase> testCasesDl;
 

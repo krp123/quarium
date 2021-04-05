@@ -1,0 +1,1 @@
+drop index IDX_QUARIUM_TEST_CASE_UK_NAME ;

@@ -11,4 +11,7 @@
         <property name="expectedResult"/>
         <property name="checklist" view="_minimal"/>
     </view>
+    <view entity="quarium_Checklist" name="edit" extends="_local">
+        <property name="testCase" view="_local"/>
+    </view>
 </views>

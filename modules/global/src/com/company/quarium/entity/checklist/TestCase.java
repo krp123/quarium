@@ -16,7 +16,7 @@ public class TestCase extends StandardEntity {
     private static final long serialVersionUID = -2660701620585662317L;
 
     @NotNull
-    @Column(name = "NAME", nullable = false, unique = true)
+    @Column(name = "NAME", nullable = false, unique = false)
     private String name;
 
     @Column(name = "STEP")

@@ -9,7 +9,8 @@ public class QuariumWebTestContainer extends TestContainer {
     public QuariumWebTestContainer() {
         appComponents = Arrays.asList(
                 "com.haulmont.cuba",
-                "com.haulmont.addon.helium");
+                "com.haulmont.addon.helium",
+                "com.haulmont.addon.restapi");
         appPropertiesFiles = Arrays.asList(
                 // List the files defined in your web.xml
                 // in appPropertiesConfig context parameter of the web module
