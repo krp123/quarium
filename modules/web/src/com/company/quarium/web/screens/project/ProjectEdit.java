@@ -9,7 +9,6 @@ import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.components.Action;
 import com.haulmont.cuba.gui.model.CollectionContainer;
-import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.model.DataContext;
 import com.haulmont.cuba.gui.model.InstanceContainer;
 import com.haulmont.cuba.gui.screen.*;
@@ -35,9 +34,6 @@ public class ProjectEdit extends StandardEditor<Project> {
     protected InstanceContainer<Project> projectDc;
 
     @Inject
-    private CollectionLoader<Checklist> checklistsDl;
-
-    @Inject
     private CollectionContainer<Checklist> checklistsDc;
 
     @Inject
@@ -45,11 +41,6 @@ public class ProjectEdit extends StandardEditor<Project> {
 
     @Inject
     private CopyChecklistService copyChecklistService;
-
-    @Subscribe
-    protected void onBeforeShow(BeforeShowEvent event) {
-        checklistsDl.setParameter("project", getEditedEntity());
-    }
 
     @Subscribe("qaProjectRelationshipsTable.addQa")
     protected void onAddQa(Action.ActionPerformedEvent event) {
@@ -87,19 +78,6 @@ public class ProjectEdit extends StandardEditor<Project> {
     private Checklist createAndAddChecklist(Checklist checklist) {
         checklist = dataManager.load(Checklist.class).id(checklist.getId()).view("edit").one();
         Checklist checklistNew = copyChecklistService.copyChecklist(checklist, projectDc.getItem());
-//            checklistNew.setProject(projectDc.getItem());
-//            checklistNew.setName(checklist.getName());
-//            if (checklist.getTestCase() != null) {
-//                for (TestCase tc : checklist.getTestCase()) {
-//                    TestCase newTC = dataManager.create(TestCase.class);
-//                    newTC.setChecklist(checklistNew);
-//                    newTC.setName(tc.getName());
-//                    newTC.setStep(tc.getStep());
-//                    newTC.setExpectedResult(tc.getExpectedResult());
-//                    dataManager.commit(newTC);
-//                }
-//            }
-//        dataManager.commit(checklistNew);
         checklistsDc.getMutableItems().add(checklistNew);
         return checklistNew;
     }
