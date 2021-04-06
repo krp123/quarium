@@ -14,4 +14,8 @@
     <view entity="quarium_Checklist" name="edit" extends="_local">
         <property name="testCase" view="_local"/>
     </view>
+    <view entity="quarium_Checklist" name="for_project" extends="_local">
+        <property name="assignedQa" view="_minimal"/>
+        <property name="state" view="_local"/>
+    </view>
 </views>

@@ -93,6 +93,8 @@ create table QUARIUM_CHECKLIST (
     DELETED_BY varchar(50),
     --
     NAME varchar(255) not null,
+    ASSIGNED_QA_ID uuid,
+    STATE_ID uuid,
     PROJECT_ID uuid,
     --
     primary key (ID)
@@ -110,6 +112,8 @@ create table QUARIUM_TEST_CASE (
     DELETED_BY varchar(50),
     --
     NAME varchar(255) not null,
+    PRIORITY_ID uuid,
+    STATE_ID uuid,
     STEP varchar(255),
     EXPECTED_RESULT text,
     CHECKLIST_ID uuid,

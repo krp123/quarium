@@ -1,7 +1,11 @@
 package com.company.quarium.entity.checklist;
 
+import com.company.quarium.entity.references.Priority;
+import com.company.quarium.entity.references.Statement;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
+import com.haulmont.cuba.core.entity.annotation.Lookup;
+import com.haulmont.cuba.core.entity.annotation.LookupType;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
 import com.haulmont.cuba.core.global.DeletePolicy;
@@ -19,6 +23,20 @@ public class TestCase extends StandardEntity {
     @Column(name = "NAME", nullable = false)
     private String name;
 
+    @Lookup(type = LookupType.DROPDOWN, actions = {})
+    @OnDeleteInverse(DeletePolicy.UNLINK)
+    @OnDelete(DeletePolicy.UNLINK)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PRIORITY_ID")
+    private Priority priority;
+
+    @Lookup(type = LookupType.DROPDOWN, actions = {})
+    @OnDeleteInverse(DeletePolicy.UNLINK)
+    @OnDelete(DeletePolicy.UNLINK)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "STATE_ID")
+    private Statement state;
+
     @Column(name = "STEP")
     private String step;
 
@@ -31,6 +49,22 @@ public class TestCase extends StandardEntity {
     @JoinColumn(name = "CHECKLIST_ID")
     @OnDeleteInverse(DeletePolicy.CASCADE)
     private Checklist checklist;
+
+    public Statement getState() {
+        return state;
+    }
+
+    public void setState(Statement state) {
+        this.state = state;
+    }
+
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
 
     public Checklist getChecklist() {
         return checklist;

@@ -8,7 +8,7 @@
                   class="com.company.quarium.entity.project.Project">
             <view extends="_local">
                 <property name="qa" view="edit"/>
-                <property name="checklist" view="edit"/>f
+                <property name="checklist" view="for_project"/>
                 <property name="createTs"/>
             </view>
             <loader/>
@@ -67,6 +67,8 @@
                         </actions>
                         <columns>
                             <column id="name"/>
+                            <column id="state"/>
+                            <column id="assignedQa"/>
                         </columns>
                         <rowsCount/>
                         <buttonsPanel id="buttonsPanel"
