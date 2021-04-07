@@ -62,7 +62,12 @@
                         <actions>
                             <action id="create" type="create"/>
                             <action id="addChecklist" type="add"/>
-                            <action id="edit" type="edit"/>
+                            <action id="edit" type="edit">
+                                <properties>
+                                    <property name="screenClass"
+                                              value="com.company.quarium.web.screens.checklist.ExtChecklistEdit"/>
+                                </properties>
+                            </action>
                             <action id="remove" type="remove"/>
                         </actions>
                         <columns>

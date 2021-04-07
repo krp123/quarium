@@ -1,7 +1,7 @@
 package com.company.quarium.entity.checklist;
 
 import com.company.quarium.entity.project.Project;
-import com.company.quarium.entity.references.Qa;
+import com.company.quarium.entity.project.QaProjectRelationship;
 import com.company.quarium.entity.references.Statement;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
@@ -27,9 +27,9 @@ public class Checklist extends StandardEntity {
 
     @OnDeleteInverse(DeletePolicy.UNLINK)
     @OnDelete(DeletePolicy.UNLINK)
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ASSIGNED_QA_ID")
-    private Qa assignedQa;
+    @OneToOne(fetch = FetchType.LAZY)
+    private QaProjectRelationship assignedQa;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {})
     @OnDeleteInverse(DeletePolicy.UNLINK)
@@ -47,20 +47,20 @@ public class Checklist extends StandardEntity {
     @JoinColumn(name = "PROJECT_ID")
     private Project project;
 
+    public void setAssignedQa(QaProjectRelationship assignedQa) {
+        this.assignedQa = assignedQa;
+    }
+
+    public QaProjectRelationship getAssignedQa() {
+        return assignedQa;
+    }
+
     public Statement getState() {
         return state;
     }
 
     public void setState(Statement state) {
         this.state = state;
-    }
-
-    public Qa getAssignedQa() {
-        return assignedQa;
-    }
-
-    public void setAssignedQa(Qa assignedQa) {
-        this.assignedQa = assignedQa;
     }
 
     public Project getProject() {
