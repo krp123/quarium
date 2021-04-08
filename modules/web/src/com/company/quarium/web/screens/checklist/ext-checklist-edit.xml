@@ -8,6 +8,7 @@
             <view extends="_local">
                 <property name="assignedQa" view="qaProjectRelationship-view"/>
                 <property name="state" view="_minimal"/>
+                <property name="testCase" view="testCase-view"/>
             </view>
             <loader/>
         </instance>
@@ -25,14 +26,14 @@
                 </query>
             </loader>
         </collection>
-        <collection id="qaDc" class="com.company.quarium.entity.project.QaProjectRelationship"
-                    view="qaProjectRelationship-view">
-            <loader id="qaDl">
-                <query>
-                    <![CDATA[select e from quarium_QaProjectRelationship e]]>
-                </query>
-            </loader>
-        </collection>
+        <!--        <collection id="qaDc" class="com.company.quarium.entity.project.QaProjectRelationship"-->
+        <!--                    view="qaProjectRelationship-view">-->
+        <!--            <loader id="qaDl">-->
+        <!--                <query>-->
+        <!--                    <![CDATA[select e from quarium_QaProjectRelationship e]]>-->
+        <!--                </query>-->
+        <!--            </loader>-->
+        <!--        </collection>-->
         <collection id="testCasesDc"
                     class="com.company.quarium.entity.checklist.TestCase">
             <view extends="_local"/>
@@ -63,7 +64,7 @@
             <rows>
                 <row>
                     <textField id="nameField" dataContainer="checklistDc" property="name"/>
-                    <lookupField id="assignedQaField" dataContainer="checklistDc" optionsContainer="qaDc"
+                    <lookupField id="assignedQaField" dataContainer="checklistDc"
                                  property="assignedQa"/>
                     <lookupField id="stateField" dataContainer="checklistDc" optionsContainer="statesDc"
                                  property="state"/>

@@ -2,6 +2,7 @@ package com.company.quarium.web.screens.checklist;
 
 import com.company.quarium.entity.checklist.Checklist;
 import com.company.quarium.entity.checklist.TestCase;
+import com.company.quarium.entity.project.QaProjectRelationship;
 import com.haulmont.cuba.core.app.EntitySnapshotService;
 import com.haulmont.cuba.core.app.LockService;
 import com.haulmont.cuba.core.entity.BaseGenericIdEntity;
@@ -24,6 +25,7 @@ import com.haulmont.cuba.security.entity.EntityOp;
 
 import javax.inject.Inject;
 import java.util.Collections;
+import java.util.List;
 
 @UiController("ext_quarium_Checklist.edit")
 @UiDescriptor("ext-checklist-edit.xml")
@@ -54,6 +56,9 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
 
     @Inject
     private CollectionContainer<TestCase> testCasesDc;
+
+    @Inject
+    private LookupField<QaProjectRelationship> assignedQaField;
 
     @Subscribe
     protected void onInit(InitEvent event) {
@@ -347,5 +352,9 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         validateAdditionalRules(validationErrors);
 
         return validationErrors;
+    }
+
+    public void setSomeParameter(List<QaProjectRelationship> qaProjectRelationship) {
+        assignedQaField.setOptionsList(qaProjectRelationship);
     }
 }

@@ -5,8 +5,10 @@ import com.company.quarium.entity.project.Project;
 import com.company.quarium.entity.project.QaProjectRelationship;
 import com.company.quarium.entity.references.Qa;
 import com.company.quarium.service.CopyChecklistService;
+import com.company.quarium.web.screens.checklist.ExtChecklistEdit;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.gui.ScreenBuilders;
+import com.haulmont.cuba.gui.actions.list.EditAction;
 import com.haulmont.cuba.gui.components.Action;
 import com.haulmont.cuba.gui.model.CollectionContainer;
 import com.haulmont.cuba.gui.model.DataContext;
@@ -14,6 +16,7 @@ import com.haulmont.cuba.gui.model.InstanceContainer;
 import com.haulmont.cuba.gui.screen.*;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 @UiController("quarium_Project.edit")
 @UiDescriptor("project-edit.xml")
@@ -41,6 +44,9 @@ public class ProjectEdit extends StandardEditor<Project> {
 
     @Inject
     private CopyChecklistService copyChecklistService;
+
+    @Named("checklistsTable.edit")
+    private EditAction<Checklist> checklistsTableEdit;
 
     @Subscribe("qaProjectRelationshipsTable.addQa")
     protected void onAddQa(Action.ActionPerformedEvent event) {
@@ -84,5 +90,10 @@ public class ProjectEdit extends StandardEditor<Project> {
 
     private void addToRelationships(QaProjectRelationship qaProjectRelationship) {
         qaProjectDc.getMutableItems().add(qaProjectRelationship);
+    }
+
+    @Install(to = "checklistsTable.edit", subject = "screenConfigurer")
+    protected void customersTableEditScreenConfigurer(Screen editorScreen) {
+        ((ExtChecklistEdit) editorScreen).setSomeParameter(getEditedEntity().getQa());
     }
 }
