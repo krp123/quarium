@@ -99,6 +99,8 @@ public class ProjectEdit extends StandardEditor<Project> {
 
     @Install(to = "checklistsTable.create", subject = "screenConfigurer")
     protected void customersTableCreateScreenConfigurer(Screen editorScreen) {
-        ((ExtChecklistEdit) editorScreen).setSomeParameter(getEditedEntity().getQa());
+        if (getEditedEntity().getQa() != null) {
+            ((ExtChecklistEdit) editorScreen).setSomeParameter(getEditedEntity().getQa());
+        }
     }
 }

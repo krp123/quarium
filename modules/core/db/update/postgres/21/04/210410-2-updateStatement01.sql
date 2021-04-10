@@ -1,0 +1,1 @@
+create unique index IDX_QUARIUM_STATEMENT_UK_NAME on QUARIUM_STATEMENT (NAME) where DELETE_TS is null ;

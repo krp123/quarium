@@ -1,0 +1,1 @@
+alter table quarium_attachment_type rename to QUARIUM_ATTACHMENT_TYPE__U96189 ;

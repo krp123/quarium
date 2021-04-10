@@ -1,0 +1,1 @@
+drop table if exists QUARIUM_ATTACHMENT_TYPE__U96189 cascade ;
