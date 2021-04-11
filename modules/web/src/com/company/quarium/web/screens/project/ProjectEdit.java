@@ -8,8 +8,12 @@ import com.company.quarium.service.CopyChecklistService;
 import com.company.quarium.web.screens.checklist.ExtChecklistEdit;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.gui.ScreenBuilders;
+import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.actions.list.EditAction;
 import com.haulmont.cuba.gui.components.Action;
+import com.haulmont.cuba.gui.components.Component;
+import com.haulmont.cuba.gui.components.LookupField;
+import com.haulmont.cuba.gui.components.Table;
 import com.haulmont.cuba.gui.model.CollectionContainer;
 import com.haulmont.cuba.gui.model.DataContext;
 import com.haulmont.cuba.gui.model.InstanceContainer;
@@ -17,6 +21,7 @@ import com.haulmont.cuba.gui.screen.*;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.List;
 
 @UiController("quarium_Project.edit")
 @UiDescriptor("project-edit.xml")
@@ -47,6 +52,12 @@ public class ProjectEdit extends StandardEditor<Project> {
 
     @Named("checklistsTable.edit")
     private EditAction<Checklist> checklistsTableEdit;
+
+    @Inject
+    private Table<Checklist> checklistsTable;
+
+    @Inject
+    private UiComponents uiComponents;
 
     @Subscribe("qaProjectRelationshipsTable.addQa")
     protected void onAddQa(Action.ActionPerformedEvent event) {
@@ -102,5 +113,24 @@ public class ProjectEdit extends StandardEditor<Project> {
         if (getEditedEntity().getQa() != null) {
             ((ExtChecklistEdit) editorScreen).setSomeParameter(getEditedEntity().getQa());
         }
+    }
+
+    @Subscribe
+    protected void onInit(AfterShowEvent event) {
+        List<QaProjectRelationship> qaList = getEditedEntity().getQa();
+
+        checklistsTable.addGeneratedColumn("QA",
+                new Table.ColumnGenerator<Checklist>() {
+                    @Override
+                    public Component generateCell(Checklist checklist) {
+                        LookupField<QaProjectRelationship> lookupField = uiComponents.create(LookupField.NAME);
+                        lookupField.setOptionsList(qaList);
+                        lookupField.setWidth("100px");
+
+                        lookupField.setValue(checklist.getAssignedQa());
+                        lookupField.addValueChangeListener(e -> checklist.setAssignedQa(e.getValue()));
+                        return lookupField;
+                    }
+                });
     }
 }

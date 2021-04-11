@@ -78,7 +78,6 @@
                         <columns>
                             <column id="name"/>
                             <column id="state"/>
-                            <column id="assignedQa"/>
                         </columns>
                         <rowsCount/>
                         <buttonsPanel id="buttonsPanel"
