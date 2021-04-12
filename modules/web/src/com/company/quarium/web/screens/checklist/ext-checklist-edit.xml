@@ -8,9 +8,10 @@
             <view extends="_local">
                 <property name="assignedQa" view="qaProjectRelationship-view"/>
                 <property name="state" view="_minimal"/>
-                <property name="testCase" view="testCase-view"/>
+                <property name="testCase" view="testCase-edit"/>
             </view>
             <loader/>
+            <collection id="testCasesDc" property="testCase"/>
         </instance>
         <collection id="statesDc" class="com.company.quarium.entity.references.Statement" view="_minimal">
             <loader id="statesDl">
@@ -34,15 +35,6 @@
         <!--                </query>-->
         <!--            </loader>-->
         <!--        </collection>-->
-        <collection id="testCasesDc"
-                    class="com.company.quarium.entity.checklist.TestCase">
-            <view extends="_local"/>
-            <loader id="testCasesDl">
-                <query>
-                    <![CDATA[select e from quarium_TestCase e where e.checklist = :checklist]]>
-                </query>
-            </loader>
-        </collection>
         <instance id="testCaseDc"
                   class="com.company.quarium.entity.checklist.TestCase">
             <view extends="_local">
