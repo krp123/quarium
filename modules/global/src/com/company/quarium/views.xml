@@ -5,6 +5,10 @@
         <property name="project"/>
     </view>
     <view entity="quarium_TestCase" name="testCase-view" extends="_local"/>
+    <view entity="quarium_TestCase" name="testCase-edit" extends="_local">
+        <property name="priority" view="_minimal"/>
+        <property name="state" view="_minimal"/>
+    </view>
     <view entity="quarium_TestCase" name="testCase_full">
         <property name="name"/>
         <property name="step"/>
