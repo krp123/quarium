@@ -45,9 +45,6 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
     private GroupTable<TestCase> table;
 
     @Inject
-    private CollectionLoader<TestCase> testCasesDl;
-
-    @Inject
     private InstanceContainer<Checklist> checklistDc;
 
     @Inject
@@ -58,9 +55,6 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
 
     @Inject
     protected EntityDiffViewer diffFrame;
-
-    @Inject
-    private CollectionContainer<TestCase> testCasesDc;
 
     @Subscribe
     protected void onInit(InitEvent event) {
@@ -85,11 +79,6 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
 
     protected Form getForm() {
         return (Form) getWindow().getComponentNN("form");
-    }
-
-    @Subscribe
-    protected void onBeforeShow(BeforeShowEvent event) {
-        testCasesDl.setParameter("checklist", getEditedEntity());
     }
 
     protected void initMasterDetailScreen(@SuppressWarnings("unused") InitEvent event) {
@@ -129,19 +118,16 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
             return;
         }
 
-        commitEditorChanges()
-                .then(() -> {
-                    TestCase editedItem = testCaseDc.getItem();
-                    if (creating) {
-                        getBrowseContainer().getMutableItems().add(0, editedItem);
-                    } else {
-                        getBrowseContainer().replaceItem(editedItem);
-                    }
-                    getTable().setSelected(editedItem);
+        TestCase editedItem = testCaseDc.getItem();
+        if (creating) {
+            getBrowseContainer().getMutableItems().add(0, editedItem);
+        } else {
+            getBrowseContainer().replaceItem(editedItem);
+        }
+        getTable().setSelected(editedItem);
 
-                    releaseLock();
-                    disableEditControls();
-                });
+        releaseLock();
+        disableEditControls();
     }
 
     protected void discardChanges() {
@@ -171,22 +157,8 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
 
     protected void initBrowseItemChangeListener() {
         getBrowseContainer().addItemChangeListener(e -> {
-            if (e.getItem() != null) {
-                InstanceLoader<TestCase> editLoader = getEditLoader();
-
-                DynamicAttributesGuiTools tools = getBeanLocator().get(DynamicAttributesGuiTools.NAME);
-                String screenId = UiControllerUtils.getScreenContext(this)
-                        .getWindowInfo().getId();
-                if (tools.screenContainsDynamicAttributes(testCaseDc.getView(), screenId)) {
-                    editLoader.setLoadDynamicAttributes(true);
-                }
-
-                editLoader.setEntityId(e.getItem().getId());
-                editLoader.load();
-            } else {
-                if (!editing) {
-                    testCaseDc.setItem(null);
-                }
+            if (!editing) {
+                testCaseDc.setItem(e.getItem());
             }
         });
     }

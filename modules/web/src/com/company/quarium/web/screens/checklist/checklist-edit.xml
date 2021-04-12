@@ -10,17 +10,8 @@
                 <property name="testCase" view="testCase-view"/>
             </view>
             <loader/>
+            <collection id="testCasesDc" property="testCase"/>
         </instance>
-
-        <collection id="testCasesDc"
-                    class="com.company.quarium.entity.checklist.TestCase">
-            <view extends="_local"/>
-            <loader id="testCasesDl">
-                <query>
-                    <![CDATA[select e from quarium_TestCase e where e.checklist = :checklist]]>
-                </query>
-            </loader>
-        </collection>
 
         <instance id="testCaseDc"
                   class="com.company.quarium.entity.checklist.TestCase">
