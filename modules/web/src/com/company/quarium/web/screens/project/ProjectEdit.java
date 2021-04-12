@@ -124,11 +124,16 @@ public class ProjectEdit extends StandardEditor<Project> {
                     @Override
                     public Component generateCell(Checklist checklist) {
                         LookupField<QaProjectRelationship> lookupField = uiComponents.create(LookupField.NAME);
-                        lookupField.setOptionsList(qaList);
-                        lookupField.setWidth("100px");
+                        if (qaList != null) {
+                            lookupField.setOptionsList(qaList);
+                            lookupField.setWidth("100px");
 
-                        lookupField.setValue(checklist.getAssignedQa());
-                        lookupField.addValueChangeListener(e -> checklist.setAssignedQa(e.getValue()));
+                            lookupField.setValue(checklist.getAssignedQa());
+                            lookupField.addValueChangeListener(e -> {
+                                        checklist.setAssignedQa(e.getValue());
+                                    }
+                            );
+                        }
                         return lookupField;
                     }
                 });
