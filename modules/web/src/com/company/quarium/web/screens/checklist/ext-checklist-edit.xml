@@ -27,14 +27,6 @@
                 </query>
             </loader>
         </collection>
-        <!--        <collection id="qaDc" class="com.company.quarium.entity.project.QaProjectRelationship"-->
-        <!--                    view="qaProjectRelationship-view">-->
-        <!--            <loader id="qaDl">-->
-        <!--                <query>-->
-        <!--                    <![CDATA[select e from quarium_QaProjectRelationship e]]>-->
-        <!--                </query>-->
-        <!--            </loader>-->
-        <!--        </collection>-->
         <instance id="testCaseDc"
                   class="com.company.quarium.entity.checklist.TestCase">
             <view extends="_local">
@@ -51,18 +43,20 @@
     <dialogMode height="600"
                 width="800"/>
     <layout expand="editActions" spacing="true" margin="true">
-        <grid spacing="true" id="form">
-            <columns count="3"/>
-            <rows>
-                <row>
-                    <textField id="nameField" dataContainer="checklistDc" property="name"/>
-                    <lookupField id="assignedQaField" dataContainer="checklistDc"
-                                 property="assignedQa"/>
-                    <lookupField id="stateField" dataContainer="checklistDc" optionsContainer="statesDc"
-                                 property="state"/>
-                </row>
-            </rows>
-        </grid>
+        <form id="form">
+            <column>
+                <textField id="nameField" dataContainer="checklistDc" property="name"
+                           caption="msg://checklistEdit.name"/>
+                <lookupField id="stateField" dataContainer="checklistDc" optionsContainer="statesDc"
+                             property="state" caption="msg://checklistEdit.State"/>
+            </column>
+            <column>
+                <lookupField id="assignedQaField" dataContainer="checklistDc"
+                             property="assignedQa" caption="msg://checklistEdit.QA"/>
+                <checkBox id="isUsedInRegress" dataContainer="checklistDc" property="isUsedInRegress"
+                          caption="msg://checklistEdit.isUsedInRegress"/>
+            </column>
+        </form>
         <groupBox id="testCaseBox" caption="msg://checklistEdit.testCaseBox">
             <split id="split" height="400" orientation="horizontal" reversePosition="true" width="100%">
                 <vbox id="lookupBox" expand="table" height="100%" margin="false,true,false,false" spacing="true">

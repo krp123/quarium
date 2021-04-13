@@ -38,4 +38,14 @@
             <property name="project" view="_minimal"/>
         </property>
     </view>
+    <view entity="quarium_Checklist" name="project-checklist-view" extends="_local">
+        <property name="assignedQa" view="_minimal"/>
+        <property name="state" view="_minimal"/>
+        <property name="testCase" view="_minimal">
+            <property name="priority" view="_minimal"/>
+            <property name="state" view="_minimal"/>
+            <property name="step"/>
+            <property name="expectedResult"/>
+        </property>
+    </view>
 </views>

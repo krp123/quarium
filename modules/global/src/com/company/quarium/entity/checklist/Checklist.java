@@ -25,6 +25,9 @@ public class Checklist extends StandardEntity {
     @Column(name = "NAME", nullable = false)
     private String name;
 
+    @Column(name = "IS_USED_IN_REGRESS")
+    private Boolean isUsedInRegress;
+
     @OnDeleteInverse(DeletePolicy.UNLINK)
     @OnDelete(DeletePolicy.UNLINK)
     @JoinColumn(name = "ASSIGNED_QA_ID")
@@ -46,6 +49,14 @@ public class Checklist extends StandardEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PROJECT_ID")
     private Project project;
+
+    public Boolean getIsUsedInRegress() {
+        return isUsedInRegress;
+    }
+
+    public void setIsUsedInRegress(Boolean isUsedInRegress) {
+        this.isUsedInRegress = isUsedInRegress;
+    }
 
     public void setAssignedQa(QaProjectRelationship assignedQa) {
         this.assignedQa = assignedQa;

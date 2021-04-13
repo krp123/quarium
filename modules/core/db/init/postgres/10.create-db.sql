@@ -93,6 +93,7 @@ create table QUARIUM_CHECKLIST (
     DELETED_BY varchar(50),
     --
     NAME varchar(255) not null,
+    IS_USED_IN_REGRESS boolean,
     ASSIGNED_QA_ID uuid,
     STATE_ID uuid,
     PROJECT_ID uuid,

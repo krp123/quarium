@@ -10,10 +10,7 @@ import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.actions.list.EditAction;
-import com.haulmont.cuba.gui.components.Action;
-import com.haulmont.cuba.gui.components.Component;
-import com.haulmont.cuba.gui.components.LookupField;
-import com.haulmont.cuba.gui.components.Table;
+import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.CollectionContainer;
 import com.haulmont.cuba.gui.model.DataContext;
 import com.haulmont.cuba.gui.model.InstanceContainer;
@@ -119,7 +116,7 @@ public class ProjectEdit extends StandardEditor<Project> {
     protected void onInit(AfterShowEvent event) {
         List<QaProjectRelationship> qaList = getEditedEntity().getQa();
 
-        checklistsTable.addGeneratedColumn("QA",
+        checklistsTable.addGeneratedColumn("assignedQa",
                 new Table.ColumnGenerator<Checklist>() {
                     @Override
                     public Component generateCell(Checklist checklist) {
@@ -135,6 +132,22 @@ public class ProjectEdit extends StandardEditor<Project> {
                             );
                         }
                         return lookupField;
+                    }
+                });
+
+        checklistsTable.addGeneratedColumn("isUsedInRegress",
+                new Table.ColumnGenerator<Checklist>() {
+                    @Override
+                    public Component generateCell(Checklist checklist) {
+                        CheckBox checkBox = uiComponents.create(CheckBox.NAME);
+                        checkBox.setWidth("100px");
+                        checkBox.setValue(checklist.getIsUsedInRegress());
+                        checkBox.addValueChangeListener(e -> {
+                                    checklist.setIsUsedInRegress(e.getValue());
+                                }
+                        );
+
+                        return checkBox;
                     }
                 });
     }

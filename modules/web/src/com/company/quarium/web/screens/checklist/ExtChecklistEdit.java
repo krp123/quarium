@@ -68,8 +68,8 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         return (ListComponent) table;
     }
 
-    protected GridLayout getForm() {
-        return (GridLayout) getWindow().getComponentNN("form");
+    protected Form getForm() {
+        return (Form) getWindow().getComponentNN("form");
     }
 
     protected void initMasterDetailScreen(@SuppressWarnings("unused") InitEvent event) {
@@ -328,5 +328,10 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
 
     public void setSomeParameter(List<QaProjectRelationship> qaProjectRelationship) {
         assignedQaField.setOptionsList(qaProjectRelationship);
+    }
+
+    @Override
+    protected boolean doNotReloadEditedEntity() {
+        return true;
     }
 }
