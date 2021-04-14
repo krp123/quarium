@@ -1,5 +1,6 @@
 package com.company.quarium.entity.checklist;
 
+import com.company.quarium.entity.project.Module;
 import com.company.quarium.entity.project.Project;
 import com.company.quarium.entity.project.QaProjectRelationship;
 import com.company.quarium.entity.references.Statement;
@@ -25,6 +26,11 @@ public class Checklist extends StandardEntity {
     @Column(name = "NAME", nullable = false)
     private String name;
 
+    @OnDelete(DeletePolicy.CASCADE)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MODULE_ID")
+    private Module module;
+
     @Column(name = "IS_USED_IN_REGRESS")
     private Boolean isUsedInRegress;
 
@@ -49,6 +55,14 @@ public class Checklist extends StandardEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PROJECT_ID")
     private Project project;
+
+    public Module getModule() {
+        return module;
+    }
+
+    public void setModule(Module module) {
+        this.module = module;
+    }
 
     public Boolean getIsUsedInRegress() {
         return isUsedInRegress;

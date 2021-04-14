@@ -11,11 +11,13 @@
                 <property name="configuration" view="configurationProjectRelationship-view"/>
                 <property name="checklist" view="project-checklist-view"/>
                 <property name="createTs"/>
+                <property name="module" view="edit"/>
             </view>
             <loader/>
             <collection id="qaProjectDc" property="qa"/>
             <collection id="configurationProjectDc" property="configuration"/>
             <collection id="checklistsDc" property="checklist"/>
+            <collection id="modulesDc" property="module"/>
         </instance>
     </data>
     <dialogMode height="600"
@@ -69,6 +71,40 @@
                                     <buttonsPanel>
                                         <button action="configurationProjectRelationshipsTable.addConfiguration"/>
                                         <button action="configurationProjectRelationshipsTable.removeConfiguration"/>
+                                    </buttonsPanel>
+                                </table>
+                            </groupBox>
+                        </column>
+                        <column>
+                            <groupBox id="moduleBox"
+                                      caption="msg://com.company.quarium.entity/Project.modulesList">
+                                <table id="modulesTable"
+                                       dataContainer="modulesDc"
+                                       width="400px"
+                                       height="250px">
+                                    <actions>
+                                        <action id="createModule" type="create">
+                                            <properties>
+                                                <property name="screenClass"
+                                                          value="com.company.quarium.web.screens.module.ModuleEdit"/>
+                                            </properties>
+                                        </action>
+                                        <action id="editModule" type="edit">
+                                            <properties>
+                                                <property name="screenClass"
+                                                          value="com.company.quarium.web.screens.module.ModuleEdit"/>
+                                            </properties>
+                                        </action>
+                                        <action id="removeModule" type="remove"/>
+                                    </actions>
+                                    <columns>
+                                        <column id="name"
+                                                caption="msg://com.company.quarium.entity/Project.modules"/>
+                                    </columns>
+                                    <buttonsPanel>
+                                        <button action="modulesTable.createModule"/>
+                                        <button action="modulesTable.editModule"/>
+                                        <button action="modulesTable.removeModule"/>
                                     </buttonsPanel>
                                 </table>
                             </groupBox>

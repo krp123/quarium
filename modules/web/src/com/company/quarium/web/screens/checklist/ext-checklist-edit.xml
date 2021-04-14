@@ -9,6 +9,7 @@
                 <property name="assignedQa" view="qaProjectRelationship-view"/>
                 <property name="state" view="_minimal"/>
                 <property name="testCase" view="testCase-edit"/>
+                <property name="module" view="edit"/>
             </view>
             <loader/>
             <collection id="testCasesDc" property="testCase"/>
@@ -49,12 +50,14 @@
                            caption="msg://checklistEdit.name"/>
                 <lookupField id="stateField" dataContainer="checklistDc" optionsContainer="statesDc"
                              property="state" caption="msg://checklistEdit.State"/>
+                <checkBox id="isUsedInRegress" dataContainer="checklistDc" property="isUsedInRegress"
+                          caption="msg://checklistEdit.isUsedInRegress"/>
             </column>
             <column>
                 <lookupField id="assignedQaField" dataContainer="checklistDc"
                              property="assignedQa" caption="msg://checklistEdit.QA"/>
-                <checkBox id="isUsedInRegress" dataContainer="checklistDc" property="isUsedInRegress"
-                          caption="msg://checklistEdit.isUsedInRegress"/>
+                <lookupField id="moduleField" dataContainer="checklistDc"
+                             property="module" caption="msg://checklistEdit.module"/>
             </column>
         </form>
         <groupBox id="testCaseBox" caption="msg://checklistEdit.testCaseBox">

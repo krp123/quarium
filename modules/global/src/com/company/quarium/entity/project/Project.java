@@ -20,9 +20,12 @@ import java.util.List;
 public class Project extends StandardEntity {
     private static final long serialVersionUID = 8986128378201827146L;
 
-    @Column(name = "PROJECT_NAME", nullable = false, unique = true)
+    @Column(name = "PROJECT_NAME", nullable = false)
     @NotNull
     private String projectName;
+
+    @OneToMany(mappedBy = "project")
+    private List<Module> module;
 
     @Composition
     @OnDeleteInverse(DeletePolicy.CASCADE)
@@ -43,6 +46,14 @@ public class Project extends StandardEntity {
     @Lob
     @Column(name = "DESCRIPTION")
     private String description;
+
+    public List<Module> getModule() {
+        return module;
+    }
+
+    public void setModule(List<Module> module) {
+        this.module = module;
+    }
 
     public List<ConfigurationProjectRelationship> getConfiguration() {
         return configuration;

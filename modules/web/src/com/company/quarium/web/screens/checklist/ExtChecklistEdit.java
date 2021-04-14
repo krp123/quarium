@@ -2,6 +2,7 @@ package com.company.quarium.web.screens.checklist;
 
 import com.company.quarium.entity.checklist.Checklist;
 import com.company.quarium.entity.checklist.TestCase;
+import com.company.quarium.entity.project.Module;
 import com.company.quarium.entity.project.QaProjectRelationship;
 import com.haulmont.cuba.core.app.EntitySnapshotService;
 import com.haulmont.cuba.core.app.LockService;
@@ -53,6 +54,9 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
 
     @Inject
     private LookupField<QaProjectRelationship> assignedQaField;
+
+    @Inject
+    private LookupField<Module> moduleField;
 
     @Subscribe
     protected void onInit(InitEvent event) {
@@ -326,8 +330,12 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         return validationErrors;
     }
 
-    public void setSomeParameter(List<QaProjectRelationship> qaProjectRelationship) {
+    public void setQaParameter(List<QaProjectRelationship> qaProjectRelationship) {
         assignedQaField.setOptionsList(qaProjectRelationship);
+    }
+
+    public void setModuleParameter(List<Module> modules) {
+        moduleField.setOptionsList(modules);
     }
 
     @Override
