@@ -1,8 +1,10 @@
 package com.company.quarium.web.screens.project;
 
 import com.company.quarium.entity.checklist.Checklist;
+import com.company.quarium.entity.project.ConfigurationProjectRelationship;
 import com.company.quarium.entity.project.Project;
 import com.company.quarium.entity.project.QaProjectRelationship;
+import com.company.quarium.entity.references.Configuration;
 import com.company.quarium.entity.references.Qa;
 import com.company.quarium.service.CopyChecklistService;
 import com.company.quarium.web.screens.checklist.ExtChecklistEdit;
@@ -36,6 +38,9 @@ public class ProjectEdit extends StandardEditor<Project> {
     protected CollectionContainer<QaProjectRelationship> qaProjectDc;
 
     @Inject
+    protected CollectionContainer<ConfigurationProjectRelationship> configurationProjectDc;
+
+    @Inject
     protected InstanceContainer<Project> projectDc;
 
     @Inject
@@ -63,7 +68,20 @@ public class ProjectEdit extends StandardEditor<Project> {
                 .withSelectHandler(qas -> {
                     qas.stream()
                             .map(this::createRelationshipFromQa)
-                            .forEach(this::addToRelationships);
+                            .forEach(this::addQaToRelationships);
+                })
+                .build()
+                .show();
+    }
+
+    @Subscribe("configurationProjectRelationshipsTable.addConfiguration")
+    protected void onAddConfiguration(Action.ActionPerformedEvent event) {
+        screenBuilders.lookup(Configuration.class, this)
+                .withLaunchMode(OpenMode.DIALOG)
+                .withSelectHandler(configurations -> {
+                    configurations.stream()
+                            .map(this::createRelationshipFromConfiguration)
+                            .forEach(this::addConfigurationToRelationships);
                 })
                 .build()
                 .show();
@@ -89,6 +107,15 @@ public class ProjectEdit extends StandardEditor<Project> {
         return qaProjectRelationship;
     }
 
+    private ConfigurationProjectRelationship createRelationshipFromConfiguration(Configuration configuration) {
+        ConfigurationProjectRelationship configurationProjectRelationship =
+                dataContext.create(ConfigurationProjectRelationship.class);
+        configurationProjectRelationship.setProject(projectDc.getItem());
+        configurationProjectRelationship.setConfiguration(configuration);
+
+        return configurationProjectRelationship;
+    }
+
     private Checklist createAndAddChecklist(Checklist checklist) {
         checklist = dataManager.load(Checklist.class).id(checklist.getId()).view("edit").one();
         Checklist checklistNew = copyChecklistService.copyChecklist(checklist, projectDc.getItem());
@@ -96,8 +123,12 @@ public class ProjectEdit extends StandardEditor<Project> {
         return checklistNew;
     }
 
-    private void addToRelationships(QaProjectRelationship qaProjectRelationship) {
+    private void addQaToRelationships(QaProjectRelationship qaProjectRelationship) {
         qaProjectDc.getMutableItems().add(qaProjectRelationship);
+    }
+
+    private void addConfigurationToRelationships(ConfigurationProjectRelationship configurationProjectRelationship) {
+        configurationProjectDc.getMutableItems().add(configurationProjectRelationship);
     }
 
     @Install(to = "checklistsTable.edit", subject = "screenConfigurer")

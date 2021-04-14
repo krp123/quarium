@@ -35,9 +35,22 @@ public class Project extends StandardEntity {
     @OneToMany(mappedBy = "project")
     private List<QaProjectRelationship> qa;
 
+    @Composition
+    @OnDelete(DeletePolicy.CASCADE)
+    @OneToMany(mappedBy = "project")
+    private List<ConfigurationProjectRelationship> configuration;
+
     @Lob
     @Column(name = "DESCRIPTION")
     private String description;
+
+    public List<ConfigurationProjectRelationship> getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(List<ConfigurationProjectRelationship> configuration) {
+        this.configuration = configuration;
+    }
 
     public List<Checklist> getChecklist() {
         return checklist;

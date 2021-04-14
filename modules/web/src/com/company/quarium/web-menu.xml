@@ -10,5 +10,6 @@
         <item screen="quarium_Qa.browse" caption="mainMsg://menu_config.quarium_Qa.browse"/>
         <item screen="quarium_Priority.browse" caption="mainMsg://menu_config.quarium_Priority.browse"/>
         <item screen="quarium_Statement.browse" caption="mainMsg://menu_config.quarium_Statement.browse"/>
+        <item screen="quarium_Configuration.browse" caption="mainMsg://menu_config.quarium_Configuration.browse"/>
     </menu>
 </menu-config>

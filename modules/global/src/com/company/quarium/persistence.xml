@@ -9,5 +9,7 @@
         <class>com.company.quarium.entity.references.Statement</class>
         <class>com.company.quarium.entity.checklist.Checklist</class>
         <class>com.company.quarium.entity.checklist.TestCase</class>
+        <class>com.company.quarium.entity.references.Configuration</class>
+        <class>com.company.quarium.entity.project.ConfigurationProjectRelationship</class>
     </persistence-unit>
 </persistence>

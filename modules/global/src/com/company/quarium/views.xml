@@ -48,4 +48,20 @@
             <property name="expectedResult"/>
         </property>
     </view>
+    <view entity="quarium_ConfigurationProjectRelationship" name="edit">
+        <property name="project"/>
+        <property name="configuration"/>
+    </view>
+    <view entity="quarium_ConfigurationProjectRelationship" name="configurationProjectRelationship-view" extends="edit">
+        <property name="configuration" view="_minimal">
+            <property name="configuration"/>
+            <property name="project" view="_minimal"/>
+        </property>
+        <property name="project">
+            <property name="projectName"/>
+            <property name="configuration" view="_minimal">
+                <property name="configuration" view="_minimal"/>
+            </property>
+        </property>
+    </view>
 </views>
