@@ -25,6 +25,8 @@ public class Project extends StandardEntity {
     private String projectName;
 
     @OneToMany(mappedBy = "project")
+    @OnDelete(DeletePolicy.CASCADE)
+    @Composition
     private List<Module> module;
 
     @Composition
