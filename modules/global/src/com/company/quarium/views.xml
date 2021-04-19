@@ -47,6 +47,7 @@
             <property name="step"/>
             <property name="expectedResult"/>
         </property>
+        <property name="module" view="_local"/>
     </view>
     <view entity="quarium_ConfigurationProjectRelationship" name="edit">
         <property name="project"/>
@@ -71,14 +72,6 @@
             <property name="qa" view="_minimal"/>
             <property name="configuration" view="_minimal"/>
             <property name="description"/>
-        </property>
-        <property name="checklist" view="_minimal">
-            <property name="module" view="_minimal"/>
-            <property name="isUsedInRegress"/>
-            <property name="assignedQa" view="_minimal"/>
-            <property name="state" view="_minimal"/>
-            <property name="testCase" view="_minimal"/>
-            <property name="project" view="_minimal"/>
         </property>
     </view>
 </views>

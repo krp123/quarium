@@ -1,6 +1,5 @@
 package com.company.quarium.entity.project;
 
-import com.company.quarium.entity.checklist.Checklist;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
 
@@ -20,17 +19,6 @@ public class Module extends StandardEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PROJECT_ID")
     private Project project;
-
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "module")
-    private Checklist checklist;
-
-    public Checklist getChecklist() {
-        return checklist;
-    }
-
-    public void setChecklist(Checklist checklist) {
-        this.checklist = checklist;
-    }
 
     public Project getProject() {
         return project;

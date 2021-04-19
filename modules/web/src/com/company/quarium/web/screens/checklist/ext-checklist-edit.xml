@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:app="http://schemas.company.com/demo/0.1/ui-component.xsd"
         caption="msg://extChecklistEdit.caption"
         messagesPack="com.company.quarium.web.screens.checklist">
     <data>
@@ -50,14 +51,16 @@
                            caption="msg://checklistEdit.name"/>
                 <lookupField id="stateField" dataContainer="checklistDc" optionsContainer="statesDc"
                              property="state" caption="msg://checklistEdit.State"/>
-                <checkBox id="isUsedInRegress" dataContainer="checklistDc" property="isUsedInRegress"
-                          caption="msg://checklistEdit.isUsedInRegress"/>
+                <app:linkField id="ticket" dataContainer="checklistDc" property="ticket"
+                               maxTextLength="30"/>
             </column>
             <column>
                 <lookupField id="assignedQaField" dataContainer="checklistDc"
                              property="assignedQa" caption="msg://checklistEdit.QA"/>
                 <lookupField id="moduleField" dataContainer="checklistDc"
                              property="module" caption="msg://checklistEdit.module"/>
+                <checkBox id="isUsedInRegress" dataContainer="checklistDc" property="isUsedInRegress"
+                          caption="msg://checklistEdit.isUsedInRegress"/>
             </column>
         </form>
         <groupBox id="testCaseBox" caption="msg://checklistEdit.testCaseBox">

@@ -26,9 +26,13 @@ public class Checklist extends StandardEntity {
     @Column(name = "NAME", nullable = false)
     private String name;
 
-    @OnDelete(DeletePolicy.CASCADE)
-    @OneToOne(fetch = FetchType.LAZY)
+    @Column(name = "TICKET", length = 1000)
+    private String ticket;
+
     @JoinColumn(name = "MODULE_ID")
+    @OnDelete(DeletePolicy.UNLINK)
+    @OnDeleteInverse(DeletePolicy.UNLINK)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Module module;
 
     @Column(name = "IS_USED_IN_REGRESS")
@@ -55,6 +59,14 @@ public class Checklist extends StandardEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PROJECT_ID")
     private Project project;
+
+    public String getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(String ticket) {
+        this.ticket = ticket;
+    }
 
     public Module getModule() {
         return module;
