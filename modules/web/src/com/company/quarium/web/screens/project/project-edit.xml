@@ -8,7 +8,7 @@
                   class="com.company.quarium.entity.project.Project">
             <view extends="_local">
                 <property name="qa" view="edit"/>
-                <property name="configuration" view="configurationProjectRelationship-view"/>
+                <property name="configuration" view="edit"/>
                 <property name="checklist" view="project-checklist-view"/>
                 <property name="createTs"/>
                 <property name="module" view="edit"/>
@@ -28,17 +28,20 @@
                 <form id="form" dataContainer="projectDc">
                     <column width="350px">
                         <textField id="projectNameField" property="projectName"/>
+                        <textField id="currentReleaseField" property="currentRelease"/>
                         <textArea id="descriptionField" property="description" rows="5"/>
                     </column>
                 </form>
                 <vbox margin="true" width="auto">
                     <form id="relationshipsForm">
                         <column>
-                            <groupBox id="qaBox" caption="msg://com.company.quarium.entity/Project.qa">
+                            <groupBox id="qaBox" caption="msg://com.company.quarium.entity/Project.qa"
+                                      collapsable="true">
                                 <table id="qaProjectRelationshipsTable"
                                        dataContainer="qaProjectDc"
-                                       width="400px"
-                                       height="250px">
+                                       width="450px"
+                                       height="250px"
+                                       multiselect="true">
                                     <actions>
                                         <action id="addQa" type="add"/>
                                         <action id="removeQa" type="remove"/>
@@ -54,34 +57,14 @@
                             </groupBox>
                         </column>
                         <column>
-                            <groupBox id="configurationBox"
-                                      caption="msg://com.company.quarium.entity/Project.configurationList">
-                                <table id="configurationProjectRelationshipsTable"
-                                       dataContainer="configurationProjectDc"
-                                       width="400px"
-                                       height="250px">
-                                    <actions>
-                                        <action id="addConfiguration" type="add"/>
-                                        <action id="removeConfiguration" type="remove"/>
-                                    </actions>
-                                    <columns>
-                                        <column id="configuration"
-                                                caption="msg://com.company.quarium.entity/Project.configuration"/>
-                                    </columns>
-                                    <buttonsPanel>
-                                        <button action="configurationProjectRelationshipsTable.addConfiguration"/>
-                                        <button action="configurationProjectRelationshipsTable.removeConfiguration"/>
-                                    </buttonsPanel>
-                                </table>
-                            </groupBox>
-                        </column>
-                        <column>
                             <groupBox id="moduleBox"
-                                      caption="msg://com.company.quarium.entity/Project.modulesList">
+                                      caption="msg://com.company.quarium.entity/Project.modulesList"
+                                      collapsable="true">
                                 <table id="modulesTable"
                                        dataContainer="modulesDc"
-                                       width="400px"
-                                       height="250px">
+                                       width="450px"
+                                       height="250px"
+                                       multiselect="true">
                                     <actions>
                                         <action id="createModule" type="create">
                                             <properties>
@@ -105,6 +88,30 @@
                                         <button action="modulesTable.createModule"/>
                                         <button action="modulesTable.editModule"/>
                                         <button action="modulesTable.removeModule"/>
+                                    </buttonsPanel>
+                                </table>
+                            </groupBox>
+                        </column>
+                        <column>
+                            <groupBox id="configurationBox"
+                                      caption="msg://com.company.quarium.entity/Project.configurationList"
+                                      collapsable="true">
+                                <table id="configurationProjectRelationshipsTable"
+                                       dataContainer="configurationProjectDc"
+                                       width="450px"
+                                       height="250px"
+                                       multiselect="true">
+                                    <actions>
+                                        <action id="addConfiguration" type="add"/>
+                                        <action id="removeConfiguration" type="remove"/>
+                                    </actions>
+                                    <columns>
+                                        <column id="configuration"
+                                                caption="msg://com.company.quarium.entity/Project.configuration"/>
+                                    </columns>
+                                    <buttonsPanel>
+                                        <button action="configurationProjectRelationshipsTable.addConfiguration"/>
+                                        <button action="configurationProjectRelationshipsTable.removeConfiguration"/>
                                     </buttonsPanel>
                                 </table>
                             </groupBox>

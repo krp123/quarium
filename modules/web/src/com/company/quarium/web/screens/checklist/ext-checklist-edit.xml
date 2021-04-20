@@ -51,8 +51,10 @@
                            caption="msg://checklistEdit.name"/>
                 <lookupField id="stateField" dataContainer="checklistDc" optionsContainer="statesDc"
                              property="state" caption="msg://checklistEdit.State"/>
-                <app:linkField id="ticket" dataContainer="checklistDc" property="ticket"
-                               maxTextLength="30"/>
+                <hbox spacing="true" align="BOTTOM_LEFT" caption="msg://checklistEdit.ticket">
+                    <app:linkField id="ticket" dataContainer="checklistDc" property="ticket"
+                                   maxTextLength="30"/>
+                </hbox>
             </column>
             <column>
                 <lookupField id="assignedQaField" dataContainer="checklistDc"

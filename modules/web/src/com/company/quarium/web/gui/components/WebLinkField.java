@@ -5,6 +5,7 @@ import com.haulmont.chile.core.datatypes.Datatype;
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.components.*;
+import com.haulmont.cuba.gui.components.data.ValueSource;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 import com.haulmont.cuba.web.gui.components.WebAbstractField;
 import com.haulmont.cuba.web.gui.components.WebComponentsHelper;
@@ -104,22 +105,31 @@ public class WebLinkField extends WebAbstractField implements LinkField {
 //    public Datasource getDatasource() {
 //        return inputField.getDatasource();
 //    }
-
+//
 //    @Override
 //    public MetaProperty getMetaProperty() {
 //        return inputField.getMetaProperty();
 //    }
-
+////
 //    @Override
 //    public MetaPropertyPath getMetaPropertyPath() {
 //        return inputField.getMetaPropertyPath();
 //    }
-
+//
 //    @Override
 //    public void setDatasource(Datasource datasource, String property) {
 //        inputField.setDatasource(datasource, property);
-//        inputField.set
 //    }
+
+    @Override
+    public ValueSource getValueSource() {
+        return inputField.getValueSource();
+    }
+
+    @Override
+    public void setValueSource(ValueSource valueSource) {
+        inputField.setValueSource(valueSource);
+    }
 
     @Override
     public void setValue(Object value) {
@@ -256,8 +266,9 @@ public class WebLinkField extends WebAbstractField implements LinkField {
         });
         hBox.add(link);
         hBox.add(linkButton);
-        linkButton.setAlignment(Alignment.TOP_RIGHT);
+        linkButton.setAlignment(Alignment.BOTTOM_RIGHT);
         hBox.expand(link);
+        hBox.setAlignment(Alignment.MIDDLE_CENTER);
     }
 
     @Override

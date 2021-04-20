@@ -30,10 +30,13 @@ public class Project extends StandardEntity {
     private List<Module> module;
 
     @Composition
-    @OnDeleteInverse(DeletePolicy.CASCADE)
+    @OnDeleteInverse(DeletePolicy.UNLINK)
     @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "project")
     private List<Checklist> checklist;
+
+    @Column(name = "CURRENT_RELEASE")
+    private String currentRelease;
 
     @Composition
     @OnDelete(DeletePolicy.CASCADE)
@@ -48,6 +51,14 @@ public class Project extends StandardEntity {
     @Lob
     @Column(name = "DESCRIPTION")
     private String description;
+
+    public String getCurrentRelease() {
+        return currentRelease;
+    }
+
+    public void setCurrentRelease(String currentRelease) {
+        this.currentRelease = currentRelease;
+    }
 
     public List<Module> getModule() {
         return module;

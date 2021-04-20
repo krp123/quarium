@@ -5,10 +5,11 @@ import com.haulmont.cuba.gui.meta.*;
 
 @StudioComponent(category = "Components",
         xmlns = "http://schemas.company.com/demo/0.1/ui-component.xsd",
-        xmlnsAlias = "app")
+        xmlnsAlias = "app",
+        canvasBehaviour = CanvasBehaviour.INPUT_FIELD)
 @StudioProperties(properties = {
         @StudioProperty(name = "dataContainer", type = PropertyType.DATACONTAINER_REF),
-        @StudioProperty(name = "property", type = PropertyType.PROPERTY_PATH_REF, options = "int"),
+        @StudioProperty(name = "property", type = PropertyType.PROPERTY_PATH_REF, options = "string"),
 }, groups = @PropertiesGroup(
         properties = {"dataContainer", "property"}, constraint = PropertiesConstraint.ALL_OR_NOTHING
 ))
@@ -18,7 +19,6 @@ public interface LinkField extends TextField {
 
     @StudioProperty(type = PropertyType.INTEGER)
     void setMaxTextLength(int maxLength);
-
     int getMaxTextLength();
 
     void focusLinkField();

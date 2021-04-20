@@ -10,6 +10,7 @@ create table QUARIUM_PROJECT (
     DELETED_BY varchar(50),
     --
     PROJECT_NAME varchar(255) not null,
+    CURRENT_RELEASE varchar(255),
     DESCRIPTION text,
     --
     primary key (ID)

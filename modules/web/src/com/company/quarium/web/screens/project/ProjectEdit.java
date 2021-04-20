@@ -11,7 +11,6 @@ import com.company.quarium.web.screens.checklist.ExtChecklistEdit;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
-import com.haulmont.cuba.gui.actions.list.EditAction;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.CollectionContainer;
 import com.haulmont.cuba.gui.model.DataContext;
@@ -19,7 +18,6 @@ import com.haulmont.cuba.gui.model.InstanceContainer;
 import com.haulmont.cuba.gui.screen.*;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.util.List;
 
 @UiController("quarium_Project.edit")
@@ -51,9 +49,6 @@ public class ProjectEdit extends StandardEditor<Project> {
 
     @Inject
     private CopyChecklistService copyChecklistService;
-
-    @Named("checklistsTable.edit")
-    private EditAction<Checklist> checklistsTableEdit;
 
     @Inject
     private Table<Checklist> checklistsTable;

@@ -25,7 +25,8 @@
         </filter>
         <groupTable id="qasTable"
                     width="100%"
-                    dataContainer="qasDc">
+                    dataContainer="qasDc"
+                    multiselect="true">
             <actions>
                 <action id="create" type="create"/>
                 <action id="edit" type="edit"/>

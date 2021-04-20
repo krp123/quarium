@@ -25,7 +25,8 @@
         </filter>
         <groupTable id="configurationsTable"
                     width="100%"
-                    dataContainer="configurationsDc">
+                    dataContainer="configurationsDc"
+                    multiselect="true">
             <actions>
                 <action id="create" type="create"/>
                 <action id="edit" type="edit"/>

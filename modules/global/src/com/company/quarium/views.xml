@@ -50,8 +50,8 @@
         <property name="module" view="_local"/>
     </view>
     <view entity="quarium_ConfigurationProjectRelationship" name="edit">
-        <property name="project"/>
         <property name="configuration"/>
+        <property name="project"/>
     </view>
     <view entity="quarium_ConfigurationProjectRelationship" name="configurationProjectRelationship-view" extends="edit">
         <property name="configuration" view="_minimal">
