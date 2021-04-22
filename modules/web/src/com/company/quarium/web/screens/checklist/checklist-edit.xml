@@ -31,6 +31,7 @@
                 <form id="form" dataContainer="checklistDc">
                     <column width="350px">
                         <textField id="nameField" property="name"/>
+                        <textArea id="commentField" property="comment"/>
                     </column>
                 </form>
                 <groupBox id="testCaseBox" caption="msg://checklistEdit.testCaseBox">

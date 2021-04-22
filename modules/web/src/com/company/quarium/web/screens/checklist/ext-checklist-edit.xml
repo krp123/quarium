@@ -45,8 +45,8 @@
     <dialogMode height="600"
                 width="800"/>
     <layout expand="editActions" spacing="true" margin="true">
-        <form id="form">
-            <column>
+        <form id="form" width="100%">
+            <column flex="2">
                 <textField id="nameField" dataContainer="checklistDc" property="name"
                            caption="msg://checklistEdit.name"/>
                 <lookupField id="stateField" dataContainer="checklistDc" optionsContainer="statesDc"
@@ -55,14 +55,25 @@
                     <app:linkField id="ticket" dataContainer="checklistDc" property="ticket"
                                    maxTextLength="30"/>
                 </hbox>
+                <timeField id="estimationField" dataContainer="checklistDc"
+                           property="estimation" caption="msg://checklistEdit.estimation"
+                           width="AUTO"/>
             </column>
-            <column>
+            <column flex="2">
                 <lookupField id="assignedQaField" dataContainer="checklistDc"
                              property="assignedQa" caption="msg://checklistEdit.QA"/>
                 <lookupField id="moduleField" dataContainer="checklistDc"
                              property="module" caption="msg://checklistEdit.module"/>
                 <checkBox id="isUsedInRegress" dataContainer="checklistDc" property="isUsedInRegress"
                           caption="msg://checklistEdit.isUsedInRegress"/>
+                <timeField id="casesEstimationField" dataContainer="checklistDc"
+                           property="casesEstimation" caption="msg://checklistEdit.casesEstimation"
+                           editable="false" width="AUTO"/>
+            </column>
+            <column flex="3">
+                <textArea id="commentField" dataContainer="checklistDc"
+                          property="comment" caption="msg://checklistEdit.comment"
+                          width="100%" rowspan="4"/>
             </column>
         </form>
         <groupBox id="testCaseBox" caption="msg://checklistEdit.testCaseBox">
@@ -98,12 +109,13 @@
                         <form id="caseForm" dataContainer="testCaseDc">
                             <column width="350px">
                                 <textField id="caseNameField" property="name"/>
-                                <textField id="stepField" property="step"/>
+                                <textArea id="stepField" property="step"/>
                                 <textArea id="expectedResultField" property="expectedResult" rows="5"/>
                             </column>
                             <column width="150px">
                                 <lookupField id="priorityField" optionsContainer="prioritiesDc" property="priority"/>
                                 <lookupField id="caseStateField" optionsContainer="statesDc" property="state"/>
+                                <timeField id="caseEstimationField" property="estimation" width="AUTO"/>
                             </column>
                         </form>
                     </scrollBox>

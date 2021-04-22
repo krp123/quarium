@@ -12,6 +12,7 @@ import com.haulmont.cuba.core.global.DeletePolicy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Table(name = "QUARIUM_TEST_CASE")
 @Entity(name = "quarium_TestCase")
@@ -22,6 +23,10 @@ public class TestCase extends StandardEntity {
     @NotNull
     @Column(name = "NAME", nullable = false)
     private String name;
+
+    @Temporal(TemporalType.TIME)
+    @Column(name = "ESTIMATION")
+    private Date estimation;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {})
     @OnDeleteInverse(DeletePolicy.UNLINK)
@@ -49,6 +54,14 @@ public class TestCase extends StandardEntity {
     @JoinColumn(name = "CHECKLIST_ID")
     @OnDeleteInverse(DeletePolicy.CASCADE)
     private Checklist checklist;
+
+    public Date getEstimation() {
+        return estimation;
+    }
+
+    public void setEstimation(Date estimation) {
+        this.estimation = estimation;
+    }
 
     public Statement getState() {
         return state;

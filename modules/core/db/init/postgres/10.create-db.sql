@@ -94,6 +94,9 @@ create table QUARIUM_CHECKLIST (
     DELETED_BY varchar(50),
     --
     NAME varchar(255) not null,
+    COMMENT_ varchar(1000),
+    ESTIMATION time,
+    CASES_ESTIMATION time,
     TICKET varchar(1000),
     MODULE_ID uuid,
     IS_USED_IN_REGRESS boolean,
@@ -116,6 +119,7 @@ create table QUARIUM_TEST_CASE (
     DELETED_BY varchar(50),
     --
     NAME varchar(255) not null,
+    ESTIMATION time,
     PRIORITY_ID uuid,
     STATE_ID uuid,
     STEP varchar(255),
