@@ -79,9 +79,9 @@
                             <action id="remove" type="remove"/>
                         </actions>
                         <columns>
-                            <column id="name"/>
-                            <column id="step"/>
-                            <column id="expectedResult"/>
+                            <column id="name" maxTextLength="20" expandRatio="100"/>
+                            <column id="step" maxTextLength="20" expandRatio="100"/>
+                            <column id="expectedResult" maxTextLength="20" expandRatio="100"/>
                         </columns>
                         <rowsCount/>
                         <buttonsPanel id="buttonsPanel"

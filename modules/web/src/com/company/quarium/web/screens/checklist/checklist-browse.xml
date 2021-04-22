@@ -25,7 +25,8 @@
         </filter>
         <groupTable id="checklistsTable"
                     width="100%"
-                    dataContainer="checklistsDc">
+                    dataContainer="checklistsDc"
+                    multiselect="true">
             <actions>
                 <action id="create" type="create"/>
                 <action id="edit" type="edit"/>
