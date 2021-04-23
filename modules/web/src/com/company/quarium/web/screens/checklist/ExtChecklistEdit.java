@@ -26,6 +26,7 @@ import com.haulmont.cuba.security.entity.EntityOp;
 
 import javax.inject.Inject;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @UiController("ext_quarium_Checklist.edit")
@@ -66,6 +67,27 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     @Subscribe
     public void onAfterCommitChanges(AfterCommitChangesEvent event) {
         entitySnapshotService.createSnapshot(checklistDc.getItem(), checklistDc.getView());
+    }
+
+    @Subscribe("getEstimation")
+    protected void onGetEstimationPerformed(Action.ActionPerformedEvent event) {
+        List<TestCase> cases = getEditedEntity().getTestCase();
+        Date generalTime = null;
+        for (TestCase testCase : cases) {
+            if (testCase.getEstimation() != null) {
+                if (generalTime == null) {
+                    generalTime = testCase.getEstimation();
+                } else {
+                    Long caseLong = testCase.getEstimation().getTime();
+                    Long genLong = generalTime.getTime() + caseLong;
+                    generalTime = new Date(genLong);
+                }
+            }
+        }
+        if (generalTime != null) {
+            getEditedEntity().setEstimation(generalTime);
+        }
+        //TODO В поле "timeField" помещается только 24 часа. Сделать 2 текстовых поля "часы" и "минуты" в чеклисте и подсчитывать время в них.
     }
 
     protected ListComponent<TestCase> getTable() {

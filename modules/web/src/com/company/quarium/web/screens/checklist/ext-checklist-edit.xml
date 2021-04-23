@@ -41,36 +41,41 @@
     <actions>
         <action id="save" icon="icons/ok.png" caption="mainMsg://actions.Ok" shortcut="CTRL-ENTER"/>
         <action id="cancel" icon="icons/cancel.png" caption="mainMsg://actions.Cancel" description="Esc"/>
+        <action id="getEstimation"/>
     </actions>
     <dialogMode height="600"
                 width="800"/>
     <layout expand="editActions" spacing="true" margin="true">
         <form id="form" width="100%">
-            <column flex="2">
+            <column flex="1">
                 <textField id="nameField" dataContainer="checklistDc" property="name"
-                           caption="msg://checklistEdit.name"/>
+                           caption="msg://checklistEdit.name" colspan="2"/>
                 <lookupField id="stateField" dataContainer="checklistDc" optionsContainer="statesDc"
-                             property="state" caption="msg://checklistEdit.State"/>
-                <hbox spacing="true" align="BOTTOM_LEFT" caption="msg://checklistEdit.ticket">
+                             property="state" caption="msg://checklistEdit.State" colspan="2"/>
+                <hbox spacing="true" align="BOTTOM_LEFT" caption="msg://checklistEdit.ticket" colspan="2">
                     <app:linkField id="ticket" dataContainer="checklistDc" property="ticket"
                                    maxTextLength="30"/>
                 </hbox>
                 <timeField id="estimationField" dataContainer="checklistDc"
                            property="estimation" caption="msg://checklistEdit.estimation"
-                           width="AUTO"/>
+                           width="AUTO" colspan="1"/>
             </column>
-            <column flex="2">
+            <column flex="0">
+                <button action="getEstimation" id="button" width="AUTO" caption="msg://checklistEdit.getEstimation"
+                        description="Заполнить поле 'Оценка' суммой оценок тест-кейсов"/>
+            </column>
+            <column flex="3">
                 <lookupField id="assignedQaField" dataContainer="checklistDc"
                              property="assignedQa" caption="msg://checklistEdit.QA"/>
                 <lookupField id="moduleField" dataContainer="checklistDc"
                              property="module" caption="msg://checklistEdit.module"/>
                 <checkBox id="isUsedInRegress" dataContainer="checklistDc" property="isUsedInRegress"
                           caption="msg://checklistEdit.isUsedInRegress"/>
-                <timeField id="casesEstimationField" dataContainer="checklistDc"
-                           property="casesEstimation" caption="msg://checklistEdit.casesEstimation"
-                           editable="false" width="AUTO"/>
+                <!--                <timeField id="casesEstimationField" dataContainer="checklistDc"-->
+                <!--                           property="casesEstimation" caption="msg://checklistEdit.casesEstimation"-->
+                <!--                           editable="false" width="AUTO"/>-->
             </column>
-            <column flex="3">
+            <column flex="4">
                 <textArea id="commentField" dataContainer="checklistDc"
                           property="comment" caption="msg://checklistEdit.comment"
                           width="100%" rowspan="4"/>
