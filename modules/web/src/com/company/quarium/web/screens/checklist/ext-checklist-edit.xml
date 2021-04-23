@@ -56,9 +56,19 @@
                     <app:linkField id="ticket" dataContainer="checklistDc" property="ticket"
                                    maxTextLength="30"/>
                 </hbox>
-                <timeField id="estimationField" dataContainer="checklistDc"
-                           property="estimation" caption="msg://checklistEdit.estimation"
-                           width="AUTO" colspan="1"/>
+                <textField id="checklistHours" property="hours" width="AUTO"
+                           datatype="int">
+                    <!--                    <validators>-->
+                    <!--                        <digits integer="3" fraction="0" message="msg://checklistEdit.hoursWarning"/>-->
+                    <!--                    </validators>-->
+                </textField>
+                <textField id="checklistMinutes" property="minutes" width="AUTO"
+                           datatype="int">
+                    <!--                    <validators>-->
+                    <!--                        <max value="59" message="msg://checklistEdit.minutesWarning"/>-->
+                    <!--                        <min value="0" message="msg://checklistEdit.minutesWarning"/>-->
+                    <!--                    </validators>-->
+                </textField>
             </column>
             <column flex="0">
                 <button action="getEstimation" id="button" width="AUTO" caption="msg://checklistEdit.getEstimation"
@@ -118,9 +128,15 @@
                                 <textArea id="expectedResultField" property="expectedResult" rows="5"/>
                             </column>
                             <column width="150px">
+                                <textField id="caseHours" property="hours" datatype="int"/>
+                                <textField id="caseMinutes" property="minutes" datatype="int">
+                                    <!--                                    <validators>-->
+                                    <!--                                        <max value="59" message="msg://checklistEdit.minutesWarning"/>-->
+                                    <!--                                        <min value="0" message="msg://checklistEdit.minutesWarning"/>-->
+                                    <!--                                    </validators>-->
+                                </textField>
                                 <lookupField id="priorityField" optionsContainer="prioritiesDc" property="priority"/>
                                 <lookupField id="caseStateField" optionsContainer="statesDc" property="state"/>
-                                <timeField id="caseEstimationField" property="estimation" width="AUTO"/>
                             </column>
                         </form>
                     </scrollBox>

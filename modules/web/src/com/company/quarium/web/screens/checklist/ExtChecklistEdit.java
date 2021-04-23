@@ -26,7 +26,6 @@ import com.haulmont.cuba.security.entity.EntityOp;
 
 import javax.inject.Inject;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 @UiController("ext_quarium_Checklist.edit")
@@ -71,22 +70,22 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
 
     @Subscribe("getEstimation")
     protected void onGetEstimationPerformed(Action.ActionPerformedEvent event) {
-        List<TestCase> cases = getEditedEntity().getTestCase();
-        Date generalTime = null;
-        for (TestCase testCase : cases) {
-            if (testCase.getEstimation() != null) {
-                if (generalTime == null) {
-                    generalTime = testCase.getEstimation();
-                } else {
-                    Long caseLong = testCase.getEstimation().getTime();
-                    Long genLong = generalTime.getTime() + caseLong;
-                    generalTime = new Date(genLong);
-                }
-            }
-        }
-        if (generalTime != null) {
-            getEditedEntity().setEstimation(generalTime);
-        }
+//        List<TestCase> cases = getEditedEntity().getTestCase();
+//        Date generalTime = null;
+//        for (TestCase testCase : cases) {
+//            if (testCase.getEstimation() != null) {
+//                if (generalTime == null) {
+//                    generalTime = testCase.getEstimation();
+//                } else {
+//                    Long caseLong = testCase.getEstimation().getTime();
+//                    Long genLong = generalTime.getTime() + caseLong;
+//                    generalTime = new Date(genLong);
+//                }
+//            }
+//        }
+//        if (generalTime != null) {
+//            getEditedEntity().setEstimation(generalTime);
+//        }
         //TODO В поле "timeField" помещается только 24 часа. Сделать 2 текстовых поля "часы" и "минуты" в чеклисте и подсчитывать время в них.
     }
 
@@ -262,6 +261,18 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
 
     protected ComponentContainer getActionsPane() {
         return (ComponentContainer) getWindow().getComponentNN("actionsPane");
+    }
+
+    protected ComponentContainer getChecklistHours() {
+        return (ComponentContainer) getWindow().getComponentNN("checklistHours");
+    }
+
+    protected void initHoursTextChangeListener() {
+        TextField hours = (TextField) getChecklistHours();
+        hours.addTextChangeListener(textChangeEvent -> {
+            textChangeEvent.getText().length();
+
+        });//TODO Написать лиснер на проверку числа от 0 до 999
     }
 
     protected Class<TestCase> getEntityClass() {

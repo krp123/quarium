@@ -14,7 +14,6 @@ import com.haulmont.cuba.core.global.DeletePolicy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 import java.util.List;
 
 @Table(name = "QUARIUM_CHECKLIST")
@@ -30,13 +29,11 @@ public class Checklist extends StandardEntity {
     @Column(name = "COMMENT_", length = 1000)
     private String comment;
 
-    @Temporal(TemporalType.TIME)
-    @Column(name = "ESTIMATION")
-    private Date estimation;
+    @Column(name = "HOURS")
+    private Integer hours;
 
-    @Temporal(TemporalType.TIME)
-    @Column(name = "CASES_ESTIMATION")
-    private Date casesEstimation;
+    @Column(name = "MINUTES")
+    private Integer minutes;
 
     @Column(name = "TICKET", length = 1000)
     private String ticket;
@@ -72,20 +69,20 @@ public class Checklist extends StandardEntity {
     @JoinColumn(name = "PROJECT_ID")
     private Project project;
 
-    public Date getCasesEstimation() {
-        return casesEstimation;
+    public Integer getMinutes() {
+        return minutes;
     }
 
-    public void setCasesEstimation(Date casesEstimation) {
-        this.casesEstimation = casesEstimation;
+    public void setMinutes(Integer minutes) {
+        this.minutes = minutes;
     }
 
-    public Date getEstimation() {
-        return estimation;
+    public Integer getHours() {
+        return hours;
     }
 
-    public void setEstimation(Date estimation) {
-        this.estimation = estimation;
+    public void setHours(Integer hours) {
+        this.hours = hours;
     }
 
     public String getComment() {
