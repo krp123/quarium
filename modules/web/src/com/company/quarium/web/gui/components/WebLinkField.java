@@ -101,26 +101,6 @@ public class WebLinkField extends WebAbstractField implements LinkField {
         return inputField.isValid();
     }
 
-//    @Override
-//    public Datasource getDatasource() {
-//        return inputField.getDatasource();
-//    }
-//
-//    @Override
-//    public MetaProperty getMetaProperty() {
-//        return inputField.getMetaProperty();
-//    }
-////
-//    @Override
-//    public MetaPropertyPath getMetaPropertyPath() {
-//        return inputField.getMetaPropertyPath();
-//    }
-//
-//    @Override
-//    public void setDatasource(Datasource datasource, String property) {
-//        inputField.setDatasource(datasource, property);
-//    }
-
     @Override
     public ValueSource getValueSource() {
         return inputField.getValueSource();
@@ -246,6 +226,7 @@ public class WebLinkField extends WebAbstractField implements LinkField {
 
     private void setVisibleLinkField(boolean visible) {
         inputField.setVisible(visible);
+        inputField.setWidthFull();
         link.setVisible(!visible);
         linkButton.setVisible(!visible);
     }
@@ -264,6 +245,7 @@ public class WebLinkField extends WebAbstractField implements LinkField {
                 focusLinkField();
             }
         });
+        hBox.setWidthFull();
         hBox.add(link);
         hBox.add(linkButton);
         linkButton.setAlignment(Alignment.BOTTOM_RIGHT);

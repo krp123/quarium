@@ -46,6 +46,8 @@
             <property name="state" view="_minimal"/>
             <property name="step"/>
             <property name="expectedResult"/>
+            <property name="hours"/>
+            <property name="minutes"/>
         </property>
         <property name="module" view="_local"/>
     </view>

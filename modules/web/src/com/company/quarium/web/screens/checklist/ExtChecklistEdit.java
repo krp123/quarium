@@ -58,6 +58,9 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     @Inject
     private LookupField<Module> moduleField;
 
+    @Inject
+    private Notifications notifications;
+
     @Subscribe
     protected void onInit(InitEvent event) {
         initMasterDetailScreen(event);
@@ -104,7 +107,6 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         initBrowseItemChangeListener();
         initBrowseCreateAction();
         initBrowseEditAction();
-
         disableEditControls();
     }
 
@@ -263,16 +265,8 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         return (ComponentContainer) getWindow().getComponentNN("actionsPane");
     }
 
-    protected ComponentContainer getChecklistHours() {
-        return (ComponentContainer) getWindow().getComponentNN("checklistHours");
-    }
-
-    protected void initHoursTextChangeListener() {
-        TextField hours = (TextField) getChecklistHours();
-        hours.addTextChangeListener(textChangeEvent -> {
-            textChangeEvent.getText().length();
-
-        });//TODO Написать лиснер на проверку числа от 0 до 999
+    protected TextField getChecklistHours() {
+        return (TextField) getWindow().getComponentNN("checklistHours");
     }
 
     protected Class<TestCase> getEntityClass() {

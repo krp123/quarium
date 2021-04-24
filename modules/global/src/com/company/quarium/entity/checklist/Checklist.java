@@ -13,6 +13,8 @@ import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
 import com.haulmont.cuba.core.global.DeletePolicy;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -30,9 +32,13 @@ public class Checklist extends StandardEntity {
     private String comment;
 
     @Column(name = "HOURS")
+    @Min(message = "{msg://quarium_Checklist.hours.validation.Min}", value = 0)
+    @Max(message = "{msg://quarium_Checklist.hours.validation.Max}", value = 999)
     private Integer hours;
 
     @Column(name = "MINUTES")
+    @Min(message = "{msg://quarium_Checklist.minutes.validation.Min}", value = 0)
+    @Max(message = "{msg://quarium_Checklist.minutes.validation.Max}", value = 59)
     private Integer minutes;
 
     @Column(name = "TICKET", length = 1000)

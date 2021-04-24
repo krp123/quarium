@@ -45,52 +45,62 @@
     </actions>
     <dialogMode height="600"
                 width="800"/>
+
+
     <layout expand="editActions" spacing="true" margin="true">
-        <form id="form" width="100%">
-            <column flex="1">
-                <textField id="nameField" dataContainer="checklistDc" property="name"
-                           caption="msg://checklistEdit.name" colspan="2"/>
-                <lookupField id="stateField" dataContainer="checklistDc" optionsContainer="statesDc"
-                             property="state" caption="msg://checklistEdit.State" colspan="2"/>
-                <hbox spacing="true" align="BOTTOM_LEFT" caption="msg://checklistEdit.ticket" colspan="2">
-                    <app:linkField id="ticket" dataContainer="checklistDc" property="ticket"
-                                   maxTextLength="30"/>
-                </hbox>
-                <textField id="checklistHours" property="hours" width="AUTO"
-                           datatype="int">
-                    <!--                    <validators>-->
-                    <!--                        <digits integer="3" fraction="0" message="msg://checklistEdit.hoursWarning"/>-->
-                    <!--                    </validators>-->
-                </textField>
-                <textField id="checklistMinutes" property="minutes" width="AUTO"
-                           datatype="int">
-                    <!--                    <validators>-->
-                    <!--                        <max value="59" message="msg://checklistEdit.minutesWarning"/>-->
-                    <!--                        <min value="0" message="msg://checklistEdit.minutesWarning"/>-->
-                    <!--                    </validators>-->
-                </textField>
-            </column>
-            <column flex="0">
-                <button action="getEstimation" id="button" width="AUTO" caption="msg://checklistEdit.getEstimation"
-                        description="Заполнить поле 'Оценка' суммой оценок тест-кейсов"/>
-            </column>
-            <column flex="3">
-                <lookupField id="assignedQaField" dataContainer="checklistDc"
-                             property="assignedQa" caption="msg://checklistEdit.QA"/>
-                <lookupField id="moduleField" dataContainer="checklistDc"
-                             property="module" caption="msg://checklistEdit.module"/>
-                <checkBox id="isUsedInRegress" dataContainer="checklistDc" property="isUsedInRegress"
-                          caption="msg://checklistEdit.isUsedInRegress"/>
-                <!--                <timeField id="casesEstimationField" dataContainer="checklistDc"-->
-                <!--                           property="casesEstimation" caption="msg://checklistEdit.casesEstimation"-->
-                <!--                           editable="false" width="AUTO"/>-->
-            </column>
-            <column flex="4">
-                <textArea id="commentField" dataContainer="checklistDc"
-                          property="comment" caption="msg://checklistEdit.comment"
-                          width="100%" rowspan="4"/>
-            </column>
-        </form>
+        <grid spacing="true" width="100%">
+            <columns>
+                <column flex="4"/>
+                <column flex="2"/>
+                <column flex="7"/>
+            </columns>
+            <rows>
+                <row>
+                    <textField id="nameField" dataContainer="checklistDc" property="name"
+                               caption="msg://checklistEdit.name"
+                               width="90%"/>
+                    <lookupField id="assignedQaField" dataContainer="checklistDc"
+                                 property="assignedQa" caption="msg://checklistEdit.QA"
+                                 width="90%"/>
+                    <textArea id="commentField" dataContainer="checklistDc"
+                              property="comment" caption="msg://checklistEdit.comment"
+                              width="80%" rowspan="4" rows="8"/>
+                </row>
+                <row>
+                    <lookupField id="stateField" dataContainer="checklistDc" optionsContainer="statesDc"
+                                 property="state" caption="msg://checklistEdit.State"
+                                 width="90%"/>
+                    <lookupField id="moduleField" dataContainer="checklistDc"
+                                 property="module" caption="msg://checklistEdit.module"
+                                 width="90%"/>
+                </row>
+                <row>
+                    <hbox spacing="true" caption="msg://checklistEdit.ticket" width="90%">
+                        <app:linkField id="ticket" dataContainer="checklistDc" property="ticket"
+                                       maxTextLength="40"/>
+                    </hbox>
+                    <checkBox id="isUsedInRegress" dataContainer="checklistDc" property="isUsedInRegress"
+                              caption="msg://checklistEdit.isUsedInRegress"/>
+                </row>
+                <row>
+                    <hbox caption="msg://checklistEdit.estimation" width="90%" spacing="true"
+                          expand="checklistMinLabel">
+                        <textField id="checklistHours" property="hours" width="50"
+                                   dataContainer="checklistDc"/>
+                        <label value="msg://checklistEdit.hoursLabel" align="BOTTOM_LEFT"
+                               width="20"/>
+                        <textField id="checklistMinutes" property="minutes" width="50"
+                                   dataContainer="checklistDc"/>
+                        <label id="checklistMinLabel" value="msg://checklistEdit.minutesLabel"
+                               align="BOTTOM_LEFT"/>
+                        <button action="getEstimation" id="button"
+                                width="AUTO" caption="msg://checklistEdit.getEstimation"
+                                description="Заполнить поле 'Оценка' суммой оценок тест-кейсов"
+                                align="MIDDLE_RIGHT"/>
+                    </hbox>
+                </row>
+            </rows>
+        </grid>
         <groupBox id="testCaseBox" caption="msg://checklistEdit.testCaseBox">
             <split id="split" height="400" orientation="horizontal" reversePosition="true" width="100%">
                 <vbox id="lookupBox" expand="table" height="100%" margin="false,true,false,false" spacing="true">
@@ -129,12 +139,7 @@
                             </column>
                             <column width="150px">
                                 <textField id="caseHours" property="hours" datatype="int"/>
-                                <textField id="caseMinutes" property="minutes" datatype="int">
-                                    <!--                                    <validators>-->
-                                    <!--                                        <max value="59" message="msg://checklistEdit.minutesWarning"/>-->
-                                    <!--                                        <min value="0" message="msg://checklistEdit.minutesWarning"/>-->
-                                    <!--                                    </validators>-->
-                                </textField>
+                                <textField id="caseMinutes" property="minutes" datatype="int"/>
                                 <lookupField id="priorityField" optionsContainer="prioritiesDc" property="priority"/>
                                 <lookupField id="caseStateField" optionsContainer="statesDc" property="state"/>
                             </column>
