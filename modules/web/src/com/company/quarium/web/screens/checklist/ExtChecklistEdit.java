@@ -73,31 +73,38 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
 
     @Subscribe("getEstimation")
     protected void onGetEstimationPerformed(Action.ActionPerformedEvent event) {
-//        List<TestCase> cases = getEditedEntity().getTestCase();
-//        Date generalTime = null;
-//        for (TestCase testCase : cases) {
-//            if (testCase.getEstimation() != null) {
-//                if (generalTime == null) {
-//                    generalTime = testCase.getEstimation();
-//                } else {
-//                    Long caseLong = testCase.getEstimation().getTime();
-//                    Long genLong = generalTime.getTime() + caseLong;
-//                    generalTime = new Date(genLong);
-//                }
-//            }
-//        }
-//        if (generalTime != null) {
-//            getEditedEntity().setEstimation(generalTime);
-//        }
-        //TODO В поле "timeField" помещается только 24 часа. Сделать 2 текстовых поля "часы" и "минуты" в чеклисте и подсчитывать время в них.
+        List<TestCase> cases = getEditedEntity().getTestCase();
+        int generalTimeMinutes = 0;
+        int checklistHours = 0;
+        int checklistMinutes = 0;
+
+        if (cases != null) {
+            for (TestCase testCase : cases) {
+                if (testCase.getHours() != null) {
+                    generalTimeMinutes += testCase.getHours() * 60;
+                }
+
+                if (testCase.getMinutes() != null) {
+                    generalTimeMinutes += testCase.getMinutes();
+                }
+            }
+        }
+
+        if (generalTimeMinutes > 0) {
+            checklistHours = generalTimeMinutes / 60;
+            checklistMinutes = generalTimeMinutes % 60;
+        }
+
+        getEditedEntity().setHours(checklistHours);
+        getEditedEntity().setMinutes(checklistMinutes);
     }
 
     protected ListComponent<TestCase> getTable() {
         return (ListComponent) table;
     }
 
-    protected Form getForm() {
-        return (Form) getWindow().getComponentNN("form");
+    protected GridLayout getGrid() {
+        return (GridLayout) getWindow().getComponentNN("caseForm");
     }
 
     protected void initMasterDetailScreen(@SuppressWarnings("unused") InitEvent event) {
@@ -220,7 +227,7 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     }
 
     protected void refreshOptionsForLookupFields() {
-        for (Component component : getForm().getOwnComponents()) {
+        for (Component component : getGrid().getOwnComponents()) {
             if (component instanceof LookupField) {
                 Options options = ((LookupField) component).getOptions();
                 if (options instanceof ContainerOptions) {
@@ -240,7 +247,7 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         this.editing = true;
         this.creating = creating;
         initEditComponents(true);
-        getForm().focusFirstComponent();
+        getGrid().focusFirstComponent();
     }
 
     protected void initEditComponents(boolean enabled) {
