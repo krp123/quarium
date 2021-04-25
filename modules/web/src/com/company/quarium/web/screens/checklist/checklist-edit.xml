@@ -15,6 +15,15 @@
 
         <instance id="testCaseDc"
                   class="com.company.quarium.entity.checklist.TestCase">
+            <view extends="_local">
+                <property name="caseStep" view="_local"/>
+            </view>
+            <loader/>
+            <collection id="stepsCollection" property="caseStep"/>
+        </instance>
+
+        <instance id="stepDc"
+                  class="com.company.quarium.entity.checklist.Step">
             <view extends="_local"/>
             <loader/>
         </instance>
@@ -68,7 +77,40 @@
                                 <form id="caseForm" dataContainer="testCaseDc">
                                     <column width="350px">
                                         <textField id="caseNameField" property="name"/>
-                                        <textArea id="stepField" property="step"/>
+                                        <table id="stepsTable"
+                                               dataContainer="stepsCollection"
+                                               width="AUTO"
+                                               height="250px"
+                                               multiselect="true"
+                                               columnHeaderVisible="false"
+                                               caption="msg://checklistEdit.steps"
+                                               multiLineCells="true"
+                                               editable="true">
+                                            <actions>
+                                                <action id="createStep" type="create">
+                                                    <!--                                                    <properties>-->
+                                                    <!--                                                        <property name="screenClass"-->
+                                                    <!--                                                                  value="com.company.quarium.web.screens.step.StepEdit"/>-->
+                                                    <!--                                                    </properties>-->
+                                                </action>
+                                                <action id="editStep" type="edit">
+                                                    <properties>
+                                                        <property name="screenClass"
+                                                                  value="com.company.quarium.web.screens.step.StepEdit"/>
+                                                    </properties>
+                                                </action>
+                                                <action id="removeStep" type="remove"/>
+                                            </actions>
+                                            <columns>
+                                                <column id="step" width="350"
+                                                        editable="true"/>
+                                            </columns>
+                                            <buttonsPanel>
+                                                <button action="stepsTable.createStep" caption="" icon="CREATE_ACTION"/>
+                                                <button action="stepsTable.editStep" caption="" icon="EDIT_ACTION"/>
+                                                <button action="stepsTable.removeStep" caption="" icon="REMOVE_ACTION"/>
+                                            </buttonsPanel>
+                                        </table>
                                         <textArea id="expectedResultField" property="expectedResult" rows="5"/>
                                     </column>
                                 </form>

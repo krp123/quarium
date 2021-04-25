@@ -180,3 +180,20 @@ create table QUARIUM_MODULE (
     primary key (ID)
 )^
 -- end QUARIUM_MODULE
+-- begin QUARIUM_STEP
+create table QUARIUM_STEP (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    STEP varchar(1000),
+    TEST_CASE_ID uuid,
+    --
+    primary key (ID)
+)^
+-- end QUARIUM_STEP

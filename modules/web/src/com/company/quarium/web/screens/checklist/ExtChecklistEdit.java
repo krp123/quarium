@@ -1,6 +1,7 @@
 package com.company.quarium.web.screens.checklist;
 
 import com.company.quarium.entity.checklist.Checklist;
+import com.company.quarium.entity.checklist.Step;
 import com.company.quarium.entity.checklist.TestCase;
 import com.company.quarium.entity.project.Module;
 import com.company.quarium.entity.project.QaProjectRelationship;
@@ -45,6 +46,9 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
 
     @Inject
     private GroupTable<TestCase> table;
+
+    @Inject
+    private GroupTable<Step> stepsTable;
 
     @Inject
     private InstanceContainer<Checklist> checklistDc;
@@ -101,6 +105,10 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
 
     protected ListComponent<TestCase> getTable() {
         return (ListComponent) table;
+    }
+
+    protected ListComponent<Step> getStepsTable() {
+        return stepsTable;
     }
 
     protected GridLayout getGrid() {
@@ -187,6 +195,7 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
             }
         });
     }
+
 
     protected void initBrowseCreateAction() {
         ListComponent<TestCase> table = getTable();

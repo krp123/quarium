@@ -2,6 +2,7 @@ package com.company.quarium.entity.checklist;
 
 import com.company.quarium.entity.references.Priority;
 import com.company.quarium.entity.references.Statement;
+import com.haulmont.chile.core.annotations.Composition;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.cuba.core.entity.annotation.Lookup;
@@ -14,6 +15,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Table(name = "QUARIUM_TEST_CASE")
 @Entity(name = "quarium_TestCase")
@@ -24,6 +26,12 @@ public class TestCase extends StandardEntity {
     @NotNull
     @Column(name = "NAME", nullable = false)
     private String name;
+
+    @Composition
+    @OnDelete(DeletePolicy.CASCADE)
+    @OneToMany(mappedBy = "testCase")
+    @OrderBy("createTs")
+    private List<Step> caseStep;
 
     @Column(name = "HOURS")
     @Min(message = "{msg://quarium_TestCase.hours.validation.Min}", value = 0)
@@ -61,6 +69,14 @@ public class TestCase extends StandardEntity {
     @JoinColumn(name = "CHECKLIST_ID")
     @OnDeleteInverse(DeletePolicy.CASCADE)
     private Checklist checklist;
+
+    public List<Step> getCaseStep() {
+        return caseStep;
+    }
+
+    public void setCaseStep(List<Step> caseStep) {
+        this.caseStep = caseStep;
+    }
 
     public Integer getMinutes() {
         return minutes;

@@ -1,6 +1,7 @@
 package com.company.quarium.web.screens.checklist;
 
 import com.company.quarium.entity.checklist.Checklist;
+import com.company.quarium.entity.checklist.Step;
 import com.company.quarium.entity.checklist.TestCase;
 import com.haulmont.cuba.core.app.EntitySnapshotService;
 import com.haulmont.cuba.core.app.LockService;
@@ -42,7 +43,19 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
     private InstanceContainer<TestCase> testCaseDc;
 
     @Inject
+    private InstanceContainer<Step> stepDc;
+
+    @Inject
+    private CollectionContainer<Step> stepsCollection;
+
+//    @Inject
+//    private CollectionLoader<Step> stepsCollectionLoader;
+
+    @Inject
     private GroupTable<TestCase> table;
+
+    @Inject
+    private Table<Step> stepsTable;
 
     @Inject
     private InstanceContainer<Checklist> checklistDc;
@@ -59,6 +72,9 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
     @Subscribe
     protected void onInit(InitEvent event) {
         initMasterDetailScreen(event);
+//        CustomCollectionContainerSorter sorter = new CustomCollectionContainerSorter(stepsCollection,
+//                stepsCollectionLoader);
+//        stepsCollection.setSorter(sorter);
     }
 
     @Subscribe
@@ -77,6 +93,10 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
         return (ListComponent) table;
     }
 
+    protected ListComponent<Step> getStepsTable() {
+        return (ListComponent) stepsTable;
+    }
+
     protected Form getForm() {
         return (Form) getWindow().getComponentNN("form");
     }
@@ -88,7 +108,7 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
         initBrowseItemChangeListener();
         initBrowseCreateAction();
         initBrowseEditAction();
-
+        initStepCreateAction();
         disableEditControls();
     }
 
@@ -155,11 +175,29 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
         return (InstanceLoader<TestCase>) loader;
     }
 
+    protected InstanceLoader<Step> getStepEditLoader() {
+        DataLoader loader = ((HasLoader) stepDc).getLoader();
+        if (loader == null) {
+            throw new IllegalStateException("Cannot find loader of editing container");
+        }
+        return (InstanceLoader<Step>) loader;
+    }
+
     protected void initBrowseItemChangeListener() {
         getBrowseContainer().addItemChangeListener(e -> {
             if (!editing) {
                 testCaseDc.setItem(e.getItem());
             }
+        });
+    }
+
+    protected void initStepCreateAction() {
+        ListComponent<Step> table = getStepsTable();
+        CreateAction createAction = (CreateAction) table.getActionNN("createStep");
+        createAction.withHandler(actionPerformedEvent -> {
+            Step entity = getBeanLocator().get(Metadata.class).create(Step.class);
+            entity.setTestCase(testCaseDc.getItem());
+            stepsCollection.getMutableItems().add(entity);
         });
     }
 
