@@ -30,7 +30,7 @@ public class TestCase extends StandardEntity {
     @Composition
     @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "testCase")
-    @OrderBy("createTs")
+    @OrderBy("creationDate")
     private List<Step> caseStep;
 
     @Column(name = "HOURS")

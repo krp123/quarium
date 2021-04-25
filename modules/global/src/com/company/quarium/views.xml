@@ -26,7 +26,11 @@
         </property>
     </view>
     <view entity="quarium_Checklist" name="edit" extends="_local">
-        <property name="testCase" view="_local"/>
+        <property name="testCase" view="_local">
+            <property name="caseStep" view="_minimal">
+                <property name="step"/>
+            </property>
+        </property>
     </view>
     <view entity="quarium_Checklist" name="for_project" extends="_local">
         <property name="assignedQa" view="_minimal"/>
@@ -87,6 +91,15 @@
         </property>
     </view>
     <view entity="quarium_Step" name="step-view" extends="_local">
-        <property name="testCase" view="_minimal"/>
+        <property name="testCase" view="_minimal">
+            <property name="checklist" view="_minimal"/>
+        </property>
+    </view>
+    <view entity="quarium_Checklist" name="checklist-step" extends="_local">
+        <property name="testCase" view="_minimal">
+            <property name="caseStep" view="_minimal">
+                <property name="step"/>
+            </property>
+        </property>
     </view>
 </views>

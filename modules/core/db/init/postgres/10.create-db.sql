@@ -192,6 +192,7 @@ create table QUARIUM_STEP (
     DELETED_BY varchar(50),
     --
     STEP varchar(1000),
+    CREATION_DATE timestamp,
     TEST_CASE_ID uuid,
     --
     primary key (ID)

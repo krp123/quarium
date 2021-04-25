@@ -43,13 +43,7 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
     private InstanceContainer<TestCase> testCaseDc;
 
     @Inject
-    private InstanceContainer<Step> stepDc;
-
-    @Inject
     private CollectionContainer<Step> stepsCollection;
-
-//    @Inject
-//    private CollectionLoader<Step> stepsCollectionLoader;
 
     @Inject
     private GroupTable<TestCase> table;
@@ -69,12 +63,15 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
     @Inject
     protected EntityDiffViewer diffFrame;
 
+    @Inject
+    protected TimeSource timeSource;
+
+    @Inject
+    private DataManager dataManager;
+
     @Subscribe
     protected void onInit(InitEvent event) {
         initMasterDetailScreen(event);
-//        CustomCollectionContainerSorter sorter = new CustomCollectionContainerSorter(stepsCollection,
-//                stepsCollectionLoader);
-//        stepsCollection.setSorter(sorter);
     }
 
     @Subscribe
@@ -175,14 +172,6 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
         return (InstanceLoader<TestCase>) loader;
     }
 
-    protected InstanceLoader<Step> getStepEditLoader() {
-        DataLoader loader = ((HasLoader) stepDc).getLoader();
-        if (loader == null) {
-            throw new IllegalStateException("Cannot find loader of editing container");
-        }
-        return (InstanceLoader<Step>) loader;
-    }
-
     protected void initBrowseItemChangeListener() {
         getBrowseContainer().addItemChangeListener(e -> {
             if (!editing) {
@@ -195,8 +184,9 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
         ListComponent<Step> table = getStepsTable();
         CreateAction createAction = (CreateAction) table.getActionNN("createStep");
         createAction.withHandler(actionPerformedEvent -> {
-            Step entity = getBeanLocator().get(Metadata.class).create(Step.class);
+            Step entity = dataManager.create(Step.class);
             entity.setTestCase(testCaseDc.getItem());
+            entity.setCreationDate(timeSource.currentTimestamp());
             stepsCollection.getMutableItems().add(entity);
         });
     }
@@ -349,7 +339,8 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
             fireEvent(MasterDetailScreen.AfterCommitChangesEvent.class, new MasterDetailScreen.AfterCommitChangesEvent(this));
         };
 
-        MasterDetailScreen.BeforeCommitChangesEvent beforeEvent = new MasterDetailScreen.BeforeCommitChangesEvent(this, standardCommitAction);
+        MasterDetailScreen.BeforeCommitChangesEvent beforeEvent =
+                new MasterDetailScreen.BeforeCommitChangesEvent(this, standardCommitAction);
         fireEvent(MasterDetailScreen.BeforeCommitChangesEvent.class, beforeEvent);
 
         if (beforeEvent.isCommitPrevented()) {
