@@ -36,34 +36,29 @@ import java.util.List;
 public class ExtChecklistEdit extends StandardEditor<Checklist> {
 
     protected boolean editing;
-
     protected boolean creating;
-
     protected boolean justLocked;
 
     @Inject
     private InstanceContainer<TestCase> testCaseDc;
-
+    @Inject
+    private CollectionContainer<Step> stepsCollection;
     @Inject
     private GroupTable<TestCase> table;
-
     @Inject
-    private GroupTable<Step> stepsTable;
-
+    private Table<Step> stepsTable;
     @Inject
     private InstanceContainer<Checklist> checklistDc;
-
     @Inject
     protected EntitySnapshotService entitySnapshotService;
-
     @Inject
     private LookupField<QaProjectRelationship> assignedQaField;
-
     @Inject
     private LookupField<Module> moduleField;
-
     @Inject
-    private Notifications notifications;
+    private DataManager dataManager;
+    @Inject
+    private TimeSource timeSource;
 
     @Subscribe
     protected void onInit(InitEvent event) {
@@ -108,7 +103,7 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     }
 
     protected ListComponent<Step> getStepsTable() {
-        return stepsTable;
+        return (ListComponent) stepsTable;
     }
 
     protected GridLayout getGrid() {
@@ -122,6 +117,7 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         initBrowseItemChangeListener();
         initBrowseCreateAction();
         initBrowseEditAction();
+        initStepCreateAction();
         disableEditControls();
     }
 
@@ -193,6 +189,17 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
             if (!editing) {
                 testCaseDc.setItem(e.getItem());
             }
+        });
+    }
+
+    protected void initStepCreateAction() {
+        ListComponent<Step> table = getStepsTable();
+        CreateAction createAction = (CreateAction) table.getActionNN("createStep");
+        createAction.withHandler(actionPerformedEvent -> {
+            Step entity = dataManager.create(Step.class);
+            entity.setTestCase(testCaseDc.getItem());
+            entity.setCreationDate(timeSource.currentTimestamp());
+            stepsCollection.getMutableItems().add(entity);
         });
     }
 
@@ -279,10 +286,6 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
 
     protected ComponentContainer getActionsPane() {
         return (ComponentContainer) getWindow().getComponentNN("actionsPane");
-    }
-
-    protected TextField getChecklistHours() {
-        return (TextField) getWindow().getComponentNN("checklistHours");
     }
 
     protected Class<TestCase> getEntityClass() {

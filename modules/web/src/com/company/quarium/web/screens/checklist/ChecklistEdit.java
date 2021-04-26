@@ -34,38 +34,27 @@ import java.util.Collections;
 public class ChecklistEdit extends StandardEditor<Checklist> {
 
     protected boolean editing;
-
     protected boolean creating;
-
     protected boolean justLocked;
 
     @Inject
     private InstanceContainer<TestCase> testCaseDc;
-
     @Inject
     private CollectionContainer<Step> stepsCollection;
-
     @Inject
     private GroupTable<TestCase> table;
-
     @Inject
     private Table<Step> stepsTable;
-
     @Inject
     private InstanceContainer<Checklist> checklistDc;
-
     @Inject
     protected EntitySnapshotService entitySnapshotService;
-
     @Inject
     private EntityStates entityStates;
-
     @Inject
     protected EntityDiffViewer diffFrame;
-
     @Inject
     protected TimeSource timeSource;
-
     @Inject
     private DataManager dataManager;
 
@@ -94,8 +83,8 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
         return (ListComponent) stepsTable;
     }
 
-    protected Form getForm() {
-        return (Form) getWindow().getComponentNN("form");
+    protected GridLayout getGrid() {
+        return (GridLayout) getWindow().getComponentNN("caseForm");
     }
 
     protected void initMasterDetailScreen(@SuppressWarnings("unused") InitEvent event) {
@@ -230,7 +219,7 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
     }
 
     protected void refreshOptionsForLookupFields() {
-        for (Component component : getForm().getOwnComponents()) {
+        for (Component component : getGrid().getOwnComponents()) {
             if (component instanceof LookupField) {
                 Options options = ((LookupField) component).getOptions();
                 if (options instanceof ContainerOptions) {
@@ -250,7 +239,7 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
         this.editing = true;
         this.creating = creating;
         initEditComponents(true);
-        getForm().focusFirstComponent();
+        getGrid().focusFirstComponent();
     }
 
     protected void initEditComponents(boolean enabled) {

@@ -7,13 +7,18 @@
     <view entity="quarium_TestCase" name="testCase-view" extends="_local">
         <property name="caseStep" view="_minimal">
             <property name="step"/>
+            <property name="creationDate"/>
         </property>
+        <property name="priority" view="_minimal"/>
+        <property name="state" view="_minimal"/>
+        <property name="checklist" view="_minimal"/>
     </view>
     <view entity="quarium_TestCase" name="testCase-edit" extends="_local">
         <property name="priority" view="_minimal"/>
         <property name="state" view="_minimal"/>
         <property name="caseStep" view="_minimal">
             <property name="step"/>
+            <property name="creationDate"/>
         </property>
     </view>
     <view entity="quarium_TestCase" name="testCase_full">
@@ -29,6 +34,7 @@
         <property name="testCase" view="_local">
             <property name="caseStep" view="_minimal">
                 <property name="step"/>
+                <property name="creationDate"/>
             </property>
         </property>
     </view>
@@ -62,6 +68,10 @@
             <property name="expectedResult"/>
             <property name="hours"/>
             <property name="minutes"/>
+            <property name="caseStep" view="_minimal">
+                <property name="step"/>
+                <property name="creationDate"/>
+            </property>
         </property>
         <property name="module" view="_local"/>
     </view>
@@ -92,7 +102,6 @@
     </view>
     <view entity="quarium_Step" name="step-view" extends="_local">
         <property name="testCase" view="_minimal">
-            <property name="checklist" view="_minimal"/>
         </property>
     </view>
     <view entity="quarium_Checklist" name="checklist-step" extends="_local">
