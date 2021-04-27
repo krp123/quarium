@@ -23,7 +23,6 @@
     </view>
     <view entity="quarium_TestCase" name="testCase_full">
         <property name="name"/>
-        <property name="step"/>
         <property name="expectedResult"/>
         <property name="checklist" view="_minimal"/>
         <property name="caseStep" view="_minimal">
@@ -64,7 +63,6 @@
         <property name="testCase" view="_minimal">
             <property name="priority" view="_minimal"/>
             <property name="state" view="_minimal"/>
-            <property name="step"/>
             <property name="expectedResult"/>
             <property name="hours"/>
             <property name="minutes"/>

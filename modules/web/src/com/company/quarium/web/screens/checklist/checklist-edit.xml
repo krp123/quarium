@@ -75,7 +75,9 @@
                                     </columns>
                                     <rows>
                                         <row>
-                                            <textField id="caseNameField" property="name" width="100%"/>
+                                            <textField id="caseNameField" property="name" width="100%"
+                                                       dataContainer="testCaseDc"
+                                                       caption="msg://checklistEdit.caseName"/>
                                         </row>
                                         <row>
                                             <table id="stepsTable"
@@ -104,7 +106,8 @@
                                         </row>
                                         <row>
                                             <textArea id="expectedResultField" property="expectedResult"
-                                                      rows="5" width="100%"/>
+                                                      rows="5" width="100%" dataContainer="testCaseDc"
+                                                      caption="msg://checklistEdit.expectedResult"/>
                                         </row>
                                     </rows>
                                 </grid>

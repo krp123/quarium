@@ -1,6 +1,7 @@
 package com.company.quarium.service;
 
 import com.company.quarium.entity.checklist.Checklist;
+import com.company.quarium.entity.checklist.Step;
 import com.company.quarium.entity.checklist.TestCase;
 import com.company.quarium.entity.project.Project;
 import com.haulmont.cuba.core.global.DataManager;
@@ -28,7 +29,17 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
                 TestCase newTC = dataManager.create(TestCase.class);
                 newTC.setChecklist(checklistNew);
                 newTC.setName(tc.getName());
-                newTC.setStep(tc.getStep());
+                if (tc.getCaseStep() != null) {
+                    List<Step> newSteps = new ArrayList<>();
+                    for (Step step : tc.getCaseStep()) {
+                        Step newStep = dataManager.create(Step.class);
+                        newStep.setStep(step.getStep());
+                        newStep.setCreationDate(step.getCreationDate());
+                        newStep.setTestCase(newTC);
+                        newSteps.add(newStep);
+                    }
+                    newTC.setCaseStep(newSteps);
+                }
                 newTC.setExpectedResult(tc.getName());
                 tcList.add(newTC);
             }

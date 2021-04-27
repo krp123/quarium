@@ -57,9 +57,6 @@ public class TestCase extends StandardEntity {
     @JoinColumn(name = "STATE_ID")
     private Statement state;
 
-    @Column(name = "STEP")
-    private String step;
-
     @Lob
     @Column(name = "EXPECTED_RESULT")
     private String expectedResult;
@@ -124,14 +121,6 @@ public class TestCase extends StandardEntity {
 
     public void setExpectedResult(String expectedResult) {
         this.expectedResult = expectedResult;
-    }
-
-    public String getStep() {
-        return step;
-    }
-
-    public void setStep(String step) {
-        this.step = step;
     }
 
     public String getName() {

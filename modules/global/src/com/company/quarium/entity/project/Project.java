@@ -32,7 +32,7 @@ public class Project extends StandardEntity {
     @Composition
     @OnDeleteInverse(DeletePolicy.UNLINK)
     @OnDelete(DeletePolicy.CASCADE)
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.PERSIST)
     private List<Checklist> checklist;
 
     @Column(name = "CURRENT_RELEASE")
