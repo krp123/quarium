@@ -164,7 +164,8 @@
                                            columnHeaderVisible="false"
                                            caption="msg://checklistEdit.steps"
                                            multiLineCells="true"
-                                           editable="true">
+                                           editable="true"
+                                           rowspan="3">
                                         <actions>
                                             <action id="createStep" type="create"/>
                                             <action id="removeStep" type="remove"/>
@@ -187,9 +188,21 @@
                                                  caption="msg://checklistEdit.state" width="90%"/>
                                 </row>
                                 <row>
+                                    <hbox spacing="true" caption="msg://checklistEdit.caseTicket" width="90%"
+                                          visible="false">
+                                        <app:linkField id="caseTicket" dataContainer="testCaseDc"
+                                                       property="ticket"
+                                                       maxTextLength="40"/>
+                                    </hbox>
+                                </row>
+                                <row>
                                     <textArea id="expectedResultField" property="expectedResult"
                                               rows="4" dataContainer="testCaseDc"
                                               caption="msg://checklistEdit.expectedResult" width="90%"/>
+                                    <textArea id="caseComment" dataContainer="testCaseDc"
+                                              rows="4" property="comment" width="90%"
+                                              caption="msg://checklistEdit.comment"
+                                              visible="false"/>
                                 </row>
                             </rows>
                         </grid>

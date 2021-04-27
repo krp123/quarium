@@ -27,6 +27,12 @@ public class TestCase extends StandardEntity {
     @Column(name = "NAME", nullable = false)
     private String name;
 
+    @Column(name = "COMMENT_", length = 1000)
+    private String comment;
+
+    @Column(name = "TICKET", length = 1000)
+    private String ticket;
+
     @Composition
     @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "testCase", cascade = CascadeType.PERSIST)
@@ -66,6 +72,22 @@ public class TestCase extends StandardEntity {
     @JoinColumn(name = "CHECKLIST_ID")
     @OnDeleteInverse(DeletePolicy.CASCADE)
     private Checklist checklist;
+
+    public String getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(String ticket) {
+        this.ticket = ticket;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
     public List<Step> getCaseStep() {
         return caseStep;

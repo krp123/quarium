@@ -5,6 +5,8 @@ import com.company.quarium.entity.checklist.Step;
 import com.company.quarium.entity.checklist.TestCase;
 import com.company.quarium.entity.project.Module;
 import com.company.quarium.entity.project.QaProjectRelationship;
+import com.company.quarium.entity.references.Statement;
+import com.company.quarium.web.gui.components.LinkField;
 import com.haulmont.cuba.core.app.EntitySnapshotService;
 import com.haulmont.cuba.core.app.LockService;
 import com.haulmont.cuba.core.entity.BaseGenericIdEntity;
@@ -59,6 +61,12 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     private DataManager dataManager;
     @Inject
     private TimeSource timeSource;
+    @Inject
+    private LinkField caseTicket;
+    @Inject
+    private TextArea<String> caseComment;
+    @Inject
+    private LookupField<Statement> caseStateField;
 
     @Subscribe
     protected void onInit(InitEvent event) {
@@ -118,6 +126,7 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         initBrowseCreateAction();
         initBrowseEditAction();
         initStepCreateAction();
+        initStateChangedListener();
         disableEditControls();
     }
 
@@ -188,6 +197,20 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         getBrowseContainer().addItemChangeListener(e -> {
             if (!editing) {
                 testCaseDc.setItem(e.getItem());
+            }
+        });
+    }
+
+    protected void initStateChangedListener() {//TODO доделать
+        caseStateField.addValueChangeListener(e -> {
+            if (testCaseDc.getItem().getState() != null) {
+                if (testCaseDc.getItem().getState().getId().toString().equals("cd85906d-6fbe-3e8d-8602-bf1af8e1ea53")) {
+                    caseTicket.setVisible(true);
+                    caseComment.setVisible(true);
+                } else {
+                    caseTicket.setVisible(false);
+                    caseComment.setVisible(false);
+                }
             }
         });
     }
