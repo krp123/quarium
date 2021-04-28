@@ -130,7 +130,6 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         initBrowseItemChangeListener();
         initBrowseCreateAction();
         initBrowseEditAction();
-        initStepCreateAction();
         disableEditControls();
     }
 
@@ -217,15 +216,12 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         }
     }
 
-    protected void initStepCreateAction() {//TODO переделать по-человечески
-        ListComponent<Step> table = getStepsTable();
-        CreateAction createAction = (CreateAction) table.getActionNN("createStep");
-        createAction.withHandler(actionPerformedEvent -> {
-            Step entity = dataManager.create(Step.class);
-            entity.setTestCase(testCaseDc.getItem());
-            entity.setCreationDate(timeSource.currentTimestamp());
-            stepsCollection.getMutableItems().add(entity);
-        });
+    @Subscribe("stepsTable.createStep")
+    public void onCreateStep(Action.ActionPerformedEvent event) {
+        Step entity = dataManager.create(Step.class);
+        entity.setTestCase(testCaseDc.getItem());
+        entity.setCreationDate(timeSource.currentTimestamp());
+        stepsCollection.getMutableItems().add(entity);
     }
 
 
