@@ -94,6 +94,8 @@ create table QUARIUM_CHECKLIST (
     DELETED_BY varchar(50),
     --
     NAME varchar(255) not null,
+    SUB_CARD_ID uuid,
+    PARENT_CARD_ID uuid,
     COMMENT_ varchar(1000),
     HOURS integer,
     MINUTES integer,

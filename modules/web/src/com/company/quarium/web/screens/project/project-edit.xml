@@ -162,6 +162,9 @@
                     </groupTable>
                 </vbox>
             </tab>
+            <tab id="regress" caption="msg://projectEdit.regress" margin="true,false,false,false" spacing="true">
+
+            </tab>
         </tabSheet>
         <hbox id="editActions" spacing="true" height="100%" align="BOTTOM_LEFT">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>

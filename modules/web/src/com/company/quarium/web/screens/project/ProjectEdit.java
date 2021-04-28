@@ -180,6 +180,10 @@ public class ProjectEdit extends StandardEditor<Project> {
                         checkBox.setValue(checklist.getIsUsedInRegress());
                         checkBox.addValueChangeListener(e -> {
                                     checklist.setIsUsedInRegress(e.getValue());
+                                    Checklist checklistNew = copyChecklistService.copyChecklistToRegress(checklist);
+                                    //TODO добавить в эдиторе loader для чек-листов, у которых есть родиельский чек-лист, который принадлежит к текущему проекту
+                                    //TODO реализовать такой же лиснер в ExtChecklistEditor
+                                    //TODO добавить таблицу на вкладку "Регресс" с реализованным loader'ом
                                 }
                         );
 

@@ -47,4 +47,38 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
         }
         return checklistNew;
     }
+
+    @Override
+    public Checklist copyChecklistToRegress(Checklist checklist) {
+        Checklist checklistNew = dataManager.create(Checklist.class);
+        checklistNew.setName(checklist.getName());
+        checklistNew.setParentCard(checklist);
+
+        if (checklist.getTestCase() != null) {
+            List<TestCase> tcList = new ArrayList<>();
+            for (TestCase tc : checklist.getTestCase()) {
+                if (tc.getPriority().getId().toString().equals("e2e009c7-4f9c-be4a-6b0e-a9d7c9db7dd0")) {
+                    TestCase newTC = dataManager.create(TestCase.class);
+                    newTC.setChecklist(checklistNew);
+                    newTC.setName(tc.getName());
+                    if (tc.getCaseStep() != null) {
+                        List<Step> newSteps = new ArrayList<>();
+                        for (Step step : tc.getCaseStep()) {
+                            Step newStep = dataManager.create(Step.class);
+                            newStep.setStep(step.getStep());
+                            newStep.setCreationDate(step.getCreationDate());
+                            newStep.setTestCase(newTC);
+                            newSteps.add(newStep);
+                        }
+                        newTC.setCaseStep(newSteps);
+                    }
+                    newTC.setExpectedResult(tc.getName());
+                    newTC.setPriority(tc.getPriority());
+                    tcList.add(newTC);
+                }
+            }
+            checklistNew.setTestCase(tcList);
+        }
+        return checklistNew;
+    }
 }

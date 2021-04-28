@@ -7,4 +7,6 @@ public interface CopyChecklistService {
     String NAME = "quarium_CopyChecklistService";
 
     Checklist copyChecklist(Checklist checklist, Project project);
+
+    Checklist copyChecklistToRegress(Checklist checklist);
 }
