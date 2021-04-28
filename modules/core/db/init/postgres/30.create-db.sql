@@ -6,7 +6,7 @@ insert into QUARIUM_STATEMENT (ID, VERSION, CREATE_TS, CREATED_BY, NAME) values 
 --end insert QUARIUM_STATEMENT
 
 --begin insert QUARIUM_PRIORITY
-insert into QUARIUM_PRIORITY (ID, VERSION, CREATE_TS, CREATED_BY, NAME) values (newid(), 1, now(), 'admin', 'Высокий')^
-insert into QUARIUM_PRIORITY (ID, VERSION, CREATE_TS, CREATED_BY, NAME) values (newid(), 1, now(), 'admin', 'Средний')^
-insert into QUARIUM_PRIORITY (ID, VERSION, CREATE_TS, CREATED_BY, NAME) values (newid(), 1, now(), 'admin', 'Низкий')^
+insert into QUARIUM_PRIORITY (ID, VERSION, CREATE_TS, CREATED_BY, NAME) values ('e2e009c7-4f9c-be4a-6b0e-a9d7c9db7dd0', 1, now(), 'admin', 'Высокий')^
+insert into QUARIUM_PRIORITY (ID, VERSION, CREATE_TS, CREATED_BY, NAME) values ('5ee809d6-ca82-53be-e44e-22ce132fdd65', 1, now(), 'admin', 'Средний')^
+insert into QUARIUM_PRIORITY (ID, VERSION, CREATE_TS, CREATED_BY, NAME) values ('22cb6ee9-394d-9836-0b11-272f52696406', 1, now(), 'admin', 'Низкий')^
 --end insert QUARIUM_PRIORITY

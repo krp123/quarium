@@ -10,13 +10,16 @@ import com.haulmont.cuba.core.entity.annotation.Lookup;
 import com.haulmont.cuba.core.entity.annotation.LookupType;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
+import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.DeletePolicy;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.UUID;
 
 @Table(name = "QUARIUM_CHECKLIST")
 @Entity(name = "quarium_Checklist")
@@ -137,6 +140,11 @@ public class Checklist extends StandardEntity {
 
     public void setState(Statement state) {
         this.state = state;
+    }
+
+    @PostConstruct
+    private void initState(DataManager dataManager) {
+        setState(dataManager.load(Statement.class).id(UUID.fromString("31c599f1-c1b0-30ae-add1-5c6e4b354276")).one());
     }
 
     public Project getProject() {
