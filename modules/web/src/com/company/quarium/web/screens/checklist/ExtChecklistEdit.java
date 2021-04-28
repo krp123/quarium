@@ -71,6 +71,8 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     private InstanceLoader<TestCase> testCaseDl;
     @Inject
     private HBoxLayout ticketBox;
+    @Inject
+    private ScreenValidation screenValidation;
 
 
     @Subscribe
@@ -161,8 +163,18 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
 
         TestCase editedItem = testCaseDc.getItem();
         if (creating) {
+            ValidationErrors errors = screenValidation.validateUiComponents(getGrid());
+            if (!errors.isEmpty()) {
+                screenValidation.showValidationErrors(this, errors);
+                return;
+            }
             getBrowseContainer().getMutableItems().add(0, editedItem);
         } else {
+            ValidationErrors errors = screenValidation.validateUiComponents(getGrid());
+            if (!errors.isEmpty()) {
+                screenValidation.showValidationErrors(this, errors);
+                return;
+            }
             getBrowseContainer().replaceItem(editedItem);
         }
         getTable().setSelected(editedItem);

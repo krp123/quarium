@@ -26,8 +26,8 @@ import java.util.UUID;
 public class TestCase extends StandardEntity {
     private static final long serialVersionUID = -2660701620585662317L;
 
-    @NotNull
     @Column(name = "NAME", nullable = false)
+    @NotNull(message = "{msg://quarium_TestCase.name.validation.NotNull}")
     private String name;
 
     @Column(name = "COMMENT_", length = 1000)

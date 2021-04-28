@@ -57,6 +57,8 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
     protected TimeSource timeSource;
     @Inject
     private DataManager dataManager;
+    @Inject
+    private ScreenValidation screenValidation;
 
     @Subscribe
     protected void onInit(InitEvent event) {
@@ -125,8 +127,18 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
 
         TestCase editedItem = testCaseDc.getItem();
         if (creating) {
+            ValidationErrors errors = screenValidation.validateUiComponents(getGrid());
+            if (!errors.isEmpty()) {
+                screenValidation.showValidationErrors(this, errors);
+                return;
+            }
             getBrowseContainer().getMutableItems().add(0, editedItem);
         } else {
+            ValidationErrors errors = screenValidation.validateUiComponents(getGrid());
+            if (!errors.isEmpty()) {
+                screenValidation.showValidationErrors(this, errors);
+                return;
+            }
             getBrowseContainer().replaceItem(editedItem);
         }
         getTable().setSelected(editedItem);
