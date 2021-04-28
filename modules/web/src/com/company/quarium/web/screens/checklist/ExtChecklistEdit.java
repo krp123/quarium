@@ -67,6 +67,11 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     private TextArea<String> caseComment;
     @Inject
     private LookupField<Statement> caseStateField;
+    @Inject
+    private InstanceLoader<TestCase> testCaseDl;
+    @Inject
+    private HBoxLayout ticketBox;
+
 
     @Subscribe
     protected void onInit(InitEvent event) {
@@ -126,7 +131,6 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         initBrowseCreateAction();
         initBrowseEditAction();
         initStepCreateAction();
-        initStateChangedListener();
         disableEditControls();
     }
 
@@ -201,21 +205,19 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         });
     }
 
-    protected void initStateChangedListener() {//TODO доделать
-        caseStateField.addValueChangeListener(e -> {
-            if (testCaseDc.getItem().getState() != null) {
-                if (testCaseDc.getItem().getState().getId().toString().equals("cd85906d-6fbe-3e8d-8602-bf1af8e1ea53")) {
-                    caseTicket.setVisible(true);
-                    caseComment.setVisible(true);
-                } else {
-                    caseTicket.setVisible(false);
-                    caseComment.setVisible(false);
-                }
-            }
-        });
+    @Subscribe("caseStateField")
+    public void onCaseStateFieldValueChange(HasValue.ValueChangeEvent<Statement> event) {
+        if (caseStateField.getValueSource().getValue() != null
+                && caseStateField.getValueSource().getValue().getId().toString().equals("cd85906d-6fbe-3e8d-8602-bf1af8e1ea53")) {
+            ticketBox.setVisible(true);
+            caseComment.setVisible(true);
+        } else {
+            ticketBox.setVisible(false);
+            caseComment.setVisible(false);
+        }
     }
 
-    protected void initStepCreateAction() {
+    protected void initStepCreateAction() {//TODO переделать по-человечески
         ListComponent<Step> table = getStepsTable();
         CreateAction createAction = (CreateAction) table.getActionNN("createStep");
         createAction.withHandler(actionPerformedEvent -> {

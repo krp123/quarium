@@ -36,7 +36,7 @@
                 <property name="state" view="_minimal"/>
                 <property name="caseStep" view="step-view"/>
             </view>
-            <loader/>
+            <loader id="testCaseDl"/>
             <collection id="stepsCollection" property="caseStep"/>
         </instance>
     </data>
@@ -188,7 +188,8 @@
                                                  caption="msg://checklistEdit.state" width="90%"/>
                                 </row>
                                 <row>
-                                    <hbox spacing="true" caption="msg://checklistEdit.caseTicket" width="90%"
+                                    <hbox id="ticketBox" spacing="true" caption="msg://checklistEdit.caseTicket"
+                                          width="90%"
                                           visible="false">
                                         <app:linkField id="caseTicket" dataContainer="testCaseDc"
                                                        property="ticket"
