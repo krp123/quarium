@@ -243,7 +243,7 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
             if (component instanceof Component.Editable)
                 ((Component.Editable) component).setEditable(enabled);
         }
-        //getVBox().setEnabled(enabled);
+        getVBox().setEnabled(enabled);
         getActionsPane().setVisible(enabled);
         getLookupBox().setEnabled(!enabled);
     }
