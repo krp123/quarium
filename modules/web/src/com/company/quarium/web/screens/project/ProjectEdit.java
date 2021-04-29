@@ -19,7 +19,6 @@ import com.haulmont.cuba.gui.model.InstanceContainer;
 import com.haulmont.cuba.gui.screen.*;
 
 import javax.inject.Inject;
-import java.util.Iterator;
 import java.util.List;
 
 @UiController("quarium_Project.edit")
@@ -198,20 +197,11 @@ public class ProjectEdit extends StandardEditor<Project> {
                                         regressChecklistsDc.getMutableItems().add(checklistNew);
                                     } else {
                                         List<Checklist> mutableItems = regressChecklistsDc.getMutableItems();
-                                        Iterator<Checklist> i = mutableItems.iterator();
-                                        while (i.hasNext() && i.next() != null) {
-                                            Checklist o = i.next();
-                                            if (o.getParentCard().equals(checklist)) {
-                                                regressChecklistsDc.getMutableItems().remove(o);
+                                        for (Checklist cl : mutableItems) {
+                                            if (cl.getParentCard().equals(checklist)) {
+                                                dataManager.remove(cl);
                                             }
                                         }
-
-
-//                                        for (Checklist cl : mutableItems) {
-//                                            if (cl.getParentCard().equals(checklist)) {
-//                                                regressChecklistsDc.getMutableItems().remove(cl);
-//                                            }
-//                                        }
                                         regressChecklistsDl.load();
 
                                         //TODO в CopyChecklistServiceBean удалять чек-лист, который является subCard у checklist
