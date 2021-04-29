@@ -13,5 +13,7 @@
         <class>com.company.quarium.entity.project.ConfigurationProjectRelationship</class>
         <class>com.company.quarium.entity.project.Module</class>
         <class>com.company.quarium.entity.checklist.Step</class>
+        <class>com.company.quarium.entity.checklist.RegressChecklist</class>
+        <class>com.company.quarium.entity.checklist.SimpleChecklist</class>
     </persistence-unit>
 </persistence>

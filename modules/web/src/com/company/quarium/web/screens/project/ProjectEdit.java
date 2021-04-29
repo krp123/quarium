@@ -1,6 +1,8 @@
 package com.company.quarium.web.screens.project;
 
 import com.company.quarium.entity.checklist.Checklist;
+import com.company.quarium.entity.checklist.RegressChecklist;
+import com.company.quarium.entity.checklist.SimpleChecklist;
 import com.company.quarium.entity.project.ConfigurationProjectRelationship;
 import com.company.quarium.entity.project.Project;
 import com.company.quarium.entity.project.QaProjectRelationship;
@@ -13,12 +15,12 @@ import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.CollectionContainer;
-import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.model.DataContext;
 import com.haulmont.cuba.gui.model.InstanceContainer;
 import com.haulmont.cuba.gui.screen.*;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 
 @UiController("quarium_Project.edit")
@@ -43,10 +45,10 @@ public class ProjectEdit extends StandardEditor<Project> {
     protected InstanceContainer<Project> projectDc;
 
     @Inject
-    private CollectionContainer<Checklist> checklistsDc;
+    private CollectionContainer<SimpleChecklist> checklistsDc;
 
     @Inject
-    private CollectionContainer<Checklist> regressChecklistsDc;
+    private CollectionContainer<RegressChecklist> regressChecklistDc;
 
     @Inject
     private DataManager dataManager;
@@ -55,17 +57,10 @@ public class ProjectEdit extends StandardEditor<Project> {
     private CopyChecklistService copyChecklistService;
 
     @Inject
-    private Table<Checklist> checklistsTable;
+    private Table<SimpleChecklist> checklistsTable;
 
     @Inject
     private UiComponents uiComponents;
-    @Inject
-    private CollectionLoader<Checklist> regressChecklistsDl;
-
-    @Subscribe
-    protected void onBeforeShow(BeforeShowEvent event) {
-        regressChecklistsDl.setParameter("project", getEditedEntity());
-    }
 
     @Subscribe("qaProjectRelationshipsTable.addQa")
     protected void onAddQa(Action.ActionPerformedEvent event) {
@@ -124,7 +119,7 @@ public class ProjectEdit extends StandardEditor<Project> {
 
     private Checklist createAndAddChecklist(Checklist checklist) {
         checklist = dataManager.load(Checklist.class).id(checklist.getId()).view("edit").one();
-        Checklist checklistNew = copyChecklistService.copyChecklist(checklist, projectDc.getItem());
+        SimpleChecklist checklistNew = copyChecklistService.copyChecklist(checklist, projectDc.getItem());
         checklistsDc.getMutableItems().add(checklistNew);
         return checklistNew;
     }
@@ -193,21 +188,18 @@ public class ProjectEdit extends StandardEditor<Project> {
                                     checklist.setIsUsedInRegress(e.getValue());
 
                                     if (e.getValue()) {
-                                        Checklist checklistNew = copyChecklistService.copyChecklistToRegress(checklist);
-                                        regressChecklistsDc.getMutableItems().add(checklistNew);
+                                        RegressChecklist checklistNew = copyChecklistService.copyChecklistToRegress(checklist);
+                                        regressChecklistDc.getMutableItems().add(checklistNew);
                                     } else {
-                                        List<Checklist> mutableItems = regressChecklistsDc.getMutableItems();
-                                        for (Checklist cl : mutableItems) {
+                                        List<RegressChecklist> mutableItems = new ArrayList<>(regressChecklistDc.getMutableItems());
+                                        for (RegressChecklist cl : mutableItems) {
                                             if (cl.getParentCard().equals(checklist)) {
+                                                regressChecklistDc.getMutableItems().remove(cl);
                                                 dataManager.remove(cl);
                                             }
                                         }
-                                        regressChecklistsDl.load();
-
-                                        //TODO в CopyChecklistServiceBean удалять чек-лист, который является subCard у checklist
                                     }
                                     //TODO реализовать такой же лиснер в ExtChecklistEditor
-                                    //TODO добавить таблицу на вкладку "Регресс" с реализованным loader'ом
                                 }
                         );
 

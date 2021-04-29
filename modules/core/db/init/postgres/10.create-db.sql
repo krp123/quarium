@@ -92,6 +92,7 @@ create table QUARIUM_CHECKLIST (
     UPDATED_BY varchar(50),
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
+    DTYPE varchar(31),
     --
     NAME varchar(255) not null,
     PARENT_CARD_ID uuid,
@@ -104,6 +105,9 @@ create table QUARIUM_CHECKLIST (
     ASSIGNED_QA_ID uuid,
     STATE_ID uuid,
     PROJECT_ID uuid,
+    --
+    -- from quarium_RegressChecklist
+    REGRESS_PROJECT_ID uuid,
     --
     primary key (ID)
 )^

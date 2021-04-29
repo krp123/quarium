@@ -78,6 +78,25 @@
         <property name="module" view="_local"/>
         <property name="parentCard" view="_minimal"/>
     </view>
+    <view entity="quarium_SimpleChecklist" name="project-checklist-view" extends="_local">
+        <property name="assignedQa" view="_minimal"/>
+        <property name="state" view="_minimal"/>
+        <property name="testCase" view="_minimal">
+            <property name="priority" view="_minimal"/>
+            <property name="state" view="_minimal"/>
+            <property name="expectedResult"/>
+            <property name="hours"/>
+            <property name="minutes"/>
+            <property name="caseStep" view="_minimal">
+                <property name="step"/>
+                <property name="creationDate"/>
+            </property>
+            <property name="ticket"/>
+            <property name="comment"/>
+        </property>
+        <property name="module" view="_local"/>
+        <property name="parentCard" view="_minimal"/>
+    </view>
     <view entity="quarium_ConfigurationProjectRelationship" name="edit">
         <property name="configuration"/>
         <property name="project"/>
@@ -113,5 +132,14 @@
                 <property name="step"/>
             </property>
         </property>
+    </view>
+    <view entity="quarium_RegressChecklist" name="regressChecklist-view" extends="_local">
+        <property name="regressProject" view="_minimal"/>
+        <property name="parentCard" view="_minimal"/>
+        <property name="state" view="_minimal"/>
+        <property name="assignedQa" view="_minimal"/>
+        <property name="module" view="_minimal"/>
+        <property name="testCase" view="_minimal"/>
+        <property name="project" view="_minimal"/>
     </view>
 </views>

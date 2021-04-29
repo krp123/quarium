@@ -12,22 +12,15 @@
                 <property name="checklist" view="project-checklist-view"/>
                 <property name="createTs"/>
                 <property name="module" view="edit"/>
+                <property name="regressChecklist" view="regressChecklist-view"/>
             </view>
             <loader/>
             <collection id="qaProjectDc" property="qa"/>
             <collection id="configurationProjectDc" property="configuration"/>
-            <collection id="checklistsDc" property="checklist"/>//TODO сделать запрос, в чек-листе parentCard=null
+            <collection id="checklistsDc" property="checklist"/>
             <collection id="modulesDc" property="module"/>
+            <collection id="regressChecklistDc" property="regressChecklist"/>
         </instance>
-        <collection id="regressChecklistsDc"
-                    class="com.company.quarium.entity.checklist.Checklist">
-            <view extends="project-checklist-view"/>
-            <loader id="regressChecklistsDl">
-                <query>
-                    <![CDATA[select e from quarium_Checklist e where e.parentCard.project = :project]]>
-                </query>
-            </loader>
-        </collection>
     </data>
     <dialogMode height="600"
                 width="800"/>
@@ -177,7 +170,7 @@
                     <groupTable id="regressChecklistsTable"
                                 width="100%"
                                 height="460px"
-                                dataContainer="regressChecklistsDc"
+                                dataContainer="regressChecklistDc"
                                 multiselect="true"
                                 presentations="true">
                         <actions>

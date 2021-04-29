@@ -27,7 +27,7 @@ import com.haulmont.cuba.security.entity.EntityOp;
 import javax.inject.Inject;
 import java.util.Collections;
 
-@UiController("quarium_Checklist.edit")
+@UiController("quarium_SimpleChecklist.edit")
 @UiDescriptor("checklist-edit.xml")
 @EditedEntityContainer("checklistDc")
 @LoadDataBeforeShow

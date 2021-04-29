@@ -1,8 +1,6 @@
 package com.company.quarium.service;
 
-import com.company.quarium.entity.checklist.Checklist;
-import com.company.quarium.entity.checklist.Step;
-import com.company.quarium.entity.checklist.TestCase;
+import com.company.quarium.entity.checklist.*;
 import com.company.quarium.entity.project.Project;
 import com.haulmont.cuba.core.global.DataManager;
 import org.springframework.stereotype.Service;
@@ -18,8 +16,8 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
     private DataManager dataManager;
 
     @Override
-    public Checklist copyChecklist(Checklist checklist, Project project) {
-        Checklist checklistNew = dataManager.create(Checklist.class);
+    public SimpleChecklist copyChecklist(Checklist checklist, Project project) {
+        SimpleChecklist checklistNew = dataManager.create(SimpleChecklist.class);
         checklistNew.setName(checklist.getName());
         checklistNew.setProject(project);
 
@@ -49,11 +47,11 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
     }
 
     @Override
-    public Checklist copyChecklistToRegress(Checklist checklist) {
-        Checklist checklistNew = dataManager.create(Checklist.class);
+    public RegressChecklist copyChecklistToRegress(Checklist checklist) {
+        RegressChecklist checklistNew = dataManager.create(RegressChecklist.class);
         checklistNew.setName(checklist.getName());
         checklistNew.setParentCard(checklist);
-        checklistNew.setProject(checklist.getProject());
+        checklistNew.setRegressProject(checklist.getProject());
 
         if (checklist.getTestCase() != null) {
             List<TestCase> tcList = new ArrayList<>();

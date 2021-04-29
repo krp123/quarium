@@ -1,6 +1,7 @@
 package com.company.quarium.entity.project;
 
-import com.company.quarium.entity.checklist.Checklist;
+import com.company.quarium.entity.checklist.RegressChecklist;
+import com.company.quarium.entity.checklist.SimpleChecklist;
 import com.haulmont.chile.core.annotations.Composition;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
@@ -24,6 +25,11 @@ public class Project extends StandardEntity {
     @NotNull
     private String projectName;
 
+    @Composition
+    @OnDelete(DeletePolicy.CASCADE)
+    @OneToMany(mappedBy = "regressProject", cascade = CascadeType.PERSIST)
+    private List<RegressChecklist> regressChecklist;
+
     @OneToMany(mappedBy = "project")
     @OnDelete(DeletePolicy.CASCADE)
     @Composition
@@ -33,7 +39,7 @@ public class Project extends StandardEntity {
     @OnDeleteInverse(DeletePolicy.UNLINK)
     @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "project", cascade = CascadeType.PERSIST)
-    private List<Checklist> checklist;
+    private List<SimpleChecklist> checklist;
 
     @Column(name = "CURRENT_RELEASE")
     private String currentRelease;
@@ -51,6 +57,14 @@ public class Project extends StandardEntity {
     @Lob
     @Column(name = "DESCRIPTION")
     private String description;
+
+    public List<RegressChecklist> getRegressChecklist() {
+        return regressChecklist;
+    }
+
+    public void setRegressChecklist(List<RegressChecklist> regressChecklist) {
+        this.regressChecklist = regressChecklist;
+    }
 
     public String getCurrentRelease() {
         return currentRelease;
@@ -76,11 +90,11 @@ public class Project extends StandardEntity {
         this.configuration = configuration;
     }
 
-    public List<Checklist> getChecklist() {
+    public List<SimpleChecklist> getChecklist() {
         return checklist;
     }
 
-    public void setChecklist(List<Checklist> checklist) {
+    public void setChecklist(List<SimpleChecklist> checklist) {
         this.checklist = checklist;
     }
 
