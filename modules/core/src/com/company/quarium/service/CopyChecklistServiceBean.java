@@ -53,11 +53,13 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
         Checklist checklistNew = dataManager.create(Checklist.class);
         checklistNew.setName(checklist.getName());
         checklistNew.setParentCard(checklist);
+        checklistNew.setProject(checklist.getProject());
 
         if (checklist.getTestCase() != null) {
             List<TestCase> tcList = new ArrayList<>();
             for (TestCase tc : checklist.getTestCase()) {
-                if (tc.getPriority().getId().toString().equals("e2e009c7-4f9c-be4a-6b0e-a9d7c9db7dd0")) {
+                if (tc.getPriority() != null &&
+                        tc.getPriority().getId().toString().equals("e2e009c7-4f9c-be4a-6b0e-a9d7c9db7dd0")) {
                     TestCase newTC = dataManager.create(TestCase.class);
                     newTC.setChecklist(checklistNew);
                     newTC.setName(tc.getName());

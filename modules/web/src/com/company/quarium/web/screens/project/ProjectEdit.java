@@ -13,11 +13,13 @@ import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.CollectionContainer;
+import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.model.DataContext;
 import com.haulmont.cuba.gui.model.InstanceContainer;
 import com.haulmont.cuba.gui.screen.*;
 
 import javax.inject.Inject;
+import java.util.Iterator;
 import java.util.List;
 
 @UiController("quarium_Project.edit")
@@ -45,6 +47,9 @@ public class ProjectEdit extends StandardEditor<Project> {
     private CollectionContainer<Checklist> checklistsDc;
 
     @Inject
+    private CollectionContainer<Checklist> regressChecklistsDc;
+
+    @Inject
     private DataManager dataManager;
 
     @Inject
@@ -55,6 +60,13 @@ public class ProjectEdit extends StandardEditor<Project> {
 
     @Inject
     private UiComponents uiComponents;
+    @Inject
+    private CollectionLoader<Checklist> regressChecklistsDl;
+
+    @Subscribe
+    protected void onBeforeShow(BeforeShowEvent event) {
+        regressChecklistsDl.setParameter("project", getEditedEntity());
+    }
 
     @Subscribe("qaProjectRelationshipsTable.addQa")
     protected void onAddQa(Action.ActionPerformedEvent event) {
@@ -180,8 +192,30 @@ public class ProjectEdit extends StandardEditor<Project> {
                         checkBox.setValue(checklist.getIsUsedInRegress());
                         checkBox.addValueChangeListener(e -> {
                                     checklist.setIsUsedInRegress(e.getValue());
-                                    Checklist checklistNew = copyChecklistService.copyChecklistToRegress(checklist);
-                                    //TODO добавить в эдиторе loader для чек-листов, у которых есть родиельский чек-лист, который принадлежит к текущему проекту
+
+                                    if (e.getValue()) {
+                                        Checklist checklistNew = copyChecklistService.copyChecklistToRegress(checklist);
+                                        regressChecklistsDc.getMutableItems().add(checklistNew);
+                                    } else {
+                                        List<Checklist> mutableItems = regressChecklistsDc.getMutableItems();
+                                        Iterator<Checklist> i = mutableItems.iterator();
+                                        while (i.hasNext() && i.next() != null) {
+                                            Checklist o = i.next();
+                                            if (o.getParentCard().equals(checklist)) {
+                                                regressChecklistsDc.getMutableItems().remove(o);
+                                            }
+                                        }
+
+
+//                                        for (Checklist cl : mutableItems) {
+//                                            if (cl.getParentCard().equals(checklist)) {
+//                                                regressChecklistsDc.getMutableItems().remove(cl);
+//                                            }
+//                                        }
+                                        regressChecklistsDl.load();
+
+                                        //TODO в CopyChecklistServiceBean удалять чек-лист, который является subCard у checklist
+                                    }
                                     //TODO реализовать такой же лиснер в ExtChecklistEditor
                                     //TODO добавить таблицу на вкладку "Регресс" с реализованным loader'ом
                                 }

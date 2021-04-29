@@ -31,12 +31,6 @@ public class Checklist extends StandardEntity {
     @Column(name = "NAME", nullable = false)
     private String name;
 
-    @OnDelete(DeletePolicy.UNLINK)
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SUB_CARD_ID")
-    @OnDeleteInverse(DeletePolicy.UNLINK)
-    private Checklist subCard;
-
     @OnDeleteInverse(DeletePolicy.UNLINK)
     @OnDelete(DeletePolicy.UNLINK)
     @OneToOne(fetch = FetchType.LAZY)
@@ -96,14 +90,6 @@ public class Checklist extends StandardEntity {
 
     public void setParentCard(Checklist parentCard) {
         this.parentCard = parentCard;
-    }
-
-    public Checklist getSubCard() {
-        return subCard;
-    }
-
-    public void setSubCard(Checklist subCard) {
-        this.subCard = subCard;
     }
 
     public Integer getMinutes() {

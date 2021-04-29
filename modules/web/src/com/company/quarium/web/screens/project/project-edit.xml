@@ -16,9 +16,18 @@
             <loader/>
             <collection id="qaProjectDc" property="qa"/>
             <collection id="configurationProjectDc" property="configuration"/>
-            <collection id="checklistsDc" property="checklist"/>
+            <collection id="checklistsDc" property="checklist"/>//TODO сделать запрос, в чек-листе parentCard=null
             <collection id="modulesDc" property="module"/>
         </instance>
+        <collection id="regressChecklistsDc"
+                    class="com.company.quarium.entity.checklist.Checklist">
+            <view extends="project-checklist-view"/>
+            <loader id="regressChecklistsDl">
+                <query>
+                    <![CDATA[select e from quarium_Checklist e where e.parentCard.project = :project]]>
+                </query>
+            </loader>
+        </collection>
     </data>
     <dialogMode height="600"
                 width="800"/>
@@ -163,7 +172,45 @@
                 </vbox>
             </tab>
             <tab id="regress" caption="msg://projectEdit.regress" margin="true,false,false,false" spacing="true">
-
+                <vbox id="regressChecklistBox" caption="msg://com.company.quarium.entity/Project.checklists"
+                      width="100%" height="100%" margin="true">
+                    <groupTable id="regressChecklistsTable"
+                                width="100%"
+                                height="460px"
+                                dataContainer="regressChecklistsDc"
+                                multiselect="true"
+                                presentations="true">
+                        <actions>
+                            <action id="create" type="create">
+                                <properties>
+                                    <property name="screenClass"
+                                              value="com.company.quarium.web.screens.checklist.ExtChecklistEdit"/>
+                                </properties>
+                            </action>
+                            <action id="addChecklist" type="add"/>
+                            <action id="edit" type="edit">
+                                <properties>
+                                    <property name="screenClass"
+                                              value="com.company.quarium.web.screens.checklist.ExtChecklistEdit"/>
+                                </properties>
+                            </action>
+                            <action id="remove" type="remove"/>
+                        </actions>
+                        <columns>
+                            <column id="name"/>
+                            <column id="state"/>
+                            <column id="assignedQa" caption="msg://projectEdit.QaColumn"/>
+                        </columns>
+                        <rowsCount/>
+                        <!--                        <buttonsPanel id="buttonsPanel"-->
+                        <!--                                      alwaysVisible="true">-->
+                        <!--                            <button id="createBtn" action="checklistsTable.create"/>-->
+                        <!--                            <button id="addBtn" action="checklistsTable.addChecklist"/>-->
+                        <!--                            <button id="editBtn" action="checklistsTable.edit"/>-->
+                        <!--                            <button id="removeBtn" action="checklistsTable.remove"/>-->
+                        <!--                        </buttonsPanel>-->
+                    </groupTable>
+                </vbox>
             </tab>
         </tabSheet>
         <hbox id="editActions" spacing="true" height="100%" align="BOTTOM_LEFT">

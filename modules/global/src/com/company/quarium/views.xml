@@ -76,6 +76,7 @@
             <property name="comment"/>
         </property>
         <property name="module" view="_local"/>
+        <property name="parentCard" view="_minimal"/>
     </view>
     <view entity="quarium_ConfigurationProjectRelationship" name="edit">
         <property name="configuration"/>
