@@ -47,8 +47,6 @@
     </actions>
     <dialogMode height="600"
                 width="800"/>
-
-
     <layout expand="editActions" spacing="true" margin="true">
         <grid spacing="true" width="100%">
             <columns>

@@ -183,14 +183,43 @@ public class ProjectEdit extends StandardEditor<Project> {
                     public Component generateCell(Checklist checklist) {
                         CheckBox checkBox = uiComponents.create(CheckBox.NAME);
                         checkBox.setWidth("100px");
-                        checkBox.setValue(checklist.getIsUsedInRegress());
-                        checkBox.addValueChangeListener(e -> {
-                                    checklist.setIsUsedInRegress(e.getValue());
+                        if (checklist.getIsUsedInRegress()) {
+                            boolean parentExists = false;
+                            for (Checklist regress : regressChecklistDc.getMutableItems()) {
+                                if (regress.getParentCard().equals(checklist)) {
+                                    parentExists = true;
+                                }
+                            }
+                            if (!parentExists) {
+                                RegressChecklist checklistNew = copyChecklistService.copyChecklistToRegress(checklist);
+                                regressChecklistDc.getMutableItems().add(checklistNew);
+                            }
+                        } else {
+                            List<RegressChecklist> mutableItems = new ArrayList<>(regressChecklistDc.getMutableItems());
+                            for (RegressChecklist cl : mutableItems) {
+                                if (cl.getParentCard().equals(checklist)) {
+                                    regressChecklistDc.getMutableItems().remove(cl);
+                                }
+                            }
+                        }
 
-                                    if (e.getValue()) {
-                                        RegressChecklist checklistNew = copyChecklistService.copyChecklistToRegress(checklist);
-                                        regressChecklistDc.getMutableItems().add(checklistNew);
-                                    } else {
+                        checkBox.setValue(checklist.getIsUsedInRegress());
+
+                        checkBox.addValueChangeListener(e -> {
+                            checklist.setIsUsedInRegress(e.getValue());
+
+                            if (e.getValue()) {
+                                boolean parentExists = false;
+                                for (Checklist regress : regressChecklistDc.getMutableItems()) {
+                                    if (regress.getParentCard().equals(checklist)) {
+                                        parentExists = true;
+                                    }
+                                }
+                                if (!parentExists) {
+                                    RegressChecklist checklistNew = copyChecklistService.copyChecklistToRegress(checklist);
+                                    regressChecklistDc.getMutableItems().add(checklistNew);
+                                }
+                            } else {
                                         List<RegressChecklist> mutableItems = new ArrayList<>(regressChecklistDc.getMutableItems());
                                         for (RegressChecklist cl : mutableItems) {
                                             if (cl.getParentCard().equals(checklist)) {
@@ -199,9 +228,10 @@ public class ProjectEdit extends StandardEditor<Project> {
                                             }
                                         }
                                     }
-                                    //TODO реализовать такой же лиснер в ExtChecklistEditor
+                            //TODO один механизм использутся 2 раза. Придумать, как упростить
                                 }
                         );
+
 
                         return checkBox;
                     }

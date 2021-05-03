@@ -6,6 +6,7 @@ import com.company.quarium.entity.checklist.TestCase;
 import com.company.quarium.entity.project.Module;
 import com.company.quarium.entity.project.QaProjectRelationship;
 import com.company.quarium.entity.references.Statement;
+import com.company.quarium.service.CopyChecklistService;
 import com.company.quarium.web.gui.components.LinkField;
 import com.haulmont.cuba.core.app.EntitySnapshotService;
 import com.haulmont.cuba.core.app.LockService;
@@ -73,6 +74,10 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     private HBoxLayout ticketBox;
     @Inject
     private ScreenValidation screenValidation;
+    @Inject
+    protected CheckBox isUsedInRegress;
+    @Inject
+    private CopyChecklistService copyChecklistService;
 
 
     @Subscribe
@@ -112,6 +117,39 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         getEditedEntity().setHours(checklistHours);
         getEditedEntity().setMinutes(checklistMinutes);
     }
+
+//    @Override
+//    protected Subscription addAfterCommitChangesListener(Consumer<AfterCommitChangesEvent> listener) {
+//        if (isUsedInRegress.isChecked()) {
+//            RegressChecklist checklistNew = copyChecklistService.copyChecklistToRegress(getEditedEntity());
+////            regressChecklistDc.getMutableItems().add(checklistNew);
+//        } else {
+//            List<RegressChecklist> mutableItems = new ArrayList<>(getEditedEntity().getProject().getRegressChecklist());
+//            for (RegressChecklist cl : mutableItems) {
+//                if (cl.getParentCard().equals(getEditedEntity())) {
+////                    regressChecklistDc.getMutableItems().remove(cl);
+//                    dataManager.remove(cl);
+//                }
+//            }
+//        }
+//    }
+//
+//    @Subscribe("isUsedInRegress")
+//    public void onIsUsedInRegressValueChange(HasValue.ValueChangeEvent<Boolean> event) {
+//        if (isUsedInRegress.isChecked()) {
+//            RegressChecklist checklistNew = copyChecklistService.copyChecklistToRegress(getEditedEntity());
+////            regressChecklistDc.getMutableItems().add(checklistNew);
+//        } else {
+//            List<RegressChecklist> mutableItems = new ArrayList<>(getEditedEntity().getProject().getRegressChecklist());
+//            for (RegressChecklist cl : mutableItems) {
+//                if (cl.getParentCard().equals(getEditedEntity())) {
+////                    regressChecklistDc.getMutableItems().remove(cl);
+//                    dataManager.remove(cl);
+//                }
+//            }
+//        }
+//    }
+
 
     protected ListComponent<TestCase> getTable() {
         return (ListComponent) table;

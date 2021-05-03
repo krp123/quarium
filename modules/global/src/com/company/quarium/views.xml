@@ -77,6 +77,10 @@
         </property>
         <property name="module" view="_local"/>
         <property name="parentCard" view="_minimal"/>
+        <property name="project" view="_minimal">
+            <property name="checklist" view="_minimal"/>
+            <property name="regressChecklist" view="_minimal"/>
+        </property>
     </view>
     <view entity="quarium_SimpleChecklist" name="project-checklist-view" extends="_local">
         <property name="assignedQa" view="_minimal"/>
