@@ -177,14 +177,13 @@
                             <action id="create" type="create">
                                 <properties>
                                     <property name="screenClass"
-                                              value="com.company.quarium.web.screens.checklist.ExtChecklistEdit"/>
+                                              value="com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit"/>
                                 </properties>
                             </action>
-                            <action id="addChecklist" type="add"/>
                             <action id="edit" type="edit">
                                 <properties>
                                     <property name="screenClass"
-                                              value="com.company.quarium.web.screens.checklist.ExtChecklistEdit"/>
+                                              value="com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit"/>
                                 </properties>
                             </action>
                             <action id="remove" type="remove"/>
@@ -195,13 +194,12 @@
                             <column id="assignedQa" caption="msg://projectEdit.QaColumn"/>
                         </columns>
                         <rowsCount/>
-                        <!--                        <buttonsPanel id="buttonsPanel"-->
-                        <!--                                      alwaysVisible="true">-->
-                        <!--                            <button id="createBtn" action="checklistsTable.create"/>-->
-                        <!--                            <button id="addBtn" action="checklistsTable.addChecklist"/>-->
-                        <!--                            <button id="editBtn" action="checklistsTable.edit"/>-->
-                        <!--                            <button id="removeBtn" action="checklistsTable.remove"/>-->
-                        <!--                        </buttonsPanel>-->
+                        <buttonsPanel id="regressButtonsPanel"
+                                      alwaysVisible="true">
+                            <button id="regressCreateBtn" action="regressChecklistsTable.create"/>
+                            <button id="regressEditBtn" action="regressChecklistsTable.edit"/>
+                            <button id="regressRemoveBtn" action="regressChecklistsTable.remove"/>
+                        </buttonsPanel>
                     </groupTable>
                 </vbox>
             </tab>

@@ -8,12 +8,7 @@ import com.haulmont.cuba.gui.screen.UiDescriptor;
 
 @UiController("quarium_RegressChecklist.edit")
 @UiDescriptor("regress-checklist-edit.xml")
-@EditedEntityContainer("regressChecklistDc")
+@EditedEntityContainer("checklistDc")
 @LoadDataBeforeShow
 public class RegressChecklistEdit extends ExtChecklistEdit {
-    @Override
-    protected void initMasterDetailScreen(InitEvent event) {
-        super.initMasterDetailScreen(event);
-        isUsedInRegress.setVisible(false);
-    }
 }

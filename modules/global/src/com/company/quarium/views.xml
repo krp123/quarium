@@ -143,7 +143,26 @@
         <property name="state" view="_minimal"/>
         <property name="assignedQa" view="_minimal"/>
         <property name="module" view="_minimal"/>
-        <property name="testCase" view="_minimal"/>
-        <property name="project" view="_minimal"/>
+        <property name="testCase" view="_minimal">
+            <property name="comment"/>
+            <property name="ticket"/>
+            <property name="caseStep" view="_minimal">
+                <property name="step"/>
+                <property name="creationDate"/>
+            </property>
+            <property name="hours"/>
+            <property name="minutes"/>
+            <property name="priority" view="_minimal"/>
+            <property name="state" view="_minimal"/>
+            <property name="expectedResult"/>
+        </property>
+        <property name="project" view="_minimal">
+            <property name="module" view="_minimal"/>
+            <property name="checklist" view="_minimal"/>
+            <property name="currentRelease"/>
+            <property name="qa" view="_minimal"/>
+            <property name="configuration" view="_minimal"/>
+            <property name="description"/>
+        </property>
     </view>
 </views>
