@@ -185,11 +185,18 @@ public class ProjectEdit extends StandardEditor<Project> {
                         checkBox.setWidth("100px");
 
                         checkBox.setValue(checklist.getIsUsedInRegress());
-                        if (checklist.getIsUsedInRegress()) {
+                        if (checklist.getIsUsedInRegress() != null
+                                && checklist.getIsUsedInRegress()) {
                             boolean parentExists = false;
                             for (Checklist regress : regressChecklistDc.getMutableItems()) {
                                 if (regress.getParentCard().equals(checklist)) {
                                     parentExists = true;
+//                                    List<TestCase> fromParent = regress.getParentCard().getTestCase().stream().filter(s ->
+//                                            s.getPriority().getId().toString().equals("e2e009c7-4f9c-be4a-6b0e-a9d7c9db7dd0")).collect(Collectors.toList());
+//                                    List<TestCase> fromRegress = regress.getTestCase();
+//                                    for (TestCase tc : fromParent) {
+//
+//                                    } TODO доделать
                                 }
                             }
                             if (!parentExists) {

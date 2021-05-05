@@ -80,7 +80,7 @@
                                        maxTextLength="40"/>
                     </hbox>
                     <checkBox id="isUsedInRegress" dataContainer="checklistDc" property="isUsedInRegress"
-                              caption="msg://checklistEdit.isUsedInRegress"/>
+                              caption="msg://checklistEdit.isUsedInRegress" visible="false"/>
                 </row>
                 <row>
                     <hbox caption="msg://checklistEdit.estimation" width="90%" spacing="true"

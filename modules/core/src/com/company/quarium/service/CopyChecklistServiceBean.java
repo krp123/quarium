@@ -74,11 +74,17 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
                     }
                     newTC.setExpectedResult(tc.getName());
                     newTC.setPriority(tc.getPriority());
+                    newTC.setCreationDate(tc.getCreationDate());
                     tcList.add(newTC);
                 }
             }
             checklistNew.setTestCase(tcList);
         }
         return checklistNew;
+    }
+
+    @Override
+    public void copyTestCaseToChecklist(Checklist checklist, TestCase testCase) {
+
     }
 }

@@ -14,6 +14,7 @@ import com.haulmont.cuba.core.entity.BaseGenericIdEntity;
 import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.Notifications;
+import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.actions.list.CreateAction;
 import com.haulmont.cuba.gui.actions.list.EditAction;
 import com.haulmont.cuba.gui.components.*;
@@ -44,6 +45,8 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
 
     @Inject
     private InstanceContainer<TestCase> testCaseDc;
+    @Inject
+    private CollectionContainer<TestCase> testCasesDc;
     @Inject
     private CollectionContainer<Step> stepsCollection;
     @Inject
@@ -78,6 +81,10 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     protected CheckBox isUsedInRegress;
     @Inject
     private CopyChecklistService copyChecklistService;
+    @Inject
+    private Metadata metadata;
+    @Inject
+    private ScreenBuilders screenBuilders;
 
 
     @Subscribe
@@ -117,39 +124,6 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         getEditedEntity().setHours(checklistHours);
         getEditedEntity().setMinutes(checklistMinutes);
     }
-
-//    @Override
-//    protected Subscription addAfterCommitChangesListener(Consumer<AfterCommitChangesEvent> listener) {
-//        if (isUsedInRegress.isChecked()) {
-//            RegressChecklist checklistNew = copyChecklistService.copyChecklistToRegress(getEditedEntity());
-////            regressChecklistDc.getMutableItems().add(checklistNew);
-//        } else {
-//            List<RegressChecklist> mutableItems = new ArrayList<>(getEditedEntity().getProject().getRegressChecklist());
-//            for (RegressChecklist cl : mutableItems) {
-//                if (cl.getParentCard().equals(getEditedEntity())) {
-////                    regressChecklistDc.getMutableItems().remove(cl);
-//                    dataManager.remove(cl);
-//                }
-//            }
-//        }
-//    }
-//
-//    @Subscribe("isUsedInRegress")
-//    public void onIsUsedInRegressValueChange(HasValue.ValueChangeEvent<Boolean> event) {
-//        if (isUsedInRegress.isChecked()) {
-//            RegressChecklist checklistNew = copyChecklistService.copyChecklistToRegress(getEditedEntity());
-////            regressChecklistDc.getMutableItems().add(checklistNew);
-//        } else {
-//            List<RegressChecklist> mutableItems = new ArrayList<>(getEditedEntity().getProject().getRegressChecklist());
-//            for (RegressChecklist cl : mutableItems) {
-//                if (cl.getParentCard().equals(getEditedEntity())) {
-////                    regressChecklistDc.getMutableItems().remove(cl);
-//                    dataManager.remove(cl);
-//                }
-//            }
-//        }
-//    }
-
 
     protected ListComponent<TestCase> getTable() {
         return (ListComponent) table;
@@ -274,6 +248,16 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         stepsCollection.getMutableItems().add(entity);
     }
 
+//    @Install(to = "table.create", subject = "initializer")
+//    private void tableCreateInitializer(TestCase testCase) {
+//        testCase.setCreationDate(timeSource.currentTimestamp());
+//    }
+//
+//    @Subscribe("table.create")
+//    public void onTableCreate(Action.ActionPerformedEvent event) {
+//
+//    }
+
 
     protected void initBrowseCreateAction() {
         ListComponent<TestCase> table = getTable();
@@ -281,6 +265,7 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         createAction.withHandler(actionPerformedEvent -> {
             TestCase entity = getBeanLocator().get(Metadata.class).create(getEntityClass());
             entity.setChecklist(getEditedEntityContainer().getItem());
+            entity.setCreationDate(timeSource.currentTimestamp());
             TestCase trackedEntity = getScreenData().getDataContext().merge(entity);
 
             DynamicAttributesGuiTools tools = getBeanLocator().get(DynamicAttributesGuiTools.NAME);
