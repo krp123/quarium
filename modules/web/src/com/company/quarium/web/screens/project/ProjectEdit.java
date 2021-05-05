@@ -3,6 +3,7 @@ package com.company.quarium.web.screens.project;
 import com.company.quarium.entity.checklist.Checklist;
 import com.company.quarium.entity.checklist.RegressChecklist;
 import com.company.quarium.entity.checklist.SimpleChecklist;
+import com.company.quarium.entity.checklist.TestCase;
 import com.company.quarium.entity.project.ConfigurationProjectRelationship;
 import com.company.quarium.entity.project.Project;
 import com.company.quarium.entity.project.QaProjectRelationship;
@@ -22,6 +23,7 @@ import com.haulmont.cuba.gui.screen.*;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @UiController("quarium_Project.edit")
 @UiDescriptor("project-edit.xml")
@@ -191,12 +193,20 @@ public class ProjectEdit extends StandardEditor<Project> {
                             for (Checklist regress : regressChecklistDc.getMutableItems()) {
                                 if (regress.getParentCard().equals(checklist)) {
                                     parentExists = true;
-//                                    List<TestCase> fromParent = regress.getParentCard().getTestCase().stream().filter(s ->
-//                                            s.getPriority().getId().toString().equals("e2e009c7-4f9c-be4a-6b0e-a9d7c9db7dd0")).collect(Collectors.toList());
-//                                    List<TestCase> fromRegress = regress.getTestCase();
-//                                    for (TestCase tc : fromParent) {
-//
-//                                    } TODO доделать. Сделать один цикл вложенный во второй. Завести булеан переменную. Если после вложенного цикла она false, то вызывать сервис копирования
+                                    List<TestCase> fromParent = regress.getParentCard().getTestCase().stream().filter(s ->
+                                            s.getPriority().getId().toString().equals("e2e009c7-4f9c-be4a-6b0e-a9d7c9db7dd0")).collect(Collectors.toList());
+                                    List<TestCase> fromRegress = regress.getTestCase();
+                                    for (TestCase tcParent : fromParent) {
+                                        boolean listHasCase = false;
+                                        for (TestCase tcRegress : fromRegress) {
+                                            if (tcParent.getCreationDate().equals(tcRegress.getCreationDate()))
+                                                listHasCase = true;
+                                        }
+
+                                        if (!listHasCase) {
+                                            regress.setTestCase(copyChecklistService.copyTestCaseToChecklist(regress, tcParent));
+                                        }
+                                    }
                                 }
                             }
                             if (!parentExists) {
@@ -236,11 +246,9 @@ public class ProjectEdit extends StandardEditor<Project> {
                                             }
                                         }
                                     }
-                                    //TODO один механизм использутся 2 раза. Придумать, как упростить
+                            //TODO один механизм использутся 2 раза. Придумать, как упростить. Отрефакторить
                                 }
                         );
-
-
                         return checkBox;
                     }
                 });

@@ -97,6 +97,7 @@
             </property>
             <property name="ticket"/>
             <property name="comment"/>
+            <property name="creationDate"/>
         </property>
         <property name="module" view="_local"/>
         <property name="parentCard" view="_minimal"/>
@@ -155,6 +156,7 @@
             <property name="priority" view="_minimal"/>
             <property name="state" view="_minimal"/>
             <property name="expectedResult"/>
+            <property name="creationDate"/>
         </property>
         <property name="project" view="_minimal">
             <property name="module" view="_minimal"/>
