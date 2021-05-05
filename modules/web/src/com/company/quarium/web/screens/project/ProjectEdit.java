@@ -199,7 +199,8 @@ public class ProjectEdit extends StandardEditor<Project> {
                                     for (TestCase tcParent : fromParent) {
                                         boolean listHasCase = false;
                                         for (TestCase tcRegress : fromRegress) {
-                                            if (tcParent.getCreationDate().equals(tcRegress.getCreationDate()))
+                                            if (tcParent.getCreationDate() != null &&
+                                                    tcParent.getCreationDate().equals(tcRegress.getCreationDate()))
                                                 listHasCase = true;
                                         }
 
@@ -210,17 +211,10 @@ public class ProjectEdit extends StandardEditor<Project> {
                                 }
                             }
                             if (!parentExists) {
-                                RegressChecklist checklistNew = copyChecklistService.copyChecklistToRegress(checklist);
-                                regressChecklistDc.getMutableItems().add(checklistNew);
+                                copyChecklistToRegress(checklist);
                             }
                         } else {
-                            List<RegressChecklist> mutableItems = new ArrayList<>(regressChecklistDc.getMutableItems());
-                            for (RegressChecklist cl : mutableItems) {
-                                if (cl.getParentCard().equals(checklist)) {
-                                    regressChecklistDc.getMutableItems().remove(cl);
-                                    dataManager.remove(cl);
-                                }
-                            }
+                            removeChecklist(checklist);
                         }
 
                         checkBox.addValueChangeListener(e -> {
@@ -234,23 +228,30 @@ public class ProjectEdit extends StandardEditor<Project> {
                                             }
                                         }
                                         if (!parentExists) {
-                                            RegressChecklist checklistNew = copyChecklistService.copyChecklistToRegress(checklist);
-                                            regressChecklistDc.getMutableItems().add(checklistNew);
+                                            copyChecklistToRegress(checklist);
                                         }
                                     } else {
-                                        List<RegressChecklist> mutableItems = new ArrayList<>(regressChecklistDc.getMutableItems());
-                                        for (RegressChecklist cl : mutableItems) {
-                                            if (cl.getParentCard().equals(checklist)) {
-                                                regressChecklistDc.getMutableItems().remove(cl);
-                                                dataManager.remove(cl);
-                                            }
-                                        }
+                                        removeChecklist(checklist);
                                     }
-                            //TODO один механизм использутся 2 раза. Придумать, как упростить. Отрефакторить
                                 }
                         );
                         return checkBox;
                     }
                 });
+    }
+
+    private void copyChecklistToRegress(Checklist checklist) {
+        RegressChecklist checklistNew = copyChecklistService.copyChecklistToRegress(checklist);
+        regressChecklistDc.getMutableItems().add(checklistNew);
+    }
+
+    private void removeChecklist(Checklist checklist) {
+        List<RegressChecklist> mutableItems = new ArrayList<>(regressChecklistDc.getMutableItems());
+        for (RegressChecklist cl : mutableItems) {
+            if (cl.getParentCard().equals(checklist)) {
+                regressChecklistDc.getMutableItems().remove(cl);
+                dataManager.remove(cl);
+            }
+        }
     }
 }

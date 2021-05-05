@@ -248,17 +248,6 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         stepsCollection.getMutableItems().add(entity);
     }
 
-//    @Install(to = "table.create", subject = "initializer")
-//    private void tableCreateInitializer(TestCase testCase) {
-//        testCase.setCreationDate(timeSource.currentTimestamp());
-//    }
-//
-//    @Subscribe("table.create")
-//    public void onTableCreate(Action.ActionPerformedEvent event) {
-//
-//    }
-
-
     protected void initBrowseCreateAction() {
         ListComponent<TestCase> table = getTable();
         CreateAction createAction = (CreateAction) table.getActionNN("create");

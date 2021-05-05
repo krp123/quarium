@@ -194,6 +194,7 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
         createAction.withHandler(actionPerformedEvent -> {
             TestCase entity = getBeanLocator().get(Metadata.class).create(getEntityClass());
             entity.setChecklist(getEditedEntityContainer().getItem());
+            entity.setCreationDate(timeSource.currentTimestamp());
             TestCase trackedEntity = getScreenData().getDataContext().merge(entity);
 
             DynamicAttributesGuiTools tools = getBeanLocator().get(DynamicAttributesGuiTools.NAME);

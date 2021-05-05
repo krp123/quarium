@@ -39,6 +39,7 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
                     newTC.setCaseStep(newSteps);
                 }
                 newTC.setExpectedResult(tc.getName());
+                newTC.setCreationDate(tc.getCreationDate());
                 tcList.add(newTC);
             }
             checklistNew.setTestCase(tcList);
@@ -58,24 +59,7 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
             for (TestCase tc : checklist.getTestCase()) {
                 if (tc.getPriority() != null &&
                         tc.getPriority().getId().toString().equals("e2e009c7-4f9c-be4a-6b0e-a9d7c9db7dd0")) {
-                    TestCase newTC = dataManager.create(TestCase.class);
-                    newTC.setChecklist(checklistNew);
-                    newTC.setName(tc.getName());
-                    if (tc.getCaseStep() != null) {
-                        List<Step> newSteps = new ArrayList<>();
-                        for (Step step : tc.getCaseStep()) {
-                            Step newStep = dataManager.create(Step.class);
-                            newStep.setStep(step.getStep());
-                            newStep.setCreationDate(step.getCreationDate());
-                            newStep.setTestCase(newTC);
-                            newSteps.add(newStep);
-                        }
-                        newTC.setCaseStep(newSteps);
-                    }
-                    newTC.setExpectedResult(tc.getName());
-                    newTC.setPriority(tc.getPriority());
-                    newTC.setCreationDate(tc.getCreationDate());
-                    tcList.add(newTC);
+                    copyTestCase(checklistNew, tcList, tc);
                 }
             }
             checklistNew.setTestCase(tcList);
@@ -86,25 +70,29 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
     @Override
     public List<TestCase> copyTestCaseToChecklist(Checklist checklist, TestCase testCase) {
         List<TestCase> tcList = checklist.getTestCase();
-        TestCase newTestCase = dataManager.create(TestCase.class);
-        newTestCase.setChecklist(checklist);
-        newTestCase.setName(testCase.getName());
-        if (testCase.getCaseStep() != null) {
+        copyTestCase(checklist, tcList, testCase);
+        return tcList;
+
+    }
+
+    private void copyTestCase(Checklist checklistNew, List<TestCase> tcList, TestCase tc) {
+        TestCase newTC = dataManager.create(TestCase.class);
+        newTC.setChecklist(checklistNew);
+        newTC.setName(tc.getName());
+        if (tc.getCaseStep() != null) {
             List<Step> newSteps = new ArrayList<>();
-            for (Step step : testCase.getCaseStep()) {
+            for (Step step : tc.getCaseStep()) {
                 Step newStep = dataManager.create(Step.class);
                 newStep.setStep(step.getStep());
                 newStep.setCreationDate(step.getCreationDate());
-                newStep.setTestCase(newTestCase);
+                newStep.setTestCase(newTC);
                 newSteps.add(newStep);
             }
-            newTestCase.setCaseStep(newSteps);
+            newTC.setCaseStep(newSteps);
         }
-        newTestCase.setExpectedResult(testCase.getName());
-        newTestCase.setPriority(testCase.getPriority());
-        newTestCase.setCreationDate(testCase.getCreationDate());
-        tcList.add(newTestCase);
-        return tcList;
-
-    }//TODO вставить этот метод в copyChecklistToRegress()
+        newTC.setExpectedResult(tc.getName());
+        newTC.setPriority(tc.getPriority());
+        newTC.setCreationDate(tc.getCreationDate());
+        tcList.add(newTC);
+    }
 }
