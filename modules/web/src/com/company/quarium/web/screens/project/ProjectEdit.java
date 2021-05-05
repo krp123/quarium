@@ -62,6 +62,9 @@ public class ProjectEdit extends StandardEditor<Project> {
     private Table<SimpleChecklist> checklistsTable;
 
     @Inject
+    private Table<QaProjectRelationship> statisticsTable;
+
+    @Inject
     private UiComponents uiComponents;
 
     @Subscribe("qaProjectRelationshipsTable.addQa")
@@ -179,6 +182,62 @@ public class ProjectEdit extends StandardEditor<Project> {
                     }
                 });
 
+        statisticsTable.addGeneratedColumn("timeTotal",
+                new Table.ColumnGenerator<QaProjectRelationship>() {
+                    @Override
+                    public Component generateCell(QaProjectRelationship qa) {
+                        Label label = uiComponents.create(Label.NAME);
+                        List<Checklist> qaChecklists = regressChecklistDc.getMutableItems().stream()
+                                .filter(s -> {
+                                    if (s.getAssignedQa() != null)
+                                        return s.getAssignedQa().equals(qa);
+
+                                    return false;
+                                })
+                                .collect(Collectors.toList());
+                        int totalTime = 0;
+                        for (Checklist cl : qaChecklists) {
+                            totalTime += cl.getHours() * 60 + cl.getMinutes();
+                        }
+
+                        int hours = totalTime / 60;
+                        int minutes = totalTime % 60;
+                        label.setValue(hours + "ч " + minutes + "м");
+                        return label;
+                    }
+                });
+
+        statisticsTable.addGeneratedColumn("timeLeft",
+                new Table.ColumnGenerator<QaProjectRelationship>() {
+                    @Override
+                    public Component generateCell(QaProjectRelationship qa) {
+                        Label label = uiComponents.create(Label.NAME);
+                        List<Checklist> qaChecklists = regressChecklistDc.getMutableItems().stream()
+                                .filter(s -> {
+                                    if (s.getAssignedQa() != null)
+                                        return s.getAssignedQa().equals(qa);
+
+                                    return false;
+                                })
+                                .filter(s -> {
+                                    if (s.getState() != null)
+                                        return !s.getState().getId().toString().equals("d9d8fd34-068d-99db-5adc-9d95731bc419");
+
+                                    return false;
+                                })
+                                .collect(Collectors.toList());
+                        int totalTime = 0;
+                        for (Checklist cl : qaChecklists) {
+                            totalTime += cl.getHours() * 60 + cl.getMinutes();
+                        }
+
+                        int hours = totalTime / 60;
+                        int minutes = totalTime % 60;
+                        label.setValue(hours + "ч " + minutes + "м");
+                        return label;
+                    }
+                });
+
         checklistsTable.addGeneratedColumn("isUsedInRegress",
                 new Table.ColumnGenerator<Checklist>() {
                     @Override
@@ -193,8 +252,11 @@ public class ProjectEdit extends StandardEditor<Project> {
                             for (Checklist regress : regressChecklistDc.getMutableItems()) {
                                 if (regress.getParentCard().equals(checklist)) {
                                     parentExists = true;
-                                    List<TestCase> fromParent = regress.getParentCard().getTestCase().stream().filter(s ->
-                                            s.getPriority().getId().toString().equals("e2e009c7-4f9c-be4a-6b0e-a9d7c9db7dd0")).collect(Collectors.toList());
+                                    List<TestCase> fromParent = new ArrayList<>();
+                                    if (regress.getParentCard() != null) {
+                                        fromParent = regress.getParentCard().getTestCase().stream().filter(s ->
+                                                s.getPriority().getId().toString().equals("e2e009c7-4f9c-be4a-6b0e-a9d7c9db7dd0")).collect(Collectors.toList());
+                                    }
                                     List<TestCase> fromRegress = regress.getTestCase();
                                     for (TestCase tcParent : fromParent) {
                                         boolean listHasCase = false;

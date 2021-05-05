@@ -159,6 +159,8 @@ public class Checklist extends StandardEntity {
     @PostConstruct
     private void initState(DataManager dataManager) {
         setState(dataManager.load(Statement.class).id(UUID.fromString("31c599f1-c1b0-30ae-add1-5c6e4b354276")).one());
+        setMinutes(0);
+        setHours(0);
     }
 
     public Project getProject() {

@@ -86,11 +86,11 @@
                     <hbox caption="msg://checklistEdit.estimation" width="90%" spacing="true"
                           expand="checklistMinLabel">
                         <textField id="checklistHours" property="hours" width="50"
-                                   dataContainer="checklistDc"/>
+                                   dataContainer="checklistDc" required="true"/>
                         <label value="msg://checklistEdit.hoursLabel" align="BOTTOM_LEFT"
                                width="20"/>
                         <textField id="checklistMinutes" property="minutes" width="50"
-                                   dataContainer="checklistDc"/>
+                                   dataContainer="checklistDc" required="true"/>
                         <label id="checklistMinLabel" value="msg://checklistEdit.minutesLabel"
                                align="BOTTOM_LEFT"/>
                         <button action="getEstimation" id="button"

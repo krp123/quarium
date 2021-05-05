@@ -165,6 +165,21 @@
                 </vbox>
             </tab>
             <tab id="regress" caption="msg://projectEdit.regress" margin="true,false,false,false" spacing="true">
+                <groupBox id="statistics" caption="msg://com.company.quarium.entity/Project.statistics"
+                          width="100%" height="AUTO" collapsable="true">
+                    <table id="statisticsTable"
+                           width="100%"
+                           height="AUTO"
+                           dataContainer="qaProjectDc">
+                        <columns>
+                            <column id="qa"/>
+                            <column id="timeLeft" caption="msg://projectEdit.timeLeft"/>
+                            <column id="timeTotal" caption="msg://projectEdit.timeTotal"/>
+                        </columns>
+                        <rows/>
+                    </table>
+
+                </groupBox>
                 <vbox id="regressChecklistBox" caption="msg://com.company.quarium.entity/Project.checklists"
                       width="100%" height="100%" margin="true">
                     <groupTable id="regressChecklistsTable"

@@ -43,6 +43,8 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
                 tcList.add(newTC);
             }
             checklistNew.setTestCase(tcList);
+            checklistNew.setMinutes(checklist.getMinutes());
+            checklistNew.setHours(checklist.getHours());
         }
         return checklistNew;
     }
@@ -53,6 +55,11 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
         checklistNew.setName(checklist.getName());
         checklistNew.setParentCard(checklist);
         checklistNew.setRegressProject(checklist.getProject());
+        checklistNew.setAssignedQa(checklist.getAssignedQa());
+        checklistNew.setComment(checklist.getComment());
+        checklistNew.setHours(checklist.getHours());
+        checklistNew.setMinutes(checklist.getMinutes());
+        checklistNew.setModule(checklist.getModule());
 
         if (checklist.getTestCase() != null) {
             List<TestCase> tcList = new ArrayList<>();
