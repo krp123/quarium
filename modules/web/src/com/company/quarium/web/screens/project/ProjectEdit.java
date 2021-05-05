@@ -196,7 +196,7 @@ public class ProjectEdit extends StandardEditor<Project> {
 //                                    List<TestCase> fromRegress = regress.getTestCase();
 //                                    for (TestCase tc : fromParent) {
 //
-//                                    } TODO доделать
+//                                    } TODO доделать. Сделать один цикл вложенный во второй. Завести булеан переменную. Если после вложенного цикла она false, то вызывать сервис копирования
                                 }
                             }
                             if (!parentExists) {
