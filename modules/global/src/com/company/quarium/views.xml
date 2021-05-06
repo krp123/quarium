@@ -11,8 +11,12 @@
         </property>
         <property name="priority" view="_minimal"/>
         <property name="state" view="_minimal"/>
-        <property name="checklist" view="_minimal"/>
-        <property name="ticket"/>
+        <property name="checklist" view="_minimal">
+            <property name="project" view="_minimal"/>
+            <property name="parentCard" view="_minimal">
+                <property name="project" view="_minimal"/>
+            </property>
+        </property>
     </view>
     <view entity="quarium_TestCase" name="testCase-edit" extends="_local">
         <property name="priority" view="_minimal"/>

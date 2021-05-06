@@ -13,6 +13,7 @@
             <xs:attribute name="dataContainer" type="xs:string"/>
             <xs:attribute name="property" type="xs:string"/>
             <xs:attribute name="maxTextLength" type="xs:int"/>
+            <xs:attribute name="editable" type="xs:boolean"/>
         </xs:complexType>
     </xs:element>
 </xs:schema>

@@ -21,6 +21,15 @@
             <collection id="modulesDc" property="module"/>
             <collection id="regressChecklistDc" property="regressChecklist"/>
         </instance>
+        <collection id="bugsDc" class="com.company.quarium.entity.checklist.TestCase" view="testCase-view">
+            <loader id="bugsDl">
+                <query>
+                    <![CDATA[select e from quarium_TestCase e
+                    where e.checklist.parentCard.project = :project
+                    and e.state.id = 'cd85906d-6fbe-3e8d-8602-bf1af8e1ea53']]>
+                </query>
+            </loader>
+        </collection>
     </data>
     <dialogMode height="600"
                 width="800"/>
@@ -165,21 +174,40 @@
                 </vbox>
             </tab>
             <tab id="regress" caption="msg://projectEdit.regress" margin="true,false,false,false" spacing="true">
-                <groupBox id="statistics" caption="msg://com.company.quarium.entity/Project.statistics"
-                          width="100%" height="AUTO" collapsable="true">
-                    <table id="statisticsTable"
-                           width="100%"
-                           height="AUTO"
-                           dataContainer="qaProjectDc">
-                        <columns>
-                            <column id="qa"/>
-                            <column id="timeLeft" caption="msg://projectEdit.timeLeft"/>
-                            <column id="timeTotal" caption="msg://projectEdit.timeTotal"/>
-                        </columns>
-                        <rows/>
-                    </table>
-
-                </groupBox>
+                <form id="statisticsForm" width="100%"
+                      height="AUTO">
+                    <column>
+                        <groupBox caption="msg://com.company.quarium.entity/Project.qaStatistics" collapsable="true">
+                            <table id="qaStatisticsTable"
+                                   width="100%"
+                                   height="AUTO"
+                                   dataContainer="qaProjectDc">
+                                <columns>
+                                    <column id="qa"/>
+                                    <column id="timeLeft" caption="msg://projectEdit.timeLeft"/>
+                                    <column id="timeTotal" caption="msg://projectEdit.timeTotal"/>
+                                </columns>
+                                <rows/>
+                            </table>
+                        </groupBox>
+                    </column>
+                    <column>
+                        <groupBox caption="msg://projectEdit.bugs" collapsable="true">
+                            <table id="bugsTable"
+                                   width="100%"
+                                   height="AUTO"
+                                   dataContainer="bugsDc">
+                                <columns>
+                                    <column id="name"
+                                            link="true"
+                                            linkScreen="quarium_TestCase.edit"
+                                            linkScreenOpenType="DIALOG"/>
+                                </columns>
+                                <rows/>
+                            </table>
+                        </groupBox>
+                    </column>
+                </form>
                 <vbox id="regressChecklistBox" caption="msg://com.company.quarium.entity/Project.checklists"
                       width="100%" height="100%" margin="true">
                     <groupTable id="regressChecklistsTable"

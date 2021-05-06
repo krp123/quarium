@@ -16,6 +16,7 @@ import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.CollectionContainer;
+import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.model.DataContext;
 import com.haulmont.cuba.gui.model.InstanceContainer;
 import com.haulmont.cuba.gui.screen.*;
@@ -62,10 +63,18 @@ public class ProjectEdit extends StandardEditor<Project> {
     private Table<SimpleChecklist> checklistsTable;
 
     @Inject
-    private Table<QaProjectRelationship> statisticsTable;
+    private Table<QaProjectRelationship> qaStatisticsTable;
 
     @Inject
     private UiComponents uiComponents;
+
+    @Inject
+    private CollectionLoader<TestCase> bugsDl;
+
+    @Subscribe
+    protected void onBeforeShow(BeforeShowEvent event) {
+        bugsDl.setParameter("project", getEditedEntity());
+    }
 
     @Subscribe("qaProjectRelationshipsTable.addQa")
     protected void onAddQa(Action.ActionPerformedEvent event) {
@@ -182,7 +191,7 @@ public class ProjectEdit extends StandardEditor<Project> {
                     }
                 });
 
-        statisticsTable.addGeneratedColumn("timeTotal",
+        qaStatisticsTable.addGeneratedColumn("timeTotal",
                 new Table.ColumnGenerator<QaProjectRelationship>() {
                     @Override
                     public Component generateCell(QaProjectRelationship qa) {
@@ -207,7 +216,7 @@ public class ProjectEdit extends StandardEditor<Project> {
                     }
                 });
 
-        statisticsTable.addGeneratedColumn("timeLeft",
+        qaStatisticsTable.addGeneratedColumn("timeLeft",
                 new Table.ColumnGenerator<QaProjectRelationship>() {
                     @Override
                     public Component generateCell(QaProjectRelationship qa) {
