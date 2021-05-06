@@ -12,6 +12,7 @@ import com.company.quarium.entity.references.Qa;
 import com.company.quarium.service.CopyChecklistService;
 import com.company.quarium.web.screens.checklist.ExtChecklistEdit;
 import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.gui.Dialogs;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.components.*;
@@ -34,42 +35,32 @@ public class ProjectEdit extends StandardEditor<Project> {
 
     @Inject
     protected ScreenBuilders screenBuilders;
-
     @Inject
     protected DataContext dataContext;
-
     @Inject
     protected CollectionContainer<QaProjectRelationship> qaProjectDc;
-
     @Inject
     protected CollectionContainer<ConfigurationProjectRelationship> configurationProjectDc;
-
     @Inject
     protected InstanceContainer<Project> projectDc;
-
     @Inject
     private CollectionContainer<SimpleChecklist> checklistsDc;
-
     @Inject
     private CollectionContainer<RegressChecklist> regressChecklistDc;
-
     @Inject
     private DataManager dataManager;
-
     @Inject
     private CopyChecklistService copyChecklistService;
-
     @Inject
     private Table<SimpleChecklist> checklistsTable;
-
     @Inject
     private Table<QaProjectRelationship> qaStatisticsTable;
-
     @Inject
     private UiComponents uiComponents;
-
     @Inject
     private CollectionLoader<TestCase> bugsDl;
+    @Inject
+    private Dialogs dialogs;
 
     @Subscribe
     protected void onBeforeShow(BeforeShowEvent event) {
@@ -289,9 +280,9 @@ public class ProjectEdit extends StandardEditor<Project> {
                         }
 
                         checkBox.addValueChangeListener(e -> {
-                                    checklist.setIsUsedInRegress(e.getValue());
 
                                     if (e.getValue()) {
+                                        checklist.setIsUsedInRegress(e.getValue());
                                         boolean parentExists = false;
                                         for (Checklist regress : regressChecklistDc.getMutableItems()) {
                                             if (regress.getParentCard().equals(checklist)) {
@@ -302,8 +293,20 @@ public class ProjectEdit extends StandardEditor<Project> {
                                             copyChecklistToRegress(checklist);
                                         }
                                     } else {
-                                        removeChecklist(checklist);
+                                        dialogs.createOptionDialog()
+                                                .withCaption("Внимание")
+                                                .withMessage("Снятие атрибута повлечет за собой удаление чек-листа с вкладки Регресс. " +
+                                                        "Вы уверены?")
+                                                .withActions(
+                                                        new DialogAction(DialogAction.Type.YES, Action.Status.PRIMARY).withHandler(d -> {
+                                                            checklist.setIsUsedInRegress(e.getValue());
+                                                            removeChecklist(checklist);
+                                                        }),
+                                                        new DialogAction(DialogAction.Type.NO)
+                                                )
+                                                .show();//TODO доделать диалоговое окно
                                     }
+
                                 }
                         );
                         return checkBox;
