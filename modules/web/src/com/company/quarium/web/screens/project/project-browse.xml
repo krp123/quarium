@@ -5,11 +5,11 @@
         messagesPack="com.company.quarium.web.screens.project">
     <data readOnly="true">
         <collection id="projectsDc"
-                    class="com.company.quarium.entity.project.Project">
+                    class="com.company.quarium.entity.project.SimpleProject">
             <view extends="_local"/>
             <loader id="projectsDl">
                 <query>
-                    <![CDATA[select e from quarium_Project e]]>
+                    <![CDATA[select e from quarium_SimpleProject e]]>
                 </query>
             </loader>
         </collection>

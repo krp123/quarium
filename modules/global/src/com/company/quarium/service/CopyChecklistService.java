@@ -5,6 +5,7 @@ import com.company.quarium.entity.checklist.RegressChecklist;
 import com.company.quarium.entity.checklist.SimpleChecklist;
 import com.company.quarium.entity.checklist.TestCase;
 import com.company.quarium.entity.project.Project;
+import com.company.quarium.entity.project.ProjectVersion;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface CopyChecklistService {
     RegressChecklist copyChecklistToRegress(Checklist checklist);
 
     List<TestCase> copyTestCaseToChecklist(Checklist checklist, TestCase testCase);
+
+    ProjectVersion copyProjectToReleases(Project oldProject);
 }

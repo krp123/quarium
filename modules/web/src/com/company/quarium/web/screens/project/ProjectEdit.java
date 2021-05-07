@@ -4,9 +4,7 @@ import com.company.quarium.entity.checklist.Checklist;
 import com.company.quarium.entity.checklist.RegressChecklist;
 import com.company.quarium.entity.checklist.SimpleChecklist;
 import com.company.quarium.entity.checklist.TestCase;
-import com.company.quarium.entity.project.ConfigurationProjectRelationship;
-import com.company.quarium.entity.project.Project;
-import com.company.quarium.entity.project.QaProjectRelationship;
+import com.company.quarium.entity.project.*;
 import com.company.quarium.entity.references.Configuration;
 import com.company.quarium.entity.references.Qa;
 import com.company.quarium.service.CopyChecklistService;
@@ -16,10 +14,7 @@ import com.haulmont.cuba.gui.Dialogs;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.components.*;
-import com.haulmont.cuba.gui.model.CollectionContainer;
-import com.haulmont.cuba.gui.model.CollectionLoader;
-import com.haulmont.cuba.gui.model.DataContext;
-import com.haulmont.cuba.gui.model.InstanceContainer;
+import com.haulmont.cuba.gui.model.*;
 import com.haulmont.cuba.gui.screen.*;
 
 import javax.inject.Inject;
@@ -27,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@UiController("quarium_Project.edit")
+@UiController("quarium_SimpleProject.edit")
 @UiDescriptor("project-edit.xml")
 @EditedEntityContainer("projectDc")
 @LoadDataBeforeShow
@@ -42,7 +37,7 @@ public class ProjectEdit extends StandardEditor<Project> {
     @Inject
     protected CollectionContainer<ConfigurationProjectRelationship> configurationProjectDc;
     @Inject
-    protected InstanceContainer<Project> projectDc;
+    protected InstanceContainer<SimpleProject> projectDc;
     @Inject
     private CollectionContainer<SimpleChecklist> checklistsDc;
     @Inject
@@ -61,6 +56,28 @@ public class ProjectEdit extends StandardEditor<Project> {
     private CollectionLoader<TestCase> bugsDl;
     @Inject
     private Dialogs dialogs;
+    @Inject
+    private Button addNewVersion;
+    @Inject
+    private CollectionPropertyContainer<ProjectVersion> versionsDc;
+
+    @Subscribe("addNewVersion")
+    public void onAddNewVersionClick(Button.ClickEvent event) {
+        dialogs.createOptionDialog()
+                .withCaption("Внимание")
+                .withMessage("Данная версия проекта будет перемещена на вкладку Релизы. Все поля будут обнулены." +
+                        " Вы уверены?")
+                .withActions(
+                        new DialogAction(DialogAction.Type.YES, Action.Status.PRIMARY).withHandler(d -> {
+                            ProjectVersion newVersion = copyChecklistService.copyProjectToReleases(getEditedEntity());
+                            versionsDc.getMutableItems().add(newVersion);
+                            //TODO доделать сброс полей в проекте
+                        }),
+                        new DialogAction(DialogAction.Type.NO)
+                )
+                .show();
+
+    }
 
     @Subscribe
     protected void onBeforeShow(BeforeShowEvent event) {
@@ -79,6 +96,7 @@ public class ProjectEdit extends StandardEditor<Project> {
                 .build()
                 .show();
     }
+
 
     @Subscribe("configurationProjectRelationshipsTable.addConfiguration")
     protected void onAddConfiguration(Action.ActionPerformedEvent event) {

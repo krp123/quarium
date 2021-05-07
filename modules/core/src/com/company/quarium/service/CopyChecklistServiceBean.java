@@ -1,7 +1,7 @@
 package com.company.quarium.service;
 
 import com.company.quarium.entity.checklist.*;
-import com.company.quarium.entity.project.Project;
+import com.company.quarium.entity.project.*;
 import com.haulmont.cuba.core.global.DataManager;
 import org.springframework.stereotype.Service;
 
@@ -80,6 +80,94 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
         copyTestCase(checklist, tcList, testCase);
         return tcList;
 
+    }
+
+    @Override
+    public ProjectVersion copyProjectToReleases(Project oldProject) {
+        ProjectVersion release = dataManager.create(ProjectVersion.class);
+        release.setProjectName(oldProject.getProjectName());
+        release.setCurrentRelease(oldProject.getCurrentRelease());
+        release.setDescription(oldProject.getDescription());
+        release.setVersionOf(oldProject);
+
+
+        List<Module> newModules = new ArrayList<>();
+        for (Module m : oldProject.getModule()) {
+            Module newM = copyModule(m);
+            newM.setProject(release);
+            newModules.add(newM);
+        }
+        release.setModule(newModules);
+
+
+        List<QaProjectRelationship> newQaList = new ArrayList<>();
+        for (QaProjectRelationship q : oldProject.getQa()) {
+            QaProjectRelationship newQa = copyQaProjectRelationShip(q);
+            newQa.setProject(release);
+            newQaList.add(newQa);
+        }
+        release.setQa(newQaList);
+
+        List<ConfigurationProjectRelationship> newConfList = new ArrayList<>();
+        for (ConfigurationProjectRelationship c : oldProject.getConfiguration()) {
+            ConfigurationProjectRelationship newConf = copyConfiguration(c);
+            newConf.setProject(release);
+            newConfList.add(newConf);
+        }
+        release.setConfiguration(newConfList);
+
+        List<SimpleChecklist> newChecklistList = new ArrayList<>();
+        for (SimpleChecklist c : oldProject.getChecklist()) {
+            SimpleChecklist newChecklist = copyChecklist(c, release);
+            newChecklistList.add(newChecklist);
+        }
+        release.setChecklist(newChecklistList);
+
+        List<RegressChecklist> newRegressChecklistList = new ArrayList<>();
+        for (RegressChecklist rc : oldProject.getRegressChecklist()) {
+            RegressChecklist newRc = copyRegressChecklist(rc, release);
+            newRegressChecklistList.add(newRc);
+        }
+        release.setRegressChecklist(newRegressChecklistList);
+
+
+        return release;
+    }
+
+    private ConfigurationProjectRelationship copyConfiguration(ConfigurationProjectRelationship oldConf) {
+        ConfigurationProjectRelationship newConf = dataManager.create(ConfigurationProjectRelationship.class);
+        newConf.setConfiguration(oldConf.getConfiguration());
+        return newConf;
+    }
+
+    private Module copyModule(Module oldModule) {
+        Module newModule = dataManager.create(Module.class);
+        newModule.setName(oldModule.getName());
+        return newModule;
+    }
+
+    private QaProjectRelationship copyQaProjectRelationShip(QaProjectRelationship oldQa) {
+        QaProjectRelationship newQa = dataManager.create(QaProjectRelationship.class);
+        newQa.setQa(oldQa.getQa());
+        return newQa;
+    }
+
+    public RegressChecklist copyRegressChecklist(Checklist checklist, Project project) {
+        RegressChecklist checklistNew = dataManager.create(RegressChecklist.class);
+        checklistNew.setName(checklist.getName());
+        checklistNew.setProject(project);
+        checklistNew.setRegressProject(project);
+
+        if (checklist.getTestCase() != null) {
+            List<TestCase> tcList = new ArrayList<>();
+            for (TestCase tc : checklist.getTestCase()) {
+                copyTestCase(checklistNew, tcList, tc);
+            }
+            checklistNew.setTestCase(tcList);
+            checklistNew.setMinutes(checklist.getMinutes());
+            checklistNew.setHours(checklist.getHours());
+        }
+        return checklistNew;
     }
 
     private void copyTestCase(Checklist checklistNew, List<TestCase> tcList, TestCase tc) {

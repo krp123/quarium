@@ -8,10 +8,14 @@ create table QUARIUM_PROJECT (
     UPDATED_BY varchar(50),
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
+    DTYPE varchar(31),
     --
     PROJECT_NAME varchar(255) not null,
     CURRENT_RELEASE varchar(255),
     DESCRIPTION text,
+    --
+    -- from quarium_ProjectVersion
+    VERSION_OF_ID uuid,
     --
     primary key (ID)
 )^

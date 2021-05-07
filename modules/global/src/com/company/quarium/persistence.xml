@@ -15,5 +15,7 @@
         <class>com.company.quarium.entity.checklist.Step</class>
         <class>com.company.quarium.entity.checklist.RegressChecklist</class>
         <class>com.company.quarium.entity.checklist.SimpleChecklist</class>
+        <class>com.company.quarium.entity.project.ProjectVersion</class>
+        <class>com.company.quarium.entity.project.SimpleProject</class>
     </persistence-unit>
 </persistence>

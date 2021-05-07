@@ -30,6 +30,11 @@ public class Project extends StandardEntity {
     @OneToMany(mappedBy = "regressProject", cascade = CascadeType.PERSIST)
     private List<RegressChecklist> regressChecklist;
 
+    @OnDeleteInverse(DeletePolicy.UNLINK)
+    @OnDelete(DeletePolicy.CASCADE)
+    @OneToMany(mappedBy = "versionOf")
+    private List<ProjectVersion> projectVersion;
+
     @OneToMany(mappedBy = "project")
     @OnDelete(DeletePolicy.CASCADE)
     @Composition
@@ -57,6 +62,14 @@ public class Project extends StandardEntity {
     @Lob
     @Column(name = "DESCRIPTION")
     private String description;
+
+    public List<ProjectVersion> getProjectVersion() {
+        return projectVersion;
+    }
+
+    public void setProjectVersion(List<ProjectVersion> projectVersion) {
+        this.projectVersion = projectVersion;
+    }
 
     public List<RegressChecklist> getRegressChecklist() {
         return regressChecklist;

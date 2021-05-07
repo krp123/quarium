@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
-        caption="msg://projectEdit.caption"
+        caption="msg://projectVersionEdit.caption"
         focusComponent="form"
-        messagesPack="com.company.quarium.web.screens.project">
+        messagesPack="com.company.quarium.web.screens.projectversion">
     <data>
-        <instance id="projectDc"
-                  class="com.company.quarium.entity.project.SimpleProject">
-            <view extends="_local">
+        <instance id="projectVersionDc"
+                  class="com.company.quarium.entity.project.ProjectVersion">
+            <view extends="projectVersion-view">
                 <property name="qa" view="edit"/>
                 <property name="configuration" view="edit"/>
                 <property name="checklist" view="project-checklist-view"/>
                 <property name="createTs"/>
                 <property name="module" view="edit"/>
                 <property name="regressChecklist" view="regressChecklist-view"/>
-                <property name="projectVersion" view="projectVersion-view"/>
             </view>
             <loader/>
             <collection id="qaProjectDc" property="qa"/>
@@ -21,7 +20,6 @@
             <collection id="checklistsDc" property="checklist"/>
             <collection id="modulesDc" property="module"/>
             <collection id="regressChecklistDc" property="regressChecklist"/>
-            <collection id="versionsDc" property="projectVersion"/>
         </instance>
         <collection id="bugsDc" class="com.company.quarium.entity.checklist.TestCase" view="testCase-view">
             <loader id="bugsDl">
@@ -38,12 +36,11 @@
     <layout expand="editActions" spacing="true">
         <tabSheet height="AUTO">
             <tab id="detailsTab" caption="msg://projectEdit.details" spacing="true" margin="true">
-                <form id="form" dataContainer="projectDc">
+                <form id="form" dataContainer="projectVersionDc">
                     <column width="350px">
                         <textField id="projectNameField" property="projectName"/>
                         <textField id="currentReleaseField" property="currentRelease"/>
                         <textArea id="descriptionField" property="description" rows="5"/>
-                        <button id="addNewVersion" caption="msg://projectEdit.newReleaseButton"/>
                     </column>
                 </form>
                 <vbox margin="true" width="auto">
@@ -56,17 +53,9 @@
                                        width="450px"
                                        height="250px"
                                        multiselect="true">
-                                    <actions>
-                                        <action id="addQa" type="add"/>
-                                        <action id="removeQa" type="remove"/>
-                                    </actions>
                                     <columns>
                                         <column id="qa"/>
                                     </columns>
-                                    <buttonsPanel>
-                                        <button action="qaProjectRelationshipsTable.addQa"/>
-                                        <button action="qaProjectRelationshipsTable.removeQa"/>
-                                    </buttonsPanel>
                                 </table>
                             </groupBox>
                         </column>
@@ -79,30 +68,10 @@
                                        width="450px"
                                        height="250px"
                                        multiselect="true">
-                                    <actions>
-                                        <action id="createModule" type="create">
-                                            <properties>
-                                                <property name="screenClass"
-                                                          value="com.company.quarium.web.screens.module.ModuleEdit"/>
-                                            </properties>
-                                        </action>
-                                        <action id="editModule" type="edit">
-                                            <properties>
-                                                <property name="screenClass"
-                                                          value="com.company.quarium.web.screens.module.ModuleEdit"/>
-                                            </properties>
-                                        </action>
-                                        <action id="removeModule" type="remove"/>
-                                    </actions>
                                     <columns>
                                         <column id="name"
                                                 caption="msg://com.company.quarium.entity/Project.modules"/>
                                     </columns>
-                                    <buttonsPanel>
-                                        <button action="modulesTable.createModule"/>
-                                        <button action="modulesTable.editModule"/>
-                                        <button action="modulesTable.removeModule"/>
-                                    </buttonsPanel>
                                 </table>
                             </groupBox>
                         </column>
@@ -115,18 +84,10 @@
                                        width="450px"
                                        height="250px"
                                        multiselect="true">
-                                    <actions>
-                                        <action id="addConfiguration" type="add"/>
-                                        <action id="removeConfiguration" type="remove"/>
-                                    </actions>
                                     <columns>
                                         <column id="configuration"
                                                 caption="msg://com.company.quarium.entity/Project.configuration"/>
                                     </columns>
-                                    <buttonsPanel>
-                                        <button action="configurationProjectRelationshipsTable.addConfiguration"/>
-                                        <button action="configurationProjectRelationshipsTable.removeConfiguration"/>
-                                    </buttonsPanel>
                                 </table>
                             </groupBox>
                         </column>
@@ -144,20 +105,13 @@
                                 multiselect="true"
                                 presentations="true">
                         <actions>
-                            <action id="create" type="create">
-                                <properties>
-                                    <property name="screenClass"
-                                              value="com.company.quarium.web.screens.checklist.ExtChecklistEdit"/>
-                                </properties>
-                            </action>
-                            <action id="addChecklist" type="add"/>
+
                             <action id="edit" type="edit">
                                 <properties>
                                     <property name="screenClass"
                                               value="com.company.quarium.web.screens.checklist.ExtChecklistEdit"/>
                                 </properties>
                             </action>
-                            <action id="remove" type="remove"/>
                         </actions>
                         <columns>
                             <column id="name"/>
@@ -168,10 +122,7 @@
                         <rowsCount/>
                         <buttonsPanel id="buttonsPanel"
                                       alwaysVisible="true">
-                            <button id="createBtn" action="checklistsTable.create"/>
-                            <button id="addBtn" action="checklistsTable.addChecklist"/>
                             <button id="editBtn" action="checklistsTable.edit"/>
-                            <button id="removeBtn" action="checklistsTable.remove"/>
                         </buttonsPanel>
                     </groupTable>
                 </vbox>
@@ -220,19 +171,12 @@
                                 multiselect="true"
                                 presentations="true">
                         <actions>
-                            <action id="create" type="create">
-                                <properties>
-                                    <property name="screenClass"
-                                              value="com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit"/>
-                                </properties>
-                            </action>
                             <action id="edit" type="edit">
                                 <properties>
                                     <property name="screenClass"
                                               value="com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit"/>
                                 </properties>
                             </action>
-                            <action id="remove" type="remove"/>
                         </actions>
                         <columns>
                             <column id="name"/>
@@ -242,29 +186,13 @@
                         <rowsCount/>
                         <buttonsPanel id="regressButtonsPanel"
                                       alwaysVisible="true">
-                            <button id="regressCreateBtn" action="regressChecklistsTable.create"/>
                             <button id="regressEditBtn" action="regressChecklistsTable.edit"/>
-                            <button id="regressRemoveBtn" action="regressChecklistsTable.remove"/>
                         </buttonsPanel>
                     </groupTable>
                 </vbox>
             </tab>
-            <tab id="releasesTab" caption="msg://projectEdit.releasesTab" margin="true,false,false,false"
-                 spacing="true">
-                <groupTable id="projectVersions"
-                            dataContainer="versionsDc"
-                            width="100%">
-                    <columns>
-                        <column id="currentRelease"
-                                link="true"
-                                linkScreen="quarium_ProjectVersion.edit"/>
-                    </columns>
-                    <rows/>
-                </groupTable>
-            </tab>
         </tabSheet>
         <hbox id="editActions" spacing="true" height="100%" align="BOTTOM_LEFT">
-            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="closeBtn" action="windowClose"/>
         </hbox>
     </layout>
