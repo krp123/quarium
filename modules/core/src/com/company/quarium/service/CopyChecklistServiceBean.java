@@ -60,13 +60,14 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
         checklistNew.setHours(checklist.getHours());
         checklistNew.setMinutes(checklist.getMinutes());
         checklistNew.setModule(checklist.getModule());
+        checklistNew.setTicket(checklist.getTicket());
 
         if (checklist.getTestCase() != null) {
             List<TestCase> tcList = new ArrayList<>();
             for (TestCase tc : checklist.getTestCase()) {
                 if (tc.getPriority() != null &&
                         tc.getPriority().getId().toString().equals("e2e009c7-4f9c-be4a-6b0e-a9d7c9db7dd0")) {
-                    copyTestCase(checklistNew, tcList, tc);
+                    copyTestCaseToRegress(checklistNew, tcList, tc);
                 }
             }
             checklistNew.setTestCase(tcList);
@@ -185,6 +186,32 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
             }
             newTC.setCaseStep(newSteps);
         }
+        newTC.setHours(tc.getHours());
+        newTC.setMinutes(tc.getMinutes());
+        newTC.setTicket(tc.getTicket());
+        newTC.setExpectedResult(tc.getName());
+        newTC.setPriority(tc.getPriority());
+        newTC.setCreationDate(tc.getCreationDate());
+        tcList.add(newTC);
+    }
+
+    private void copyTestCaseToRegress(Checklist checklistNew, List<TestCase> tcList, TestCase tc) {
+        TestCase newTC = dataManager.create(TestCase.class);
+        newTC.setChecklist(checklistNew);
+        newTC.setName(tc.getName());
+        if (tc.getCaseStep() != null) {
+            List<Step> newSteps = new ArrayList<>();
+            for (Step step : tc.getCaseStep()) {
+                Step newStep = dataManager.create(Step.class);
+                newStep.setStep(step.getStep());
+                newStep.setCreationDate(step.getCreationDate());
+                newStep.setTestCase(newTC);
+                newSteps.add(newStep);
+            }
+            newTC.setCaseStep(newSteps);
+        }
+        newTC.setHours(tc.getHours());
+        newTC.setMinutes(tc.getMinutes());
         newTC.setExpectedResult(tc.getName());
         newTC.setPriority(tc.getPriority());
         newTC.setCreationDate(tc.getCreationDate());

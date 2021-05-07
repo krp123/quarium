@@ -254,12 +254,21 @@
                 <groupTable id="projectVersions"
                             dataContainer="versionsDc"
                             width="100%">
+                    <actions>
+                        <action id="edit" type="edit">
+                            <properties>
+                                <property name="screenClass"
+                                          value="com.company.quarium.web.screens.projectversion.ProjectVersionEdit"/>
+                            </properties>
+                        </action>
+                    </actions>
                     <columns>
-                        <column id="currentRelease"
-                                link="true"
-                                linkScreen="quarium_ProjectVersion.edit"/>
+                        <column id="currentRelease"/>
                     </columns>
                     <rows/>
+                    <buttonsPanel>
+                        <button action="projectVersions.edit" caption="msg://projectEdit.open"/>
+                    </buttonsPanel>
                 </groupTable>
             </tab>
         </tabSheet>

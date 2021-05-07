@@ -38,9 +38,9 @@
             <tab id="detailsTab" caption="msg://projectEdit.details" spacing="true" margin="true">
                 <form id="form" dataContainer="projectVersionDc">
                     <column width="350px">
-                        <textField id="projectNameField" property="projectName"/>
-                        <textField id="currentReleaseField" property="currentRelease"/>
-                        <textArea id="descriptionField" property="description" rows="5"/>
+                        <textField id="projectNameField" property="projectName" editable="false"/>
+                        <textField id="currentReleaseField" property="currentRelease" editable="false"/>
+                        <textArea id="descriptionField" property="description" rows="5" editable="false"/>
                     </column>
                 </form>
                 <vbox margin="true" width="auto">
@@ -52,7 +52,8 @@
                                        dataContainer="qaProjectDc"
                                        width="450px"
                                        height="250px"
-                                       multiselect="true">
+                                       showSelection="false"
+                                       contextMenuEnabled="false">
                                     <columns>
                                         <column id="qa"/>
                                     </columns>
@@ -67,7 +68,8 @@
                                        dataContainer="modulesDc"
                                        width="450px"
                                        height="250px"
-                                       multiselect="true">
+                                       showSelection="false"
+                                       contextMenuEnabled="false">
                                     <columns>
                                         <column id="name"
                                                 caption="msg://com.company.quarium.entity/Project.modules"/>
@@ -83,7 +85,8 @@
                                        dataContainer="configurationProjectDc"
                                        width="450px"
                                        height="250px"
-                                       multiselect="true">
+                                       showSelection="false"
+                                       contextMenuEnabled="false">
                                     <columns>
                                         <column id="configuration"
                                                 caption="msg://com.company.quarium.entity/Project.configuration"/>
@@ -94,7 +97,6 @@
                     </form>
                 </vbox>
             </tab>
-
             <tab id="testPlanTab" caption="msg://projectEdit.testPlan" spacing="true" margin="true">
                 <vbox id="checklistBox" caption="msg://com.company.quarium.entity/Project.checklists"
                       width="100%" height="100%" margin="true">
@@ -109,7 +111,7 @@
                             <action id="edit" type="edit">
                                 <properties>
                                     <property name="screenClass"
-                                              value="com.company.quarium.web.screens.checklist.ExtChecklistEdit"/>
+                                              value="com.company.quarium.web.screens.checklist.VersionExtChecklistEdit"/>
                                 </properties>
                             </action>
                         </actions>
@@ -122,7 +124,7 @@
                         <rowsCount/>
                         <buttonsPanel id="buttonsPanel"
                                       alwaysVisible="true">
-                            <button id="editBtn" action="checklistsTable.edit"/>
+                            <button id="editBtn" action="checklistsTable.edit" caption="msg://version.open"/>
                         </buttonsPanel>
                     </groupTable>
                 </vbox>
@@ -174,7 +176,7 @@
                             <action id="edit" type="edit">
                                 <properties>
                                     <property name="screenClass"
-                                              value="com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit"/>
+                                              value="com.company.quarium.web.screens.regresschecklist.VersionRegressChecklistEdit"/>
                                 </properties>
                             </action>
                         </actions>
@@ -186,7 +188,8 @@
                         <rowsCount/>
                         <buttonsPanel id="regressButtonsPanel"
                                       alwaysVisible="true">
-                            <button id="regressEditBtn" action="regressChecklistsTable.edit"/>
+                            <button id="regressEditBtn" action="regressChecklistsTable.edit"
+                                    caption="msg://version.open"/>
                         </buttonsPanel>
                     </groupTable>
                 </vbox>
