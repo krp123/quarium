@@ -302,9 +302,11 @@ public class ProjectEdit extends StandardEditor<Project> {
                                                             checklist.setIsUsedInRegress(e.getValue());
                                                             removeChecklist(checklist);
                                                         }),
-                                                        new DialogAction(DialogAction.Type.NO)
+                                                        new DialogAction(DialogAction.Type.NO).withHandler(d -> {
+                                                            checkBox.setValue(true);
+                                                        })
                                                 )
-                                                .show();//TODO доделать диалоговое окно
+                                                .show();
                                     }
 
                                 }
