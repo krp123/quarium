@@ -7,9 +7,11 @@ import com.company.quarium.entity.checklist.TestCase;
 import com.company.quarium.entity.project.*;
 import com.company.quarium.entity.references.Configuration;
 import com.company.quarium.entity.references.Qa;
+import com.company.quarium.entity.references.Statement;
 import com.company.quarium.service.CopyChecklistService;
 import com.company.quarium.web.screens.checklist.ExtChecklistEdit;
 import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.TimeSource;
 import com.haulmont.cuba.gui.Dialogs;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
@@ -20,6 +22,7 @@ import com.haulmont.cuba.gui.screen.*;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @UiController("quarium_SimpleProject.edit")
@@ -60,6 +63,13 @@ public class ProjectEdit extends StandardEditor<Project> {
     private Button addNewVersion;
     @Inject
     private CollectionPropertyContainer<ProjectVersion> versionsDc;
+    @Inject
+    private TimeSource timeSource;
+
+    @Subscribe
+    public void onInitEntity(InitEntityEvent<Project> event) {
+        event.getEntity().setCreationDate(timeSource.currentTimestamp());
+    }
 
     @Subscribe("addNewVersion")
     public void onAddNewVersionClick(Button.ClickEvent event) {
@@ -71,6 +81,18 @@ public class ProjectEdit extends StandardEditor<Project> {
                         new DialogAction(DialogAction.Type.YES, Action.Status.PRIMARY).withHandler(d -> {
                             ProjectVersion newVersion = copyChecklistService.copyProjectToReleases(getEditedEntity());
                             versionsDc.getMutableItems().add(newVersion);
+                            projectDc.getItem().setCurrentRelease("");
+                            projectDc.getItem().getRegressChecklist().clear();
+                            projectDc.getItem().setCreationDate(timeSource.currentTimestamp());
+
+                            for (Checklist cl : checklistsDc.getMutableItems()) {
+                                cl.setState(dataContext.find(Statement.class, UUID.fromString("31c599f1-c1b0-30ae-add1-5c6e4b354276")));
+                                cl.setIsUsedInRegress(false);
+                                for (TestCase tc : cl.getTestCase()) {
+                                    tc.setState(dataContext.find(Statement.class, UUID.fromString("31c599f1-c1b0-30ae-add1-5c6e4b354276")));
+                                }
+                            }
+
                             //TODO доделать сброс полей в проекте
                         }),
                         new DialogAction(DialogAction.Type.NO)

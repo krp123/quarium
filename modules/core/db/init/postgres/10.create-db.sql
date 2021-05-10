@@ -11,6 +11,7 @@ create table QUARIUM_PROJECT (
     DTYPE varchar(31),
     --
     PROJECT_NAME varchar(255) not null,
+    CREATION_DATE timestamp,
     CURRENT_RELEASE varchar(255),
     DESCRIPTION text,
     --

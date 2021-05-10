@@ -263,7 +263,12 @@
                         </action>
                     </actions>
                     <columns>
-                        <column id="currentRelease"/>
+                        <column id="currentRelease" caption="msg://projectEdit.release"/>
+                        <column id="creationDate" caption="msg://projectEdit.releaseDate">
+                            <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter"
+                                       format="yyyy-MM-dd HH:mm:ss"
+                                       useUserTimezone="true"/>
+                        </column>
                     </columns>
                     <rows/>
                     <buttonsPanel>

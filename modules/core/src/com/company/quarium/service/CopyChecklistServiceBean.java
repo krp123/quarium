@@ -20,6 +20,14 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
         SimpleChecklist checklistNew = dataManager.create(SimpleChecklist.class);
         checklistNew.setName(checklist.getName());
         checklistNew.setProject(project);
+        checklistNew.setMinutes(checklist.getMinutes());
+        checklistNew.setHours(checklist.getHours());
+        checklistNew.setState(checklist.getState());
+        checklistNew.setIsUsedInRegress(checklist.getIsUsedInRegress());
+        checklistNew.setModule(checklist.getModule());
+        checklistNew.setAssignedQa(checklist.getAssignedQa());
+        checklistNew.setComment(checklist.getComment());
+        checklistNew.setTicket(checklist.getTicket());
 
         if (checklist.getTestCase() != null) {
             List<TestCase> tcList = new ArrayList<>();
@@ -40,11 +48,14 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
                 }
                 newTC.setExpectedResult(tc.getName());
                 newTC.setCreationDate(tc.getCreationDate());
+                newTC.setState(tc.getState());
+                newTC.setMinutes(tc.getMinutes());
+                newTC.setHours(tc.getHours());
+                newTC.setComment(tc.getComment());
+                newTC.setTicket(tc.getTicket());
                 tcList.add(newTC);
             }
             checklistNew.setTestCase(tcList);
-            checklistNew.setMinutes(checklist.getMinutes());
-            checklistNew.setHours(checklist.getHours());
         }
         return checklistNew;
     }
@@ -90,7 +101,7 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
         release.setCurrentRelease(oldProject.getCurrentRelease());
         release.setDescription(oldProject.getDescription());
         release.setVersionOf(oldProject);
-
+        release.setCreationDate(oldProject.getCreationDate());
 
         List<Module> newModules = new ArrayList<>();
         for (Module m : oldProject.getModule()) {

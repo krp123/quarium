@@ -48,11 +48,18 @@ public class VersionExtChecklistEdit extends StandardEditor<Checklist> {
     private ScreenValidation screenValidation;
     @Inject
     protected CheckBox isUsedInRegress;
+    @Inject
+    protected Link ticket;
 
 
     @Subscribe
     protected void onInit(InitEvent event) {
         initMasterDetailScreen(event);
+    }
+
+    @Subscribe
+    public void onAfterShow(AfterShowEvent event) {
+        ticket.setUrl(getEditedEntity().getTicket());
     }
 
     protected ListComponent<TestCase> getTable() {

@@ -11,6 +11,7 @@ import com.haulmont.cuba.core.global.DeletePolicy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 
 @Table(name = "QUARIUM_PROJECT", indexes = {
@@ -24,6 +25,10 @@ public class Project extends StandardEntity {
     @Column(name = "PROJECT_NAME", nullable = false)
     @NotNull
     private String projectName;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "CREATION_DATE")
+    private Date creationDate;
 
     @Composition
     @OnDelete(DeletePolicy.CASCADE)
@@ -62,6 +67,17 @@ public class Project extends StandardEntity {
     @Lob
     @Column(name = "DESCRIPTION")
     private String description;
+
+    public Project() {
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
 
     public List<ProjectVersion> getProjectVersion() {
         return projectVersion;
