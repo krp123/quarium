@@ -5,6 +5,7 @@ import com.company.quarium.entity.checklist.Step;
 import com.company.quarium.entity.checklist.TestCase;
 import com.company.quarium.entity.project.Module;
 import com.company.quarium.entity.project.QaProjectRelationship;
+import com.company.quarium.entity.references.Statement;
 import com.haulmont.cuba.core.app.LockService;
 import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.global.*;
@@ -49,17 +50,18 @@ public class VersionExtChecklistEdit extends StandardEditor<Checklist> {
     @Inject
     protected CheckBox isUsedInRegress;
     @Inject
-    protected Link ticket;
+    protected TextField<String> ticket;
+    @Inject
+    protected TextField<String> caseTicket;
+    @Inject
+    protected LookupField<Statement> caseStateField;
+    @Inject
+    protected TextArea<String> caseComment;
 
 
     @Subscribe
     protected void onInit(InitEvent event) {
         initMasterDetailScreen(event);
-    }
-
-    @Subscribe
-    public void onAfterShow(AfterShowEvent event) {
-        ticket.setUrl(getEditedEntity().getTicket());
     }
 
     protected ListComponent<TestCase> getTable() {
@@ -80,6 +82,18 @@ public class VersionExtChecklistEdit extends StandardEditor<Checklist> {
         initOkCancelActions();
         initBrowseItemChangeListener();
         disableEditControls();
+    }
+
+    @Subscribe("caseStateField")
+    public void onCaseStateFieldValueChange(HasValue.ValueChangeEvent<Statement> event) {
+        if (caseStateField.getValueSource().getValue() != null
+                && caseStateField.getValueSource().getValue().getId().toString().equals("cd85906d-6fbe-3e8d-8602-bf1af8e1ea53")) {
+            caseTicket.setVisible(true);
+            caseComment.setVisible(true);
+        } else {
+            caseTicket.setVisible(false);
+            caseComment.setVisible(false);
+        }
     }
 
     protected void initDataComponents() {

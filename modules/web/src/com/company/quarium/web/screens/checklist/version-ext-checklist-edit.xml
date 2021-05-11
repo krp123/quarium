@@ -72,9 +72,11 @@
                                  width="90%" editable="false"/>
                 </row>
                 <row>
-                    <link id="ticket"
-                          caption="msg://checklistEdit.ticket"
-                          target="_blank"/>
+                    <textField id="ticket" caption="msg://checklistEdit.ticket" dataContainer="checklistDc"
+                               property="ticket" editable="false" width="90%"/>
+                    <!--                    <link id="ticket"-->
+                    <!--                          caption="msg://checklistEdit.ticket"-->
+                    <!--                          target="_blank"/>-->
                     <checkBox id="isUsedInRegress" dataContainer="checklistDc" property="isUsedInRegress"
                               caption="msg://checklistEdit.isUsedInRegress" editable="false"/>
                 </row>
@@ -161,9 +163,12 @@
                                                  caption="msg://checklistEdit.state" width="90%" editable="false"/>
                                 </row>
                                 <row>
-                                    <link id="caseTicket"
-                                          caption="msg://checklistEdit.caseTicket"
-                                          target="_blank"/>
+                                    <textField id="caseTicket" caption="msg://checklistEdit.ticket"
+                                               dataContainer="testCaseDc" width="90%"
+                                               property="ticket"/>
+                                    <!--                                    <link id="caseTicket"-->
+                                    <!--                                          caption="msg://checklistEdit.caseTicket"-->
+                                    <!--                                          target="_blank"/>-->
                                 </row>
                                 <row>
                                     <textArea id="expectedResultField" property="expectedResult"

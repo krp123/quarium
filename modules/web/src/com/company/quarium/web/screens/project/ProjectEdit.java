@@ -90,10 +90,10 @@ public class ProjectEdit extends StandardEditor<Project> {
                                 cl.setIsUsedInRegress(false);
                                 for (TestCase tc : cl.getTestCase()) {
                                     tc.setState(dataContext.find(Statement.class, UUID.fromString("31c599f1-c1b0-30ae-add1-5c6e4b354276")));
+                                    tc.setTicket("");
+                                    tc.setComment("");
                                 }
                             }
-
-                            //TODO доделать сброс полей в проекте
                         }),
                         new DialogAction(DialogAction.Type.NO)
                 )

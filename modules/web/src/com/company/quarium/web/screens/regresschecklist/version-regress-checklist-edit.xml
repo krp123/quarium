@@ -72,9 +72,8 @@
                                  width="90%" editable="false"/>
                 </row>
                 <row>
-                    <link id="ticket"
-                          caption="msg://checklistEdit.ticket"
-                          target="_blank"/>
+                    <textField id="ticket" caption="msg://checklistEdit.ticket" dataContainer="checklistDc"
+                               property="ticket" editable="false" width="90%"/>
                     <checkBox id="isUsedInRegress" dataContainer="checklistDc" property="isUsedInRegress"
                               caption="msg://checklistEdit.isUsedInRegress" editable="false" visible="false"/>
                 </row>
@@ -161,9 +160,9 @@
                                                  caption="msg://checklistEdit.state" width="90%" editable="false"/>
                                 </row>
                                 <row>
-                                    <link id="caseTicket"
-                                          caption="msg://checklistEdit.caseTicket"
-                                          target="_blank"/>
+                                    <textField id="caseTicket" caption="msg://checklistEdit.ticket"
+                                               dataContainer="testCaseDc" width="90%"
+                                               property="ticket" visible="false"/>
                                 </row>
                                 <row>
                                     <textArea id="expectedResultField" property="expectedResult"
