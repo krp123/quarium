@@ -25,7 +25,8 @@
             <loader id="bugsDl">
                 <query>
                     <![CDATA[select e from quarium_TestCase e
-                    where e.checklist.parentCard.project = :project
+                    where e.checklist.project = :project
+                    and e.checklist.parentCard IS NOT NULL
                     and e.state.id = 'cd85906d-6fbe-3e8d-8602-bf1af8e1ea53']]>
                 </query>
             </loader>

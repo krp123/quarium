@@ -43,6 +43,9 @@
                         <textField id="projectNameField" property="projectName"/>
                         <textField id="currentReleaseField" property="currentRelease"/>
                         <textArea id="descriptionField" property="description" rows="5"/>
+
+                    </column>
+                    <column>
                         <button id="addNewVersion" caption="msg://projectEdit.newReleaseButton"/>
                     </column>
                 </form>
@@ -184,7 +187,8 @@
                             <table id="qaStatisticsTable"
                                    width="100%"
                                    height="AUTO"
-                                   dataContainer="qaProjectDc">
+                                   dataContainer="qaProjectDc"
+                                   showSelection="false">
                                 <columns>
                                     <column id="qa"/>
                                     <column id="timeLeft" caption="msg://projectEdit.timeLeft"/>

@@ -101,7 +101,7 @@
                                 dataContainer="testCasesDc"
                                 multiselect="true"
                                 presentations="true"
-                                contextMenuEnabled="false">
+                                contextMenuEnabled="true">
                         <columns>
                             <column id="name" maxTextLength="20" expandRatio="100"/>
                         </columns>

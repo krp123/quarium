@@ -88,6 +88,7 @@ public class ProjectEdit extends StandardEditor<Project> {
                             for (Checklist cl : checklistsDc.getMutableItems()) {
                                 cl.setState(dataContext.find(Statement.class, UUID.fromString("31c599f1-c1b0-30ae-add1-5c6e4b354276")));
                                 cl.setIsUsedInRegress(false);
+                                cl.setAssignedQa(null);
                                 for (TestCase tc : cl.getTestCase()) {
                                     tc.setState(dataContext.find(Statement.class, UUID.fromString("31c599f1-c1b0-30ae-add1-5c6e4b354276")));
                                     tc.setTicket("");
