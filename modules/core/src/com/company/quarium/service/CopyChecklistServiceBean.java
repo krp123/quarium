@@ -176,7 +176,10 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
         checklistNew.setMinutes(checklist.getMinutes());
         checklistNew.setHours(checklist.getHours());
         checklistNew.setTicket(checklist.getTicket());
-        checklistNew.setParentCard(checklist);//TODO проставляется не тот parentCard. Придумать, как можно установить правильный
+        checklistNew.setParentCard(checklist);
+        //TODO проставляется не тот parentCard.
+        // Придумать, как можно установить правильный.
+        // После этого изменить запрос багов в project-version-edit
 
         if (checklist.getTestCase() != null) {
             List<TestCase> tcList = new ArrayList<>();

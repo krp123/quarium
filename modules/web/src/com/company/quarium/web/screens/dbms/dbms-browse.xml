@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://dbmsBrowse.caption"
+        focusComponent="dbmsesTable"
+        messagesPack="com.company.quarium.web.screens.dbms">
+    <data readOnly="true">
+        <collection id="dbmsesDc"
+                    class="com.company.quarium.entity.references.Dbms">
+            <view extends="_local"/>
+            <loader id="dbmsesDl">
+                <query>
+                    <![CDATA[select e from quarium_Dbms e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="dbmsesTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="dbmsesTable"
+                dataLoader="dbmsesDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="dbmsesTable"
+                    width="100%"
+                    dataContainer="dbmsesDc"
+                    multiselect="true">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+            </actions>
+            <columns>
+                <column id="name"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="dbmsesTable.create"/>
+                <button id="editBtn" action="dbmsesTable.edit"/>
+                <button id="removeBtn" action="dbmsesTable.remove"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

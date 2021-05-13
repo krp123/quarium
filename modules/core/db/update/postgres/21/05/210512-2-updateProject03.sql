@@ -1,0 +1,2 @@
+alter table QUARIUM_PROJECT add constraint FK_QUARIUM_PROJECT_ON_DBMS foreign key (DBMS_ID) references QUARIUM_DBMS(ID);
+create index IDX_QUARIUM_PROJECT_ON_DBMS on QUARIUM_PROJECT (DBMS_ID);

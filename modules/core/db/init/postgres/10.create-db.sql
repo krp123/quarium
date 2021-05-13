@@ -11,6 +11,10 @@ create table QUARIUM_PROJECT (
     DTYPE varchar(31),
     --
     PROJECT_NAME varchar(255) not null,
+    REGRESS_START_DATE date,
+    REGRESS_FINISH_DATE date,
+    DBMS_ID uuid,
+    THESIS_VERSION_ID uuid,
     CREATION_DATE timestamp,
     CURRENT_RELEASE varchar(255),
     DESCRIPTION text,
@@ -210,3 +214,35 @@ create table QUARIUM_STEP (
     primary key (ID)
 )^
 -- end QUARIUM_STEP
+-- begin QUARIUM_DBMS
+create table QUARIUM_DBMS (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    NAME varchar(255),
+    --
+    primary key (ID)
+)^
+-- end QUARIUM_DBMS
+-- begin QUARIUM_THESIS_VERSION
+create table QUARIUM_THESIS_VERSION (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    NUMBER_ varchar(255),
+    --
+    primary key (ID)
+)^
+-- end QUARIUM_THESIS_VERSION

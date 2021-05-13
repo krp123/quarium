@@ -2,9 +2,13 @@ package com.company.quarium.entity.project;
 
 import com.company.quarium.entity.checklist.RegressChecklist;
 import com.company.quarium.entity.checklist.SimpleChecklist;
+import com.company.quarium.entity.references.Dbms;
+import com.company.quarium.entity.references.ThesisVersion;
 import com.haulmont.chile.core.annotations.Composition;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
+import com.haulmont.cuba.core.entity.annotation.Lookup;
+import com.haulmont.cuba.core.entity.annotation.LookupType;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
 import com.haulmont.cuba.core.global.DeletePolicy;
@@ -25,6 +29,24 @@ public class Project extends StandardEntity {
     @Column(name = "PROJECT_NAME", nullable = false)
     @NotNull
     private String projectName;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "REGRESS_START_DATE")
+    private Date regressStartDate;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "REGRESS_FINISH_DATE")
+    private Date regressFinishDate;
+
+    @Lookup(type = LookupType.DROPDOWN, actions = {})
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "DBMS_ID")
+    private Dbms dbms;
+
+    @Lookup(type = LookupType.DROPDOWN, actions = {})
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "THESIS_VERSION_ID")
+    private ThesisVersion thesisVersion;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATION_DATE")
@@ -67,6 +89,38 @@ public class Project extends StandardEntity {
     @Lob
     @Column(name = "DESCRIPTION")
     private String description;
+
+    public ThesisVersion getThesisVersion() {
+        return thesisVersion;
+    }
+
+    public void setThesisVersion(ThesisVersion thesisVersion) {
+        this.thesisVersion = thesisVersion;
+    }
+
+    public Dbms getDbms() {
+        return dbms;
+    }
+
+    public void setDbms(Dbms dbms) {
+        this.dbms = dbms;
+    }
+
+    public Date getRegressFinishDate() {
+        return regressFinishDate;
+    }
+
+    public void setRegressFinishDate(Date regressFinishDate) {
+        this.regressFinishDate = regressFinishDate;
+    }
+
+    public Date getRegressStartDate() {
+        return regressStartDate;
+    }
+
+    public void setRegressStartDate(Date regressStartDate) {
+        this.regressStartDate = regressStartDate;
+    }
 
     public Project() {
     }

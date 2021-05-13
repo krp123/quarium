@@ -14,6 +14,8 @@
                 <property name="module" view="edit"/>
                 <property name="regressChecklist" view="regressChecklist-view"/>
                 <property name="projectVersion" view="projectVersion-view"/>
+                <property name="dbms" view="_local"/>
+                <property name="thesisVersion" view="_local"/>
             </view>
             <loader/>
             <collection id="qaProjectDc" property="qa"/>
@@ -32,6 +34,20 @@
                 </query>
             </loader>
         </collection>
+        <collection id="dbmsDc" class="com.company.quarium.entity.references.Dbms" view="_minimal">
+            <loader id="dbmsDl">
+                <query>
+                    <![CDATA[select e from quarium_Dbms e]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="thesisVersionDc" class="com.company.quarium.entity.references.ThesisVersion" view="_minimal">
+            <loader id="thesisVersionDl">
+                <query>
+                    <![CDATA[select e from quarium_ThesisVersion e]]>
+                </query>
+            </loader>
+        </collection>
     </data>
     <dialogMode height="600"
                 width="800"/>
@@ -43,10 +59,10 @@
                         <textField id="projectNameField" property="projectName"/>
                         <textField id="currentReleaseField" property="currentRelease"/>
                         <textArea id="descriptionField" property="description" rows="5"/>
-
                     </column>
                     <column>
-                        <button id="addNewVersion" caption="msg://projectEdit.newReleaseButton"/>
+                        <lookupField id="thesisVersion" property="thesisVersion" optionsContainer="thesisVersionDc"/>
+                        <lookupField id="dbms" property="dbms" optionsContainer="dbmsDc"/>
                     </column>
                 </form>
                 <vbox margin="true" width="auto">
@@ -215,6 +231,14 @@
                         </groupBox>
                     </column>
                 </form>
+                <form id="regressDateForm" dataContainer="projectDc">
+                    <column>
+                        <dateField id="regressStartDate" property="regressStartDate"/>
+                    </column>
+                    <column>
+                        <dateField id="regressFinishDate" property="regressFinishDate"/>
+                    </column>
+                </form>
                 <vbox id="regressChecklistBox" caption="msg://com.company.quarium.entity/Project.checklists"
                       width="100%" height="100%" margin="true">
                     <groupTable id="regressChecklistsTable"
@@ -284,6 +308,7 @@
         <hbox id="editActions" spacing="true" height="100%" align="BOTTOM_LEFT">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="closeBtn" action="windowClose"/>
+            <button id="addNewVersion" caption="msg://projectEdit.newReleaseButton"/>
         </hbox>
     </layout>
 </window>
