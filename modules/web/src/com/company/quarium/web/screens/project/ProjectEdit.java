@@ -81,7 +81,9 @@ public class ProjectEdit extends StandardEditor<Project> {
                         new DialogAction(DialogAction.Type.YES, Action.Status.PRIMARY).withHandler(d -> {
                             ProjectVersion newVersion = copyChecklistService.copyProjectToReleases(getEditedEntity());
                             versionsDc.getMutableItems().add(newVersion);
-                            projectDc.getItem().setCurrentRelease("");
+                            projectDc.getItem().setCurrentRelease(null);
+                            projectDc.getItem().setRegressStartDate(null);
+                            projectDc.getItem().setRegressFinishDate(null);
                             projectDc.getItem().getRegressChecklist().clear();
                             projectDc.getItem().setCreationDate(timeSource.currentTimestamp());
 
@@ -91,8 +93,8 @@ public class ProjectEdit extends StandardEditor<Project> {
                                 cl.setAssignedQa(null);
                                 for (TestCase tc : cl.getTestCase()) {
                                     tc.setState(dataContext.find(Statement.class, UUID.fromString("31c599f1-c1b0-30ae-add1-5c6e4b354276")));
-                                    tc.setTicket("");
-                                    tc.setComment("");
+                                    tc.setTicket(null);
+                                    tc.setComment(null);
                                 }
                             }
                         }),

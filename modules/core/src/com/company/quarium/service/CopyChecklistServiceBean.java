@@ -102,6 +102,10 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
         release.setDescription(oldProject.getDescription());
         release.setVersionOf(oldProject);
         release.setCreationDate(oldProject.getCreationDate());
+        release.setThesisVersion(oldProject.getThesisVersion());
+        release.setDbms(oldProject.getDbms());
+        release.setRegressStartDate(oldProject.getRegressStartDate());
+        release.setRegressFinishDate(oldProject.getRegressFinishDate());
 
         List<Module> newModules = new ArrayList<>();
         for (Module m : oldProject.getModule()) {

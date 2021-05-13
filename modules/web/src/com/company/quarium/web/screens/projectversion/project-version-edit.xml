@@ -13,6 +13,8 @@
                 <property name="createTs"/>
                 <property name="module" view="edit"/>
                 <property name="regressChecklist" view="regressChecklist-view"/>
+                <property name="dbms" view="_local"/>
+                <property name="thesisVersion" view="_local"/>
             </view>
             <loader/>
             <collection id="qaProjectDc" property="qa"/>
@@ -42,6 +44,10 @@
                         <textField id="projectNameField" property="projectName" editable="false"/>
                         <textField id="currentReleaseField" property="currentRelease" editable="false"/>
                         <textArea id="descriptionField" property="description" rows="5" editable="false"/>
+                    </column>
+                    <column>
+                        <lookupField id="thesisVersion" property="thesisVersion" editable="false"/>
+                        <lookupField id="dbms" property="dbms" editable="false"/>
                     </column>
                 </form>
                 <vbox margin="true" width="auto">
@@ -163,6 +169,14 @@
                                 <rows/>
                             </table>
                         </groupBox>
+                    </column>
+                </form>
+                <form id="regressDateForm" dataContainer="projectVersionDc">
+                    <column>
+                        <dateField id="regressStartDate" property="regressStartDate" editable="false"/>
+                    </column>
+                    <column>
+                        <dateField id="regressFinishDate" property="regressFinishDate" editable="false"/>
                     </column>
                 </form>
                 <vbox id="regressChecklistBox" caption="msg://com.company.quarium.entity/Project.checklists"
