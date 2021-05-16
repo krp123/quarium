@@ -238,7 +238,7 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
         }
         newTC.setHours(tc.getHours());
         newTC.setMinutes(tc.getMinutes());
-        newTC.setExpectedResult(tc.getName());
+        newTC.setExpectedResult(tc.getExpectedResult());
         newTC.setPriority(tc.getPriority());
         newTC.setCreationDate(tc.getCreationDate());
         tcList.add(newTC);
