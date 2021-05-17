@@ -36,7 +36,7 @@ public class VersionExtChecklistEdit extends StandardEditor<Checklist> {
     @Inject
     private InstanceContainer<TestCase> testCaseDc;
     @Inject
-    private GroupTable<TestCase> table;
+    private Table<TestCase> table;
     @Inject
     private Table<Step> stepsTable;
     @Inject

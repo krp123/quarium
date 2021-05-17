@@ -75,9 +75,12 @@
             <property name="caseStep" view="_minimal">
                 <property name="step"/>
                 <property name="creationDate"/>
+                <property name="number"/>
             </property>
             <property name="ticket"/>
             <property name="comment"/>
+            <property name="number"/>
+            <property name="creationDate"/>
         </property>
         <property name="module" view="_local"/>
         <property name="parentCard" view="_minimal"/>
@@ -98,10 +101,12 @@
             <property name="caseStep" view="_minimal">
                 <property name="step"/>
                 <property name="creationDate"/>
+                <property name="number"/>
             </property>
             <property name="ticket"/>
             <property name="comment"/>
             <property name="creationDate"/>
+            <property name="number"/>
         </property>
         <property name="module" view="_local"/>
         <property name="parentCard" view="_minimal"/>
@@ -154,6 +159,7 @@
             <property name="caseStep" view="_minimal">
                 <property name="step"/>
                 <property name="creationDate"/>
+                <property name="number"/>
             </property>
             <property name="hours"/>
             <property name="minutes"/>
@@ -161,6 +167,7 @@
             <property name="state" view="_minimal"/>
             <property name="expectedResult"/>
             <property name="creationDate"/>
+            <property name="number"/>
         </property>
         <property name="project" view="_minimal">
             <property name="module" view="_minimal"/>

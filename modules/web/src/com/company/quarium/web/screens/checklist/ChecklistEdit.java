@@ -241,7 +241,6 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
                 entity.setNumber(lastNum + 1);
             }
 
-            entity.setCreationDate(timeSource.currentTimestamp());
             TestCase trackedEntity = getScreenData().getDataContext().merge(entity);
 
             DynamicAttributesGuiTools tools = getBeanLocator().get(DynamicAttributesGuiTools.NAME);

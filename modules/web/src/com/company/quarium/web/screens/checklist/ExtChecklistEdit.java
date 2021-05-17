@@ -14,6 +14,7 @@ import com.haulmont.cuba.core.entity.BaseGenericIdEntity;
 import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.Notifications;
+import com.haulmont.cuba.gui.RemoveOperation;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.actions.list.CreateAction;
 import com.haulmont.cuba.gui.actions.list.EditAction;
@@ -50,7 +51,7 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     @Inject
     private CollectionContainer<Step> stepsCollection;
     @Inject
-    private GroupTable<TestCase> table;
+    private Table<TestCase> table;
     @Inject
     private Table<Step> stepsTable;
     @Inject
@@ -180,7 +181,7 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
                 screenValidation.showValidationErrors(this, errors);
                 return;
             }
-            getBrowseContainer().getMutableItems().add(0, editedItem);
+            getBrowseContainer().getMutableItems().add(editedItem);
         } else {
             ValidationErrors errors = screenValidation.validateUiComponents(getGrid());
             if (!errors.isEmpty()) {
@@ -244,8 +245,36 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     public void onCreateStep(Action.ActionPerformedEvent event) {
         Step entity = dataManager.create(Step.class);
         entity.setTestCase(testCaseDc.getItem());
-        entity.setCreationDate(timeSource.currentTimestamp());
+        if (testCaseDc
+                .getItem()
+                .getCaseStep() == null) {
+            entity.setNumber(1);
+        } else {
+            int lastNum = 0;
+            for (Step s : testCaseDc.getItem().getCaseStep()) {
+                if (s.getNumber() > lastNum) {
+                    lastNum = s.getNumber();
+                }
+            }
+            entity.setNumber(lastNum + 1);
+        }
         stepsCollection.getMutableItems().add(entity);
+    }
+
+    @Install(to = "stepsTable.removeStep", subject = "afterActionPerformedHandler")
+    private void stepsTableRemoveStepAfterActionPerformedHandler(RemoveOperation.AfterActionPerformedEvent<Step> afterActionPerformedEvent) {
+        List<Step> steps = stepsCollection.getMutableItems();
+        for (int i = 0; i < steps.size(); i++) {
+            steps.get(i).setNumber(i + 1);
+        }
+    }
+
+    @Install(to = "table.remove", subject = "afterActionPerformedHandler")
+    private void tableRemoveAfterActionPerformedHandler(RemoveOperation.AfterActionPerformedEvent<TestCase> afterActionPerformedEvent) {
+        List<TestCase> cases = testCasesDc.getMutableItems();
+        for (int i = 0; i < cases.size(); i++) {
+            cases.get(i).setNumber(i + 1);
+        }
     }
 
     protected void initBrowseCreateAction() {
@@ -254,7 +283,19 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         createAction.withHandler(actionPerformedEvent -> {
             TestCase entity = getBeanLocator().get(Metadata.class).create(getEntityClass());
             entity.setChecklist(getEditedEntityContainer().getItem());
-            entity.setCreationDate(timeSource.currentTimestamp());
+
+            if (getEditedEntityContainer().getItem().getTestCase() == null) {
+                entity.setNumber(1);
+            } else {
+                int lastNum = 0;
+                for (TestCase tc : getEditedEntityContainer().getItem().getTestCase()) {
+                    if (tc.getNumber() > lastNum) {
+                        lastNum = tc.getNumber();
+                    }
+                }
+                entity.setNumber(lastNum + 1);
+            }
+
             TestCase trackedEntity = getScreenData().getDataContext().merge(entity);
 
             DynamicAttributesGuiTools tools = getBeanLocator().get(DynamicAttributesGuiTools.NAME);

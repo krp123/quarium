@@ -166,7 +166,7 @@ public class ProjectEdit extends StandardEditor<Project> {
     }
 
     private Checklist createAndAddChecklist(Checklist checklist) {
-        checklist = dataManager.load(Checklist.class).id(checklist.getId()).view("edit").one();
+        checklist = dataManager.load(Checklist.class).id(checklist.getId()).view("project-checklist-view").one();
         SimpleChecklist checklistNew = copyChecklistService.copyChecklist(checklist, projectDc.getItem());
         checklistsDc.getMutableItems().add(checklistNew);
         return checklistNew;

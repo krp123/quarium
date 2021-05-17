@@ -105,17 +105,18 @@
             <split id="split" height="540" orientation="horizontal"
                    reversePosition="true" width="100%" pos="70">
                 <vbox id="lookupBox" expand="table" height="100%" margin="false,true,false,false" spacing="true">
-                    <groupTable id="table"
-                                width="100%"
-                                dataContainer="testCasesDc"
-                                multiselect="true"
-                                presentations="true">
+                    <table id="table"
+                           width="100%"
+                           dataContainer="testCasesDc"
+                           multiselect="true"
+                           presentations="true">
                         <actions>
                             <action id="create" type="create"/>
                             <action id="edit" type="edit"/>
                             <action id="remove" type="remove"/>
                         </actions>
                         <columns>
+                            <column id="number" editable="false" width="20"/>
                             <column id="name" maxTextLength="20" expandRatio="100"/>
                         </columns>
                         <rowsCount/>
@@ -125,7 +126,7 @@
                             <button id="editBtn" action="table.edit"/>
                             <button id="removeBtn" action="table.remove"/>
                         </buttonsPanel>
-                    </groupTable>
+                    </table>
                 </vbox>
                 <vbox id="editBox" height="100%" margin="true,false,false,true" expand="fieldGroupBox"
                       spacing="true">
@@ -169,6 +170,7 @@
                                             <action id="removeStep" type="remove"/>
                                         </actions>
                                         <columns>
+                                            <column id="number" editable="false" width="20"/>
                                             <column id="step" editable="true"/>
                                         </columns>
                                         <buttonsPanel>

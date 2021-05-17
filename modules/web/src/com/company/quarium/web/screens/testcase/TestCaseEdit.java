@@ -19,6 +19,9 @@ public class TestCaseEdit extends StandardEditor<TestCase> {
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
-        caseTicket.setUrl(testCaseDc.getItem().getTicket());
+        if (testCaseDc.getItem().getTicket() != null)
+            caseTicket.setUrl(testCaseDc.getItem().getTicket());
+        else
+            caseTicket.setVisible(false);
     }
 }

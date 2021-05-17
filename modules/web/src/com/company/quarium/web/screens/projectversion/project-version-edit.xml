@@ -144,7 +144,8 @@
                             <table id="qaStatisticsTable"
                                    width="100%"
                                    height="AUTO"
-                                   dataContainer="qaProjectDc">
+                                   dataContainer="qaProjectDc"
+                                   showSelection="false">
                                 <columns>
                                     <column id="qa"/>
                                     <column id="timeLeft" caption="msg://projectEdit.timeLeft"/>
