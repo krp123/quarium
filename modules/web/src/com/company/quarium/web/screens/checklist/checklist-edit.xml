@@ -55,6 +55,7 @@
                                     <action id="remove" type="remove"/>
                                 </actions>
                                 <columns>
+                                    <column id="number" width="10"/>
                                     <column id="name"/>
                                 </columns>
                                 <rowsCount/>
@@ -87,12 +88,14 @@
                                                    multiselect="true"
                                                    columnHeaderVisible="false"
                                                    caption="msg://checklistEdit.steps"
-                                                   multiLineCells="true">
+                                                   multiLineCells="true"
+                                                   sortable="true">
                                                 <actions>
                                                     <action id="createStep" type="create"/>
                                                     <action id="removeStep" type="remove"/>
                                                 </actions>
                                                 <columns>
+                                                    <column id="number" editable="false"/>
                                                     <column id="step" editable="true"/>
                                                 </columns>
                                                 <buttonsPanel>

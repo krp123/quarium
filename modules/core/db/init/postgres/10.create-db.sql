@@ -133,6 +133,7 @@ create table QUARIUM_TEST_CASE (
     DELETED_BY varchar(50),
     --
     NAME varchar(255) not null,
+    NUMBER_ integer,
     CREATION_DATE timestamp,
     COMMENT_ varchar(1000),
     TICKET varchar(1000),
@@ -208,6 +209,7 @@ create table QUARIUM_STEP (
     DELETED_BY varchar(50),
     --
     STEP varchar(1000),
+    NUMBER_ integer,
     CREATION_DATE timestamp,
     TEST_CASE_ID uuid,
     --

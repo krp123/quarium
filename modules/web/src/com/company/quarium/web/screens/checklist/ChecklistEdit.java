@@ -132,7 +132,7 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
                 screenValidation.showValidationErrors(this, errors);
                 return;
             }
-            getBrowseContainer().getMutableItems().add(0, editedItem);
+            getBrowseContainer().getMutableItems().add(editedItem);
         } else {
             ValidationErrors errors = screenValidation.validateUiComponents(getGrid());
             if (!errors.isEmpty()) {
@@ -184,7 +184,19 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
     public void onCreateStep(Action.ActionPerformedEvent event) {
         Step entity = dataManager.create(Step.class);
         entity.setTestCase(testCaseDc.getItem());
-        entity.setCreationDate(timeSource.currentTimestamp());
+        if (testCaseDc
+                .getItem()
+                .getCaseStep() == null) {
+            entity.setNumber(1);
+        } else {
+            int lastNum = 0;
+            for (Step s : testCaseDc.getItem().getCaseStep()) {
+                if (s.getNumber() > lastNum) {
+                    lastNum = s.getNumber();
+                }
+            }
+            entity.setNumber(lastNum + 1);
+        }
         stepsCollection.getMutableItems().add(entity);
     }
 
@@ -194,6 +206,19 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
         createAction.withHandler(actionPerformedEvent -> {
             TestCase entity = getBeanLocator().get(Metadata.class).create(getEntityClass());
             entity.setChecklist(getEditedEntityContainer().getItem());
+
+            if (getEditedEntityContainer().getItem().getTestCase() == null) {
+                entity.setNumber(1);
+            } else {
+                int lastNum = 0;
+                for (TestCase tc : getEditedEntityContainer().getItem().getTestCase()) {
+                    if (tc.getNumber() > lastNum) {
+                        lastNum = tc.getNumber();
+                    }
+                }
+                entity.setNumber(lastNum + 1);
+            }
+
             entity.setCreationDate(timeSource.currentTimestamp());
             TestCase trackedEntity = getScreenData().getDataContext().merge(entity);
 

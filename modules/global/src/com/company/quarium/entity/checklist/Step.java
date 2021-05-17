@@ -13,6 +13,9 @@ public class Step extends StandardEntity {
     @Column(name = "STEP", length = 1000)
     private String step;
 
+    @Column(name = "NUMBER_")
+    private Integer number;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATION_DATE")
     private Date creationDate;
@@ -20,6 +23,14 @@ public class Step extends StandardEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEST_CASE_ID")
     private TestCase testCase;
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
 
     public Date getCreationDate() {
         return creationDate;

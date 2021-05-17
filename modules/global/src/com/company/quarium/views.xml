@@ -24,8 +24,8 @@
         <property name="caseStep" view="_minimal">
             <property name="step"/>
             <property name="creationDate"/>
+            <property name="number"/>
         </property>
-        <property name="ticket"/>
     </view>
     <view entity="quarium_TestCase" name="testCase_full">
         <property name="name"/>

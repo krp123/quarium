@@ -78,6 +78,7 @@ public class Checklist extends StandardEntity {
     @OnDeleteInverse(DeletePolicy.UNLINK)
     @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "checklist", cascade = CascadeType.PERSIST)
+    @OrderBy("number")
     private List<TestCase> testCase;
 
     @ManyToOne(fetch = FetchType.LAZY)

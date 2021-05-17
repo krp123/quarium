@@ -31,6 +31,9 @@ public class TestCase extends StandardEntity {
     @NotNull(message = "{msg://quarium_TestCase.name.validation.NotNull}")
     private String name;
 
+    @Column(name = "NUMBER_")
+    private Integer number;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATION_DATE")
     private Date creationDate;
@@ -44,7 +47,7 @@ public class TestCase extends StandardEntity {
     @Composition
     @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "testCase", cascade = CascadeType.PERSIST)
-    @OrderBy("creationDate")
+    @OrderBy("number")
     private List<Step> caseStep;
 
     @Column(name = "HOURS")
@@ -80,6 +83,14 @@ public class TestCase extends StandardEntity {
     @JoinColumn(name = "CHECKLIST_ID")
     @OnDeleteInverse(DeletePolicy.CASCADE)
     private Checklist checklist;
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
 
     public Date getCreationDate() {
         return creationDate;
