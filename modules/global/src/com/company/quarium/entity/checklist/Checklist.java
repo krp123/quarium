@@ -17,7 +17,6 @@ import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,8 +26,7 @@ import java.util.UUID;
 public class Checklist extends StandardEntity {
     private static final long serialVersionUID = 3978033432072095464L;
 
-    @NotNull
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "NAME")
     private String name;
 
     @OnDeleteInverse(DeletePolicy.UNLINK)

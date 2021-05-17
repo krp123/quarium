@@ -103,7 +103,7 @@ create table QUARIUM_CHECKLIST (
     DELETED_BY varchar(50),
     DTYPE varchar(31),
     --
-    NAME varchar(255) not null,
+    NAME varchar(255),
     PARENT_CARD_ID uuid,
     COMMENT_ varchar(1000),
     HOURS integer,

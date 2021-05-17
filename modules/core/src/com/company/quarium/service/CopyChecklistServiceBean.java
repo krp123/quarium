@@ -230,7 +230,7 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
             for (Step step : tc.getCaseStep()) {
                 Step newStep = dataManager.create(Step.class);
                 newStep.setStep(step.getStep());
-                newStep.setCreationDate(step.getCreationDate());
+                newStep.setNumber(step.getNumber());
                 newStep.setTestCase(newTC);
                 newSteps.add(newStep);
             }
@@ -240,7 +240,7 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
         newTC.setMinutes(tc.getMinutes());
         newTC.setExpectedResult(tc.getExpectedResult());
         newTC.setPriority(tc.getPriority());
-        newTC.setCreationDate(tc.getCreationDate());
+        newTC.setNumber(tc.getNumber());
         tcList.add(newTC);
     }
 }

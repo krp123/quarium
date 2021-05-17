@@ -9,6 +9,7 @@ import com.haulmont.cuba.core.entity.BaseGenericIdEntity;
 import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.Notifications;
+import com.haulmont.cuba.gui.RemoveOperation;
 import com.haulmont.cuba.gui.actions.list.CreateAction;
 import com.haulmont.cuba.gui.actions.list.EditAction;
 import com.haulmont.cuba.gui.app.core.entitydiff.EntityDiffViewer;
@@ -26,6 +27,7 @@ import com.haulmont.cuba.security.entity.EntityOp;
 
 import javax.inject.Inject;
 import java.util.Collections;
+import java.util.List;
 
 @UiController("quarium_SimpleChecklist.edit")
 @UiDescriptor("checklist-edit.xml")
@@ -40,9 +42,11 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
     @Inject
     private InstanceContainer<TestCase> testCaseDc;
     @Inject
+    private CollectionContainer<TestCase> testCasesDc;
+    @Inject
     private CollectionContainer<Step> stepsCollection;
     @Inject
-    private GroupTable<TestCase> table;
+    private Table<TestCase> table;
     @Inject
     private Table<Step> stepsTable;
     @Inject
@@ -59,6 +63,8 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
     private DataManager dataManager;
     @Inject
     private ScreenValidation screenValidation;
+    @Inject
+    private Button removeStep;
 
     @Subscribe
     protected void onInit(InitEvent event) {
@@ -198,6 +204,22 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
             entity.setNumber(lastNum + 1);
         }
         stepsCollection.getMutableItems().add(entity);
+    }
+
+    @Install(to = "stepsTable.removeStep", subject = "afterActionPerformedHandler")
+    private void stepsTableRemoveStepAfterActionPerformedHandler(RemoveOperation.AfterActionPerformedEvent<Step> afterActionPerformedEvent) {
+        List<Step> steps = stepsCollection.getMutableItems();
+        for (int i = 0; i < steps.size(); i++) {
+            steps.get(i).setNumber(i + 1);
+        }
+    }
+
+    @Install(to = "table.remove", subject = "afterActionPerformedHandler")
+    private void tableRemoveAfterActionPerformedHandler(RemoveOperation.AfterActionPerformedEvent<TestCase> afterActionPerformedEvent) {
+        List<TestCase> cases = testCasesDc.getMutableItems();
+        for (int i = 0; i < cases.size(); i++) {
+            cases.get(i).setNumber(i + 1);
+        }
     }
 
     protected void initBrowseCreateAction() {
