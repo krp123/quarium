@@ -158,7 +158,7 @@
                                     <table id="stepsTable"
                                            dataContainer="stepsCollection"
                                            width="90%"
-                                           height="200px"
+                                           responsive="true"
                                            multiselect="true"
                                            columnHeaderVisible="false"
                                            caption="msg://checklistEdit.steps"

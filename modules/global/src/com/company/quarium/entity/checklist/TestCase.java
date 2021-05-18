@@ -19,7 +19,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
+
+import static com.company.quarium.Constants.PRIORITY_HIGH;
+import static com.company.quarium.Constants.STATE_NOT_STARTED;
 
 @Table(name = "QUARIUM_TEST_CASE")
 @Entity(name = "quarium_TestCase")
@@ -150,7 +152,7 @@ public class TestCase extends StandardEntity {
 
     @PostConstruct
     private void initState(DataManager dataManager) {
-        setState(dataManager.load(Statement.class).id(UUID.fromString("31c599f1-c1b0-30ae-add1-5c6e4b354276")).one());
+        setState(dataManager.load(Statement.class).id(STATE_NOT_STARTED).one());
     }
 
     public Priority getPriority() {
@@ -163,7 +165,7 @@ public class TestCase extends StandardEntity {
 
     @PostConstruct
     private void initPriority(DataManager dataManager) {
-        setPriority(dataManager.load(Priority.class).id(UUID.fromString("e2e009c7-4f9c-be4a-6b0e-a9d7c9db7dd0")).one());
+        setPriority(dataManager.load(Priority.class).id(PRIORITY_HIGH).one());
     }
 
     public Checklist getChecklist() {

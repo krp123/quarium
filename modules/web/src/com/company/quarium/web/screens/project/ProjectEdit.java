@@ -22,8 +22,9 @@ import com.haulmont.cuba.gui.screen.*;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static com.company.quarium.Constants.*;
 
 @UiController("quarium_SimpleProject.edit")
 @UiDescriptor("project-edit.xml")
@@ -90,11 +91,11 @@ public class ProjectEdit extends StandardEditor<Project> {
                             projectDc.getItem().setCreationDate(timeSource.currentTimestamp());
 
                             for (Checklist cl : checklistsDc.getMutableItems()) {
-                                cl.setState(dataContext.find(Statement.class, UUID.fromString("31c599f1-c1b0-30ae-add1-5c6e4b354276")));
+                                cl.setState(dataContext.find(Statement.class, STATE_NOT_STARTED));
                                 cl.setIsUsedInRegress(false);
                                 cl.setAssignedQa(null);
                                 for (TestCase tc : cl.getTestCase()) {
-                                    tc.setState(dataContext.find(Statement.class, UUID.fromString("31c599f1-c1b0-30ae-add1-5c6e4b354276")));
+                                    tc.setState(dataContext.find(Statement.class, STATE_NOT_STARTED));
                                     tc.setTicket(null);
                                     tc.setComment(null);
                                 }
@@ -123,7 +124,6 @@ public class ProjectEdit extends StandardEditor<Project> {
                 )
                 .show();
     }
-
 
     @Subscribe
     protected void onBeforeShow(BeforeShowEvent event) {
@@ -202,7 +202,7 @@ public class ProjectEdit extends StandardEditor<Project> {
     }
 
     @Install(to = "checklistsTable.edit", subject = "screenConfigurer")
-    protected void customersTableEditScreenConfigurer(Screen editorScreen) {
+    protected void checklistTableEditScreenConfigurer(Screen editorScreen) {
         if (getEditedEntity().getQa() != null) {
             ((ExtChecklistEdit) editorScreen).setQaParameter(getEditedEntity().getQa());
         }
@@ -213,7 +213,29 @@ public class ProjectEdit extends StandardEditor<Project> {
     }
 
     @Install(to = "checklistsTable.create", subject = "screenConfigurer")
-    protected void customersTableCreateScreenConfigurer(Screen editorScreen) {
+    protected void checklistTableCreateScreenConfigurer(Screen editorScreen) {
+        if (getEditedEntity().getQa() != null) {
+            ((ExtChecklistEdit) editorScreen).setQaParameter(getEditedEntity().getQa());
+        }
+
+        if (getEditedEntity().getModule() != null) {
+            ((ExtChecklistEdit) editorScreen).setModuleParameter(getEditedEntity().getModule());
+        }
+    }
+
+    @Install(to = "regressChecklistsTable.edit", subject = "screenConfigurer")
+    protected void regressChecklistTableEditScreenConfigurer(Screen editorScreen) {
+        if (getEditedEntity().getQa() != null) {
+            ((ExtChecklistEdit) editorScreen).setQaParameter(getEditedEntity().getQa());
+        }
+
+        if (getEditedEntity().getModule() != null) {
+            ((ExtChecklistEdit) editorScreen).setModuleParameter(getEditedEntity().getModule());
+        }
+    }
+
+    @Install(to = "regressChecklistsTable.create", subject = "screenConfigurer")
+    protected void regressChecklistTableCreateScreenConfigurer(Screen editorScreen) {
         if (getEditedEntity().getQa() != null) {
             ((ExtChecklistEdit) editorScreen).setQaParameter(getEditedEntity().getQa());
         }
@@ -285,7 +307,7 @@ public class ProjectEdit extends StandardEditor<Project> {
                                 })
                                 .filter(s -> {
                                     if (s.getState() != null)
-                                        return !s.getState().getId().toString().equals("d9d8fd34-068d-99db-5adc-9d95731bc419");
+                                        return !s.getState().getId().equals(STATE_CHECKED);
 
                                     return false;
                                 })
@@ -322,9 +344,10 @@ public class ProjectEdit extends StandardEditor<Project> {
                                     parentExists = true;
                                     List<TestCase> fromParent = new ArrayList<>();
                                     //Собираем тест-кейсы с приоритетом "Высокий"
-                                    if (regress.getParentCard() != null) {
+                                    if (regress.getParentCard() != null &&
+                                            regress.getParentCard().getTestCase() != null) {
                                         fromParent = regress.getParentCard().getTestCase().stream().filter(s ->
-                                                s.getPriority().getId().toString().equals("e2e009c7-4f9c-be4a-6b0e-a9d7c9db7dd0")).collect(Collectors.toList());
+                                                s.getPriority().getId().equals(PRIORITY_HIGH)).collect(Collectors.toList());
                                     }
                                     List<TestCase> fromRegress = regress.getTestCase();
                                     for (TestCase tcParent : fromParent) {

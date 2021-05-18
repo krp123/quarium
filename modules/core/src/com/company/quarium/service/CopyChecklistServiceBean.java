@@ -9,6 +9,8 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.company.quarium.Constants.PRIORITY_HIGH;
+
 @Service(CopyChecklistService.NAME)
 public class CopyChecklistServiceBean implements CopyChecklistService {
 
@@ -78,7 +80,7 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
             List<TestCase> tcList = new ArrayList<>();
             for (TestCase tc : checklist.getTestCase()) {
                 if (tc.getPriority() != null &&
-                        tc.getPriority().getId().toString().equals("e2e009c7-4f9c-be4a-6b0e-a9d7c9db7dd0")) {
+                        tc.getPriority().getId().equals(PRIORITY_HIGH)) {
                     copyTestCaseToRegress(checklistNew, tcList, tc);
                 }
             }

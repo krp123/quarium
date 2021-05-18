@@ -84,12 +84,12 @@
                                             <table id="stepsTable"
                                                    dataContainer="stepsCollection"
                                                    width="100%"
-                                                   height="200px"
                                                    multiselect="true"
                                                    columnHeaderVisible="false"
                                                    caption="msg://checklistEdit.steps"
                                                    multiLineCells="true"
-                                                   sortable="true">
+                                                   sortable="true"
+                                                   responsive="true">
                                                 <actions>
                                                     <action id="createStep" type="create"/>
                                                     <action id="removeStep" type="remove"/>

@@ -18,7 +18,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.util.List;
-import java.util.UUID;
+
+import static com.company.quarium.Constants.STATE_NOT_STARTED;
 
 @Table(name = "QUARIUM_CHECKLIST")
 @Entity(name = "quarium_Checklist")
@@ -157,7 +158,7 @@ public class Checklist extends StandardEntity {
 
     @PostConstruct
     private void initState(DataManager dataManager) {
-        setState(dataManager.load(Statement.class).id(UUID.fromString("31c599f1-c1b0-30ae-add1-5c6e4b354276")).one());
+        setState(dataManager.load(Statement.class).id(STATE_NOT_STARTED).one());
         setMinutes(0);
         setHours(0);
     }

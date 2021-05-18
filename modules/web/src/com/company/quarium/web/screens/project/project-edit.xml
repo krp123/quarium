@@ -30,7 +30,7 @@
                 <query>
                     <![CDATA[select e from quarium_TestCase e
                     where e.checklist.parentCard.project = :project
-                    and e.state.id = 'cd85906d-6fbe-3e8d-8602-bf1af8e1ea53']]>
+                    and e.state.name = 'Баг']]>
                 </query>
             </loader>
         </collection>
