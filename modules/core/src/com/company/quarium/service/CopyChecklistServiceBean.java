@@ -48,6 +48,7 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
                 }
                 newTC.setExpectedResult(tc.getName());
                 newTC.setNumber(tc.getNumber());
+                newTC.setCreationDate(tc.getCreationDate());
                 newTC.setState(tc.getState());
                 newTC.setMinutes(tc.getMinutes());
                 newTC.setHours(tc.getHours());
@@ -216,6 +217,7 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
         newTC.setExpectedResult(tc.getName());
         newTC.setPriority(tc.getPriority());
         newTC.setNumber(tc.getNumber());
+        newTC.setCreationDate(tc.getCreationDate());
         newTC.setState(tc.getState());
         newTC.setComment(tc.getComment());
         tcList.add(newTC);
@@ -240,6 +242,7 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
         newTC.setMinutes(tc.getMinutes());
         newTC.setExpectedResult(tc.getExpectedResult());
         newTC.setPriority(tc.getPriority());
+        newTC.setCreationDate(tc.getCreationDate());
         newTC.setNumber(tc.getNumber());
         tcList.add(newTC);
     }

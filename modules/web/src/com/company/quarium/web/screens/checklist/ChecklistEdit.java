@@ -228,6 +228,7 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
         createAction.withHandler(actionPerformedEvent -> {
             TestCase entity = getBeanLocator().get(Metadata.class).create(getEntityClass());
             entity.setChecklist(getEditedEntityContainer().getItem());
+            entity.setCreationDate(timeSource.currentTimestamp());
 
             if (getEditedEntityContainer().getItem().getTestCase() == null) {
                 entity.setNumber(1);
