@@ -6,8 +6,6 @@ import com.company.quarium.entity.checklist.TestCase;
 import com.company.quarium.entity.project.Module;
 import com.company.quarium.entity.project.QaProjectRelationship;
 import com.company.quarium.entity.references.Statement;
-import com.company.quarium.service.CopyChecklistService;
-import com.company.quarium.web.gui.components.LinkField;
 import com.haulmont.cuba.core.app.EntitySnapshotService;
 import com.haulmont.cuba.core.app.LockService;
 import com.haulmont.cuba.core.entity.BaseGenericIdEntity;
@@ -15,7 +13,6 @@ import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.RemoveOperation;
-import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.actions.list.CreateAction;
 import com.haulmont.cuba.gui.actions.list.EditAction;
 import com.haulmont.cuba.gui.components.*;
@@ -67,25 +64,13 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     @Inject
     private TimeSource timeSource;
     @Inject
-    private LinkField caseTicket;
-    @Inject
     private TextArea<String> caseComment;
     @Inject
     private LookupField<Statement> caseStateField;
     @Inject
-    private InstanceLoader<TestCase> testCaseDl;
-    @Inject
     private HBoxLayout ticketBox;
     @Inject
     private ScreenValidation screenValidation;
-    @Inject
-    protected CheckBox isUsedInRegress;
-    @Inject
-    private CopyChecklistService copyChecklistService;
-    @Inject
-    private Metadata metadata;
-    @Inject
-    private ScreenBuilders screenBuilders;
 
 
     @Subscribe

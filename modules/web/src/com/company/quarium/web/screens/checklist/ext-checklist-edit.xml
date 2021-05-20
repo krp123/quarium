@@ -79,8 +79,6 @@
                         <app:linkField id="ticket" dataContainer="checklistDc" property="ticket"
                                        maxTextLength="40"/>
                     </hbox>
-                    <checkBox id="isUsedInRegress" dataContainer="checklistDc" property="isUsedInRegress"
-                              caption="msg://checklistEdit.isUsedInRegress"/>
                 </row>
                 <row>
                     <hbox caption="msg://checklistEdit.estimation" width="90%" spacing="true"

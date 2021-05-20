@@ -18,14 +18,14 @@ import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.*;
 import com.haulmont.cuba.gui.screen.*;
+import org.apache.commons.lang3.BooleanUtils;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.company.quarium.Constants.STATE_CHECKED;
-import static com.company.quarium.Constants.STATE_NOT_STARTED;
+import static com.company.quarium.Constants.*;
 
 @UiController("quarium_SimpleProject.edit")
 @UiDescriptor("project-edit.xml")
@@ -249,6 +249,74 @@ public class ProjectEdit extends StandardEditor<Project> {
         }
     }
 
+    @Subscribe(id = "checklistsDc", target = Target.DATA_CONTAINER)
+    public void onChecklistsDcItemPropertyChange(InstanceContainer.ItemPropertyChangeEvent<SimpleChecklist> event) {
+        if (!"isUsedInRegress".equals(event.getProperty())) {
+            return;
+        }
+
+        Checklist checklist = checklistsDc.getItem(checklistsTable.getSingleSelected().getId());
+        if (BooleanUtils.isTrue(checklist.getIsUsedInRegress())) {
+            boolean parentExists = false;
+            //Проверяем, является ли текущий чек-лист для какого-то чек-листа регресса родителем
+            for (Checklist regress : regressChecklistDc.getMutableItems()) {
+                if (regress.getParentCard() != null &&
+                        regress.getParentCard().equals(checklist)) {
+                    parentExists = true;
+                    List<TestCase> fromParent = new ArrayList<>();
+                    //Собираем тест-кейсы с приоритетом "Высокий"
+                    if (regress.getParentCard() != null &&
+                            regress.getParentCard().getTestCase() != null) {
+                        fromParent = regress.getParentCard().getTestCase().stream().filter(s ->
+                                s.getPriority().getId().equals(PRIORITY_HIGH)).collect(Collectors.toList());
+                    }
+                    List<TestCase> fromRegress = regress.getTestCase();
+                    for (TestCase tcParent : fromParent) {
+                        boolean listHasCase = false;
+                        //Проверяем, имеет ли уже чек-лист такой тест-кейс
+                        for (TestCase tcRegress : fromRegress) {
+                            if (tcParent.getCreationDate() != null &&
+                                    tcParent.getCreationDate().equals(tcRegress.getCreationDate()))
+                                listHasCase = true;
+                        }
+                        //если такого кейса нет, то копируем его
+                        if (!listHasCase) {
+                            regress.setTestCase(copyChecklistService.copyTestCaseToChecklist(regress, tcParent));
+                        }
+                    }
+                }
+            }
+            //если родителя нет, то сразу копируем полностью чек-лист
+            if (!parentExists) {
+                copyChecklistToRegress(checklist);
+            }
+        } else {
+            boolean hasChild = false;
+            for (RegressChecklist cl : regressChecklistDc.getMutableItems()) {
+                if (cl.getParentCard().equals(checklist)) {
+                    hasChild = true;
+                }
+            }
+            if (hasChild) {
+                dialogs.createOptionDialog()
+                        .withCaption("Внимание")
+                        .withMessage("Снятие атрибута повлечет за собой удаление чек-листа с вкладки Регресс. " +
+                                "Вы уверены?")
+                        .withActions(
+                                new DialogAction(DialogAction.Type.YES, Action.Status.PRIMARY).withHandler(d -> {
+                                    checklist.setIsUsedInRegress(false);
+                                    removeRegressChecklist(checklist);
+                                }),
+                                new DialogAction(DialogAction.Type.NO).withHandler(d -> {
+                                    checklist.setIsUsedInRegress(true);
+                                })
+                        )
+                        .show();
+            }
+        }
+    }
+
+
     @Subscribe
     protected void onInit(AfterShowEvent event) {
         qaStatisticsTable.addGeneratedColumn("timeTotal",
@@ -421,12 +489,12 @@ public class ProjectEdit extends StandardEditor<Project> {
         regressChecklistDc.getMutableItems().add(checklistNew);
     }
 
-    private void removeChecklist(Checklist checklist) {
+    private void removeRegressChecklist(Checklist checklist) {
         List<RegressChecklist> mutableItems = new ArrayList<>(regressChecklistDc.getMutableItems());
         for (RegressChecklist cl : mutableItems) {
             if (cl.getParentCard().equals(checklist)) {
                 regressChecklistDc.getMutableItems().remove(cl);
-                dataManager.remove(cl);
+//                dataManager.remove(cl);
             }
         }
     }
