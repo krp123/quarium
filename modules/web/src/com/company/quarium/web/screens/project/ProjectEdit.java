@@ -71,6 +71,8 @@ public class ProjectEdit extends StandardEditor<Project> {
     private CollectionPropertyContainer<ProjectVersion> versionsDc;
     @Inject
     private TimeSource timeSource;
+    @Inject
+    private TabSheet projectTabSheet;
 
     @Subscribe
     public void onInitEntity(InitEntityEvent<Project> event) {
@@ -255,7 +257,8 @@ public class ProjectEdit extends StandardEditor<Project> {
             return;
         }
 
-        Checklist checklist = checklistsDc.getItem(checklistsTable.getSingleSelected().getId());
+        Checklist checklist = checklistsDc.getItem(event.getItem());
+        //если установили галку
         if (BooleanUtils.isTrue(checklist.getIsUsedInRegress())) {
             boolean parentExists = false;
             //Проверяем, является ли текущий чек-лист для какого-то чек-листа регресса родителем
@@ -291,13 +294,17 @@ public class ProjectEdit extends StandardEditor<Project> {
                 copyChecklistToRegress(checklist);
             }
         } else {
+            //если сняли галку
             boolean hasChild = false;
+            //проверяем, есть ли данный чек-лист на вкладке "Регресс"
             for (RegressChecklist cl : regressChecklistDc.getMutableItems()) {
                 if (cl.getParentCard().equals(checklist)) {
                     hasChild = true;
                 }
             }
-            if (hasChild) {
+            //если есть, то выводим диалоговое окно
+            if (hasChild &&
+                    "testPlanTab".equals(projectTabSheet.getSelectedTab().getName())) {
                 dialogs.createOptionDialog()
                         .withCaption("Внимание")
                         .withMessage("Снятие атрибута повлечет за собой удаление чек-листа с вкладки Регресс. " +

@@ -60,7 +60,7 @@
     <dialogMode height="600"
                 width="800"/>
     <layout expand="editActions" spacing="true">
-        <tabSheet height="AUTO">
+        <tabSheet id="projectTabSheet" height="AUTO">
             <tab id="detailsTab" caption="msg://projectEdit.details" spacing="true" margin="true">
                 <form id="form" dataContainer="projectDc">
                     <column width="350px">
