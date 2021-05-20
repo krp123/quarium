@@ -65,6 +65,7 @@ public class Checklist extends StandardEntity {
     @OnDelete(DeletePolicy.UNLINK)
     @JoinColumn(name = "ASSIGNED_QA_ID")
     @OneToOne(fetch = FetchType.LAZY)
+    @Lookup(type = LookupType.DROPDOWN, actions = {})
     private QaProjectRelationship assignedQa;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {})

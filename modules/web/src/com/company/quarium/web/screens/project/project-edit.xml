@@ -34,6 +34,14 @@
                 </query>
             </loader>
         </collection>
+        <collection id="qaDc" class="com.company.quarium.entity.project.QaProjectRelationship" view="edit">
+            <loader id="qaDl">
+                <query>
+                    <![CDATA[select e from quarium_QaProjectRelationship e
+                    where e.project = :project]]>
+                </query>
+            </loader>
+        </collection>
         <collection id="dbmsDc" class="com.company.quarium.entity.references.Dbms" view="_minimal">
             <loader id="dbmsDl">
                 <query>
@@ -161,7 +169,8 @@
                                 height="460px"
                                 dataContainer="checklistsDc"
                                 multiselect="true"
-                                presentations="true">
+                                presentations="true"
+                                editable="true">
                         <actions>
                             <action id="create" type="create">
                                 <properties>
@@ -181,8 +190,10 @@
                         <columns>
                             <column id="name"/>
                             <column id="state"/>
-                            <column id="assignedQa" caption="msg://projectEdit.QaColumn"/>
-                            <column id="isUsedInRegress" caption="msg://projectEdit.isUsedInRegressColumn"/>
+                            <column id="assignedQa" caption="msg://projectEdit.QaColumn"
+                                    editable="true" optionsContainer="qaDc" width="300px"/>
+                            <column id="isUsedInRegress" caption="msg://projectEdit.isUsedInRegressColumn"
+                                    editable="true"/>
                         </columns>
                         <rowsCount/>
                         <buttonsPanel id="buttonsPanel"
