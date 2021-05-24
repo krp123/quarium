@@ -32,7 +32,6 @@
                 <action id="edit" type="edit"/>
                 <action id="remove" type="remove"/>
                 <action id="refresh" type="refresh"/>
-                <action id="excel" type="excel"/>
             </actions>
             <columns>
                 <column id="name"/>
@@ -44,7 +43,8 @@
                 <button id="editBtn" action="checklistsTable.edit"/>
                 <button id="removeBtn" action="checklistsTable.remove"/>
                 <button id="refreshBtn" action="checklistsTable.refresh"/>
-                <button id="excelBtn" action="checklistsTable.excel"/>
+                <multiUpload id="multiUploadField" caption="msg://checklistBrowse.upload"
+                             icon="font-icon:FILE_EXCEL_O" permittedExtensions=".xlsx"/>
             </buttonsPanel>
         </groupTable>
         <hbox id="lookupActions" spacing="true" visible="false">
