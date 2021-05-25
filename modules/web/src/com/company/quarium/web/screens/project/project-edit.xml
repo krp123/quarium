@@ -202,6 +202,9 @@
                             <button id="addBtn" action="checklistsTable.addChecklist"/>
                             <button id="editBtn" action="checklistsTable.edit"/>
                             <button id="removeBtn" action="checklistsTable.remove"/>
+                            <button id="uploadExcel"
+                                    caption="msg://checklistBrowse.uploadXlsx"
+                                    icon="font-icon:FILE_EXCEL_O"/>
                         </buttonsPanel>
                     </groupTable>
                 </vbox>

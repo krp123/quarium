@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        extends="com/company/quarium/web/screens/checklist/excelUploadWindow.xml"
+        messagesPack="com.company.quarium.web.screens.checklist">
+    <data>
+        <instance id="projectDc"
+                  class="com.company.quarium.entity.project.SimpleProject">
+            <view extends="_local"/>
+        </instance>
+    </data>
+    <layout/>
+</window>

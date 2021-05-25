@@ -1,13 +1,12 @@
 package com.company.quarium.web.screens.checklist;
 
 import com.company.quarium.entity.checklist.SimpleChecklist;
+import com.company.quarium.entity.project.SimpleProject;
 import com.company.quarium.service.UploadChecklistFromXlsService;
-import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.components.FileMultiUploadField;
 import com.haulmont.cuba.gui.model.CollectionContainer;
-import com.haulmont.cuba.gui.screen.Screen;
-import com.haulmont.cuba.gui.screen.Subscribe;
+import com.haulmont.cuba.gui.model.InstanceContainer;
 import com.haulmont.cuba.gui.screen.UiController;
 import com.haulmont.cuba.gui.screen.UiDescriptor;
 import com.haulmont.cuba.gui.upload.FileUploadingAPI;
@@ -19,9 +18,9 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
-@UiController("quarium_Exceluploadwindow")
-@UiDescriptor("excelUploadWindow.xml")
-public class ExcelUploadWindow extends Screen {
+@UiController("quarium_ProjectExceluploadwindow")
+@UiDescriptor("projectExcelUploadWindow.xml")
+public class ProjectExcelUploadWindow extends ExcelUploadWindow {
     @Inject
     private FileMultiUploadField multiUploadField;
     @Inject
@@ -33,16 +32,15 @@ public class ExcelUploadWindow extends Screen {
     @Inject
     private CollectionContainer<SimpleChecklist> checklistsDc;
     @Inject
-    private DataManager dataManager;
+    private InstanceContainer<SimpleProject> projectDc;
 
-    @Subscribe("multiUploadField")
+    @Override
     public void onMultiUploadFieldQueueUploadComplete(FileMultiUploadField.QueueUploadCompleteEvent event) throws IOException, InvalidFormatException {
         for (Map.Entry<UUID, String> entry : multiUploadField.getUploadsMap().entrySet()) {
             File file = fileUploadingAPI.getFile(entry.getKey());
             SimpleChecklist checklistNew = uploadChecklistFromXlsService.createFromXls(file);
-
+            checklistNew.setProject(projectDc.getItem());
             checklistsDc.getMutableItems().add(checklistNew);
-            dataManager.commit(checklistNew);
         }
         notifications.create()
                 .withCaption("Uploaded files: " + multiUploadField.getUploadsMap().values())
@@ -52,5 +50,9 @@ public class ExcelUploadWindow extends Screen {
 
     public void setChecklistsDc(CollectionContainer<SimpleChecklist> checklistsDc) {
         this.checklistsDc = checklistsDc;
+    }
+
+    public void setProject(SimpleProject project) {
+        projectDc.setItem(project);
     }
 }

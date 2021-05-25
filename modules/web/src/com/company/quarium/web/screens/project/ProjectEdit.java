@@ -10,6 +10,7 @@ import com.company.quarium.entity.references.Qa;
 import com.company.quarium.entity.references.Statement;
 import com.company.quarium.service.CopyChecklistService;
 import com.company.quarium.web.screens.checklist.ExtChecklistEdit;
+import com.company.quarium.web.screens.checklist.ProjectExcelUploadWindow;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.TimeSource;
 import com.haulmont.cuba.gui.Dialogs;
@@ -22,6 +23,7 @@ import org.apache.commons.lang3.BooleanUtils;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -403,5 +405,22 @@ public class ProjectEdit extends StandardEditor<Project> {
                 regressChecklistDc.getMutableItems().remove(cl);
             }
         }
+    }
+
+    @Subscribe("uploadExcel")
+    public void onUploadExcelClick(Button.ClickEvent event) {
+        ProjectExcelUploadWindow uploadWindow = screenBuilders.screen(this)
+                .withScreenClass(ProjectExcelUploadWindow.class)
+                .build();
+        uploadWindow.setChecklistsDc(checklistsDc);
+        uploadWindow.setProject((SimpleProject) getEditedEntity());
+        uploadWindow.show();
+    }
+
+    @Subscribe(id = "checklistsDc", target = Target.DATA_CONTAINER)
+    private void onChecklistsDcCollectionChange(
+            CollectionContainer.CollectionChangeEvent<SimpleChecklist> event) {
+        CollectionChangeType changeType = event.getChangeType();
+        Collection<? extends SimpleChecklist> changes = event.getChanges();
     }
 }
