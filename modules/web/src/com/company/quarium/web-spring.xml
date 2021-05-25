@@ -12,6 +12,8 @@
         <property name="remoteServices">
             <map>
                 <entry key="quarium_CopyChecklistService" value="com.company.quarium.service.CopyChecklistService"/>
+                <entry key="quarium_UploadChecklistFromXlsService"
+                       value="com.company.quarium.service.UploadChecklistFromXlsService"/>
             </map>
         </property>
     </bean>

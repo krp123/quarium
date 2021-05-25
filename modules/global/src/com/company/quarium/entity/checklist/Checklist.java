@@ -30,6 +30,9 @@ public class Checklist extends StandardEntity {
     @Column(name = "NAME")
     private String name;
 
+    @Column(name = "INITIAL_CONDITIONS", length = 1000)
+    private String initialConditions;
+
     @OnDeleteInverse(DeletePolicy.UNLINK)
     @OnDelete(DeletePolicy.UNLINK)
     @OneToOne(fetch = FetchType.LAZY)
@@ -84,6 +87,14 @@ public class Checklist extends StandardEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PROJECT_ID")
     private Project project;
+
+    public String getInitialConditions() {
+        return initialConditions;
+    }
+
+    public void setInitialConditions(String initialConditions) {
+        this.initialConditions = initialConditions;
+    }
 
     public Checklist getParentCard() {
         return parentCard;
