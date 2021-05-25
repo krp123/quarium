@@ -13,12 +13,21 @@
             </loader>
         </collection>
     </data>
-    <dialogMode height="600"
-                width="800"
+    <dialogMode height="AUTO"
+                width="400"
                 forceDialog="true"/>
     <layout>
-        <multiUpload id="multiUploadField"
-                     caption="msg://checklistBrowse.upload"
-                     permittedExtensions=".xlsx"/>
+        <vbox margin="true" width="auto" spacing="true">
+            <hbox margin="true" spacing="true">
+                <multiUpload id="multiUploadField"
+                             caption="msg://checklistBrowse.upload"
+                             permittedExtensions=".xlsx"/>
+                <linkButton id="downloadTemplate"
+                            caption="msg://exceluploadwindow.downloadTemplate"
+                            icon="SAVE"
+                            align="MIDDLE_RIGHT"
+                            invoke="downloadTemplate"/>
+            </hbox>
+        </vbox>
     </layout>
 </window>
