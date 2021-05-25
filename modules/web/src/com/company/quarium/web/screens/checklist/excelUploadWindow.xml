@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://exceluploadwindow.caption"
+        messagesPack="com.company.quarium.web.screens.checklist">
+
+    <dialogMode height="600"
+                width="800"
+                forceDialog="true"/>
+    <layout>
+        <multiUpload id="multiUploadField"
+                     caption="msg://checklistBrowse.upload"
+                     permittedExtensions=".xlsx"/>
+    </layout>
+</window>

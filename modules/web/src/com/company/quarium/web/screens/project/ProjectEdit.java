@@ -23,6 +23,7 @@ import org.apache.commons.lang3.BooleanUtils;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.company.quarium.Constants.*;
@@ -119,7 +120,7 @@ public class ProjectEdit extends StandardEditor<Project> {
                 .withMessage("Вы действительно хотите удалить выбранные элементы?")
                 .withActions(
                         new DialogAction(DialogAction.Type.YES, Action.Status.PRIMARY).withHandler(d -> {
-                            if (regressChecklistsTable.getSingleSelected().getParentCard() != null)
+                            if (Objects.requireNonNull(regressChecklistsTable.getSingleSelected()).getParentCard() != null)
                                 checklistsDc.getItem(regressChecklistsTable.getSingleSelected().getParentCard().getId())
                                         .setIsUsedInRegress(false);
                             regressChecklistDc.getMutableItems().remove(regressChecklistsTable.getSingleSelected());
@@ -162,6 +163,13 @@ public class ProjectEdit extends StandardEditor<Project> {
                 .build()
                 .show();
     }
+
+    @Install(to = "checklistsTable.edit", subject = "afterCommitHandler")
+    private void checklistsTableEditAfterCommitHandler(SimpleChecklist simpleChecklist) {
+        checklistsDc.replaceItem(simpleChecklist);
+        checklistsTable.repaint();
+    }
+
 
     @Subscribe("checklistsTable.addChecklist")
     protected void onAddChecklist(Action.ActionPerformedEvent event) {
@@ -393,7 +401,6 @@ public class ProjectEdit extends StandardEditor<Project> {
         for (RegressChecklist cl : mutableItems) {
             if (cl.getParentCard().equals(checklist)) {
                 regressChecklistDc.getMutableItems().remove(cl);
-//                dataManager.remove(cl);
             }
         }
     }
