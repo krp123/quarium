@@ -4,6 +4,7 @@ import com.company.quarium.entity.checklist.SimpleChecklist;
 import com.company.quarium.service.UploadChecklistFromXlsService;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.components.FileMultiUploadField;
+import com.haulmont.cuba.gui.model.CollectionContainer;
 import com.haulmont.cuba.gui.screen.Screen;
 import com.haulmont.cuba.gui.screen.Subscribe;
 import com.haulmont.cuba.gui.screen.UiController;
@@ -28,8 +29,8 @@ public class ExcelUploadWindow extends Screen {
     private Notifications notifications;
     @Inject
     private UploadChecklistFromXlsService uploadChecklistFromXlsService;
-//    @Inject
-//    private CollectionContainer<SimpleChecklist> checklistsDc;
+    @Inject
+    private CollectionContainer<SimpleChecklist> checklistsDc;
 
     @Subscribe("multiUploadField")
     public void onMultiUploadFieldQueueUploadComplete(FileMultiUploadField.QueueUploadCompleteEvent event) throws IOException, InvalidFormatException {
@@ -37,12 +38,15 @@ public class ExcelUploadWindow extends Screen {
             File file = fileUploadingAPI.getFile(entry.getKey());
             SimpleChecklist checklistNew = uploadChecklistFromXlsService.createFromXls(file);
 
-
-//            checklistsDc.getMutableItems().add(checklistNew);
+            checklistsDc.getMutableItems().add(checklistNew);
         }
         notifications.create()
                 .withCaption("Uploaded files: " + multiUploadField.getUploadsMap().values())
                 .show();
         multiUploadField.clearUploads();
+    }
+
+    public void setChecklistsDc(CollectionContainer<SimpleChecklist> checklistsDc) {
+        this.checklistsDc = checklistsDc;
     }
 }

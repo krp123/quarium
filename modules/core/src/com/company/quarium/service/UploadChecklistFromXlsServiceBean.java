@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service(UploadChecklistFromXlsService.NAME)
 public class UploadChecklistFromXlsServiceBean implements UploadChecklistFromXlsService {
@@ -34,28 +36,40 @@ public class UploadChecklistFromXlsServiceBean implements UploadChecklistFromXls
         XSSFRow rowInitialConditions = newSheet.getRow(1);
         checklistNew.setInitialConditions(rowInitialConditions.getCell(1).getStringCellValue());
 
+        List<TestCase> testCases = new ArrayList<>();
         int rowsQty = newSheet.getLastRowNum();
         int casesQty = 0;
         for (int i = 3; i < rowsQty; i++) {
-            TestCase testCaseNew = dataManager.create(TestCase.class);
-            testCaseNew.setChecklist(checklistNew);
-            testCaseNew.setNumber(++casesQty);
+            if (newSheet.getRow(i) != null) {
+                XSSFRow rowCase = newSheet.getRow(i);
+                if (!"".equals(rowCase.getCell(0).getStringCellValue())) {
 
-            XSSFRow rowCase = newSheet.getRow(i);
-            //Заполняем наименование кейса
-            testCaseNew.setName(rowCase.getCell(0).getStringCellValue());
-            //Заполняем ожидаемый результат
-            testCaseNew.setExpectedResult(rowCase.getCell(2).getStringCellValue());
-            //Забираем шаги, парсим их по знаку ';' и присваиваем кейсу
-            String[] steps = rowCase.getCell(1).getStringCellValue().split(";");
-            int stepsQty = 0;
-            for (String s : steps) {
-                Step step = dataManager.create(Step.class);
-                step.setTestCase(testCaseNew);
-                step.setNumber(++stepsQty);
-                step.setStep(s);
+                    TestCase testCaseNew = dataManager.create(TestCase.class);
+                    testCaseNew.setChecklist(checklistNew);
+                    testCaseNew.setNumber(++casesQty);
+
+                    //Заполняем наименование кейса
+                    testCaseNew.setName(rowCase.getCell(0).getStringCellValue());
+                    //Заполняем ожидаемый результат
+                    testCaseNew.setExpectedResult(rowCase.getCell(2).getStringCellValue());
+
+                    //Забираем шаги, парсим их по знаку ';' и присваиваем кейсу
+                    List<Step> stepsList = new ArrayList<>();
+                    String[] steps = rowCase.getCell(1).getStringCellValue().split(";");
+                    int stepsQty = 0;
+                    for (String s : steps) {
+                        Step step = dataManager.create(Step.class);
+                        step.setTestCase(testCaseNew);
+                        step.setNumber(++stepsQty);
+                        step.setStep(s);
+                        stepsList.add(step);
+                    }
+                    testCaseNew.setCaseStep(stepsList);
+                    testCases.add(testCaseNew);
+                }
             }
         }
+        checklistNew.setTestCase(testCases);
 
         return checklistNew;
     }

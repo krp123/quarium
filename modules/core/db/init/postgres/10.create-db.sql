@@ -104,6 +104,7 @@ create table QUARIUM_CHECKLIST (
     DTYPE varchar(31),
     --
     NAME varchar(255),
+    INITIAL_CONDITIONS varchar(1000),
     PARENT_CARD_ID uuid,
     COMMENT_ varchar(1000),
     HOURS integer,

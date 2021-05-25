@@ -2,7 +2,17 @@
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
         caption="msg://exceluploadwindow.caption"
         messagesPack="com.company.quarium.web.screens.checklist">
-
+    <data readOnly="true">
+        <collection id="checklistsDc"
+                    class="com.company.quarium.entity.checklist.SimpleChecklist">
+            <view extends="_local"/>
+            <loader id="checklistsDl">
+                <query>
+                    <![CDATA[select e from quarium_SimpleChecklist e where e.project IS NULL]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
     <dialogMode height="600"
                 width="800"
                 forceDialog="true"/>
