@@ -5,7 +5,9 @@ import com.company.quarium.entity.checklist.SimpleChecklist;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.Screens;
 import com.haulmont.cuba.gui.components.Button;
+import com.haulmont.cuba.gui.components.GroupTable;
 import com.haulmont.cuba.gui.model.CollectionContainer;
+import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.screen.*;
 
 import javax.inject.Inject;
@@ -21,6 +23,12 @@ public class ChecklistBrowse extends StandardLookup<Checklist> {
     private ScreenBuilders screenBuilders;
     @Inject
     private CollectionContainer<SimpleChecklist> checklistsDc;
+    @Inject
+    private GroupTable<SimpleChecklist> checklistsTable;
+    @Inject
+    private CollectionLoader<SimpleChecklist> checklistsDl;
+    @Inject
+    private Button refreshBtn;
 
     @Subscribe("uploadExcel")
     public void onUploadExcelClick(Button.ClickEvent event) {
@@ -28,6 +36,7 @@ public class ChecklistBrowse extends StandardLookup<Checklist> {
                 .withScreenClass(ExcelUploadWindow.class)
                 .build();
         uploadWindow.setChecklistsDc(checklistsDc);
+        uploadWindow.setChecklistsDl(checklistsDl);
         uploadWindow.show();
     }
 }

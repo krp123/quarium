@@ -11,10 +11,8 @@ import com.haulmont.cuba.gui.AppConfig;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.components.FileMultiUploadField;
 import com.haulmont.cuba.gui.model.CollectionContainer;
-import com.haulmont.cuba.gui.screen.Screen;
-import com.haulmont.cuba.gui.screen.Subscribe;
-import com.haulmont.cuba.gui.screen.UiController;
-import com.haulmont.cuba.gui.screen.UiDescriptor;
+import com.haulmont.cuba.gui.model.CollectionLoader;
+import com.haulmont.cuba.gui.screen.*;
 import com.haulmont.cuba.gui.upload.FileUploadingAPI;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -42,6 +40,8 @@ public class ExcelUploadWindow extends Screen {
     @Inject
     private CollectionContainer<SimpleChecklist> checklistsDc;
     @Inject
+    private CollectionLoader<SimpleChecklist> checklistsDl;
+    @Inject
     private DataManager dataManager;
     @Inject
     protected Metadata metadata;
@@ -56,6 +56,7 @@ public class ExcelUploadWindow extends Screen {
 
             checklistsDc.getMutableItems().add(checklistNew);
             dataManager.commit(checklistNew);
+            checklistsDl.load();
         }
         notifications.create()
                 .withCaption("Uploaded files: " + multiUploadField.getUploadsMap().values())
@@ -67,8 +68,18 @@ public class ExcelUploadWindow extends Screen {
         this.checklistsDc = checklistsDc;
     }
 
+    public void setChecklistsDl(CollectionLoader<SimpleChecklist> checklistsDl) {
+        this.checklistsDl = checklistsDl;
+    }
+
+    @Subscribe(id = "checklistsDc", target = Target.DATA_CONTAINER)
+    private void onChecklistsDcCollectionChange(
+            CollectionContainer.CollectionChangeEvent<SimpleChecklist> event) {
+
+    }
+
     public void downloadTemplate() throws URISyntaxException, IOException, FileStorageException {
-        File file = new File(getClass().getResource("web/WEB-INF/resources/ChecklistImportTemplate.xlsx").toURI());
+        File file = new File(getClass().getResource("com/company/quarium/web/ChecklistImportTemplate.xlsx").toURI());
         AppConfig.createExportDisplay(getWindow()).show(createFileDescriptor(file));
     }
 

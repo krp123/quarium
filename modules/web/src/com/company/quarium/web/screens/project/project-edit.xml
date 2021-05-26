@@ -199,7 +199,7 @@
                         <buttonsPanel id="buttonsPanel"
                                       alwaysVisible="true">
                             <button id="createBtn" action="checklistsTable.create"/>
-                            <button id="addBtn" action="checklistsTable.addChecklist"/>
+                            <button id="addBtn" action="checklistsTable.addChecklist" icon="ADD_TO_SET_ACTION"/>
                             <button id="editBtn" action="checklistsTable.edit"/>
                             <button id="removeBtn" action="checklistsTable.remove"/>
                             <button id="uploadExcel"

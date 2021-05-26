@@ -64,7 +64,7 @@
                                  width="90%"/>
                     <textArea id="commentField" dataContainer="checklistDc"
                               property="comment" caption="msg://checklistEdit.comment"
-                              width="80%" rowspan="4" rows="8"/>
+                              width="80%" rowspan="2" rows="4"/>
                 </row>
                 <row>
                     <lookupField id="stateField" dataContainer="checklistDc" optionsContainer="statesDc"
@@ -79,6 +79,10 @@
                         <app:linkField id="ticket" dataContainer="checklistDc" property="ticket"
                                        maxTextLength="40"/>
                     </hbox>
+                    <hbox/>
+                    <textArea id="initialContitionsField" dataContainer="checklistDc"
+                              property="initialConditions" caption="msg://checklistEdit.initialConditions"
+                              width="80%" rowspan="2" rows="4" height="100%"/>
                 </row>
                 <row>
                     <hbox caption="msg://checklistEdit.estimation" width="90%" spacing="true"
@@ -153,6 +157,16 @@
                                     </hbox>
                                 </row>
                                 <row>
+                                    <textArea id="initialConditions" dataContainer="testCaseDc"
+                                              property="initialConditions"
+                                              caption="msg://checklistEdit.initialConditions" width="90%"
+                                              rows="2"/>
+
+                                    <lookupField id="priorityField" dataContainer="testCaseDc"
+                                                 optionsContainer="prioritiesDc" property="priority"
+                                                 caption="msg://checklistEdit.priority" width="90%"/>
+                                </row>
+                                <row>
                                     <table id="stepsTable"
                                            dataContainer="stepsCollection"
                                            width="90%"
@@ -172,15 +186,11 @@
                                             <column id="step" editable="true"/>
                                         </columns>
                                         <buttonsPanel>
-                                            <button action="stepsTable.createStep" caption="" icon="ADD_ACTION"/>
+                                            <button action="stepsTable.createStep" caption="" icon="ADD_TO_SET_ACTION"
+                                                    primary="false"/>
                                             <button action="stepsTable.removeStep" caption="" icon="REMOVE_ACTION"/>
                                         </buttonsPanel>
                                     </table>
-                                    <lookupField id="priorityField" dataContainer="testCaseDc"
-                                                 optionsContainer="prioritiesDc" property="priority"
-                                                 caption="msg://checklistEdit.priority" width="90%"/>
-                                </row>
-                                <row>
                                     <lookupField id="caseStateField" dataContainer="testCaseDc"
                                                  optionsContainer="statesDc" property="state"
                                                  caption="msg://checklistEdit.state" width="90%"/>
@@ -195,13 +205,16 @@
                                     </hbox>
                                 </row>
                                 <row>
-                                    <textArea id="expectedResultField" property="expectedResult"
-                                              rows="4" dataContainer="testCaseDc"
-                                              caption="msg://checklistEdit.expectedResult" width="90%"/>
+
                                     <textArea id="caseComment" dataContainer="testCaseDc"
                                               rows="4" property="comment" width="90%"
                                               caption="msg://checklistEdit.comment"
                                               visible="false"/>
+                                </row>
+                                <row>
+                                    <textArea id="expectedResultField" property="expectedResult"
+                                              rows="4" dataContainer="testCaseDc"
+                                              caption="msg://checklistEdit.expectedResult" width="90%"/>
                                 </row>
                             </rows>
                         </grid>

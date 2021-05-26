@@ -38,6 +38,9 @@
                         <textField id="nameField" property="name" required="true"/>
                         <textArea id="commentField" property="comment"/>
                     </column>
+                    <column width="350px">
+                        <textArea id="initialConditionsField" property="initialConditions" rowspan="2" height="100%"/>
+                    </column>
                 </form>
                 <groupBox id="testCaseBox" caption="msg://checklistEdit.testCaseBox" height="550">
                     <split id="split" height="100%" orientation="horizontal"
@@ -81,6 +84,12 @@
                                                        caption="msg://checklistEdit.caseName"/>
                                         </row>
                                         <row>
+                                            <textArea id="initialConditions" dataContainer="testCaseDc"
+                                                      property="initialConditions"
+                                                      caption="msg://checklistEdit.initialConditions" width="90%"
+                                                      rows="2"/>
+                                        </row>
+                                        <row>
                                             <table id="stepsTable"
                                                    dataContainer="stepsCollection"
                                                    width="100%"
@@ -100,7 +109,7 @@
                                                 </columns>
                                                 <buttonsPanel>
                                                     <button action="stepsTable.createStep" caption=""
-                                                            icon="ADD_ACTION"/>
+                                                            icon="ADD_TO_SET_ACTION" primary="false"/>
                                                     <button id="removeStep" action="stepsTable.removeStep" caption=""
                                                             icon="REMOVE_ACTION"/>
                                                 </buttonsPanel>

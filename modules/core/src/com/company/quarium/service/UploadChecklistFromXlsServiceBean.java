@@ -36,10 +36,14 @@ public class UploadChecklistFromXlsServiceBean implements UploadChecklistFromXls
         XSSFRow rowInitialConditions = newSheet.getRow(1);
         checklistNew.setInitialConditions(rowInitialConditions.getCell(1).getStringCellValue());
 
+        //Заполняем комментарий
+        XSSFRow rowComment = newSheet.getRow(2);
+        checklistNew.setComment(rowComment.getCell(1).getStringCellValue());
+
         List<TestCase> testCases = new ArrayList<>();
         int rowsQty = newSheet.getLastRowNum();
         int casesQty = 0;
-        for (int i = 3; i < rowsQty; i++) {
+        for (int i = 4; i < rowsQty; i++) {
             if (newSheet.getRow(i) != null) {
                 XSSFRow rowCase = newSheet.getRow(i);
                 if (!"".equals(rowCase.getCell(0).getStringCellValue())) {
@@ -50,12 +54,14 @@ public class UploadChecklistFromXlsServiceBean implements UploadChecklistFromXls
 
                     //Заполняем наименование кейса
                     testCaseNew.setName(rowCase.getCell(0).getStringCellValue());
+                    //Заполняем начальные условия
+                    testCaseNew.setInitialConditions(rowCase.getCell(1).getStringCellValue());
                     //Заполняем ожидаемый результат
-                    testCaseNew.setExpectedResult(rowCase.getCell(2).getStringCellValue());
+                    testCaseNew.setExpectedResult(rowCase.getCell(3).getStringCellValue());
 
                     //Забираем шаги, парсим их по знаку ';' и присваиваем кейсу
                     List<Step> stepsList = new ArrayList<>();
-                    String[] steps = rowCase.getCell(1).getStringCellValue().split(";");
+                    String[] steps = rowCase.getCell(2).getStringCellValue().split(";");
                     int stepsQty = 0;
                     for (String s : steps) {
                         Step step = dataManager.create(Step.class);

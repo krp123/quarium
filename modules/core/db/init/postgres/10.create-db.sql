@@ -134,6 +134,7 @@ create table QUARIUM_TEST_CASE (
     DELETED_BY varchar(50),
     --
     NAME varchar(255) not null,
+    INITIAL_CONDITIONS varchar(1000),
     NUMBER_ integer,
     CREATION_DATE timestamp,
     COMMENT_ varchar(1000),

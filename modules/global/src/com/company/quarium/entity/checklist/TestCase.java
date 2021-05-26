@@ -33,6 +33,9 @@ public class TestCase extends StandardEntity {
     @NotNull(message = "{msg://quarium_TestCase.name.validation.NotNull}")
     private String name;
 
+    @Column(name = "INITIAL_CONDITIONS", length = 1000)
+    private String initialConditions;
+
     @Column(name = "NUMBER_")
     private Integer number;
 
@@ -85,6 +88,14 @@ public class TestCase extends StandardEntity {
     @JoinColumn(name = "CHECKLIST_ID")
     @OnDeleteInverse(DeletePolicy.CASCADE)
     private Checklist checklist;
+
+    public String getInitialConditions() {
+        return initialConditions;
+    }
+
+    public void setInitialConditions(String initialConditions) {
+        this.initialConditions = initialConditions;
+    }
 
     public Integer getNumber() {
         return number;

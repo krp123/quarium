@@ -8,6 +8,7 @@
         <property name="caseStep" view="_minimal">
             <property name="step"/>
             <property name="creationDate"/>
+            <property name="number"/>
         </property>
         <property name="priority" view="_minimal"/>
         <property name="state" view="_minimal"/>
@@ -81,6 +82,7 @@
             <property name="comment"/>
             <property name="number"/>
             <property name="creationDate"/>
+            <property name="initialConditions"/>
         </property>
         <property name="module" view="_local"/>
         <property name="parentCard" view="_minimal"/>
@@ -107,6 +109,7 @@
             <property name="comment"/>
             <property name="creationDate"/>
             <property name="number"/>
+            <property name="initialConditions"/>
         </property>
         <property name="module" view="_local"/>
         <property name="parentCard" view="_minimal"/>
