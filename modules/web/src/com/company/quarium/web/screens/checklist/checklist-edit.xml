@@ -56,6 +56,8 @@
                                     <action id="create" type="create"/>
                                     <action id="edit" type="edit"/>
                                     <action id="remove" type="remove"/>
+                                    <action id="moveTestCaseUp"/>
+                                    <action id="moveTestCaseDown"/>
                                 </actions>
                                 <columns>
                                     <column id="number" width="20"/>
@@ -64,9 +66,13 @@
                                 <rowsCount/>
                                 <buttonsPanel id="buttonsPanel"
                                               alwaysVisible="true">
-                                    <button id="createBtn" action="table.create"/>
-                                    <button id="editBtn" action="table.edit"/>
-                                    <button id="removeBtn" action="table.remove"/>
+                                    <button id="createBtn" action="table.create" caption=""/>
+                                    <button id="editBtn" action="table.edit" caption=""/>
+                                    <button id="removeBtn" action="table.remove" caption=""/>
+                                    <button id="testCaseUp" caption="" action="table.moveTestCaseUp"
+                                            icon="font-icon:ANGLE_UP"/>
+                                    <button id="testCaseDown" caption="" action="table.moveTestCaseDown"
+                                            icon="font-icon:ANGLE_DOWN"/>
                                 </buttonsPanel>
                             </table>
                         </vbox>
@@ -86,7 +92,7 @@
                                         <row>
                                             <textArea id="initialConditions" dataContainer="testCaseDc"
                                                       property="initialConditions"
-                                                      caption="msg://checklistEdit.initialConditions" width="90%"
+                                                      caption="msg://checklistEdit.initialConditions" width="100%"
                                                       rows="2"/>
                                         </row>
                                         <row>
@@ -102,6 +108,8 @@
                                                 <actions>
                                                     <action id="createStep" type="create"/>
                                                     <action id="removeStep" type="remove"/>
+                                                    <action id="moveStepUp"/>
+                                                    <action id="moveStepDown"/>
                                                 </actions>
                                                 <columns>
                                                     <column id="number" editable="false" width="20"/>
@@ -112,6 +120,10 @@
                                                             icon="ADD_TO_SET_ACTION" primary="false"/>
                                                     <button id="removeStep" action="stepsTable.removeStep" caption=""
                                                             icon="REMOVE_ACTION"/>
+                                                    <button id="stepUp" caption="" action="stepsTable.moveStepUp"
+                                                            icon="font-icon:ANGLE_UP"/>
+                                                    <button id="stepDown" caption="" action="stepsTable.moveStepDown"
+                                                            icon="font-icon:ANGLE_DOWN"/>
                                                 </buttonsPanel>
                                             </table>
                                         </row>
