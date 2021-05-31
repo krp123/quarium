@@ -137,6 +137,16 @@
                                     </hbox>
                                 </row>
                                 <row>
+                                    <textArea id="initialConditions" dataContainer="testCaseDc"
+                                              property="initialConditions"
+                                              caption="msg://checklistEdit.initialConditions" width="90%"
+                                              rows="2"/>
+
+                                    <lookupField id="priorityField" dataContainer="testCaseDc"
+                                                 optionsContainer="prioritiesDc" property="priority"
+                                                 caption="msg://checklistEdit.priority" width="90%"/>
+                                </row>
+                                <row>
                                     <table id="stepsTable"
                                            dataContainer="stepsCollection"
                                            width="90%"
@@ -152,14 +162,14 @@
                                             <column id="step" editable="false"/>
                                         </columns>
                                     </table>
-                                    <lookupField id="priorityField" dataContainer="testCaseDc"
-                                                 optionsContainer="prioritiesDc" property="priority"
-                                                 caption="msg://checklistEdit.priority" width="90%" editable="false"/>
-                                </row>
-                                <row>
                                     <lookupField id="caseStateField" dataContainer="testCaseDc"
                                                  optionsContainer="statesDc" property="state"
-                                                 caption="msg://checklistEdit.state" width="90%" editable="false"/>
+                                                 caption="msg://checklistEdit.state" width="90%"/>
+                                </row>
+                                <row>
+                                    <dateField id="checkDate" dataContainer="testCaseDc"
+                                               property="checkDate" caption="msg://checklistEdit.checkDate"
+                                               visible="false"/>
                                 </row>
                                 <row>
                                     <textField id="caseTicket" caption="msg://checklistEdit.ticket"

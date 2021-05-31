@@ -70,9 +70,9 @@
                                     <button id="editBtn" action="table.edit" caption=""/>
                                     <button id="removeBtn" action="table.remove" caption=""/>
                                     <button id="testCaseUp" caption="" action="table.moveTestCaseUp"
-                                            icon="font-icon:ANGLE_UP"/>
+                                            icon="font-icon:ANGLE_UP" enable="false"/>
                                     <button id="testCaseDown" caption="" action="table.moveTestCaseDown"
-                                            icon="font-icon:ANGLE_DOWN"/>
+                                            icon="font-icon:ANGLE_DOWN" enable="false"/>
                                 </buttonsPanel>
                             </table>
                         </vbox>

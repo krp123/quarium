@@ -21,7 +21,11 @@ import com.haulmont.cuba.gui.screen.*;
 import com.haulmont.cuba.gui.util.OperationResult;
 
 import javax.inject.Inject;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.company.quarium.Constants.STATE_BUG;
+import static com.company.quarium.Constants.STATE_CHECKED;
 
 @UiController("quarium_VersionExtChecklist.edit")
 @UiDescriptor("version-ext-checklist-edit.xml")
@@ -57,6 +61,8 @@ public class VersionExtChecklistEdit extends StandardEditor<Checklist> {
     protected LookupField<Statement> caseStateField;
     @Inject
     protected TextArea<String> caseComment;
+    @Inject
+    private DateField<LocalDateTime> checkDate;
 
 
     @Subscribe
@@ -87,12 +93,16 @@ public class VersionExtChecklistEdit extends StandardEditor<Checklist> {
     @Subscribe("caseStateField")
     public void onCaseStateFieldValueChange(HasValue.ValueChangeEvent<Statement> event) {
         if (caseStateField.getValueSource().getValue() != null
-                && caseStateField.getValueSource().getValue().getId().toString().equals("cd85906d-6fbe-3e8d-8602-bf1af8e1ea53")) {
+                && caseStateField.getValueSource().getValue().getId().toString().equals(STATE_BUG.toString())) {
             caseTicket.setVisible(true);
             caseComment.setVisible(true);
+        } else if (caseStateField.getValueSource().getValue() != null &&
+                caseStateField.getValueSource().getValue().getId().toString().equals(STATE_CHECKED.toString())) {
+            checkDate.setVisible(true);
         } else {
             caseTicket.setVisible(false);
             caseComment.setVisible(false);
+            checkDate.setVisible(false);
         }
     }
 

@@ -15,6 +15,39 @@
             <loader/>
             <collection id="testCasesDc" property="testCase"/>
         </instance>
+        <!--        <collection id="entitylogsDc"-->
+        <!--                    class="com.haulmont.cuba.security.entity.EntityLogItem"-->
+        <!--                    view="logView">-->
+        <!--            <loader id="entityLogItemsDl">-->
+        <!--                <query><![CDATA[select i from sec$EntityLog i where i.entityRef.entityId = :checklist-->
+        <!--                            order by i.eventTs]]>-->
+        <!--                </query>-->
+        <!--            </loader>-->
+        <!--            <collection id="logAttrDc"-->
+        <!--                        property="attributes"/>-->
+        <!--        </collection>-->
+        <!--        <collection id="testCaseLogsDc"-->
+        <!--                    class="com.haulmont.cuba.security.entity.EntityLogItem"-->
+        <!--                    view="logView">-->
+        <!--            <loader id="testCaseLogItemsDl">-->
+        <!--                <query><![CDATA[select i from sec$EntityLog i where i.entityRef.entityId in :testCases-->
+        <!--                            order by i.eventTs]]>-->
+        <!--                </query>-->
+        <!--            </loader>-->
+        <!--            <collection id="logAttrDc"-->
+        <!--                        property="attributes"/>-->
+        <!--        </collection>-->
+        <!--        <collection id="stepLogsDc"-->
+        <!--                    class="com.haulmont.cuba.security.entity.EntityLogItem"-->
+        <!--                    view="logView" >-->
+        <!--            <loader id="stepLogItemsDl">-->
+        <!--                <query><![CDATA[select i from sec$EntityLog i where i.entityRef.entityId in :steps-->
+        <!--                            order by i.eventTs]]>-->
+        <!--                </query>-->
+        <!--            </loader>-->
+        <!--            <collection id="logAttrDc"-->
+        <!--                        property="attributes"/>-->
+        <!--        </collection>-->
         <collection id="statesDc" class="com.company.quarium.entity.references.Statement" view="_minimal">
             <loader id="statesDl">
                 <query>
@@ -114,6 +147,8 @@
                             <action id="create" type="create"/>
                             <action id="edit" type="edit"/>
                             <action id="remove" type="remove"/>
+                            <action id="moveTestCaseUp"/>
+                            <action id="moveTestCaseDown"/>
                         </actions>
                         <columns>
                             <column id="number" editable="false" width="20"/>
@@ -122,9 +157,13 @@
                         <rowsCount/>
                         <buttonsPanel id="buttonsPanel"
                                       alwaysVisible="true">
-                            <button id="createBtn" action="table.create"/>
-                            <button id="editBtn" action="table.edit"/>
-                            <button id="removeBtn" action="table.remove"/>
+                            <button id="createBtn" action="table.create" caption=""/>
+                            <button id="editBtn" action="table.edit" caption=""/>
+                            <button id="removeBtn" action="table.remove" caption=""/>
+                            <button id="testCaseUp" caption="" action="table.moveTestCaseUp"
+                                    icon="font-icon:ANGLE_UP"/>
+                            <button id="testCaseDown" caption="" action="table.moveTestCaseDown"
+                                    icon="font-icon:ANGLE_DOWN"/>
                         </buttonsPanel>
                     </table>
                 </vbox>
@@ -155,6 +194,16 @@
                                     </hbox>
                                 </row>
                                 <row>
+                                    <textArea id="initialConditions" dataContainer="testCaseDc"
+                                              property="initialConditions"
+                                              caption="msg://checklistEdit.initialConditions" width="90%"
+                                              rows="2"/>
+
+                                    <lookupField id="priorityField" dataContainer="testCaseDc"
+                                                 optionsContainer="prioritiesDc" property="priority"
+                                                 caption="msg://checklistEdit.priority" width="90%"/>
+                                </row>
+                                <row>
                                     <table id="stepsTable"
                                            dataContainer="stepsCollection"
                                            width="90%"
@@ -168,24 +217,33 @@
                                         <actions>
                                             <action id="createStep" type="create"/>
                                             <action id="removeStep" type="remove"/>
+                                            <action id="moveStepUp"/>
+                                            <action id="moveStepDown"/>
                                         </actions>
                                         <columns>
                                             <column id="number" editable="false" width="20"/>
                                             <column id="step" editable="true"/>
                                         </columns>
                                         <buttonsPanel>
-                                            <button action="stepsTable.createStep" caption="" icon="ADD_ACTION"/>
-                                            <button action="stepsTable.removeStep" caption="" icon="REMOVE_ACTION"/>
+                                            <button action="stepsTable.createStep" caption=""
+                                                    icon="ADD_TO_SET_ACTION"
+                                                    primary="false"/>
+                                            <button action="stepsTable.removeStep" caption=""
+                                                    icon="REMOVE_ACTION"/>
+                                            <button id="stepUp" caption="" action="stepsTable.moveStepUp"
+                                                    icon="font-icon:ANGLE_UP"/>
+                                            <button id="stepDown" caption="" action="stepsTable.moveStepDown"
+                                                    icon="font-icon:ANGLE_DOWN"/>
                                         </buttonsPanel>
                                     </table>
-                                    <lookupField id="priorityField" dataContainer="testCaseDc"
-                                                 optionsContainer="prioritiesDc" property="priority"
-                                                 caption="msg://checklistEdit.priority" width="90%"/>
-                                </row>
-                                <row>
                                     <lookupField id="caseStateField" dataContainer="testCaseDc"
                                                  optionsContainer="statesDc" property="state"
                                                  caption="msg://checklistEdit.state" width="90%"/>
+                                </row>
+                                <row>
+                                    <dateField id="checkDate" dataContainer="testCaseDc"
+                                               property="checkDate" caption="msg://checklistEdit.checkDate"
+                                               visible="false"/>
                                 </row>
                                 <row>
                                     <hbox id="ticketBox" spacing="true" caption="msg://checklistEdit.caseTicket"

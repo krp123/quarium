@@ -17,6 +17,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +33,9 @@ public class TestCase extends StandardEntity {
     @Column(name = "NAME", nullable = false)
     @NotNull(message = "{msg://quarium_TestCase.name.validation.NotNull}")
     private String name;
+
+    @Column(name = "CHECK_DATE")
+    private LocalDateTime checkDate;
 
     @Column(name = "INITIAL_CONDITIONS", length = 1000)
     private String initialConditions;
@@ -88,6 +92,14 @@ public class TestCase extends StandardEntity {
     @JoinColumn(name = "CHECKLIST_ID")
     @OnDeleteInverse(DeletePolicy.CASCADE)
     private Checklist checklist;
+
+    public LocalDateTime getCheckDate() {
+        return checkDate;
+    }
+
+    public void setCheckDate(LocalDateTime checkDate) {
+        this.checkDate = checkDate;
+    }
 
     public String getInitialConditions() {
         return initialConditions;

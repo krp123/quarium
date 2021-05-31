@@ -14,6 +14,7 @@ import com.company.quarium.web.screens.checklist.ProjectExcelUploadWindow;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.TimeSource;
 import com.haulmont.cuba.gui.Dialogs;
+import com.haulmont.cuba.gui.RemoveOperation;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.components.*;
@@ -25,7 +26,6 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.company.quarium.Constants.*;
@@ -115,22 +115,13 @@ public class ProjectEdit extends StandardEditor<Project> {
 
     }
 
-    @Subscribe("regressChecklistsTable.remove")
-    public void onRegressChecklistsTableRemove(Action.ActionPerformedEvent event) {
-        dialogs.createOptionDialog()
-                .withCaption("Подтверждение")
-                .withMessage("Вы действительно хотите удалить выбранные элементы?")
-                .withActions(
-                        new DialogAction(DialogAction.Type.YES, Action.Status.PRIMARY).withHandler(d -> {
-                            if (Objects.requireNonNull(regressChecklistsTable.getSingleSelected()).getParentCard() != null)
-                                checklistsDc.getItem(regressChecklistsTable.getSingleSelected().getParentCard().getId())
-                                        .setIsUsedInRegress(false);
-                            regressChecklistDc.getMutableItems().remove(regressChecklistsTable.getSingleSelected());
-                        }),
-                        new DialogAction(DialogAction.Type.NO).withHandler(d -> {
-                        })
-                )
-                .show();
+    @Install(to = "regressChecklistsTable.remove", subject = "afterActionPerformedHandler")
+    private void regressChecklistsTableRemoveAfterActionPerformedHandler(RemoveOperation.AfterActionPerformedEvent<RegressChecklist> afterActionPerformedEvent) {
+        for (Checklist cl : afterActionPerformedEvent.getItems()) {
+            if (cl.getParentCard() != null) {
+                cl.getParentCard().setIsUsedInRegress(false);
+            }
+        }
     }
 
     @Subscribe
@@ -165,13 +156,6 @@ public class ProjectEdit extends StandardEditor<Project> {
                 .build()
                 .show();
     }
-
-    @Install(to = "checklistsTable.edit", subject = "afterCommitHandler")
-    private void checklistsTableEditAfterCommitHandler(SimpleChecklist simpleChecklist) {
-        checklistsDc.replaceItem(simpleChecklist);
-        checklistsTable.repaint();
-    }
-
 
     @Subscribe("checklistsTable.addChecklist")
     protected void onAddChecklist(Action.ActionPerformedEvent event) {
@@ -308,7 +292,8 @@ public class ProjectEdit extends StandardEditor<Project> {
             boolean hasChild = false;
             //проверяем, есть ли данный чек-лист на вкладке "Регресс"
             for (RegressChecklist cl : regressChecklistDc.getMutableItems()) {
-                if (cl.getParentCard().equals(checklist)) {
+                if (cl.getParentCard() != null &&
+                        cl.getParentCard().equals(checklist)) {
                     hasChild = true;
                 }
             }
@@ -401,7 +386,8 @@ public class ProjectEdit extends StandardEditor<Project> {
     private void removeRegressChecklist(Checklist checklist) {
         List<RegressChecklist> mutableItems = new ArrayList<>(regressChecklistDc.getMutableItems());
         for (RegressChecklist cl : mutableItems) {
-            if (cl.getParentCard().equals(checklist)) {
+            if (cl.getParentCard() != null &&
+                    cl.getParentCard().equals(checklist)) {
                 regressChecklistDc.getMutableItems().remove(cl);
             }
         }

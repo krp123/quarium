@@ -22,11 +22,9 @@
                 <multiUpload id="multiUploadField"
                              caption="msg://checklistBrowse.upload"
                              permittedExtensions=".xlsx"/>
-                <linkButton id="downloadTemplate"
-                            caption="msg://exceluploadwindow.downloadTemplate"
-                            icon="SAVE"
-                            align="MIDDLE_RIGHT"
-                            invoke="downloadTemplate"/>
+                <label id="downloadTemplate"
+                       icon="SAVE"
+                       align="MIDDLE_RIGHT"/>
             </hbox>
         </vbox>
     </layout>

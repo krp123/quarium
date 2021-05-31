@@ -68,9 +68,8 @@ public class Project extends StandardEntity {
     private List<Module> module;
 
     @Composition
-    @OnDeleteInverse(DeletePolicy.UNLINK)
-    @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "project", cascade = CascadeType.PERSIST)
+    @OnDelete(DeletePolicy.CASCADE)
     private List<SimpleChecklist> checklist;
 
     @Column(name = "CURRENT_RELEASE")

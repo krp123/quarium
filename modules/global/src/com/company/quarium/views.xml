@@ -83,6 +83,7 @@
             <property name="number"/>
             <property name="creationDate"/>
             <property name="initialConditions"/>
+            <property name="checkDate"/>
         </property>
         <property name="module" view="_local"/>
         <property name="parentCard" view="_minimal"/>
@@ -110,6 +111,7 @@
             <property name="creationDate"/>
             <property name="number"/>
             <property name="initialConditions"/>
+            <property name="checkDate"/>
         </property>
         <property name="module" view="_local"/>
         <property name="parentCard" view="_minimal"/>
@@ -175,6 +177,8 @@
             <property name="expectedResult"/>
             <property name="creationDate"/>
             <property name="number"/>
+            <property name="checkDate"/>
+            <property name="initialConditions"/>
         </property>
         <property name="project" view="_minimal">
             <property name="module" view="_minimal"/>

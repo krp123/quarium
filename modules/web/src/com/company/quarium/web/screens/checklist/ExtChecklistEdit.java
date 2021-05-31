@@ -28,10 +28,14 @@ import com.haulmont.cuba.gui.util.OperationResult;
 import com.haulmont.cuba.security.entity.EntityOp;
 
 import javax.inject.Inject;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+
+import static com.company.quarium.Constants.STATE_BUG;
+import static com.company.quarium.Constants.STATE_CHECKED;
 
 @UiController("ext_quarium_Checklist.edit")
 @UiDescriptor("ext-checklist-edit.xml")
@@ -73,6 +77,14 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     private HBoxLayout ticketBox;
     @Inject
     private ScreenValidation screenValidation;
+    @Inject
+    private DateField<LocalDateTime> checkDate;
+//    @Inject
+//    private CollectionLoader<EntityLogItem> entityLogItemsDl;
+//    @Inject
+//    private CollectionLoader<EntityLogItem> testCaseLogItemsDl;
+//    @Inject
+//    private CollectionLoader<EntityLogItem> stepLogItemsDl;
 
 
     @Subscribe
@@ -219,12 +231,19 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     @Subscribe("caseStateField")
     public void onCaseStateFieldValueChange(HasValue.ValueChangeEvent<Statement> event) {
         if (caseStateField.getValueSource().getValue() != null
-                && caseStateField.getValueSource().getValue().getId().toString().equals("cd85906d-6fbe-3e8d-8602-bf1af8e1ea53")) {
+                && caseStateField.getValueSource().getValue().getId().toString().equals(STATE_BUG.toString())) {
             ticketBox.setVisible(true);
             caseComment.setVisible(true);
+        } else if (caseStateField.getValueSource().getValue() != null &&
+                caseStateField.getValueSource().getValue().getId().toString().equals(STATE_CHECKED.toString())) {
+            checkDate.setVisible(true);
+            if (checkDate.getValue() == null) {
+                checkDate.setValue(timeSource.now().toLocalDateTime());
+            }
         } else {
             ticketBox.setVisible(false);
             caseComment.setVisible(false);
+            checkDate.setVisible(false);
         }
     }
 
@@ -522,4 +541,19 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     protected boolean doNotReloadEditedEntity() {
         return true;
     }
+
+//    @Subscribe(id = "checklistDc", target = Target.DATA_CONTAINER)
+//    public void onChecklistDcItemChange(InstanceContainer.ItemChangeEvent<Checklist> event) {
+//        List<Step> stepsList = new ArrayList<>();
+//        for (TestCase tc : Objects.requireNonNull(event.getItem()).getTestCase()) {
+//            stepsList.addAll(tc.getCaseStep());
+//        }
+//        entityLogItemsDl.setParameter("checklist", Objects.requireNonNull(event.getItem()).getId());
+//        testCaseLogItemsDl.setParameter("testCases", event.getItem().getTestCase());
+////        stepLogItemsDl.setParameter("steps", stepsList);
+//
+//        entityLogItemsDl.load();
+//        testCaseLogItemsDl.load();
+////        stepLogItemsDl.load();
+//    }
 }
