@@ -73,6 +73,10 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
     private Button testCaseUp;
     @Inject
     private Button testCaseDown;
+    @Inject
+    private UserSessionSource userSessionSource;
+    @Inject
+    private Button stepDown;
 
     @Subscribe
     protected void onInit(InitEvent event) {
@@ -104,7 +108,6 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
     }
 
     protected void initMasterDetailScreen(@SuppressWarnings("unused") InitEvent event) {
-
         initDataComponents();
         initOkCancelActions();
         initBrowseItemChangeListener();

@@ -2,6 +2,7 @@ package com.company.quarium.web.screens.checklist;
 
 import com.company.quarium.entity.checklist.Checklist;
 import com.company.quarium.entity.checklist.SimpleChecklist;
+import com.haulmont.cuba.core.global.UserSessionSource;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.Screens;
 import com.haulmont.cuba.gui.components.Button;
@@ -29,6 +30,17 @@ public class ChecklistBrowse extends StandardLookup<Checklist> {
     private CollectionLoader<SimpleChecklist> checklistsDl;
     @Inject
     private Button refreshBtn;
+    @Inject
+    private UserSessionSource userSessionSource;
+    @Inject
+    private Button uploadExcel;
+
+    @Subscribe
+    public void onInit(InitEvent event) {
+        if (userSessionSource.getUserSession().getRoles().contains("View")) {
+            uploadExcel.setVisible(false);
+        }
+    }
 
     @Subscribe("uploadExcel")
     public void onUploadExcelClick(Button.ClickEvent event) {

@@ -13,6 +13,7 @@ import com.company.quarium.web.screens.checklist.ExtChecklistEdit;
 import com.company.quarium.web.screens.checklist.ProjectExcelUploadWindow;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.TimeSource;
+import com.haulmont.cuba.core.global.UserSessionSource;
 import com.haulmont.cuba.gui.Dialogs;
 import com.haulmont.cuba.gui.RemoveOperation;
 import com.haulmont.cuba.gui.ScreenBuilders;
@@ -76,6 +77,10 @@ public class ProjectEdit extends StandardEditor<Project> {
     private TimeSource timeSource;
     @Inject
     private TabSheet projectTabSheet;
+    @Inject
+    private UserSessionSource userSessionSource;
+    @Inject
+    private Button uploadExcel;
 
     @Subscribe
     public void onInitEntity(InitEntityEvent<Project> event) {
@@ -321,6 +326,10 @@ public class ProjectEdit extends StandardEditor<Project> {
 
     @Subscribe
     protected void onInit(AfterShowEvent event) {
+        if (userSessionSource.getUserSession().getRoles().contains("View")) {
+            uploadExcel.setVisible(false);
+        }
+
         qaStatisticsTable.addGeneratedColumn("timeTotal",
                 new Table.ColumnGenerator<QaProjectRelationship>() {
                     @Override
