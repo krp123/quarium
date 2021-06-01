@@ -10,18 +10,17 @@ import com.haulmont.cuba.security.role.EntityAttributePermissionsContainer;
 import com.haulmont.cuba.security.role.EntityPermissionsContainer;
 import com.haulmont.cuba.security.role.ScreenPermissionsContainer;
 
-@Role(name = ViewRole.NAME)
-public class ViewRole extends AnnotatedRoleDefinition {
+@Role(name = QaRole.NAME)
+public class QaRole extends AnnotatedRoleDefinition {
+    public final static String NAME = "Qa";
 
-    public static final String NAME = "View";
-
-    @EntityAccess(entityName = "*", operations = {EntityOp.READ})
+    @EntityAccess(entityName = "*", operations = {EntityOp.CREATE, EntityOp.READ, EntityOp.UPDATE, EntityOp.DELETE})
     @Override
     public EntityPermissionsContainer entityPermissions() {
         return super.entityPermissions();
     }
 
-    @EntityAttributeAccess(entityName = "*", view = "*")
+    @EntityAttributeAccess(entityName = "*", modify = "*")
     @Override
     public EntityAttributePermissionsContainer entityAttributePermissions() {
         return super.entityAttributePermissions();

@@ -1,14 +1,12 @@
 package com.company.quarium.accessGroups;
 
 import com.company.quarium.entity.checklist.*;
-import com.company.quarium.entity.project.ConfigurationProjectRelationship;
-import com.company.quarium.entity.project.Module;
-import com.company.quarium.entity.project.QaProjectRelationship;
-import com.company.quarium.entity.project.SimpleProject;
+import com.company.quarium.entity.project.*;
 import com.company.quarium.entity.references.Configuration;
 import com.company.quarium.entity.references.Dbms;
 import com.company.quarium.entity.references.Qa;
 import com.company.quarium.entity.references.ThesisVersion;
+import com.haulmont.cuba.core.entity.EntitySnapshot;
 import com.haulmont.cuba.security.app.group.AnnotatedAccessGroupDefinition;
 import com.haulmont.cuba.security.app.group.annotation.AccessGroup;
 import com.haulmont.cuba.security.app.group.annotation.JpqlConstraint;
@@ -20,6 +18,8 @@ public class FullAccessGroup extends AnnotatedAccessGroupDefinition {
     public static final String NAME = "Full Access";
 
     @JpqlConstraint(target = SimpleProject.class, where = "{E}.createdBy is not null")
+    @JpqlConstraint(target = ProjectVersion.class, where = "{E}.createdBy is not null")
+    @JpqlConstraint(target = Project.class, where = "{E}.createdBy is not null")
     @JpqlConstraint(target = SimpleChecklist.class, where = "{E}.createdBy is not null")
     @JpqlConstraint(target = RegressChecklist.class, where = "{E}.createdBy is not null")
     @JpqlConstraint(target = Checklist.class, where = "{E}.createdBy is not null")
@@ -32,6 +32,7 @@ public class FullAccessGroup extends AnnotatedAccessGroupDefinition {
     @JpqlConstraint(target = QaProjectRelationship.class, where = "{E}.createdBy is not null")
     @JpqlConstraint(target = ThesisVersion.class, where = "{E}.createdBy is not null")
     @JpqlConstraint(target = Dbms.class, where = "{E}.createdBy is not null")
+    @JpqlConstraint(target = EntitySnapshot.class, where = "{E}.createdBy is not null")
     @Override
     public ConstraintsContainer accessConstraints() {
         return super.accessConstraints();
