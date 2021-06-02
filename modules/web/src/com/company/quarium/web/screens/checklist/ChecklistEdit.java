@@ -81,6 +81,15 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
     @Subscribe
     protected void onInit(InitEvent event) {
         initMasterDetailScreen(event);
+
+    }
+
+    @Subscribe
+    public void onBeforeShow(BeforeShowEvent event) {
+        if (userSessionSource.getUserSession().getRoles().contains("View")) {
+            testCaseUp.setEnabled(false);
+            testCaseDown.setEnabled(false);
+        }
     }
 
     @Subscribe

@@ -79,6 +79,12 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     private ScreenValidation screenValidation;
     @Inject
     private DateField<LocalDateTime> checkDate;
+    @Inject
+    private UserSessionSource userSessionSource;
+    @Inject
+    private Button testCaseUp;
+    @Inject
+    private Button testCaseDown;
 //    @Inject
 //    private CollectionLoader<EntityLogItem> entityLogItemsDl;
 //    @Inject
@@ -90,6 +96,14 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     @Subscribe
     protected void onInit(InitEvent event) {
         initMasterDetailScreen(event);
+    }
+
+    @Subscribe
+    public void onBeforeShow(BeforeShowEvent event) {
+        if (userSessionSource.getUserSession().getRoles().contains("View")) {
+            testCaseUp.setEnabled(false);
+            testCaseDown.setEnabled(false);
+        }
     }
 
     @Subscribe
