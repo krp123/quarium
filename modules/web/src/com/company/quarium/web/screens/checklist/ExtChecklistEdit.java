@@ -25,14 +25,12 @@ import com.haulmont.cuba.gui.dynamicattributes.DynamicAttributesGuiTools;
 import com.haulmont.cuba.gui.model.*;
 import com.haulmont.cuba.gui.screen.*;
 import com.haulmont.cuba.gui.util.OperationResult;
+import com.haulmont.cuba.security.entity.EntityLogItem;
 import com.haulmont.cuba.security.entity.EntityOp;
 
 import javax.inject.Inject;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static com.company.quarium.Constants.STATE_BUG;
 import static com.company.quarium.Constants.STATE_CHECKED;
@@ -85,12 +83,20 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     private Button testCaseUp;
     @Inject
     private Button testCaseDown;
-//    @Inject
-//    private CollectionLoader<EntityLogItem> entityLogItemsDl;
-//    @Inject
-//    private CollectionLoader<EntityLogItem> testCaseLogItemsDl;
-//    @Inject
-//    private CollectionLoader<EntityLogItem> stepLogItemsDl;
+    @Inject
+    private CollectionLoader<EntityLogItem> entityLogItemsDl;
+    @Inject
+    private CollectionContainer<EntityLogItem> entitylogsDc;
+    @Inject
+    private CollectionLoader<EntityLogItem> testCaseLogItemsDl;
+    @Inject
+    private CollectionLoader<EntityLogItem> stepLogItemsDl;
+    @Inject
+    private CollectionContainer<EntityLogItem> testCaseLogsDc;
+    @Inject
+    private CollectionContainer<EntityLogItem> stepLogsDc;
+    @Inject
+    private Table<EntityLogItem> logTable;
 
 
     @Subscribe
@@ -556,18 +562,25 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         return true;
     }
 
-//    @Subscribe(id = "checklistDc", target = Target.DATA_CONTAINER)
-//    public void onChecklistDcItemChange(InstanceContainer.ItemChangeEvent<Checklist> event) {
-//        List<Step> stepsList = new ArrayList<>();
-//        for (TestCase tc : Objects.requireNonNull(event.getItem()).getTestCase()) {
-//            stepsList.addAll(tc.getCaseStep());
-//        }
-//        entityLogItemsDl.setParameter("checklist", Objects.requireNonNull(event.getItem()).getId());
-//        testCaseLogItemsDl.setParameter("testCases", event.getItem().getTestCase());
-////        stepLogItemsDl.setParameter("steps", stepsList);
-//
-//        entityLogItemsDl.load();
-//        testCaseLogItemsDl.load();
-////        stepLogItemsDl.load();
-//    }
+    @Subscribe(id = "checklistDc", target = Target.DATA_CONTAINER)
+    public void onChecklistDcItemChange(InstanceContainer.ItemChangeEvent<Checklist> event) {
+        List<Step> stepsList = new ArrayList<>();
+        for (TestCase tc : Objects.requireNonNull(event.getItem()).getTestCase()) {
+            stepsList.addAll(tc.getCaseStep());
+        }
+        entityLogItemsDl.setParameter("checklist", Objects.requireNonNull(event.getItem()).getId());
+        testCaseLogItemsDl.setParameter("testCases", event.getItem().getTestCase());
+        stepLogItemsDl.setParameter("steps", stepsList);
+    }
+
+    @Subscribe
+    public void onAfterShow(AfterShowEvent event) {
+        entityLogItemsDl.load();
+        testCaseLogItemsDl.load();
+        stepLogItemsDl.load();
+
+        entitylogsDc.getMutableItems().addAll(testCaseLogsDc.getMutableItems());
+        entitylogsDc.getMutableItems().addAll(stepLogsDc.getMutableItems());
+        logTable.repaint();
+    }
 }

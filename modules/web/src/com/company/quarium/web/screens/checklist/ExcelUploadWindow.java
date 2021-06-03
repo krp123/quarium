@@ -87,7 +87,7 @@ public class ExcelUploadWindow extends Screen {
                     ControllerUtils.getControllerURL("/static/")
                             .replace(StringUtils.substringBeforeLast(
                                     AppBeans.get(Configuration.class).getConfig(GlobalConfig.class).getWebAppUrl(),
-                                    "/"), "") + "ChecklistImportTemplate.xlsx"));
+                                    "/"), "") + fileName));
         }
     }
 
