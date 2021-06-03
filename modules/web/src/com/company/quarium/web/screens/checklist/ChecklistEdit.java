@@ -185,6 +185,7 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
             TestCase reloadedItem = getBeanLocator().get(DataManager.class)
                     .reload(selectedItem, view, null, loadDynamicAttributes);
             getBrowseContainer().replaceItem(reloadedItem);
+            testCaseDc.setItem(reloadedItem);
         }
 
         disableEditControls();
