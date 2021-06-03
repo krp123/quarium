@@ -3,6 +3,7 @@ package com.company.quarium.web.screens.checklist;
 import com.company.quarium.entity.checklist.SimpleChecklist;
 import com.company.quarium.service.UploadChecklistFromXlsService;
 import com.haulmont.cuba.core.global.*;
+import com.haulmont.cuba.core.sys.AppContext;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.components.FileMultiUploadField;
 import com.haulmont.cuba.gui.components.Label;
@@ -49,7 +50,7 @@ public class ExcelUploadWindow extends Screen {
     @Inject
     private Resources resources;
     @Inject
-    private Label downloadTemplate;
+    private Label<String> downloadTemplate;
     @Inject
     private Messages messages;
 
@@ -76,11 +77,18 @@ public class ExcelUploadWindow extends Screen {
     public void onInit(InitEvent event) {
         com.vaadin.ui.Label label = (com.vaadin.ui.Label) WebComponentsHelper.unwrap(downloadTemplate);
         label.setContentMode(ContentMode.HTML);
-        label.setValue(String.format(messages.getMessage(getClass(), "downloadTemplate"),
-                ControllerUtils.getControllerURL("/import/")
-                        .replace(StringUtils.substringBeforeLast(
-                                AppBeans.get(Configuration.class).getConfig(GlobalConfig.class).getWebAppUrl(),
-                                "/"), "") + "ChecklistImportTemplate.xlsx"));
+        String fileName = "ChecklistImportTemplate.xlsx";
+        String templateFullPath = AppContext.getProperty("cuba.appDir") + File.separator + "static" + File.separator + fileName;
+        File templateFull = new File(templateFullPath);
+        if (!templateFull.exists()) {
+            label.setVisible(false);
+        } else {
+            label.setValue(String.format(messages.getMessage(getClass(), "downloadTemplate"),
+                    ControllerUtils.getControllerURL("/static/")
+                            .replace(StringUtils.substringBeforeLast(
+                                    AppBeans.get(Configuration.class).getConfig(GlobalConfig.class).getWebAppUrl(),
+                                    "/"), "") + "ChecklistImportTemplate.xlsx"));
+        }
     }
 
 

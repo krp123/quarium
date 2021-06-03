@@ -91,7 +91,7 @@ public class ProjectEdit extends StandardEditor<Project> {
     public void onAddNewVersionClick(Button.ClickEvent event) {
         dialogs.createOptionDialog()
                 .withCaption("Внимание")
-                .withMessage("Данная версия проекта будет перемещена на вкладку Релизы. Все поля будут обнулены." +
+                .withMessage("Данная версия проекта будет перемещена на вкладку Релизы. Часть полей будет очищена." +
                         " Вы уверены?")
                 .withActions(
                         new DialogAction(DialogAction.Type.YES, Action.Status.PRIMARY).withHandler(d -> {
