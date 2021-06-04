@@ -97,6 +97,8 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     private CollectionContainer<EntityLogItem> stepLogsDc;
     @Inject
     private Table<EntityLogItem> logTable;
+    @Inject
+    private Button closeBtn;
 
 
     @Subscribe
@@ -575,13 +577,14 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         stepLogItemsDl.setParameter("steps", stepsList);
     }
 
-    @Subscribe
-    public void onAfterShow(AfterShowEvent event) {
-        entityLogItemsDl.load();
+    @Install(to = "entityLogItemsDl", target = Target.DATA_LOADER)
+    private List<EntityLogItem> entityLogItemsDlLoadDelegate(LoadContext<EntityLogItem> loadContext) {
+        List<EntityLogItem> entityLogList = new ArrayList();
+        entityLogList.addAll(dataManager.loadList(loadContext));
         testCaseLogItemsDl.load();
         stepLogItemsDl.load();
-        entitylogsDc.getMutableItems().addAll(testCaseLogsDc.getItems());
-        entitylogsDc.getMutableItems().addAll(stepLogsDc.getItems());
-        logTable.repaint();
+        entityLogList.addAll(testCaseLogsDc.getItems());
+        entityLogList.addAll(stepLogsDc.getItems());
+        return entityLogList;
     }
 }

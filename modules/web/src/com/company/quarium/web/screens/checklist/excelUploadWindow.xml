@@ -25,6 +25,7 @@
                 <label id="downloadTemplate"
                        icon="SAVE"
                        align="MIDDLE_RIGHT"/>
+                <button id="downloadTemplateButton" caption="download"/>
             </hbox>
         </vbox>
     </layout>

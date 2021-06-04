@@ -519,28 +519,31 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
 
     @Subscribe
     public void onBeforeShow1(BeforeShowEvent event) {
-        List<Step> stepsList = new ArrayList<>();
-        Checklist checklist = dataManager.load(Checklist.class).id(getEditedEntity().getId()).view("edit").one();
+        try {
+            List<Step> stepsList = new ArrayList<>();
+            Checklist checklist = dataManager.load(Checklist.class).id(getEditedEntity().getId()).view("project-checklist-view").one();
 
-        if (checklist.getTestCase() != null) {
-            for (TestCase tc : checklist.getTestCase()) {
-                stepsList.addAll(tc.getCaseStep());
+            if (checklist.getTestCase() != null) {
+                for (TestCase tc : checklist.getTestCase()) {
+                    stepsList.addAll(tc.getCaseStep());
+                }
             }
+            entityLogItemsDl.setParameter("checklist", Objects.requireNonNull(getEditedEntity()).getId());
+            testCaseLogItemsDl.setParameter("testCases", checklist.getTestCase());
+            stepLogItemsDl.setParameter("steps", stepsList);
+        } catch (IllegalStateException ex) {
+            entityLogItemsDl.setParameter("checklist", Objects.requireNonNull(getEditedEntity()).getId());
         }
-        entityLogItemsDl.setParameter("checklist", Objects.requireNonNull(getEditedEntity()).getId());
-        testCaseLogItemsDl.setParameter("testCases", checklist.getTestCase());
-        stepLogItemsDl.setParameter("steps", stepsList);
     }
 
-    @Subscribe
-    public void onAfterShow(AfterShowEvent event) {
-
-
-        entityLogItemsDl.load();
-        testCaseLogItemsDl.load();
+    @Install(to = "entityLogItemsDl", target = Target.DATA_LOADER)
+    private List<EntityLogItem> entityLogItemsDlLoadDelegate(LoadContext<EntityLogItem> loadContext) {
+        List<EntityLogItem> entityLogList = new ArrayList();
+        entityLogList.addAll(dataManager.loadList(loadContext));
         stepLogItemsDl.load();
-        entitylogsDc.getMutableItems().addAll(testCaseLogsDc.getItems());
-        entitylogsDc.getMutableItems().addAll(stepLogsDc.getItems());
-        logTable.repaint();
+        testCaseLogItemsDl.load();
+        entityLogList.addAll(testCaseLogsDc.getItems());
+        entityLogList.addAll(stepLogsDc.getItems());
+        return entityLogList;
     }
 }
