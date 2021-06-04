@@ -18,7 +18,7 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
     private DataManager dataManager;
 
     @Override
-    public SimpleChecklist copyChecklist(Checklist checklist, Project project) {
+    public SimpleChecklist copyChecklist(Checklist checklist) {
         SimpleChecklist checklistNew = dataManager.create(SimpleChecklist.class);
         checklistNew.setName(checklist.getName());
         checklistNew.setMinutes(checklist.getMinutes());
@@ -137,7 +137,8 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
 
         List<SimpleChecklist> newChecklistList = new ArrayList<>();
         for (SimpleChecklist c : oldProject.getChecklist()) {
-            SimpleChecklist newChecklist = copyChecklist(c, release);//TODO изменили копирование. Не добавляется проект. Добавить где-то тут
+            SimpleChecklist newChecklist = copyChecklist(c);//TODO изменили копирование. Не добавляется проект. Добавить где-то тут
+            newChecklist.setProject(release);
             newChecklistList.add(newChecklist);
         }
         release.setChecklist(newChecklistList);

@@ -146,11 +146,11 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     }
 
     protected ListComponent<TestCase> getTable() {
-        return (ListComponent) table;
+        return (ListComponent<TestCase>) table;
     }
 
     protected ListComponent<Step> getStepsTable() {
-        return (ListComponent) stepsTable;
+        return (ListComponent<Step>) stepsTable;
     }
 
     protected GridLayout getGrid() {
@@ -403,7 +403,7 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
             if (instanceLoader != null
                     && instanceLoader.isLoadDynamicAttributes()
                     && trackedEntity instanceof BaseGenericIdEntity) {
-                tools.initDefaultAttributeValues((BaseGenericIdEntity) trackedEntity, trackedEntity.getMetaClass());
+                tools.initDefaultAttributeValues((BaseGenericIdEntity<UUID>) trackedEntity, trackedEntity.getMetaClass());
             }
 
             fireEvent(MasterDetailScreen.InitEntityEvent.class, new MasterDetailScreen.InitEntityEvent<>(this, trackedEntity));
@@ -482,7 +482,7 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
                         && getBeanLocator().get(Security.class).isEntityOpPermitted(getEntityClass(), EntityOp.UPDATE));
     }
 
-    protected boolean lockIfNeeded(Entity entity) {
+    protected boolean lockIfNeeded(Entity<UUID> entity) {
         LockService lockService = getBeanLocator().get(LockService.class);
 
         LockInfo lockInfo = lockService.lock(getLockName(), entity.getId().toString());
@@ -565,8 +565,10 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     @Subscribe(id = "checklistDc", target = Target.DATA_CONTAINER)
     public void onChecklistDcItemChange(InstanceContainer.ItemChangeEvent<Checklist> event) {
         List<Step> stepsList = new ArrayList<>();
-        for (TestCase tc : Objects.requireNonNull(event.getItem()).getTestCase()) {
-            stepsList.addAll(tc.getCaseStep());
+        if (event.getItem().getTestCase() != null) {
+            for (TestCase tc : event.getItem().getTestCase()) {
+                stepsList.addAll(tc.getCaseStep());
+            }
         }
         entityLogItemsDl.setParameter("checklist", Objects.requireNonNull(event.getItem()).getId());
         testCaseLogItemsDl.setParameter("testCases", event.getItem().getTestCase());
@@ -578,9 +580,8 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         entityLogItemsDl.load();
         testCaseLogItemsDl.load();
         stepLogItemsDl.load();
-
-        entitylogsDc.getMutableItems().addAll(testCaseLogsDc.getMutableItems());
-        entitylogsDc.getMutableItems().addAll(stepLogsDc.getMutableItems());
+        entitylogsDc.getMutableItems().addAll(testCaseLogsDc.getItems());
+        entitylogsDc.getMutableItems().addAll(stepLogsDc.getItems());
         logTable.repaint();
     }
 }

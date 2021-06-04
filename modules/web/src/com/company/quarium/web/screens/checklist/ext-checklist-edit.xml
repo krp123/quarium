@@ -289,7 +289,7 @@
                     <columns>
                         <column id="eventTs"/>
                         <column id="user.login"/>
-                        <column id="entity"/>
+                        <column id="displayedEntityName" caption="msg://checklistEdit.entity"/>
                         <column id="type"/>
                     </columns>
                 </table>
@@ -298,7 +298,7 @@
                        width="100%"
                        dataContainer="logAttrDc">
                     <columns>
-                        <column id="name"/>
+                        <column id="displayName"/>
                         <column id="oldValue"/>
                         <column id="value"/>
                     </columns>

@@ -12,7 +12,6 @@ import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.RemoveOperation;
 import com.haulmont.cuba.gui.actions.list.CreateAction;
 import com.haulmont.cuba.gui.actions.list.EditAction;
-import com.haulmont.cuba.gui.app.core.entitydiff.EntityDiffViewer;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.actions.BaseAction;
 import com.haulmont.cuba.gui.components.data.DataUnit;
@@ -23,13 +22,11 @@ import com.haulmont.cuba.gui.dynamicattributes.DynamicAttributesGuiTools;
 import com.haulmont.cuba.gui.model.*;
 import com.haulmont.cuba.gui.screen.*;
 import com.haulmont.cuba.gui.util.OperationResult;
+import com.haulmont.cuba.security.entity.EntityLogItem;
 import com.haulmont.cuba.security.entity.EntityOp;
 
 import javax.inject.Inject;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @UiController("quarium_SimpleChecklist.edit")
 @UiDescriptor("checklist-edit.xml")
@@ -56,10 +53,6 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
     @Inject
     protected EntitySnapshotService entitySnapshotService;
     @Inject
-    private EntityStates entityStates;
-    @Inject
-    protected EntityDiffViewer diffFrame;
-    @Inject
     protected TimeSource timeSource;
     @Inject
     private DataManager dataManager;
@@ -77,6 +70,20 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
     private UserSessionSource userSessionSource;
     @Inject
     private Button stepDown;
+    @Inject
+    private CollectionLoader<EntityLogItem> entityLogItemsDl;
+    @Inject
+    private CollectionLoader<EntityLogItem> testCaseLogItemsDl;
+    @Inject
+    private CollectionLoader<EntityLogItem> stepLogItemsDl;
+    @Inject
+    private CollectionContainer<EntityLogItem> entitylogsDc;
+    @Inject
+    private Table<EntityLogItem> logTable;
+    @Inject
+    private CollectionContainer<EntityLogItem> testCaseLogsDc;
+    @Inject
+    private CollectionContainer<EntityLogItem> stepLogsDc;
 
     @Subscribe
     protected void onInit(InitEvent event) {
@@ -95,13 +102,6 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
     @Subscribe
     public void onAfterCommitChanges(AfterCommitChangesEvent event) {
         entitySnapshotService.createSnapshot(checklistDc.getItem(), checklistDc.getView());
-    }
-
-    @Subscribe
-    protected void afterInit(AfterShowEvent event) {
-        if (!entityStates.isNew(checklistDc.getItem())) {
-            diffFrame.loadVersions(checklistDc.getItem());
-        }
     }
 
     protected ListComponent<TestCase> getTable() {
@@ -500,5 +500,47 @@ public class ChecklistEdit extends StandardEditor<Checklist> {
         validateAdditionalRules(validationErrors);
 
         return validationErrors;
+    }
+
+
+//    @Subscribe(id = "checklistDc", target = Target.DATA_CONTAINER)
+//    public void onChecklistDcItemChange(InstanceContainer.ItemChangeEvent<Checklist> event) {
+//        List<Step> stepsList = new ArrayList<>();
+//        if (event.getItem().getTestCase() != null) {
+//            for (TestCase tc : event.getItem().getTestCase()) {
+//                stepsList.addAll(tc.getCaseStep());
+//            }
+//        }
+//        entityLogItemsDl.setParameter("checklist", Objects.requireNonNull(event.getItem()).getId());
+//        testCaseLogItemsDl.setParameter("testCases", event.getItem().getTestCase());
+//        stepLogItemsDl.setParameter("steps", stepsList);
+//    }
+
+
+    @Subscribe
+    public void onBeforeShow1(BeforeShowEvent event) {
+        List<Step> stepsList = new ArrayList<>();
+        Checklist checklist = dataManager.load(Checklist.class).id(getEditedEntity().getId()).view("edit").one();
+
+        if (checklist.getTestCase() != null) {
+            for (TestCase tc : checklist.getTestCase()) {
+                stepsList.addAll(tc.getCaseStep());
+            }
+        }
+        entityLogItemsDl.setParameter("checklist", Objects.requireNonNull(getEditedEntity()).getId());
+        testCaseLogItemsDl.setParameter("testCases", checklist.getTestCase());
+        stepLogItemsDl.setParameter("steps", stepsList);
+    }
+
+    @Subscribe
+    public void onAfterShow(AfterShowEvent event) {
+
+
+        entityLogItemsDl.load();
+        testCaseLogItemsDl.load();
+        stepLogItemsDl.load();
+        entitylogsDc.getMutableItems().addAll(testCaseLogsDc.getItems());
+        entitylogsDc.getMutableItems().addAll(stepLogsDc.getItems());
+        logTable.repaint();
     }
 }

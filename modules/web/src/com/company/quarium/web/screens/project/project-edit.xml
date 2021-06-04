@@ -194,6 +194,7 @@
                                     editable="true" optionsContainer="qaDc" width="300px"/>
                             <column id="isUsedInRegress" caption="msg://projectEdit.isUsedInRegressColumn"
                                     editable="true"/>
+                            <column id="module" caption="msg://projectEdit.module"/>
                         </columns>
                         <rowsCount/>
                         <buttonsPanel id="buttonsPanel"

@@ -23,6 +23,40 @@
             <loader/>
             <collection id="stepsCollection" property="caseStep"/>
         </instance>
+
+        <collection id="entitylogsDc"
+                    class="com.haulmont.cuba.security.entity.EntityLogItem"
+                    view="logView">
+            <loader id="entityLogItemsDl">
+                <query><![CDATA[select i from sec$EntityLog i where i.entityRef.entityId = :checklist
+                                    order by i.eventTs]]>
+                </query>
+            </loader>
+            <collection id="logAttrDc"
+                        property="attributes"/>
+        </collection>
+        <collection id="testCaseLogsDc"
+                    class="com.haulmont.cuba.security.entity.EntityLogItem"
+                    view="logView">
+            <loader id="testCaseLogItemsDl">
+                <query><![CDATA[select i from sec$EntityLog i where i.entityRef.entityId in :testCases
+                                    order by i.eventTs]]>
+                </query>
+            </loader>
+            <collection id="testCaseLogAttrDc"
+                        property="attributes"/>
+        </collection>
+        <collection id="stepLogsDc"
+                    class="com.haulmont.cuba.security.entity.EntityLogItem"
+                    view="logView">
+            <loader id="stepLogItemsDl">
+                <query><![CDATA[select i from sec$EntityLog i where i.entityRef.entityId in :steps
+                                    order by i.eventTs]]>
+                </query>
+            </loader>
+            <collection id="stepLogAttrDc"
+                        property="attributes"/>
+        </collection>
     </data>
     <actions>
         <action id="save" icon="icons/ok.png" caption="mainMsg://actions.Ok" shortcut="CTRL-ENTER"/>
@@ -144,12 +178,27 @@
                 </groupBox>
             </tab>
             <tab id="versionsTab" caption="msg://checklistEdit.versions" spacing="true" margin="true">
-                <vbox id="versionsBox" margin="true">
-                    <frame id="diffFrame"
-                           src="/com/haulmont/cuba/gui/app/core/entitydiff/diff-view.xml"
-                           width="100%"
-                           height="600px"/>
-                </vbox>
+                <table id="logTable"
+                       dataContainer="entitylogsDc"
+                       width="100%"
+                       height="300px">
+                    <columns>
+                        <column id="eventTs"/>
+                        <column id="user.login"/>
+                        <column id="displayedEntityName" caption="msg://checklistEdit.entity"/>
+                        <column id="type"/>
+                    </columns>
+                </table>
+                <table id="attrTable"
+                       height="300px"
+                       width="100%"
+                       dataContainer="logAttrDc">
+                    <columns>
+                        <column id="displayName"/>
+                        <column id="oldValue"/>
+                        <column id="value"/>
+                    </columns>
+                </table>
             </tab>
         </tabSheet>
         <hbox id="editActions" spacing="true" align="BOTTOM_LEFT">

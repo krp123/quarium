@@ -12,7 +12,7 @@ import java.util.List;
 public interface CopyChecklistService {
     String NAME = "quarium_CopyChecklistService";
 
-    SimpleChecklist copyChecklist(Checklist checklist, Project project);
+    SimpleChecklist copyChecklist(Checklist checklist);
 
     RegressChecklist copyChecklistToRegress(Checklist checklist);
 
