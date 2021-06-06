@@ -17,6 +17,7 @@
     <context-param>
         <param-name>appComponents</param-name>
         <param-value>com.haulmont.cuba com.haulmont.addon.helium com.haulmont.addon.restapi com.haulmont.reports
+            com.haulmont.addon.ldap
         </param-value>
     </context-param>
     <listener>
@@ -44,6 +45,18 @@
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
+    <filter>
+        <filter-name>jespa_Filter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <init-param>
+            <param-name>targetBeanName</param-name>
+            <param-value>sample_JespaAuthProvider</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>jespa_Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <filter>
         <filter-name>cuba_filter</filter-name>
         <filter-class>com.haulmont.cuba.web.sys.CubaHttpFilter</filter-class>
