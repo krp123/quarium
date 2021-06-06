@@ -1,0 +1,11 @@
+@import "halo-defaults";
+@import "com.company.quarium/halo-ext-defaults";
+@import "app-components";
+@import "com.company.quarium/halo-ext";
+
+.halo {
+  // include auto-generated app components SCSS
+  @include app_components;
+
+  @include com_company_quarium-halo-ext;
+}
