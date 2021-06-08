@@ -333,6 +333,17 @@ public class ProjectEdit extends StandardEditor<Project> {
         }
     }
 
+    private void countTime(Label label, List<Checklist> checklistList) {
+        int totalTime = 0;
+        for (Checklist cl : checklistList) {
+            totalTime += cl.getHours() * 60 + cl.getMinutes();
+        }
+
+        int hours = totalTime / 60;
+        int minutes = totalTime % 60;
+        label.setValue(hours + "ч " + minutes + "м");
+    }
+
     @Subscribe
     protected void onInit(AfterShowEvent event) {
         if (userSessionSource.getUserSession().getRoles().contains("View")) {
@@ -354,14 +365,7 @@ public class ProjectEdit extends StandardEditor<Project> {
                                     return false;
                                 })
                                 .collect(Collectors.toList());
-                        int totalTime = 0;
-                        for (Checklist cl : modules) {
-                            totalTime += cl.getHours() * 60 + cl.getMinutes();
-                        }
-
-                        int hours = totalTime / 60;
-                        int minutes = totalTime % 60;
-                        label.setValue(hours + "ч " + minutes + "м");
+                        countTime(label, modules);
                         return label;
                     }
                 });
@@ -385,14 +389,7 @@ public class ProjectEdit extends StandardEditor<Project> {
                                     return false;
                                 })
                                 .collect(Collectors.toList());
-                        int totalTime = 0;
-                        for (Checklist cl : modules) {
-                            totalTime += cl.getHours() * 60 + cl.getMinutes();
-                        }
-
-                        int hours = totalTime / 60;
-                        int minutes = totalTime % 60;
-                        label.setValue(hours + "ч " + minutes + "м");
+                        countTime(label, modules);
                         return label;
                     }
                 });
@@ -410,14 +407,7 @@ public class ProjectEdit extends StandardEditor<Project> {
                                     return false;
                                 })
                                 .collect(Collectors.toList());
-                        int totalTime = 0;
-                        for (Checklist cl : qaChecklists) {
-                            totalTime += cl.getHours() * 60 + cl.getMinutes();
-                        }
-
-                        int hours = totalTime / 60;
-                        int minutes = totalTime % 60;
-                        label.setValue(hours + "ч " + minutes + "м");
+                        countTime(label, qaChecklists);
                         return label;
                     }
                 });
@@ -440,14 +430,7 @@ public class ProjectEdit extends StandardEditor<Project> {
                                     return false;
                                 })
                                 .collect(Collectors.toList());
-                        int totalTime = 0;
-                        for (Checklist cl : qaChecklists) {
-                            totalTime += cl.getHours() * 60 + cl.getMinutes();
-                        }
-
-                        int hours = totalTime / 60;
-                        int minutes = totalTime % 60;
-                        label.setValue(hours + "ч " + minutes + "м");
+                        countTime(label, qaChecklists);
                         return label;
                     }
                 });
@@ -465,14 +448,7 @@ public class ProjectEdit extends StandardEditor<Project> {
                                     return false;
                                 })
                                 .collect(Collectors.toList());
-                        int totalTime = 0;
-                        for (Checklist cl : qaChecklists) {
-                            totalTime += cl.getHours() * 60 + cl.getMinutes();
-                        }
-
-                        int hours = totalTime / 60;
-                        int minutes = totalTime % 60;
-                        label.setValue(hours + "ч " + minutes + "м");
+                        countTime(label, qaChecklists);
                         return label;
                     }
                 });
@@ -496,14 +472,7 @@ public class ProjectEdit extends StandardEditor<Project> {
                                     return false;
                                 })
                                 .collect(Collectors.toList());
-                        int totalTime = 0;
-                        for (Checklist cl : qaChecklists) {
-                            totalTime += cl.getHours() * 60 + cl.getMinutes();
-                        }
-
-                        int hours = totalTime / 60;
-                        int minutes = totalTime % 60;
-                        label.setValue(hours + "ч " + minutes + "м");
+                        countTime(label, qaChecklists);
                         return label;
                     }
                 });
