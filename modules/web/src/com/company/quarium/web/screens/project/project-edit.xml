@@ -162,6 +162,42 @@
             </tab>
 
             <tab id="testPlanTab" caption="msg://projectEdit.testPlan" spacing="true" margin="true">
+                <form id="testPlanStatisticsForm" width="100%"
+                      height="AUTO">
+                    <column>
+                        <groupBox caption="msg://com.company.quarium.entity/Project.qaStatistics" collapsable="true">
+                            <table id="testPlanQaStatisticsTable"
+                                   width="100%"
+                                   height="AUTO"
+                                   dataContainer="qaProjectDc"
+                                   showSelection="false">
+                                <columns>
+                                    <column id="qa"/>
+                                    <column id="timeLeft" caption="msg://projectEdit.timeLeft"/>
+                                    <column id="timeTotal" caption="msg://projectEdit.timeTotal"/>
+                                </columns>
+                                <rows/>
+                            </table>
+                        </groupBox>
+                    </column>
+                    <column>
+                        <groupBox caption="msg://projectEdit.modulesStatistics" collapsable="true">
+                            <table id="modulesStatisticsTable"
+                                   width="100%"
+                                   height="AUTO"
+                                   dataContainer="modulesDc"
+                                   showSelection="false"
+                                   responsive="true">
+                                <columns>
+                                    <column id="name"/>
+                                    <column id="timeLeft" caption="msg://projectEdit.timeLeft"/>
+                                    <column id="timeTotal" caption="msg://projectEdit.timeTotal"/>
+                                </columns>
+                                <rows/>
+                            </table>
+                        </groupBox>
+                    </column>
+                </form>
                 <vbox id="checklistBox" caption="msg://com.company.quarium.entity/Project.checklists"
                       width="100%" height="100%" margin="true">
                     <groupTable id="checklistsTable"

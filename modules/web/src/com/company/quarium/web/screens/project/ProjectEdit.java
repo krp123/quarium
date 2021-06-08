@@ -86,6 +86,10 @@ public class ProjectEdit extends StandardEditor<Project> {
     private Actions actions;
     @Inject
     private Button runReport;
+    @Inject
+    private Table<QaProjectRelationship> testPlanQaStatisticsTable;
+    @Inject
+    private Table<Module> modulesStatisticsTable;
 
     @Subscribe
     public void onInitEntity(InitEntityEvent<Project> event) {
@@ -329,7 +333,6 @@ public class ProjectEdit extends StandardEditor<Project> {
         }
     }
 
-
     @Subscribe
     protected void onInit(AfterShowEvent event) {
         if (userSessionSource.getUserSession().getRoles().contains("View")) {
@@ -337,6 +340,117 @@ public class ProjectEdit extends StandardEditor<Project> {
         }
 
         runReport.setAction(new EditorPrintFormAction(this, null));
+
+        modulesStatisticsTable.addGeneratedColumn("timeTotal",
+                new Table.ColumnGenerator<Module>() {
+                    @Override
+                    public Component generateCell(Module module) {
+                        Label label = uiComponents.create(Label.NAME);
+                        List<Checklist> modules = checklistsDc.getMutableItems().stream()
+                                .filter(s -> {
+                                    if (s.getModule() != null)
+                                        return s.getModule().equals(module);
+
+                                    return false;
+                                })
+                                .collect(Collectors.toList());
+                        int totalTime = 0;
+                        for (Checklist cl : modules) {
+                            totalTime += cl.getHours() * 60 + cl.getMinutes();
+                        }
+
+                        int hours = totalTime / 60;
+                        int minutes = totalTime % 60;
+                        label.setValue(hours + "ч " + minutes + "м");
+                        return label;
+                    }
+                });
+
+        modulesStatisticsTable.addGeneratedColumn("timeLeft",
+                new Table.ColumnGenerator<Module>() {
+                    @Override
+                    public Component generateCell(Module module) {
+                        Label label = uiComponents.create(Label.NAME);
+                        List<Checklist> modules = checklistsDc.getMutableItems().stream()
+                                .filter(s -> {
+                                    if (s.getModule() != null)
+                                        return s.getModule().equals(module);
+
+                                    return false;
+                                })
+                                .filter(s -> {
+                                    if (s.getState() != null)
+                                        return !s.getState().getId().equals(STATE_CHECKED);
+
+                                    return false;
+                                })
+                                .collect(Collectors.toList());
+                        int totalTime = 0;
+                        for (Checklist cl : modules) {
+                            totalTime += cl.getHours() * 60 + cl.getMinutes();
+                        }
+
+                        int hours = totalTime / 60;
+                        int minutes = totalTime % 60;
+                        label.setValue(hours + "ч " + minutes + "м");
+                        return label;
+                    }
+                });
+
+        testPlanQaStatisticsTable.addGeneratedColumn("timeTotal",
+                new Table.ColumnGenerator<QaProjectRelationship>() {
+                    @Override
+                    public Component generateCell(QaProjectRelationship qa) {
+                        Label label = uiComponents.create(Label.NAME);
+                        List<Checklist> qaChecklists = checklistsDc.getMutableItems().stream()
+                                .filter(s -> {
+                                    if (s.getAssignedQa() != null)
+                                        return s.getAssignedQa().equals(qa);
+
+                                    return false;
+                                })
+                                .collect(Collectors.toList());
+                        int totalTime = 0;
+                        for (Checklist cl : qaChecklists) {
+                            totalTime += cl.getHours() * 60 + cl.getMinutes();
+                        }
+
+                        int hours = totalTime / 60;
+                        int minutes = totalTime % 60;
+                        label.setValue(hours + "ч " + minutes + "м");
+                        return label;
+                    }
+                });
+        testPlanQaStatisticsTable.addGeneratedColumn("timeLeft",
+                new Table.ColumnGenerator<QaProjectRelationship>() {
+                    @Override
+                    public Component generateCell(QaProjectRelationship qa) {
+                        Label label = uiComponents.create(Label.NAME);
+                        List<Checklist> qaChecklists = checklistsDc.getMutableItems().stream()
+                                .filter(s -> {
+                                    if (s.getAssignedQa() != null)
+                                        return s.getAssignedQa().equals(qa);
+
+                                    return false;
+                                })
+                                .filter(s -> {
+                                    if (s.getState() != null)
+                                        return !s.getState().getId().equals(STATE_CHECKED);
+
+                                    return false;
+                                })
+                                .collect(Collectors.toList());
+                        int totalTime = 0;
+                        for (Checklist cl : qaChecklists) {
+                            totalTime += cl.getHours() * 60 + cl.getMinutes();
+                        }
+
+                        int hours = totalTime / 60;
+                        int minutes = totalTime % 60;
+                        label.setValue(hours + "ч " + minutes + "м");
+                        return label;
+                    }
+                });
 
         qaStatisticsTable.addGeneratedColumn("timeTotal",
                 new Table.ColumnGenerator<QaProjectRelationship>() {
