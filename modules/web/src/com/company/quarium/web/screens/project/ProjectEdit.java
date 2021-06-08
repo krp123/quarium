@@ -21,6 +21,7 @@ import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.*;
 import com.haulmont.cuba.gui.screen.*;
+import com.haulmont.reports.gui.actions.EditorPrintFormAction;
 import org.apache.commons.lang3.BooleanUtils;
 
 import javax.inject.Inject;
@@ -81,6 +82,10 @@ public class ProjectEdit extends StandardEditor<Project> {
     private UserSessionSource userSessionSource;
     @Inject
     private Button uploadExcel;
+    @Inject
+    private Actions actions;
+    @Inject
+    private Button runReport;
 
     @Subscribe
     public void onInitEntity(InitEntityEvent<Project> event) {
@@ -330,6 +335,8 @@ public class ProjectEdit extends StandardEditor<Project> {
         if (userSessionSource.getUserSession().getRoles().contains("View")) {
             uploadExcel.setVisible(false);
         }
+
+        runReport.setAction(new EditorPrintFormAction(this, null));
 
         qaStatisticsTable.addGeneratedColumn("timeTotal",
                 new Table.ColumnGenerator<QaProjectRelationship>() {

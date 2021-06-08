@@ -324,6 +324,7 @@
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="closeBtn" action="windowClose"/>
             <button id="addNewVersion" caption="msg://projectEdit.newReleaseButton"/>
+            <button id="runReport" caption="msg://projectEdit.report"/>
         </hbox>
     </layout>
 </window>
