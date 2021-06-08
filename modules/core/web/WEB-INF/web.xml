@@ -17,7 +17,6 @@
     <context-param>
         <param-name>appComponents</param-name>
         <param-value>com.haulmont.cuba com.haulmont.addon.helium com.haulmont.addon.restapi com.haulmont.reports
-            com.haulmont.addon.ldap
         </param-value>
     </context-param>
     <listener>

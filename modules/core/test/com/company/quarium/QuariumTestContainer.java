@@ -14,8 +14,7 @@ public class QuariumTestContainer extends TestContainer {
                 "com.haulmont.cuba",
                 "com.haulmont.addon.helium",
                 "com.haulmont.addon.restapi",
-                "com.haulmont.reports",
-                "com.haulmont.addon.ldap");
+                "com.haulmont.reports");
         appPropertiesFiles = Arrays.asList(
                 // List the files defined in your web.xml
                 // in appPropertiesConfig context parameter of the core module
