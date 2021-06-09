@@ -10,7 +10,7 @@
             <cssLayout id="sideMenuPanel"
                        height="100%"
                        stylename="c-sidemenu-panel"
-                       width="250px">
+                       width="260px">
                 <button id="mobileMenuButton"
                         caption="mainMsg://app.menu"
                         icon="icons/mobile-menu.png"
@@ -35,8 +35,10 @@
                            stylename="c-app-icon"
                            align="MIDDLE_CENTER"
                            scaleMode="SCALE_DOWN"/>
-                    <userIndicator id="userIndicator"
-                                   width="100%"/>
+                    <hbox margin="true" width="100%">
+                        <userIndicator id="userIndicator"
+                                       width="100%"/>
+                    </hbox>
                     <hbox id="mainButtonsBox"
                           stylename="c-main-buttons">
                         <newWindowButton id="newWindowButton"
