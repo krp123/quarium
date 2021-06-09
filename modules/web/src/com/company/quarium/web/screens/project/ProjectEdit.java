@@ -394,6 +394,72 @@ public class ProjectEdit extends StandardEditor<Project> {
                     }
                 });
 
+        modulesStatisticsTable.addGeneratedColumn("checklistsLeft",
+                new Table.ColumnGenerator<Module>() {
+                    @Override
+                    public Component generateCell(Module module) {
+                        Label label = uiComponents.create(Label.NAME);
+                        List<Checklist> modules = checklistsDc.getMutableItems().stream()
+                                .filter(s -> {
+                                    if (s.getModule() != null && !s.getState().getId().equals(STATE_CHECKED))
+                                        return s.getModule().equals(module);
+
+                                    return false;
+                                })
+                                .collect(Collectors.toList());
+                        label.setValue(modules.size());
+                        return label;
+                    }
+                });
+
+        modulesStatisticsTable.addGeneratedColumn("checklistsTotal",
+                new Table.ColumnGenerator<Module>() {
+                    @Override
+                    public Component generateCell(Module module) {
+                        Label label = uiComponents.create(Label.NAME);
+                        List<Checklist> modules = checklistsDc.getMutableItems().stream()
+                                .filter(s -> {
+                                    if (s.getModule() != null)
+                                        return s.getModule().equals(module);
+
+                                    return false;
+                                })
+                                .collect(Collectors.toList());
+                        label.setValue(modules.size());
+                        return label;
+                    }
+                });
+        modulesStatisticsTable.addGeneratedColumn("completed",
+                new Table.ColumnGenerator<Module>() {
+                    @Override
+                    public Component generateCell(Module module) {
+                        Label label = uiComponents.create(Label.NAME);
+                        List<Checklist> modules = checklistsDc.getMutableItems().stream()
+                                .filter(s -> {
+                                    if (s.getModule() != null)
+                                        return s.getModule().equals(module);
+
+                                    return false;
+                                })
+                                .collect(Collectors.toList());
+                        List<Checklist> completed = modules.stream()
+                                .filter(s -> {
+                                    if (s.getState().getId().equals(STATE_CHECKED))
+                                        return true;
+
+                                    return false;
+                                })
+                                .collect(Collectors.toList());
+                        double percent = 0.0;
+                        if (modules.size() > 0) {
+                            percent = completed.size() * 100 / (double) modules.size();
+                        }
+
+                        label.setValue(String.format("%.2f", percent) + "%");
+                        return label;
+                    }
+                });
+
         testPlanQaStatisticsTable.addGeneratedColumn("timeTotal",
                 new Table.ColumnGenerator<QaProjectRelationship>() {
                     @Override

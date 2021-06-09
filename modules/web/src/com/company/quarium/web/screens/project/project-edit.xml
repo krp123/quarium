@@ -164,7 +164,7 @@
             <tab id="testPlanTab" caption="msg://projectEdit.testPlan" spacing="true" margin="true">
                 <form id="testPlanStatisticsForm" width="100%"
                       height="AUTO">
-                    <column>
+                    <column flex="1">
                         <groupBox caption="msg://com.company.quarium.entity/Project.qaStatistics" collapsable="true">
                             <table id="testPlanQaStatisticsTable"
                                    width="100%"
@@ -180,7 +180,7 @@
                             </table>
                         </groupBox>
                     </column>
-                    <column>
+                    <column flex="2">
                         <groupBox caption="msg://projectEdit.modulesStatistics" collapsable="true">
                             <table id="modulesStatisticsTable"
                                    width="100%"
@@ -192,6 +192,9 @@
                                     <column id="name"/>
                                     <column id="timeLeft" caption="msg://projectEdit.timeLeft"/>
                                     <column id="timeTotal" caption="msg://projectEdit.timeTotal"/>
+                                    <column id="checklistsLeft" caption="msg://projectEdit.checklistsLeft"/>
+                                    <column id="checklistsTotal" caption="msg://projectEdit.checklistsTotal"/>
+                                    <column id="completed" caption="msg://projectEdit.completed"/>
                                 </columns>
                                 <rows/>
                             </table>
