@@ -290,4 +290,73 @@
         <property name="qa" view="_minimal"/>
         <property name="configuration" view="_minimal"/>
     </view>
+    <view entity="quarium_Project" name="project-view" extends="_local">
+        <property name="dbms" view="_minimal"/>
+        <property name="thesisVersion" view="_minimal"/>
+        <property name="regressChecklist" view="_minimal">
+            <property name="regressProject" view="_minimal"/>
+            <property name="initialConditions"/>
+            <property name="parentCard" view="_minimal"/>
+            <property name="comment"/>
+            <property name="hours"/>
+            <property name="minutes"/>
+            <property name="ticket"/>
+            <property name="module" view="_minimal"/>
+            <property name="isUsedInRegress"/>
+            <property name="assignedQa" view="_minimal"/>
+            <property name="state" view="_minimal"/>
+            <property name="testCase" view="_minimal">
+                <property name="checkDate"/>
+                <property name="initialConditions"/>
+                <property name="number"/>
+                <property name="creationDate"/>
+                <property name="comment"/>
+                <property name="ticket"/>
+                <property name="caseStep" view="_minimal">
+                    <property name="step"/>
+                    <property name="number"/>
+                    <property name="creationDate"/>
+                </property>
+                <property name="hours"/>
+                <property name="minutes"/>
+                <property name="priority" view="_minimal"/>
+                <property name="state" view="_minimal"/>
+                <property name="expectedResult"/>
+            </property>
+        </property>
+        <property name="projectVersion" view="_minimal"/>
+        <property name="module" view="_minimal"/>
+        <property name="checklist" view="_minimal">
+            <property name="initialConditions"/>
+            <property name="parentCard" view="_minimal"/>
+            <property name="comment"/>
+            <property name="hours"/>
+            <property name="minutes"/>
+            <property name="ticket"/>
+            <property name="module" view="_minimal"/>
+            <property name="isUsedInRegress"/>
+            <property name="assignedQa" view="_minimal"/>
+            <property name="state" view="_minimal"/>
+            <property name="testCase" view="_minimal">
+                <property name="checkDate"/>
+                <property name="initialConditions"/>
+                <property name="number"/>
+                <property name="creationDate"/>
+                <property name="comment"/>
+                <property name="ticket"/>
+                <property name="caseStep" view="_minimal">
+                    <property name="step"/>
+                    <property name="number"/>
+                    <property name="creationDate"/>
+                </property>
+                <property name="hours"/>
+                <property name="minutes"/>
+                <property name="priority" view="_minimal"/>
+                <property name="state" view="_minimal"/>
+                <property name="expectedResult"/>
+            </property>
+        </property>
+        <property name="qa" view="_minimal"/>
+        <property name="configuration" view="_minimal"/>
+    </view>
 </views>

@@ -6,12 +6,14 @@ import com.company.quarium.entity.checklist.TestCase;
 import com.company.quarium.entity.project.ProjectVersion;
 import com.company.quarium.entity.project.QaProjectRelationship;
 import com.haulmont.cuba.gui.UiComponents;
+import com.haulmont.cuba.gui.components.Button;
 import com.haulmont.cuba.gui.components.Component;
 import com.haulmont.cuba.gui.components.Label;
 import com.haulmont.cuba.gui.components.Table;
 import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.model.CollectionPropertyContainer;
 import com.haulmont.cuba.gui.screen.*;
+import com.haulmont.reports.gui.actions.EditorPrintFormAction;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -30,6 +32,8 @@ public class ProjectVersionEdit extends StandardEditor<ProjectVersion> {
     private UiComponents uiComponents;
     @Inject
     private CollectionPropertyContainer<RegressChecklist> regressChecklistDc;
+    @Inject
+    private Button runReport;
 
     @Subscribe
     protected void onBeforeShow(BeforeShowEvent event) {
@@ -38,6 +42,8 @@ public class ProjectVersionEdit extends StandardEditor<ProjectVersion> {
 
     @Subscribe
     protected void onInit(AfterShowEvent event) {
+        runReport.setAction(new EditorPrintFormAction(this, null));
+
         qaStatisticsTable.addGeneratedColumn("timeTotal",
                 new Table.ColumnGenerator<QaProjectRelationship>() {
                     @Override

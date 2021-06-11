@@ -30,7 +30,7 @@
                            value="mainMsg://application.logoLabel"/>
                 </hbox>
                 <cssLayout id="sideMenuWrap"
-                           stylename="c-sidemenu-wrap">
+                           stylename="c-sidemenu-wrap" width="100%">
                     <image id="logoImage"
                            stylename="c-app-icon"
                            align="MIDDLE_CENTER"

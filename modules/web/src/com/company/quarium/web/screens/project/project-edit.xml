@@ -320,6 +320,7 @@
                             <column id="name"/>
                             <column id="state"/>
                             <column id="assignedQa" caption="msg://projectEdit.QaColumn"/>
+                            <column id="module"/>
                         </columns>
                         <rowsCount/>
                         <buttonsPanel id="regressButtonsPanel"

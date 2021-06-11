@@ -314,7 +314,7 @@ public class ProjectEdit extends StandardEditor<Project> {
             }
             //если есть, то выводим диалоговое окно
             if (hasChild &&
-                    "testPlanTab".equals(projectTabSheet.getSelectedTab().getName())) {
+                    "testPlanTab".equals(projectTabSheet.getSelectedTab().getName())) { //TODO баг: открыть вкладку "Тест-план", нажать на кнопку "Новый релиз". Появится диалоговое окно. Мб здесь сделать лиснер клика по чек-боксу?
                 dialogs.createOptionDialog()
                         .withCaption("Внимание")
                         .withMessage("Снятие атрибута повлечет за собой удаление чек-листа с вкладки Регресс. " +

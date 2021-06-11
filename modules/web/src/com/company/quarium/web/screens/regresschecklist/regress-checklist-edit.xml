@@ -158,6 +158,8 @@
                                 <columns>
                                     <column id="number" editable="false" width="20"/>
                                     <column id="name" maxTextLength="20" expandRatio="100"/>
+                                    <column id="priority" collapsed="true"/>
+                                    <column id="state" collapsed="true"/>
                                 </columns>
                                 <rowsCount/>
                                 <buttonsPanel id="buttonsPanel"

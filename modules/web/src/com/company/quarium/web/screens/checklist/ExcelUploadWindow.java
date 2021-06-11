@@ -2,11 +2,9 @@ package com.company.quarium.web.screens.checklist;
 
 import com.company.quarium.entity.checklist.SimpleChecklist;
 import com.company.quarium.service.UploadChecklistFromXlsService;
-import com.haulmont.cuba.core.entity.FileDescriptor;
 import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.core.sys.AppContext;
 import com.haulmont.cuba.gui.Notifications;
-import com.haulmont.cuba.gui.components.Button;
 import com.haulmont.cuba.gui.components.FileMultiUploadField;
 import com.haulmont.cuba.gui.components.Label;
 import com.haulmont.cuba.gui.model.CollectionContainer;
@@ -46,19 +44,9 @@ public class ExcelUploadWindow extends Screen {
     @Inject
     private DataManager dataManager;
     @Inject
-    protected Metadata metadata;
-    @Inject
-    private TimeSource timeSource;
-    @Inject
-    private Resources resources;
-    @Inject
     private Label<String> downloadTemplate;
     @Inject
     private Messages messages;
-
-    protected GlobalConfig globalConfig;
-    @Inject
-    private Button downloadTemplateButton;
 
 
     @Subscribe("multiUploadField")
@@ -95,39 +83,11 @@ public class ExcelUploadWindow extends Screen {
         }
     }
 
-
     public void setChecklistsDc(CollectionContainer<SimpleChecklist> checklistsDc) {
         this.checklistsDc = checklistsDc;
     }
 
     public void setChecklistsDl(CollectionLoader<SimpleChecklist> checklistsDl) {
         this.checklistsDl = checklistsDl;
-    }
-
-    public void downloadTemplate() throws IOException, FileStorageException {
-//        String fileName = "ChecklistImportTemplate.xlsx";
-//        String templateFullPath = AppContext.getProperty("cuba.appDir") + File.separator + "static" + File.separator + fileName;
-//        File file = new File(templateFullPath);
-////        byte[] data = IOUtils.toByteArray(new FileInputStream(file));
-////        ExportDisplay exportDisplay = AppBeans.get(ExportDisplay.NAME);
-////        FileDescriptor fd = createFileDescriptor("ChecklistImportTemplate.xlsx", data);
-////        exportDisplay.show(fd);
-//        CubaFileDownloader fileDownloader = AppUI.getCurrent().getFileDownloader();
-//        StreamResource resource = new StreamResource(new FileInputStream(file), "ChecklistImportTemplate.xlsx");
-//        fileDownloader.downloadFile(resource);
-    }
-
-    @Subscribe("downloadTemplateButton")
-    public void onDownloadTemplateButtonClick(Button.ClickEvent event) throws IOException, FileStorageException {
-        downloadTemplate();
-    }
-
-    public FileDescriptor createFileDescriptor(String name, byte[] data) {
-        FileDescriptor fd = metadata.create(FileDescriptor.class);
-        fd.setName(name.contains("*") ? StringUtils.substringAfter(name, "*") : name);
-        fd.setExtension(StringUtils.substringAfterLast(name, "."));
-        fd.setCreateDate(timeSource.currentTimestamp());
-        fd.setSize((long) data.length);
-        return fd;
     }
 }
