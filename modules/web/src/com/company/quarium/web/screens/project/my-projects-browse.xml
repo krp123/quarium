@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://myProjectsBrowse.caption"
+        focusComponent="projectsTable"
+        messagesPack="com.company.quarium.web.screens.project">
+    <data readOnly="true">
+        <collection id="projectsDc"
+                    class="com.company.quarium.entity.project.SimpleProject">
+            <view extends="_local">
+                <property name="dbms" view="_minimal"/>
+                <property name="thesisVersion" view="_minimal"/>
+            </view>
+            <loader id="projectsDl">
+                <query>
+                    <![CDATA[select distinct q.project from quarium_QaProjectRelationship q where q.qa.user = :currentUser]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="projectsTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="projectsTable"
+                dataLoader="projectsDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="projectsTable"
+                    width="100%"
+                    dataContainer="projectsDc"
+                    multiselect="true">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="refresh" type="refresh"/>
+            </actions>
+            <columns>
+                <column id="projectName"/>
+                <column id="description"/>
+                <column id="currentRelease"/>
+                <column id="regressStartDate" collapsed="true"/>
+                <column id="regressFinishDate" collapsed="true"/>
+                <column id="dbms" collapsed="true"/>
+                <column id="thesisVersion" collapsed="true"/>
+                <column id="creationDate" collapsed="true"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="projectsTable.create"/>
+                <button id="editBtn" action="projectsTable.edit"/>
+                <button id="removeBtn" action="projectsTable.remove"/>
+                <button id="refreshBtn" action="projectsTable.refresh"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

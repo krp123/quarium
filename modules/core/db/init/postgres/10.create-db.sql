@@ -37,6 +37,7 @@ create table QUARIUM_QA (
     DELETED_BY varchar(50),
     --
     FULL_NAME varchar(255) not null,
+    USER_ID uuid,
     --
     primary key (ID)
 )^

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fts-config xmlns="http://schemas.haulmont.com/cuba/fts.xsd">
+    <entities>
+        <entity class="com.company.quarium.entity.references.Statement">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.company.quarium.entity.references.Priority">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.company.quarium.entity.project.ConfigurationProjectRelationship">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.company.quarium.entity.references.Qa">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.company.quarium.entity.project.QaProjectRelationship">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.company.quarium.entity.project.Project">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.company.quarium.entity.references.Dbms">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.company.quarium.entity.references.ThesisVersion">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.company.quarium.entity.references.Configuration">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.company.quarium.entity.checklist.Step">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.company.quarium.entity.checklist.TestCase">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.company.quarium.entity.checklist.Checklist">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.company.quarium.entity.project.Module">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.company.quarium.entity.project.ProjectVersion">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.company.quarium.entity.project.SimpleProject">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.company.quarium.entity.checklist.SimpleChecklist">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.company.quarium.entity.checklist.RegressChecklist">
+            <include re=".*"/>
+        </entity>
+    </entities>
+</fts-config>

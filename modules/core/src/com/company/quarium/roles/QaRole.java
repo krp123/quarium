@@ -32,6 +32,7 @@ public class QaRole extends AnnotatedRoleDefinition {
             "quarium_SimpleProject.edit",
             "quarium_Project.browse",
             "quarium_SimpleChecklist.edit",
+            "quarium_MyProjects.browse",
             "quarium_Checklist.browse",
             "quarium_ProjectVersion.edit",
             "quarium_VersionExtChecklist.edit",

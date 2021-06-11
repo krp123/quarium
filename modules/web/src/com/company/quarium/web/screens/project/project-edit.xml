@@ -292,6 +292,9 @@
                     <column>
                         <dateField id="regressFinishDate" property="regressFinishDate"/>
                     </column>
+                    <column>
+                        <button id="runReport" caption="msg://projectEdit.report"/>
+                    </column>
                 </form>
                 <vbox id="regressChecklistBox" caption="msg://com.company.quarium.entity/Project.checklists"
                       width="100%" height="100%" margin="true">
@@ -364,7 +367,6 @@
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="closeBtn" action="windowClose"/>
             <button id="addNewVersion" caption="msg://projectEdit.newReleaseButton"/>
-            <button id="runReport" caption="msg://projectEdit.report"/>
         </hbox>
     </layout>
 </window>

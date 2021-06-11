@@ -6,17 +6,25 @@
     <data>
         <instance id="qaDc"
                   class="com.company.quarium.entity.references.Qa">
-            <view extends="_local"/>
+            <view extends="qa-view"/>
             <loader/>
         </instance>
+        <collection id="usersDc" class="com.haulmont.cuba.security.entity.User" view="user.browse">
+            <loader id="usersDl">
+                <query>
+                    <![CDATA[select e from sec$User e]]>
+                </query>
+            </loader>
+        </collection>
     </data>
-    <dialogMode height="180"
+    <dialogMode height="AUTO"
                 width="550"
                 forceDialog="true"/>
     <layout expand="editActions" spacing="true">
         <form id="form" dataContainer="qaDc">
             <column width="350px">
                 <textField id="fullNameField" property="fullName"/>
+                <lookupField id="user" property="user" optionsContainer="usersDc"/>
             </column>
         </form>
         <hbox id="editActions" spacing="true">

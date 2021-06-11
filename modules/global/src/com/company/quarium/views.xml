@@ -63,6 +63,7 @@
         <property name="projects" view="_minimal">
             <property name="project" view="_minimal"/>
         </property>
+        <property name="user" view="_minimal"/>
     </view>
     <view entity="quarium_Checklist" name="project-checklist-view" extends="_local">
         <property name="assignedQa" view="_minimal"/>
@@ -358,5 +359,9 @@
         </property>
         <property name="qa" view="_minimal"/>
         <property name="configuration" view="_minimal"/>
+    </view>
+    <view entity="quarium_Qa" name="qa-view" extends="_local">
+        <property name="user" view="_minimal"/>
+        <property name="projects" view="_local"/>
     </view>
 </views>
