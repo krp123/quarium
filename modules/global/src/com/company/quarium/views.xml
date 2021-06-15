@@ -255,6 +255,12 @@
         </property>
         <property name="qa" view="_minimal"/>
         <property name="configuration" view="_minimal"/>
+        <property name="milestone" view="_minimal">
+            <property name="startDate"/>
+            <property name="finishDate"/>
+            <property name="status"/>
+            <property name="description"/>
+        </property>
     </view>
     <view entity="quarium_SimpleProject" name="simpleProject-view" extends="_local">
         <property name="dbms" view="_minimal"/>
@@ -290,6 +296,12 @@
         <property name="checklist" view="_minimal"/>
         <property name="qa" view="_minimal"/>
         <property name="configuration" view="_minimal"/>
+        <property name="milestone" view="_minimal">
+            <property name="startDate"/>
+            <property name="finishDate"/>
+            <property name="status"/>
+            <property name="description"/>
+        </property>
     </view>
     <view entity="quarium_Project" name="project-view" extends="_local">
         <property name="dbms" view="_minimal"/>
@@ -359,6 +371,12 @@
         </property>
         <property name="qa" view="_minimal"/>
         <property name="configuration" view="_minimal"/>
+        <property name="milestone" view="_minimal">
+            <property name="startDate"/>
+            <property name="finishDate"/>
+            <property name="status"/>
+            <property name="description"/>
+        </property>
     </view>
     <view entity="quarium_Qa" name="qa-view" extends="_local">
         <property name="user" view="_minimal"/>

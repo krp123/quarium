@@ -14,7 +14,6 @@ import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
 import com.haulmont.cuba.core.global.DeletePolicy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -26,9 +25,13 @@ import java.util.List;
 public class Project extends StandardEntity {
     private static final long serialVersionUID = 8986128378201827146L;
 
-    @Column(name = "PROJECT_NAME", nullable = false)
-    @NotNull
+    @Column(name = "PROJECT_NAME")
     private String projectName;
+
+    @Composition
+    @OnDelete(DeletePolicy.CASCADE)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.PERSIST)
+    private List<Milestone> milestone;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "REGRESS_START_DATE")
@@ -88,6 +91,14 @@ public class Project extends StandardEntity {
     @Lob
     @Column(name = "DESCRIPTION")
     private String description;
+
+    public List<Milestone> getMilestone() {
+        return milestone;
+    }
+
+    public void setMilestone(List<Milestone> milestone) {
+        this.milestone = milestone;
+    }
 
     public ThesisVersion getThesisVersion() {
         return thesisVersion;
