@@ -7,10 +7,11 @@
               expand="workArea"
               stylename="c-sidemenu-layout"
               width="100%">
-            <cssLayout id="sideMenuPanel"
-                       height="100%"
-                       stylename="c-sidemenu-panel"
-                       width="260px">
+            <vbox id="sideMenuPanel"
+                  height="100%"
+                  stylename="c-sidemenu-panel"
+                  width="260px"
+                  expand="spacer">
                 <button id="mobileMenuButton"
                         caption="mainMsg://app.menu"
                         icon="icons/mobile-menu.png"
@@ -51,10 +52,11 @@
                     <sideMenu id="sideMenu"
                               sidePanel="sideMenuPanel"
                               sidePanelToggleButton="mobileMenuButton"/>
-                    <ftsField id="ftsField"
-                              width="100%"/>
                 </cssLayout>
-            </cssLayout>
+                <label id="spacer"/>
+                <ftsField id="ftsField"
+                          width="100%"/>
+            </vbox>
             <workArea id="workArea"
                       height="100%">
                 <initialLayout margin="true"
