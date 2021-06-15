@@ -21,7 +21,7 @@
                 <dateField id="startDateField" property="startDate"/>
                 <dateField id="finishDateField" property="finishDate"/>
                 <lookupField id="statusField" property="status"/>
-                <textField id="descriptionField" property="description"/>
+                <textArea id="descriptionField" property="description"/>
             </column>
         </form>
         <hbox id="editActions" spacing="true">

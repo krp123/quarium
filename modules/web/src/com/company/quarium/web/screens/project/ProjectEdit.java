@@ -7,7 +7,6 @@ import com.company.quarium.entity.checklist.TestCase;
 import com.company.quarium.entity.project.*;
 import com.company.quarium.entity.references.Configuration;
 import com.company.quarium.entity.references.Qa;
-import com.company.quarium.entity.references.Statement;
 import com.company.quarium.service.CopyChecklistService;
 import com.company.quarium.web.screens.checklist.ExtChecklistEdit;
 import com.company.quarium.web.screens.checklist.ProjectExcelUploadWindow;
@@ -30,7 +29,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.company.quarium.Constants.STATE_CHECKED;
-import static com.company.quarium.Constants.STATE_NOT_STARTED;
 
 @UiController("quarium_SimpleProject.edit")
 @UiDescriptor("project-edit.xml")
@@ -57,10 +55,6 @@ public class ProjectEdit extends StandardEditor<Project> {
     @Inject
     private CopyChecklistService copyChecklistService;
     @Inject
-    private Table<SimpleChecklist> checklistsTable;
-    @Inject
-    private GroupTable<RegressChecklist> regressChecklistsTable;
-    @Inject
     private Table<QaProjectRelationship> qaStatisticsTable;
     @Inject
     private UiComponents uiComponents;
@@ -71,32 +65,22 @@ public class ProjectEdit extends StandardEditor<Project> {
     @Inject
     private Dialogs dialogs;
     @Inject
-    private Button addNewVersion;
-    @Inject
     private CollectionPropertyContainer<ProjectVersion> versionsDc;
     @Inject
     private TimeSource timeSource;
-    @Inject
-    private TabSheet projectTabSheet;
     @Inject
     private UserSessionSource userSessionSource;
     @Inject
     private Button uploadExcel;
     @Inject
-    private Actions actions;
-    @Inject
     private Button runReport;
-    @Inject
-    private Table<QaProjectRelationship> testPlanQaStatisticsTable;
-    @Inject
-    private Table<Module> modulesStatisticsTable;
 
     @Subscribe
     public void onInitEntity(InitEntityEvent<Project> event) {
         event.getEntity().setCreationDate(timeSource.currentTimestamp());
     }
 
-    @Subscribe("addNewVersion")
+/*    @Subscribe("addNewVersion")
     public void onAddNewVersionClick(Button.ClickEvent event) {
         dialogs.createOptionDialog()
                 .withCaption("Внимание")
@@ -127,7 +111,7 @@ public class ProjectEdit extends StandardEditor<Project> {
                 )
                 .show();
 
-    }
+    }*/
 
     @Install(to = "regressChecklistsTable.remove", subject = "afterActionPerformedHandler")
     private void regressChecklistsTableRemoveAfterActionPerformedHandler(RemoveOperation.AfterActionPerformedEvent<RegressChecklist> afterActionPerformedEvent) {
@@ -260,7 +244,7 @@ public class ProjectEdit extends StandardEditor<Project> {
         }
     }
 
-    @Subscribe("checklistsTable.isUsedInRegress")
+/*    @Subscribe("checklistsTable.isUsedInRegress")
     public void onChecklistsTableIsUsedInRegressClick(Table.Column.ClickEvent<SimpleChecklist> event) {
         Checklist checklist = checklistsDc.getItem(event.getItem());
         if (checklist.getIsUsedInRegress()) {
@@ -279,7 +263,7 @@ public class ProjectEdit extends StandardEditor<Project> {
                     )
                     .show();
         }
-    }
+    }*/
 
 //    @Subscribe(id = "checklistsDc", target = Target.DATA_CONTAINER)
 //    public void onChecklistsDcItemPropertyChange(InstanceContainer.ItemPropertyChangeEvent<SimpleChecklist> event) {
@@ -387,7 +371,7 @@ public class ProjectEdit extends StandardEditor<Project> {
 
         runReport.setAction(new EditorPrintFormAction(this, null));
 
-        modulesStatisticsTable.addGeneratedColumn("timeTotal",
+/*        modulesStatisticsTable.addGeneratedColumn("timeTotal",
                 new Table.ColumnGenerator<Module>() {
                     @Override
                     public Component generateCell(Module module) {
@@ -539,7 +523,7 @@ public class ProjectEdit extends StandardEditor<Project> {
                         countTime(label, qaChecklists);
                         return label;
                     }
-                });
+                });*/
 
         qaStatisticsTable.addGeneratedColumn("timeTotal",
                 new Table.ColumnGenerator<QaProjectRelationship>() {

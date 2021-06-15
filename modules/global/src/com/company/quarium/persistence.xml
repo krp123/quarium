@@ -20,5 +20,6 @@
         <class>com.company.quarium.entity.references.Dbms</class>
         <class>com.company.quarium.entity.references.ThesisVersion</class>
         <class>com.company.quarium.entity.project.Milestone</class>
+        <class>com.company.quarium.entity.project.TestRun</class>
     </persistence-unit>
 </persistence>

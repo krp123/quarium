@@ -17,6 +17,7 @@
                 <property name="dbms" view="_local"/>
                 <property name="thesisVersion" view="_local"/>
                 <property name="milestone" view="_local"/>
+                <property name="testRun" view="_local"/>
             </view>
             <loader/>
             <collection id="qaProjectDc" property="qa"/>
@@ -26,6 +27,7 @@
             <collection id="regressChecklistDc" property="regressChecklist"/>
             <collection id="versionsDc" property="projectVersion"/>
             <collection id="milestonesDc" property="milestone"/>
+            <collection id="testRunsDc" property="testRun"/>
         </instance>
         <collection id="bugsDc" class="com.company.quarium.entity.checklist.TestCase" view="testCase-view">
             <loader id="bugsDl">
@@ -201,51 +203,9 @@
                     </buttonsPanel>
                 </groupTable>
             </tab>
-            <tab id="testPlanTab" caption="msg://projectEdit.testPlan" spacing="true" margin="true">
+            <tab id="testSuitsTab" caption="msg://projectEdit.testSuits" spacing="true" margin="true">
                 <vbox expand="checklistBox" spacing="true" height="100%">
-                    <vbox margin="true">
-                        <form id="testPlanStatisticsForm" width="100%"
-                              height="AUTO">
-                            <column flex="1">
-                                <groupBox caption="msg://com.company.quarium.entity/Project.qaStatistics"
-                                          collapsable="true">
-                                    <table id="testPlanQaStatisticsTable"
-                                           width="100%"
-                                           height="AUTO"
-                                           dataContainer="qaProjectDc"
-                                           showSelection="false">
-                                        <columns>
-                                            <column id="qa"/>
-                                            <column id="timeLeft" caption="msg://projectEdit.timeLeft"/>
-                                            <column id="timeTotal" caption="msg://projectEdit.timeTotal"/>
-                                        </columns>
-                                        <rows/>
-                                    </table>
-                                </groupBox>
-                            </column>
-                            <column flex="2">
-                                <groupBox caption="msg://projectEdit.modulesStatistics" collapsable="true">
-                                    <table id="modulesStatisticsTable"
-                                           width="100%"
-                                           height="AUTO"
-                                           dataContainer="modulesDc"
-                                           showSelection="false"
-                                           responsive="true">
-                                        <columns>
-                                            <column id="name"/>
-                                            <column id="timeLeft" caption="msg://projectEdit.timeLeft"/>
-                                            <column id="timeTotal" caption="msg://projectEdit.timeTotal"/>
-                                            <column id="checklistsLeft" caption="msg://projectEdit.checklistsLeft"/>
-                                            <column id="checklistsTotal" caption="msg://projectEdit.checklistsTotal"/>
-                                            <column id="completed" caption="msg://projectEdit.completed"/>
-                                        </columns>
-                                        <rows/>
-                                    </table>
-                                </groupBox>
-                            </column>
-                        </form>
-                    </vbox>
-                    <vbox id="checklistBox" caption="msg://com.company.quarium.entity/Project.checklists"
+                    <vbox id="checklistBox" caption="msg://com.company.quarium.entity/Project.testSuits"
                           width="100%" margin="true" spacing="true">
                         <groupTable id="checklistsTable"
                                     width="100%"
@@ -275,8 +235,6 @@
                                 <column id="state"/>
                                 <column id="assignedQa" caption="msg://projectEdit.QaColumn"
                                         editable="true" optionsContainer="qaDc" width="300px"/>
-                                <column id="isUsedInRegress" caption="msg://projectEdit.isUsedInRegressColumn"
-                                        editable="true"/>
                                 <column id="module" caption="msg://projectEdit.module"/>
                             </columns>
                             <rowsCount/>
@@ -293,6 +251,39 @@
                         </groupTable>
                     </vbox>
                 </vbox>
+            </tab>
+            <tab id="testRunsTab" caption="msg://projectEdit.testRuns" spacing="true" margin="true"
+                 expand="testRunsTable">
+                <groupTable id="testRunsTable"
+                            width="100%"
+                            dataContainer="testRunsDc"
+                            height="100%">
+                    <actions>
+                        <action id="create" type="create">
+                            <properties>
+                                <property name="screenClass"
+                                          value="com.company.quarium.web.screens.testrun.TestRunEdit"/>
+                            </properties>
+                        </action>
+                        <action id="edit" type="edit">
+                            <properties>
+                                <property name="screenClass"
+                                          value="com.company.quarium.web.screens.testrun.TestRunEdit"/>
+                            </properties>
+                        </action>
+                        <action id="remove" type="remove"/>
+                    </actions>
+                    <columns>
+                        <column id="name"/>
+                    </columns>
+                    <rows/>
+                    <buttonsPanel id="testRunsButtonsPanel"
+                                  alwaysVisible="true">
+                        <button id="testRunCreateBtn" action="testRunsTable.create"/>
+                        <button id="testRunEditBtn" action="testRunsTable.edit"/>
+                        <button id="testRunRemoveBtn" action="testRunsTable.remove"/>
+                    </buttonsPanel>
+                </groupTable>
             </tab>
             <tab id="regressTab" caption="msg://projectEdit.regress" margin="true,false,false,false" spacing="true">
                 <vbox expand="regressChecklistBox" spacing="true" height="100%">
@@ -345,7 +336,7 @@
                             </column>
                         </form>
                     </vbox>
-                    <vbox id="regressChecklistBox" caption="msg://com.company.quarium.entity/Project.checklists"
+                    <vbox id="regressChecklistBox" caption="msg://com.company.quarium.entity/Project.testSuits"
                           width="100%" height="100%" margin="true">
                         <groupTable id="regressChecklistsTable"
                                     width="100%"
@@ -385,40 +376,39 @@
                     </vbox>
                 </vbox>
             </tab>
-            <tab id="releasesTab" caption="msg://projectEdit.releasesTab" margin="true,false,false,false"
-                 spacing="true">
-                <vbox expand="projectVersions" spacing="true" height="100%">
-                    <groupTable id="projectVersions"
-                                dataContainer="versionsDc"
-                                width="100%">
-                        <actions>
-                            <action id="edit" type="edit">
-                                <properties>
-                                    <property name="screenClass"
-                                              value="com.company.quarium.web.screens.projectversion.ProjectVersionEdit"/>
-                                </properties>
-                            </action>
-                        </actions>
-                        <columns>
-                            <column id="currentRelease" caption="msg://projectEdit.release"/>
-                            <column id="creationDate" caption="msg://projectEdit.releaseDate">
-                                <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter"
-                                           format="yyyy-MM-dd HH:mm:ss"
-                                           useUserTimezone="true"/>
-                            </column>
-                        </columns>
-                        <rows/>
-                        <buttonsPanel>
-                            <button action="projectVersions.edit" caption="msg://projectEdit.open"/>
-                        </buttonsPanel>
-                    </groupTable>
-                </vbox>
-            </tab>
+            <!--            <tab id="releasesTab" caption="msg://projectEdit.releasesTab" margin="true,false,false,false"-->
+            <!--                 spacing="true">-->
+            <!--                <vbox expand="projectVersions" spacing="true" height="100%">-->
+            <!--                    <groupTable id="projectVersions"-->
+            <!--                                dataContainer="versionsDc"-->
+            <!--                                width="100%">-->
+            <!--                        <actions>-->
+            <!--                            <action id="edit" type="edit">-->
+            <!--                                <properties>-->
+            <!--                                    <property name="screenClass"-->
+            <!--                                              value="com.company.quarium.web.screens.projectversion.ProjectVersionEdit"/>-->
+            <!--                                </properties>-->
+            <!--                            </action>-->
+            <!--                        </actions>-->
+            <!--                        <columns>-->
+            <!--                            <column id="currentRelease" caption="msg://projectEdit.release"/>-->
+            <!--                            <column id="creationDate" caption="msg://projectEdit.releaseDate">-->
+            <!--                                <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter"-->
+            <!--                                           format="yyyy-MM-dd HH:mm:ss"-->
+            <!--                                           useUserTimezone="true"/>-->
+            <!--                            </column>-->
+            <!--                        </columns>-->
+            <!--                        <rows/>-->
+            <!--                        <buttonsPanel>-->
+            <!--                            <button action="projectVersions.edit" caption="msg://projectEdit.open"/>-->
+            <!--                        </buttonsPanel>-->
+            <!--                    </groupTable>-->
+            <!--                </vbox>-->
+            <!--            </tab>-->
         </tabSheet>
         <hbox id="editActions" spacing="true" align="BOTTOM_LEFT">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="closeBtn" action="windowClose"/>
-            <button id="addNewVersion" caption="msg://projectEdit.newReleaseButton"/>
         </hbox>
     </layout>
 </window>
