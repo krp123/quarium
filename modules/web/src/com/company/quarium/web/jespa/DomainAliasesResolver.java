@@ -1,3 +1,4 @@
+/*
 package com.company.quarium.web.jespa;
 
 import com.haulmont.cuba.core.sys.AppContext;
@@ -57,3 +58,4 @@ public class DomainAliasesResolver {
         return domain;
     }
 }
+*/

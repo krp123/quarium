@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://milestoneEdit.caption"
+        focusComponent="form"
+        messagesPack="com.company.quarium.web.screens.milestone">
+    <data>
+        <instance id="milestoneDc"
+                  class="com.company.quarium.entity.project.Milestone">
+            <view extends="_local"/>
+            <loader/>
+        </instance>
+    </data>
+    <dialogMode height="AUTO"
+                width="AUTO"
+                modal="true"
+                forceDialog="true"/>
+    <layout expand="editActions" spacing="true">
+        <form id="form" dataContainer="milestoneDc">
+            <column width="350px">
+                <textField id="nameField" property="name" required="true"/>
+                <dateField id="startDateField" property="startDate"/>
+                <dateField id="finishDateField" property="finishDate"/>
+                <lookupField id="statusField" property="status"/>
+                <textField id="descriptionField" property="description"/>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

@@ -45,7 +45,7 @@
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
-    <filter>
+<!--    <filter>
         <filter-name>jespa_Filter</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
         <init-param>
@@ -56,7 +56,7 @@
     <filter-mapping>
         <filter-name>jespa_Filter</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping>-->
     <filter>
         <filter-name>cuba_filter</filter-name>
         <filter-class>com.haulmont.cuba.web.sys.CubaHttpFilter</filter-class>
