@@ -55,5 +55,8 @@
         <entity class="com.company.quarium.entity.project.Milestone">
             <include re=".*"/>
         </entity>
+        <entity class="com.company.quarium.entity.project.TestRun">
+            <include re=".*"/>
+        </entity>
     </entities>
 </fts-config>

@@ -7,7 +7,6 @@ import com.company.quarium.entity.checklist.TestCase;
 import com.company.quarium.entity.project.*;
 import com.company.quarium.entity.references.Configuration;
 import com.company.quarium.entity.references.Qa;
-import com.company.quarium.entity.references.Statement;
 import com.company.quarium.service.CopyChecklistService;
 import com.company.quarium.web.screens.checklist.ExtChecklistEdit;
 import com.company.quarium.web.screens.checklist.ProjectExcelUploadWindow;
@@ -22,7 +21,6 @@ import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.*;
 import com.haulmont.cuba.gui.screen.*;
 import com.haulmont.reports.gui.actions.EditorPrintFormAction;
-import org.apache.commons.lang3.BooleanUtils;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -30,7 +28,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.company.quarium.Constants.*;
+import static com.company.quarium.Constants.STATE_CHECKED;
 
 @UiController("quarium_SimpleProject.edit")
 @UiDescriptor("project-edit.xml")
@@ -57,10 +55,6 @@ public class ProjectEdit extends StandardEditor<Project> {
     @Inject
     private CopyChecklistService copyChecklistService;
     @Inject
-    private Table<SimpleChecklist> checklistsTable;
-    @Inject
-    private GroupTable<RegressChecklist> regressChecklistsTable;
-    @Inject
     private Table<QaProjectRelationship> qaStatisticsTable;
     @Inject
     private UiComponents uiComponents;
@@ -71,32 +65,22 @@ public class ProjectEdit extends StandardEditor<Project> {
     @Inject
     private Dialogs dialogs;
     @Inject
-    private Button addNewVersion;
-    @Inject
     private CollectionPropertyContainer<ProjectVersion> versionsDc;
     @Inject
     private TimeSource timeSource;
-    @Inject
-    private TabSheet projectTabSheet;
     @Inject
     private UserSessionSource userSessionSource;
     @Inject
     private Button uploadExcel;
     @Inject
-    private Actions actions;
-    @Inject
     private Button runReport;
-    @Inject
-    private Table<QaProjectRelationship> testPlanQaStatisticsTable;
-    @Inject
-    private Table<Module> modulesStatisticsTable;
 
     @Subscribe
     public void onInitEntity(InitEntityEvent<Project> event) {
         event.getEntity().setCreationDate(timeSource.currentTimestamp());
     }
 
-    @Subscribe("addNewVersion")
+/*    @Subscribe("addNewVersion")
     public void onAddNewVersionClick(Button.ClickEvent event) {
         dialogs.createOptionDialog()
                 .withCaption("Внимание")
@@ -127,7 +111,7 @@ public class ProjectEdit extends StandardEditor<Project> {
                 )
                 .show();
 
-    }
+    }*/
 
     @Install(to = "regressChecklistsTable.remove", subject = "afterActionPerformedHandler")
     private void regressChecklistsTableRemoveAfterActionPerformedHandler(RemoveOperation.AfterActionPerformedEvent<RegressChecklist> afterActionPerformedEvent) {
@@ -260,7 +244,7 @@ public class ProjectEdit extends StandardEditor<Project> {
         }
     }
 
-    @Subscribe("checklistsTable.isUsedInRegress")
+/*    @Subscribe("checklistsTable.isUsedInRegress")
     public void onChecklistsTableIsUsedInRegressClick(Table.Column.ClickEvent<SimpleChecklist> event) {
         Checklist checklist = checklistsDc.getItem(event.getItem());
         if (checklist.getIsUsedInRegress()) {
@@ -279,87 +263,71 @@ public class ProjectEdit extends StandardEditor<Project> {
                     )
                     .show();
         }
-    }
+    }*/
 
-
-    @Subscribe(id = "checklistsDc", target = Target.DATA_CONTAINER)
-    public void onChecklistsDcItemPropertyChange(InstanceContainer.ItemPropertyChangeEvent<SimpleChecklist> event) {
-        if (!"isUsedInRegress".equals(event.getProperty())) {
-            return;
-        }
-
-        Checklist checklist = checklistsDc.getItem(event.getItem());
-
-        //если установили галку
-        if (BooleanUtils.isTrue(checklist.getIsUsedInRegress())) {
-            boolean parentExists = false;
-            //Проверяем, является ли текущий чек-лист для какого-то чек-листа регресса родителем
-            for (Checklist regress : regressChecklistDc.getMutableItems()) {
-                if (regress.getParentCard() != null &&
-                        regress.getParentCard().equals(checklist)) {
-                    parentExists = true;
-                    List<TestCase> fromParent = new ArrayList<>();
-                    //Собираем тест-кейсы с приоритетом "Высокий"
-                    if (regress.getParentCard() != null &&
-                            regress.getParentCard().getTestCase() != null) {
-                        fromParent = regress.getParentCard().getTestCase().stream().filter(s ->
-                                s.getPriority().getId().equals(PRIORITY_HIGH)).collect(Collectors.toList());
-                    }
-                    List<TestCase> fromRegress = regress.getTestCase();
-                    for (TestCase tcParent : fromParent) {
-                        boolean listHasCase = false;
-                        //Проверяем, имеет ли уже чек-лист такой тест-кейс
-                        for (TestCase tcRegress : fromRegress) {
-                            if (tcParent.getCreationDate() != null &&
-                                    tcParent.getCreationDate().equals(tcRegress.getCreationDate()))
-                                listHasCase = true;
-                        }
-                        //если такого кейса нет, то копируем его
-                        if (!listHasCase) {
-                            regress.setTestCase(copyChecklistService.copyTestCaseToChecklist(regress, tcParent));
-                        }
-                    }
-                }
-            }
-            //если родителя нет, то сразу копируем полностью чек-лист
-            if (!parentExists) {
-                copyChecklistToRegress(checklist);
-            }
-        } else {
-            //если сняли галку
-            boolean hasChild = false;
-            //проверяем, есть ли данный чек-лист на вкладке "Регресс"
-            for (RegressChecklist cl : regressChecklistDc.getMutableItems()) {
-                if (cl.getParentCard() != null &&
-                        cl.getParentCard().equals(checklist)) {
-                    hasChild = true;
-                }
-            }
-            //если есть, то выводим диалоговое окно
-            if (hasChild) {
-                if ("testPlanTab".equals(projectTabSheet.getSelectedTab().getName())) { //TODO баг: открыть вкладку "Тест-план", нажать на кнопку "Новый релиз". Появится диалоговое окно. Мб здесь сделать лиснер клика по чек-боксу?
-                    if (!checklist.getIsUsedInRegress()) {
-                        dialogs.createOptionDialog()
-                                .withCaption("Внимание")
-                                .withMessage("Снятие атрибута повлечет за собой удаление чек-листа с вкладки Регресс. " +
-                                        "Вы уверены?")
-                                .withActions(
-                                        new DialogAction(DialogAction.Type.YES, Action.Status.PRIMARY).withHandler(d -> {
-                                            checklist.setIsUsedInRegress(false);
-                                            removeRegressChecklist(checklist);
-                                        }),
-                                        new DialogAction(DialogAction.Type.NO).withHandler(d -> {
-                                            checklist.setIsUsedInRegress(true);
-                                        })
-                                )
-                                .show();
-                    }
-                }
-            } else {
-                removeRegressChecklist(checklist);
-            }
-        }
-    }
+//    @Subscribe(id = "checklistsDc", target = Target.DATA_CONTAINER)
+//    public void onChecklistsDcItemPropertyChange(InstanceContainer.ItemPropertyChangeEvent<SimpleChecklist> event) {
+//        if (!"isUsedInRegress".equals(event.getProperty())) {
+//            return;
+//        }
+//
+//        Checklist checklist = checklistsDc.getItem(event.getItem());
+//
+//        //если установили галку
+//        if (BooleanUtils.isTrue(checklist.getIsUsedInRegress())) {
+//            boolean parentExists = false;
+//            //Проверяем, является ли текущий чек-лист для какого-то чек-листа регресса родителем
+//            for (Checklist regress : regressChecklistDc.getMutableItems()) {
+//                if (regress.getParentCard() != null &&
+//                        regress.getParentCard().equals(checklist)) {
+//                    parentExists = true;
+//                    List<TestCase> fromParent = new ArrayList<>();
+//                    //Собираем тест-кейсы с приоритетом "Высокий"
+//                    if (regress.getParentCard() != null &&
+//                            regress.getParentCard().getTestCase() != null) {
+//                        fromParent = regress.getParentCard().getTestCase().stream().filter(s ->
+//                                s.getPriority().getId().equals(PRIORITY_HIGH)).collect(Collectors.toList());
+//                    }
+//                    List<TestCase> fromRegress = regress.getTestCase();
+//                    for (TestCase tcParent : fromParent) {
+//                        boolean listHasCase = false;
+//                        //Проверяем, имеет ли уже чек-лист такой тест-кейс
+//                        for (TestCase tcRegress : fromRegress) {
+//                            if (tcParent.getCreationDate() != null &&
+//                                    tcParent.getCreationDate().equals(tcRegress.getCreationDate()))
+//                                listHasCase = true;
+//                        }
+//                        //если такого кейса нет, то копируем его
+//                        if (!listHasCase) {
+//                            regress.setTestCase(copyChecklistService.copyTestCaseToChecklist(regress, tcParent));
+//                        }
+//                    }
+//                }
+//            }
+//            //если родителя нет, то сразу копируем полностью чек-лист
+//            if (!parentExists) {
+//                copyChecklistToRegress(checklist);
+//            }
+//        } else {
+//            //если сняли галку
+//            boolean hasChild = false;
+//            //проверяем, есть ли данный чек-лист на вкладке "Регресс"
+//            for (RegressChecklist cl : regressChecklistDc.getMutableItems()) {
+//                if (cl.getParentCard() != null &&
+//                        cl.getParentCard().equals(checklist)) {
+//                    hasChild = true;
+//                }
+//            }
+//            //если есть, то выводим диалоговое окно
+//            if (hasChild) {
+////                if ("testPlanTab".equals(projectTabSheet.getSelectedTab().getName())) { //TODO баг: открыть вкладку "Тест-план", нажать на кнопку "Новый релиз". Появится диалоговое окно. Мб здесь сделать лиснер клика по чек-боксу?
+////
+////                }
+////            } else {
+//                removeRegressChecklist(checklist);
+//            }
+//        }
+//    }
 
     private void countTime(Label label, List<Checklist> checklistList) {
         int totalTime = 0;
@@ -403,7 +371,7 @@ public class ProjectEdit extends StandardEditor<Project> {
 
         runReport.setAction(new EditorPrintFormAction(this, null));
 
-        modulesStatisticsTable.addGeneratedColumn("timeTotal",
+/*        modulesStatisticsTable.addGeneratedColumn("timeTotal",
                 new Table.ColumnGenerator<Module>() {
                     @Override
                     public Component generateCell(Module module) {
@@ -555,7 +523,7 @@ public class ProjectEdit extends StandardEditor<Project> {
                         countTime(label, qaChecklists);
                         return label;
                     }
-                });
+                });*/
 
         qaStatisticsTable.addGeneratedColumn("timeTotal",
                 new Table.ColumnGenerator<QaProjectRelationship>() {
@@ -611,7 +579,6 @@ public class ProjectEdit extends StandardEditor<Project> {
             if (cl.getParentCard() != null &&
                     cl.getParentCard().equals(checklist)) {
                 regressChecklistDc.getMutableItems().remove(cl);
-                checklistsDc.getItem(checklist).setIsUsedInRegress(false);
             }
         }
     }

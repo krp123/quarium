@@ -33,6 +33,11 @@ public class Project extends StandardEntity {
     @OneToMany(mappedBy = "project", cascade = CascadeType.PERSIST)
     private List<Milestone> milestone;
 
+    @Composition
+    @OnDelete(DeletePolicy.CASCADE)
+    @OneToMany(mappedBy = "project")
+    private List<TestRun> testRun;
+
     @Temporal(TemporalType.DATE)
     @Column(name = "REGRESS_START_DATE")
     private Date regressStartDate;
@@ -91,6 +96,14 @@ public class Project extends StandardEntity {
     @Lob
     @Column(name = "DESCRIPTION")
     private String description;
+
+    public List<TestRun> getTestRun() {
+        return testRun;
+    }
+
+    public void setTestRun(List<TestRun> testRun) {
+        this.testRun = testRun;
+    }
 
     public List<Milestone> getMilestone() {
         return milestone;
