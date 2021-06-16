@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
         caption="msg://simpleChecklistBrowse.caption"
-        focusComponent="simpleChecklistsTable"
+        focusComponent="testRunTestSuitTable"
         messagesPack="com.company.quarium.web.screens.simplechecklist">
     <data readOnly="true">
         <collection id="simpleChecklistsDc"
                     class="com.company.quarium.entity.checklist.SimpleChecklist">
-            <view extends="_local">
+            <view extends="project-checklist-view">
                 <property name="module" view="edit"/>
                 <property name="assignedQa" view="_minimal"/>
                 <property name="state" view="_minimal"/>
@@ -22,21 +22,22 @@
             </view>
             <loader id="simpleChecklistsDl">
                 <query>
-                    <![CDATA[select e from quarium_SimpleChecklist e]]>
+                    <![CDATA[select e from quarium_SimpleChecklist e
+                    where e.project = :project]]>
                 </query>
             </loader>
         </collection>
     </data>
     <dialogMode height="600"
                 width="800"/>
-    <layout expand="simpleChecklistsTable"
+    <layout expand="testRunTestSuitTable"
             spacing="true">
         <filter id="filter"
-                applyTo="simpleChecklistsTable"
+                applyTo="testRunTestSuitTable"
                 dataLoader="simpleChecklistsDl">
             <properties include=".*"/>
         </filter>
-        <groupTable id="simpleChecklistsTable"
+        <groupTable id="testRunTestSuitTable"
                     width="100%"
                     dataContainer="simpleChecklistsDc"
                     multiselect="true">
@@ -53,9 +54,9 @@
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"
                           alwaysVisible="true">
-                <button id="createBtn" action="simpleChecklistsTable.create"/>
-                <button id="editBtn" action="simpleChecklistsTable.edit"/>
-                <button id="removeBtn" action="simpleChecklistsTable.remove"/>
+                <button id="createBtn" action="testRunTestSuitTable.create"/>
+                <button id="editBtn" action="testRunTestSuitTable.edit"/>
+                <button id="removeBtn" action="testRunTestSuitTable.remove"/>
             </buttonsPanel>
         </groupTable>
         <hbox id="lookupActions" spacing="true" visible="false">
