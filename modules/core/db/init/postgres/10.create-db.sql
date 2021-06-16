@@ -119,6 +119,7 @@ create table QUARIUM_CHECKLIST (
     --
     -- from quarium_RegressChecklist
     REGRESS_PROJECT_ID uuid,
+    TEST_RUN_ID uuid,
     --
     primary key (ID)
 )^

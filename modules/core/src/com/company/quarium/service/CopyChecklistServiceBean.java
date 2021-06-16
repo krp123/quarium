@@ -64,6 +64,52 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
     }
 
     @Override
+    public RegressChecklist copyRegressChecklist(Checklist checklist) {
+        RegressChecklist checklistNew = dataManager.create(RegressChecklist.class);
+        checklistNew.setName(checklist.getName());
+        checklistNew.setMinutes(checklist.getMinutes());
+        checklistNew.setHours(checklist.getHours());
+        checklistNew.setState(checklist.getState());
+        checklistNew.setIsUsedInRegress(checklist.getIsUsedInRegress());
+        checklistNew.setModule(checklist.getModule());
+        checklistNew.setAssignedQa(checklist.getAssignedQa());
+        checklistNew.setComment(checklist.getComment());
+        checklistNew.setTicket(checklist.getTicket());
+
+        if (checklist.getTestCase() != null) {
+            List<TestCase> tcList = new ArrayList<>();
+            for (TestCase tc : checklist.getTestCase()) {
+                TestCase newTC = dataManager.create(TestCase.class);
+                newTC.setChecklist(checklistNew);
+                newTC.setName(tc.getName());
+                if (tc.getCaseStep() != null) {
+                    List<Step> newSteps = new ArrayList<>();
+                    for (Step step : tc.getCaseStep()) {
+                        Step newStep = dataManager.create(Step.class);
+                        newStep.setStep(step.getStep());
+                        newStep.setNumber(step.getNumber());
+                        newStep.setTestCase(newTC);
+                        newSteps.add(newStep);
+                    }
+                    newTC.setCaseStep(newSteps);
+                }
+                newTC.setExpectedResult(tc.getExpectedResult());
+                newTC.setNumber(tc.getNumber());
+                newTC.setCreationDate(tc.getCreationDate());
+                newTC.setState(tc.getState());
+                newTC.setMinutes(tc.getMinutes());
+                newTC.setHours(tc.getHours());
+                newTC.setComment(tc.getComment());
+                newTC.setTicket(tc.getTicket());
+                newTC.setCheckDate(tc.getCheckDate());
+                tcList.add(newTC);
+            }
+            checklistNew.setTestCase(tcList);
+        }
+        return checklistNew;
+    }
+
+    @Override
     public RegressChecklist copyChecklistToRegress(Checklist checklist) {
         RegressChecklist checklistNew = dataManager.create(RegressChecklist.class);
         checklistNew.setName(checklist.getName());
