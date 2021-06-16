@@ -7,10 +7,11 @@ import com.company.quarium.entity.project.Project;
 import com.company.quarium.entity.project.QaProjectRelationship;
 import com.company.quarium.entity.project.TestRun;
 import com.company.quarium.service.CopyChecklistService;
+import com.company.quarium.web.screens.simplechecklist.TestRunTestSuitBrowse;
+import com.haulmont.bali.util.ParamsMap;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.components.Action;
-import com.haulmont.cuba.gui.model.CollectionContainer;
 import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.model.CollectionPropertyContainer;
 import com.haulmont.cuba.gui.model.InstanceContainer;
@@ -29,8 +30,6 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     @Inject
     private ScreenBuilders screenBuilders;
     @Inject
-    private CollectionContainer<SimpleChecklist> simpleChecklistDc;
-    @Inject
     private DataManager dataManager;
     @Inject
     private CopyChecklistService copyChecklistService;
@@ -38,13 +37,12 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     private InstanceContainer<TestRun> testRunDc;
     @Inject
     private CollectionPropertyContainer<RegressChecklist> checklistsDc;
-    @Inject
-    private CollectionLoader<SimpleChecklist> simpleChecklistDl;
 
     @Subscribe("checklistTable.addChecklist")
     protected void onAddChecklist(Action.ActionPerformedEvent event) {
-        screenBuilders.lookup(SimpleChecklist.class, this) //TODO список не фильтруется по чек-листам проекта
-                .withContainer(simpleChecklistDc)
+        screenBuilders.lookup(SimpleChecklist.class, this)
+                .withOptions(new MapScreenOptions(ParamsMap.of("project", getEditedEntity().getProject())))
+                .withScreenClass(TestRunTestSuitBrowse.class)
                 .withOpenMode(OpenMode.DIALOG)
                 .withSelectHandler(checklists -> {
                     checklists.stream()
@@ -64,6 +62,5 @@ public class TestRunEdit extends StandardEditor<TestRun> {
 
     public void setProjectParameter(Project project) {
         qaDl.setParameter("project", project);
-        simpleChecklistDl.setParameter("project", project);
     }
 }

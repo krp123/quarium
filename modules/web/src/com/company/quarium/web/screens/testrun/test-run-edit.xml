@@ -6,7 +6,7 @@
     <data>
         <instance id="testRunDc"
                   class="com.company.quarium.entity.project.TestRun">
-            <view extends="_local">
+            <view extends="testRun-view">
                 <property name="checklists" view="regressChecklist-view"/>
             </view>
             <loader/>
@@ -16,15 +16,6 @@
             <loader id="qaDl">
                 <query>
                     <![CDATA[select e from quarium_QaProjectRelationship e
-                    where e.project = :project]]>
-                </query>
-            </loader>
-        </collection>
-        <collection id="simpleChecklistDc" class="com.company.quarium.entity.checklist.SimpleChecklist"
-                    view="project-checklist-view">
-            <loader id="simpleChecklistDl">
-                <query>
-                    <![CDATA[select e from quarium_SimpleChecklist e
                     where e.project = :project]]>
                 </query>
             </loader>
