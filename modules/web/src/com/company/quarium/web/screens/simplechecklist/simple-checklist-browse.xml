@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://simpleChecklistBrowse.caption"
+        focusComponent="simpleChecklistsTable"
+        messagesPack="com.company.quarium.web.screens.simplechecklist">
+    <data readOnly="true">
+        <collection id="simpleChecklistsDc"
+                    class="com.company.quarium.entity.checklist.SimpleChecklist">
+            <view extends="_local">
+                <property name="module" view="edit"/>
+                <property name="assignedQa" view="_minimal"/>
+                <property name="state" view="_minimal"/>
+                <property name="testCase" view="_local">
+                    <property name="caseStep" view="_minimal">
+                        <property name="step"/>
+                        <property name="number"/>
+                        <property name="creationDate"/>
+                    </property>
+                    <property name="priority" view="_minimal"/>
+                    <property name="state" view="_minimal"/>
+                </property>
+            </view>
+            <loader id="simpleChecklistsDl">
+                <query>
+                    <![CDATA[select e from quarium_SimpleChecklist e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="simpleChecklistsTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="simpleChecklistsTable"
+                dataLoader="simpleChecklistsDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="simpleChecklistsTable"
+                    width="100%"
+                    dataContainer="simpleChecklistsDc"
+                    multiselect="true">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+            </actions>
+            <columns>
+                <column id="name"/>
+                <column id="comment"/>
+                <column id="module"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="simpleChecklistsTable.create"/>
+                <button id="editBtn" action="simpleChecklistsTable.edit"/>
+                <button id="removeBtn" action="simpleChecklistsTable.remove"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

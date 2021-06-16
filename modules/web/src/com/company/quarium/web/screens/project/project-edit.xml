@@ -205,8 +205,7 @@
             </tab>
             <tab id="testSuitsTab" caption="msg://projectEdit.testSuits" spacing="true" margin="true">
                 <vbox expand="checklistBox" spacing="true" height="100%">
-                    <vbox id="checklistBox" caption="msg://com.company.quarium.entity/Project.testSuits"
-                          width="100%" margin="true" spacing="true">
+                    <vbox id="checklistBox" width="100%" margin="true" spacing="true">
                         <groupTable id="checklistsTable"
                                     width="100%"
                                     height="100%"

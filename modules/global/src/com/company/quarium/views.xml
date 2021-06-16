@@ -189,6 +189,10 @@
             <property name="configuration" view="_minimal"/>
             <property name="description"/>
         </property>
+        <property name="testRun" view="_minimal">
+            <property name="description"/>
+            <property name="checklists" view="_minimal"/>
+        </property>
     </view>
     <view entity="quarium_ProjectVersion" name="projectVersion-view" extends="_local">
         <property name="versionOf" view="_minimal">

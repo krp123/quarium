@@ -14,6 +14,8 @@ public interface CopyChecklistService {
 
     SimpleChecklist copyChecklist(Checklist checklist);
 
+    RegressChecklist copyRegressChecklist(Checklist checklist);
+
     RegressChecklist copyChecklistToRegress(Checklist checklist);
 
     List<TestCase> copyTestCaseToChecklist(Checklist checklist, TestCase testCase);

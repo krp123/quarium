@@ -4,16 +4,19 @@ import com.company.quarium.entity.checklist.Checklist;
 import com.company.quarium.entity.checklist.RegressChecklist;
 import com.company.quarium.entity.checklist.SimpleChecklist;
 import com.company.quarium.entity.checklist.TestCase;
-import com.company.quarium.entity.project.*;
+import com.company.quarium.entity.project.ConfigurationProjectRelationship;
+import com.company.quarium.entity.project.Project;
+import com.company.quarium.entity.project.QaProjectRelationship;
+import com.company.quarium.entity.project.SimpleProject;
 import com.company.quarium.entity.references.Configuration;
 import com.company.quarium.entity.references.Qa;
 import com.company.quarium.service.CopyChecklistService;
 import com.company.quarium.web.screens.checklist.ExtChecklistEdit;
 import com.company.quarium.web.screens.checklist.ProjectExcelUploadWindow;
+import com.company.quarium.web.screens.testrun.TestRunEdit;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.TimeSource;
 import com.haulmont.cuba.core.global.UserSessionSource;
-import com.haulmont.cuba.gui.Dialogs;
 import com.haulmont.cuba.gui.RemoveOperation;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
@@ -62,10 +65,6 @@ public class ProjectEdit extends StandardEditor<Project> {
     private CollectionLoader<TestCase> bugsDl;
     @Inject
     private CollectionLoader<QaProjectRelationship> qaDl;
-    @Inject
-    private Dialogs dialogs;
-    @Inject
-    private CollectionPropertyContainer<ProjectVersion> versionsDc;
     @Inject
     private TimeSource timeSource;
     @Inject
@@ -198,6 +197,16 @@ public class ProjectEdit extends StandardEditor<Project> {
 
     private void addConfigurationToRelationships(ConfigurationProjectRelationship configurationProjectRelationship) {
         configurationProjectDc.getMutableItems().add(configurationProjectRelationship);
+    }
+
+    @Install(to = "testRunsTable.create", subject = "screenConfigurer")
+    protected void testRunsTableCreateScreenConfigurer(Screen editorScreen) {
+        ((TestRunEdit) editorScreen).setProjectParameter(getEditedEntity());
+    }
+
+    @Install(to = "testRunsTable.edit", subject = "screenConfigurer")
+    protected void testRunsTableEditScreenConfigurer(Screen editorScreen) {
+        ((TestRunEdit) editorScreen).setProjectParameter(getEditedEntity());
     }
 
     @Install(to = "checklistsTable.edit", subject = "screenConfigurer")
