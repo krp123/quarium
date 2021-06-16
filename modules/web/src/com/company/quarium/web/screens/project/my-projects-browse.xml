@@ -12,7 +12,8 @@
             </view>
             <loader id="projectsDl">
                 <query>
-                    <![CDATA[select distinct q.project from quarium_QaProjectRelationship q where q.qa.user = :currentUser]]>
+                    <![CDATA[select sp from quarium_SimpleProject sp where sp.id in
+                    (select distinct q.project.id from quarium_QaProjectRelationship q where q.qa.user = :currentUser)]]>
                 </query>
             </loader>
         </collection>

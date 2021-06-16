@@ -211,29 +211,25 @@
                                     height="100%"
                                     dataContainer="checklistsDc"
                                     multiselect="true"
-                                    presentations="true"
-                                    editable="true">
+                                    presentations="true">
                             <actions>
                                 <action id="create" type="create">
                                     <properties>
                                         <property name="screenClass"
-                                                  value="com.company.quarium.web.screens.checklist.ExtChecklistEdit"/>
+                                                  value="com.company.quarium.web.screens.checklist.TestSuitEdit"/>
                                     </properties>
                                 </action>
                                 <action id="addChecklist" type="add"/>
                                 <action id="edit" type="edit">
                                     <properties>
                                         <property name="screenClass"
-                                                  value="com.company.quarium.web.screens.checklist.ExtChecklistEdit"/>
+                                                  value="com.company.quarium.web.screens.checklist.TestSuitEdit"/>
                                     </properties>
                                 </action>
                                 <action id="remove" type="remove"/>
                             </actions>
                             <columns>
                                 <column id="name"/>
-                                <column id="state"/>
-                                <column id="assignedQa" caption="msg://projectEdit.QaColumn"
-                                        editable="true" optionsContainer="qaDc" width="300px"/>
                                 <column id="module" caption="msg://projectEdit.module"/>
                             </columns>
                             <rowsCount/>
