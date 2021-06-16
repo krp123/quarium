@@ -59,9 +59,10 @@
     </data>
     <dialogMode height="600"
                 width="800"/>
-    <layout expand="editActions" spacing="true">
-        <tabSheet id="projectTabSheet" height="AUTO">
-            <tab id="detailsTab" caption="msg://projectEdit.details" spacing="true" margin="true">
+    <layout expand="projectTabSheet" spacing="true">
+        <tabSheet id="projectTabSheet">
+            <tab id="detailsTab" caption="msg://projectEdit.details" spacing="true" margin="true"
+                 expand="relationshipsBox">
                 <form id="form" dataContainer="projectDc">
                     <column width="350px">
                         <textField id="projectNameField" property="projectName"/>
@@ -73,7 +74,7 @@
                         <lookupField id="dbms" property="dbms" optionsContainer="dbmsDc"/>
                     </column>
                 </form>
-                <vbox margin="true" width="auto">
+                <vbox id="relationshipsBox" spacing="true" margin="true" width="auto">
                     <form id="relationshipsForm">
                         <column>
                             <groupBox id="qaBox" caption="msg://com.company.quarium.entity/Project.qa"
@@ -160,8 +161,8 @@
                     </form>
                 </vbox>
             </tab>
-
-            <tab id="testPlanTab" caption="msg://projectEdit.testPlan" spacing="true" margin="true">
+            <tab id="testPlanTab" caption="msg://projectEdit.testPlan" spacing="true" margin="true"
+                 expand="checklistBox">
                 <form id="testPlanStatisticsForm" width="100%"
                       height="AUTO">
                     <column flex="1">
@@ -202,10 +203,9 @@
                     </column>
                 </form>
                 <vbox id="checklistBox" caption="msg://com.company.quarium.entity/Project.checklists"
-                      width="100%" height="100%" margin="true">
+                      width="100%" height="100%" margin="true" spacing="true" expand="checklistsTable">
                     <groupTable id="checklistsTable"
                                 width="100%"
-                                height="460px"
                                 dataContainer="checklistsDc"
                                 multiselect="true"
                                 presentations="true"
@@ -249,7 +249,8 @@
                     </groupTable>
                 </vbox>
             </tab>
-            <tab id="regressTab" caption="msg://projectEdit.regress" margin="true,false,false,false" spacing="true">
+            <tab id="regressTab" caption="msg://projectEdit.regress" margin="true,false,false,false" spacing="true"
+                 expand="regressChecklistsBox">
                 <form id="statisticsForm" width="100%"
                       height="AUTO">
                     <column>
@@ -296,11 +297,10 @@
                         <button id="runReport" caption="msg://projectEdit.report"/>
                     </column>
                 </form>
-                <vbox id="regressChecklistBox" caption="msg://com.company.quarium.entity/Project.checklists"
-                      width="100%" height="100%" margin="true">
+                <vbox id="regressChecklistsBox" spacing="true" margin="true" expand="regressChecklistsTable"
+                      caption="msg://com.company.quarium.entity/Project.checklists">
                     <groupTable id="regressChecklistsTable"
                                 width="100%"
-                                height="460px"
                                 dataContainer="regressChecklistDc"
                                 multiselect="true"
                                 presentations="true">
@@ -336,7 +336,7 @@
                 </vbox>
             </tab>
             <tab id="releasesTab" caption="msg://projectEdit.releasesTab" margin="true,false,false,false"
-                 spacing="true">
+                 spacing="true" expand="projectVersions">
                 <groupTable id="projectVersions"
                             dataContainer="versionsDc"
                             width="100%">
