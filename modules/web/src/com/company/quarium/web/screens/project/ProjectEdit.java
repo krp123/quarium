@@ -11,27 +11,24 @@ import com.company.quarium.entity.project.SimpleProject;
 import com.company.quarium.entity.references.Configuration;
 import com.company.quarium.entity.references.Qa;
 import com.company.quarium.service.CopyChecklistService;
-import com.company.quarium.web.screens.checklist.ExtChecklistEdit;
 import com.company.quarium.web.screens.checklist.ProjectExcelUploadWindow;
+import com.company.quarium.web.screens.checklist.TestSuitEdit;
 import com.company.quarium.web.screens.testrun.TestRunEdit;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.TimeSource;
 import com.haulmont.cuba.core.global.UserSessionSource;
-import com.haulmont.cuba.gui.RemoveOperation;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
-import com.haulmont.cuba.gui.components.*;
+import com.haulmont.cuba.gui.components.Action;
+import com.haulmont.cuba.gui.components.Button;
+import com.haulmont.cuba.gui.components.Label;
 import com.haulmont.cuba.gui.model.*;
 import com.haulmont.cuba.gui.screen.*;
-import com.haulmont.reports.gui.actions.EditorPrintFormAction;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.company.quarium.Constants.STATE_CHECKED;
 
 @UiController("quarium_SimpleProject.edit")
 @UiDescriptor("project-edit.xml")
@@ -58,8 +55,6 @@ public class ProjectEdit extends StandardEditor<Project> {
     @Inject
     private CopyChecklistService copyChecklistService;
     @Inject
-    private Table<QaProjectRelationship> qaStatisticsTable;
-    @Inject
     private UiComponents uiComponents;
     @Inject
     private CollectionLoader<TestCase> bugsDl;
@@ -71,8 +66,6 @@ public class ProjectEdit extends StandardEditor<Project> {
     private UserSessionSource userSessionSource;
     @Inject
     private Button uploadExcel;
-    @Inject
-    private Button runReport;
 
     @Subscribe
     public void onInitEntity(InitEntityEvent<Project> event) {
@@ -112,14 +105,14 @@ public class ProjectEdit extends StandardEditor<Project> {
 
     }*/
 
-    @Install(to = "regressChecklistsTable.remove", subject = "afterActionPerformedHandler")
-    private void regressChecklistsTableRemoveAfterActionPerformedHandler(RemoveOperation.AfterActionPerformedEvent<RegressChecklist> afterActionPerformedEvent) {
-        for (Checklist cl : afterActionPerformedEvent.getItems()) {
-            if (cl.getParentCard() != null) {
-                cl.getParentCard().setIsUsedInRegress(false);
-            }
-        }
-    }
+//    @Install(to = "regressChecklistsTable.remove", subject = "afterActionPerformedHandler")
+//    private void regressChecklistsTableRemoveAfterActionPerformedHandler(RemoveOperation.AfterActionPerformedEvent<RegressChecklist> afterActionPerformedEvent) {
+//        for (Checklist cl : afterActionPerformedEvent.getItems()) {
+//            if (cl.getParentCard() != null) {
+//                cl.getParentCard().setIsUsedInRegress(false);
+//            }
+//        }
+//    }
 
     @Subscribe
     protected void onBeforeShow(BeforeShowEvent event) {
@@ -212,46 +205,46 @@ public class ProjectEdit extends StandardEditor<Project> {
     @Install(to = "checklistsTable.edit", subject = "screenConfigurer")
     protected void checklistTableEditScreenConfigurer(Screen editorScreen) {
         if (getEditedEntity().getQa() != null) {
-            ((ExtChecklistEdit) editorScreen).setQaParameter(getEditedEntity().getQa());
+            ((TestSuitEdit) editorScreen).setQaParameter(getEditedEntity().getQa());
         }
 
         if (getEditedEntity().getModule() != null) {
-            ((ExtChecklistEdit) editorScreen).setModuleParameter(getEditedEntity().getModule());
+            ((TestSuitEdit) editorScreen).setModuleParameter(getEditedEntity().getModule());
         }
     }
 
     @Install(to = "checklistsTable.create", subject = "screenConfigurer")
     protected void checklistTableCreateScreenConfigurer(Screen editorScreen) {
         if (getEditedEntity().getQa() != null) {
-            ((ExtChecklistEdit) editorScreen).setQaParameter(getEditedEntity().getQa());
+            ((TestSuitEdit) editorScreen).setQaParameter(getEditedEntity().getQa());
         }
 
         if (getEditedEntity().getModule() != null) {
-            ((ExtChecklistEdit) editorScreen).setModuleParameter(getEditedEntity().getModule());
+            ((TestSuitEdit) editorScreen).setModuleParameter(getEditedEntity().getModule());
         }
     }
 
-    @Install(to = "regressChecklistsTable.edit", subject = "screenConfigurer")
-    protected void regressChecklistTableEditScreenConfigurer(Screen editorScreen) {
-        if (getEditedEntity().getQa() != null) {
-            ((ExtChecklistEdit) editorScreen).setQaParameter(getEditedEntity().getQa());
-        }
-
-        if (getEditedEntity().getModule() != null) {
-            ((ExtChecklistEdit) editorScreen).setModuleParameter(getEditedEntity().getModule());
-        }
-    }
-
-    @Install(to = "regressChecklistsTable.create", subject = "screenConfigurer")
-    protected void regressChecklistTableCreateScreenConfigurer(Screen editorScreen) {
-        if (getEditedEntity().getQa() != null) {
-            ((ExtChecklistEdit) editorScreen).setQaParameter(getEditedEntity().getQa());
-        }
-
-        if (getEditedEntity().getModule() != null) {
-            ((ExtChecklistEdit) editorScreen).setModuleParameter(getEditedEntity().getModule());
-        }
-    }
+//    @Install(to = "regressChecklistsTable.edit", subject = "screenConfigurer")
+//    protected void regressChecklistTableEditScreenConfigurer(Screen editorScreen) {
+//        if (getEditedEntity().getQa() != null) {
+//            ((ExtChecklistEdit) editorScreen).setQaParameter(getEditedEntity().getQa());
+//        }
+//
+//        if (getEditedEntity().getModule() != null) {
+//            ((ExtChecklistEdit) editorScreen).setModuleParameter(getEditedEntity().getModule());
+//        }
+//    }
+//
+//    @Install(to = "regressChecklistsTable.create", subject = "screenConfigurer")
+//    protected void regressChecklistTableCreateScreenConfigurer(Screen editorScreen) {
+//        if (getEditedEntity().getQa() != null) {
+//            ((ExtChecklistEdit) editorScreen).setQaParameter(getEditedEntity().getQa());
+//        }
+//
+//        if (getEditedEntity().getModule() != null) {
+//            ((ExtChecklistEdit) editorScreen).setModuleParameter(getEditedEntity().getModule());
+//        }
+//    }
 
 /*    @Subscribe("checklistsTable.isUsedInRegress")
     public void onChecklistsTableIsUsedInRegressClick(Table.Column.ClickEvent<SimpleChecklist> event) {
@@ -378,7 +371,7 @@ public class ProjectEdit extends StandardEditor<Project> {
             uploadExcel.setVisible(false);
         }
 
-        runReport.setAction(new EditorPrintFormAction(this, null));
+//        runReport.setAction(new EditorPrintFormAction(this, null));
 
 /*        modulesStatisticsTable.addGeneratedColumn("timeTotal",
                 new Table.ColumnGenerator<Module>() {
@@ -533,7 +526,7 @@ public class ProjectEdit extends StandardEditor<Project> {
                         return label;
                     }
                 });*/
-
+/*
         qaStatisticsTable.addGeneratedColumn("timeTotal",
                 new Table.ColumnGenerator<QaProjectRelationship>() {
                     @Override
@@ -574,7 +567,7 @@ public class ProjectEdit extends StandardEditor<Project> {
                         countTime(label, qaChecklists);
                         return label;
                     }
-                });
+                });*/
     }
 
     private void copyChecklistToRegress(Checklist checklist) {

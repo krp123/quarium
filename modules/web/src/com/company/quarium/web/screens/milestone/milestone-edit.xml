@@ -20,7 +20,7 @@
                 <textField id="nameField" property="name" required="true"/>
                 <dateField id="startDateField" property="startDate"/>
                 <dateField id="finishDateField" property="finishDate"/>
-                <lookupField id="statusField" property="status"/>
+                <lookupField id="statusField" property="status" required="true"/>
                 <textArea id="descriptionField" property="description"/>
             </column>
         </form>
