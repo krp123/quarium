@@ -450,5 +450,11 @@
             <property name="configuration" view="_minimal"/>
             <property name="description"/>
         </property>
+        <property name="milestone" view="_minimal">
+            <property name="startDate"/>
+            <property name="finishDate"/>
+            <property name="status"/>
+            <property name="description"/>
+        </property>
     </view>
 </views>

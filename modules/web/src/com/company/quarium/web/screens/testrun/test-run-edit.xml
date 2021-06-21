@@ -20,6 +20,22 @@
                 </query>
             </loader>
         </collection>
+        <collection id="modulesDc" class="com.company.quarium.entity.project.Module" view="edit">
+            <loader id="moduleDl">
+                <query>
+                    <![CDATA[select e from quarium_Module e
+                    where e.project = :project]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="milestoneDc" class="com.company.quarium.entity.project.Milestone" view="_local">
+            <loader id="milestoneDl">
+                <query>
+                    <![CDATA[select e from quarium_Milestone e
+                    where e.project = :project and e.status = 'Active']]>
+                </query>
+            </loader>
+        </collection>
     </data>
     <dialogMode height="600"
                 width="800"/>
@@ -27,7 +43,60 @@
         <form id="form" dataContainer="testRunDc">
             <column width="350px">
                 <textField id="nameField" property="name" required="true"/>
-                <textField id="descriptionField" property="description"/>
+                <lookupField id="milestone" optionsContainer="milestoneDc" caption="msg://testRunEdit.milestone"/>
+            </column>
+            <column width="400px">
+                <textArea id="descriptionField" property="description" rowspan="2"/>
+            </column>
+        </form>
+        <form id="testPlanStatisticsForm" width="100%"
+              height="AUTO">
+            <column flex="1">
+                <groupBox caption="msg://com.company.quarium.entity/Project.qaStatistics" collapsable="true">
+                    <table id="testPlanQaStatisticsTable"
+                           width="100%"
+                           height="AUTO"
+                           dataContainer="qaDc"
+                           showSelection="false">
+                        <columns>
+                            <column id="qa"/>
+                            <column id="timeLeft" caption="msg://testRunEdit.timeLeft"/>
+                            <column id="timeTotal" caption="msg://testRunEdit.timeTotal"/>
+                        </columns>
+                        <rows/>
+                    </table>
+                </groupBox>
+            </column>
+            <column flex="2">
+                <groupBox caption="msg://testRunEdit.modulesStatistics" collapsable="true">
+                    <table id="modulesStatisticsTable"
+                           width="100%"
+                           height="AUTO"
+                           dataContainer="modulesDc"
+                           showSelection="false"
+                           responsive="true">
+                        <columns>
+                            <column id="name"/>
+                            <column id="timeLeft" caption="msg://testRunEdit.timeLeft"/>
+                            <column id="timeTotal" caption="msg://testRunEdit.timeTotal"/>
+                            <column id="checklistsLeft" caption="msg://testRunEdit.checklistsLeft"/>
+                            <column id="checklistsTotal" caption="msg://testRunEdit.checklistsTotal"/>
+                            <column id="completed" caption="msg://testRunEdit.completed"/>
+                        </columns>
+                        <rows/>
+                    </table>
+                </groupBox>
+            </column>
+        </form>
+        <form id="regressDateForm" dataContainer="testRunDc">
+            <column>
+                <dateField id="runStartDate" property="runStartDate"/>
+            </column>
+            <column>
+                <dateField id="runFinishDate" property="runFinishDate"/>
+            </column>
+            <column>
+                <button id="runReport" caption="msg://testRunEdit.report"/>
             </column>
         </form>
         <groupTable id="checklistTable"
@@ -40,14 +109,14 @@
                 <action id="create" type="create">
                     <properties>
                         <property name="screenClass"
-                                  value="com.company.quarium.web.screens.checklist.ExtChecklistEdit"/>
+                                  value="com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit"/>
                     </properties>
                 </action>
                 <action id="addChecklist" type="add"/>
                 <action id="edit" type="edit">
                     <properties>
                         <property name="screenClass"
-                                  value="com.company.quarium.web.screens.checklist.ExtChecklistEdit"/>
+                                  value="com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit"/>
                     </properties>
                 </action>
                 <action id="remove" type="remove"/>

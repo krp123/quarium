@@ -4,10 +4,13 @@ import com.company.quarium.entity.checklist.RegressChecklist;
 import com.haulmont.chile.core.annotations.Composition;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
+import com.haulmont.cuba.core.entity.annotation.Lookup;
+import com.haulmont.cuba.core.entity.annotation.LookupType;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.global.DeletePolicy;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Table(name = "QUARIUM_TEST_RUN")
@@ -18,6 +21,17 @@ public class TestRun extends StandardEntity {
 
     @Column(name = "NAME")
     private String name;
+
+    @Column(name = "RUN_START_DATE")
+    private LocalDateTime runStartDate;
+
+    @Column(name = "RUN_FINISH_DATE")
+    private LocalDateTime runFinishDate;
+
+    @Lookup(type = LookupType.DROPDOWN, actions = {})
+    @JoinColumn(name = "MILESTONE_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Milestone milestone;
 
     @Composition
     @OnDelete(DeletePolicy.CASCADE)
@@ -30,6 +44,30 @@ public class TestRun extends StandardEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PROJECT_ID")
     private Project project;
+
+    public LocalDateTime getRunFinishDate() {
+        return runFinishDate;
+    }
+
+    public void setRunFinishDate(LocalDateTime runFinishDate) {
+        this.runFinishDate = runFinishDate;
+    }
+
+    public LocalDateTime getRunStartDate() {
+        return runStartDate;
+    }
+
+    public void setRunStartDate(LocalDateTime runStartDate) {
+        this.runStartDate = runStartDate;
+    }
+
+    public Milestone getMilestone() {
+        return milestone;
+    }
+
+    public void setMilestone(Milestone milestone) {
+        this.milestone = milestone;
+    }
 
     public List<RegressChecklist> getChecklists() {
         return checklists;

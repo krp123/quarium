@@ -3,6 +3,7 @@ package com.company.quarium.entity.project;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -45,6 +46,11 @@ public class Milestone extends StandardEntity {
 
     public void setStatus(MilestoneStatus status) {
         this.status = status == null ? null : status.getId();
+    }
+
+    @PostConstruct
+    public void initStatus() {
+        setStatus(MilestoneStatus.ACTIVE);
     }
 
     public LocalDateTime getFinishDate() {

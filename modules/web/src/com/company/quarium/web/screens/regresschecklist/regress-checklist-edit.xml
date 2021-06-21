@@ -93,7 +93,7 @@
                         <rows>
                             <row>
                                 <textField id="nameField" dataContainer="checklistDc" property="name"
-                                           caption="msg://checklistEdit.name"
+                                           caption="msg://checklistEdit.name" required="true"
                                            width="90%"/>
                                 <lookupField id="assignedQaField" dataContainer="checklistDc"
                                              property="assignedQa" caption="msg://checklistEdit.QA"

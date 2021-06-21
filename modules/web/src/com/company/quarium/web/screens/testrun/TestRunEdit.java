@@ -3,21 +3,26 @@ package com.company.quarium.web.screens.testrun;
 import com.company.quarium.entity.checklist.Checklist;
 import com.company.quarium.entity.checklist.RegressChecklist;
 import com.company.quarium.entity.checklist.SimpleChecklist;
-import com.company.quarium.entity.project.Project;
-import com.company.quarium.entity.project.QaProjectRelationship;
-import com.company.quarium.entity.project.TestRun;
+import com.company.quarium.entity.project.*;
 import com.company.quarium.service.CopyChecklistService;
+import com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit;
 import com.company.quarium.web.screens.simplechecklist.TestRunTestSuitBrowse;
 import com.haulmont.bali.util.ParamsMap;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.gui.ScreenBuilders;
-import com.haulmont.cuba.gui.components.Action;
+import com.haulmont.cuba.gui.UiComponents;
+import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.model.CollectionPropertyContainer;
 import com.haulmont.cuba.gui.model.InstanceContainer;
 import com.haulmont.cuba.gui.screen.*;
+import com.haulmont.reports.gui.actions.EditorPrintFormAction;
 
 import javax.inject.Inject;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.company.quarium.Constants.STATE_CHECKED;
 
 @UiController("quarium_TestRun.edit")
 @UiDescriptor("test-run-edit.xml")
@@ -37,6 +42,18 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     private InstanceContainer<TestRun> testRunDc;
     @Inject
     private CollectionPropertyContainer<RegressChecklist> checklistsDc;
+    @Inject
+    private CollectionLoader<Milestone> milestoneDl;
+    @Inject
+    private Table<Module> modulesStatisticsTable;
+    @Inject
+    private UiComponents uiComponents;
+    @Inject
+    private Table<QaProjectRelationship> testPlanQaStatisticsTable;
+    @Inject
+    private CollectionLoader<Module> moduleDl;
+    @Inject
+    private Button runReport;
 
     @Subscribe("checklistTable.addChecklist")
     protected void onAddChecklist(Action.ActionPerformedEvent event) {
@@ -62,5 +79,189 @@ public class TestRunEdit extends StandardEditor<TestRun> {
 
     public void setProjectParameter(Project project) {
         qaDl.setParameter("project", project);
+        milestoneDl.setParameter("project", project);
+        moduleDl.setParameter("project", project);
+    }
+
+    @Install(to = "checklistTable.create", subject = "screenConfigurer")
+    protected void testRunsTableCreateScreenConfigurer(Screen editorScreen) {
+        ((RegressChecklistEdit) editorScreen).setModuleParameter(getEditedEntity().getProject().getModule());
+        ((RegressChecklistEdit) editorScreen).setQaParameter(getEditedEntity().getProject().getQa());
+    }
+
+    @Install(to = "checklistTable.edit", subject = "screenConfigurer")
+    protected void testRunsTableEditScreenConfigurer(Screen editorScreen) {
+        ((RegressChecklistEdit) editorScreen).setModuleParameter(getEditedEntity().getProject().getModule());
+        ((RegressChecklistEdit) editorScreen).setQaParameter(getEditedEntity().getProject().getQa());
+    }
+
+    private void countTime(Label label, List<Checklist> checklistList) {
+        int totalTime = 0;
+        for (Checklist cl : checklistList) {
+            totalTime += cl.getHours() * 60 + cl.getMinutes();
+        }
+
+        int hours = totalTime / 60;
+        int minutes = totalTime % 60;
+        label.setValue(hours + "ч " + minutes + "м");
+    }
+
+    @Subscribe
+    protected void onInit(AfterShowEvent event) {
+        runReport.setAction(new EditorPrintFormAction(this, null));
+
+        modulesStatisticsTable.addGeneratedColumn("timeTotal",
+                new Table.ColumnGenerator<Module>() {
+                    @Override
+                    public Component generateCell(Module module) {
+                        Label label = uiComponents.create(Label.NAME);
+                        List<Checklist> modules = checklistsDc.getMutableItems().stream()
+                                .filter(s -> {
+                                    if (s.getModule() != null
+                                            && s.getAssignedQa() != null)
+                                        return s.getModule().equals(module);
+
+                                    return false;
+                                })
+                                .collect(Collectors.toList());
+                        countTime(label, modules);
+                        return label;
+                    }
+                });
+
+        modulesStatisticsTable.addGeneratedColumn("timeLeft",
+                new Table.ColumnGenerator<Module>() {
+                    @Override
+                    public Component generateCell(Module module) {
+                        Label label = uiComponents.create(Label.NAME);
+                        List<Checklist> modules = checklistsDc.getMutableItems().stream()
+                                .filter(s -> {
+                                    if (s.getModule() != null
+                                            && s.getAssignedQa() != null)
+                                        return s.getModule().equals(module);
+
+                                    return false;
+                                })
+                                .filter(s -> {
+                                    if (s.getState() != null)
+                                        return !s.getState().getId().equals(STATE_CHECKED);
+
+                                    return false;
+                                })
+                                .collect(Collectors.toList());
+                        countTime(label, modules);
+                        return label;
+                    }
+                });
+
+        modulesStatisticsTable.addGeneratedColumn("checklistsLeft",
+                new Table.ColumnGenerator<Module>() {
+                    @Override
+                    public Component generateCell(Module module) {
+                        Label label = uiComponents.create(Label.NAME);
+                        List<Checklist> modules = checklistsDc.getMutableItems().stream()
+                                .filter(s -> {
+                                    if (s.getModule() != null && !s.getState().getId().equals(STATE_CHECKED)
+                                            && s.getAssignedQa() != null)
+                                        return s.getModule().equals(module);
+
+                                    return false;
+                                })
+                                .collect(Collectors.toList());
+                        label.setValue(modules.size());
+                        return label;
+                    }
+                });
+
+        modulesStatisticsTable.addGeneratedColumn("checklistsTotal",
+                new Table.ColumnGenerator<Module>() {
+                    @Override
+                    public Component generateCell(Module module) {
+                        Label label = uiComponents.create(Label.NAME);
+                        List<Checklist> modules = checklistsDc.getMutableItems().stream()
+                                .filter(s -> {
+                                    if (s.getModule() != null
+                                            && s.getAssignedQa() != null)
+                                        return s.getModule().equals(module);
+
+                                    return false;
+                                })
+                                .collect(Collectors.toList());
+                        label.setValue(modules.size());
+                        return label;
+                    }
+                });
+        modulesStatisticsTable.addGeneratedColumn("completed",
+                new Table.ColumnGenerator<Module>() {
+                    @Override
+                    public Component generateCell(Module module) {
+                        Label label = uiComponents.create(Label.NAME);
+                        List<Checklist> modules = checklistsDc.getMutableItems().stream()
+                                .filter(s -> {
+                                    if (s.getModule() != null
+                                            && s.getAssignedQa() != null)
+                                        return s.getModule().equals(module);
+
+                                    return false;
+                                })
+                                .collect(Collectors.toList());
+                        List<Checklist> completed = modules.stream()
+                                .filter(s -> {
+                                    if (s.getState().getId().equals(STATE_CHECKED))
+                                        return true;
+
+                                    return false;
+                                })
+                                .collect(Collectors.toList());
+                        double percent = 0.0;
+                        if (modules.size() > 0) {
+                            percent = completed.size() * 100 / (double) modules.size();
+                        }
+
+                        label.setValue(String.format("%.2f", percent) + "%");
+                        return label;
+                    }
+                });
+
+        testPlanQaStatisticsTable.addGeneratedColumn("timeTotal",
+                new Table.ColumnGenerator<QaProjectRelationship>() {
+                    @Override
+                    public Component generateCell(QaProjectRelationship qa) {
+                        Label label = uiComponents.create(Label.NAME);
+                        List<Checklist> qaChecklists = checklistsDc.getMutableItems().stream()
+                                .filter(s -> {
+                                    if (s.getAssignedQa() != null)
+                                        return s.getAssignedQa().equals(qa);
+
+                                    return false;
+                                })
+                                .collect(Collectors.toList());
+                        countTime(label, qaChecklists);
+                        return label;
+                    }
+                });
+        testPlanQaStatisticsTable.addGeneratedColumn("timeLeft",
+                new Table.ColumnGenerator<QaProjectRelationship>() {
+                    @Override
+                    public Component generateCell(QaProjectRelationship qa) {
+                        Label label = uiComponents.create(Label.NAME);
+                        List<Checklist> qaChecklists = checklistsDc.getMutableItems().stream()
+                                .filter(s -> {
+                                    if (s.getAssignedQa() != null)
+                                        return s.getAssignedQa().equals(qa);
+
+                                    return false;
+                                })
+                                .filter(s -> {
+                                    if (s.getState() != null)
+                                        return !s.getState().getId().equals(STATE_CHECKED);
+
+                                    return false;
+                                })
+                                .collect(Collectors.toList());
+                        countTime(label, qaChecklists);
+                        return label;
+                    }
+                });
     }
 }
