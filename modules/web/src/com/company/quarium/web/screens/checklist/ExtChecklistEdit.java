@@ -99,13 +99,31 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     private Table<EntityLogItem> logTable;
     @Inject
     private Button closeBtn;
+    @Inject
+    private TextField<Integer> checklistHours;
 
     private TestCase testCaseOld;
+    @Inject
+    private Messages messages;
+    @Inject
+    private TextField<Integer> checklistMinutes;
+    @Inject
+    private TextField<Integer> caseHours;
+    @Inject
+    private TextField<Integer> caseMinutes;
 
 
     @Subscribe
     protected void onInit(InitEvent event) {
         initMasterDetailScreen(event);
+        checklistHours.setConversionErrorMessage(
+                String.format(messages.getMessage(getClass(), "checklistEdit.hoursValidation")));
+        checklistMinutes.setConversionErrorMessage(
+                String.format(messages.getMessage(getClass(), "checklistEdit.minutesValidation")));
+        caseHours.setConversionErrorMessage(
+                String.format(messages.getMessage(getClass(), "checklistEdit.hoursValidation")));
+        caseMinutes.setConversionErrorMessage(
+                String.format(messages.getMessage(getClass(), "checklistEdit.minutesValidation")));
     }
 
     @Subscribe

@@ -15,6 +15,7 @@ import com.haulmont.cuba.core.global.DeletePolicy;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.util.List;
@@ -45,11 +46,13 @@ public class Checklist extends StandardEntity {
     @Column(name = "HOURS")
     @Min(message = "{msg://quarium_Checklist.hours.validation.Min}", value = 0)
     @Max(message = "{msg://quarium_Checklist.hours.validation.Max}", value = 999)
+    @Digits(message = "{msg://quarium_Checklist.hours.validation.Digits}", integer = 3, fraction = 0)
     private Integer hours;
 
     @Column(name = "MINUTES")
     @Min(message = "{msg://quarium_Checklist.minutes.validation.Min}", value = 0)
     @Max(message = "{msg://quarium_Checklist.minutes.validation.Max}", value = 59)
+    @Digits(message = "{msg://quarium_Checklist.minutes.validation.Digits}", integer = 3, fraction = 0)
     private Integer minutes;
 
     @Column(name = "TICKET", length = 1000)
