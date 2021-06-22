@@ -59,8 +59,17 @@ public class ExcelUploadWindow extends Screen {
             dataManager.commit(checklistNew);
             checklistsDl.load();
         }
+        String files = "";
+        for (String str : multiUploadField.getUploadsMap().values()) {
+            if (files.equals("")) {
+                files = files.concat(str);
+            } else {
+                files = files.concat(", " + str);
+            }
+        }
         notifications.create()
-                .withCaption("Uploaded files: " + multiUploadField.getUploadsMap().values())
+                .withCaption(String.format(messages.getMessage(getClass(), "exceluploadwindow.uploadCompleted"))
+                        + files)
                 .show();
         multiUploadField.clearUploads();
     }
