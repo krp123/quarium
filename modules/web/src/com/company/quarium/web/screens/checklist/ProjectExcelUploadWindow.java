@@ -3,6 +3,7 @@ package com.company.quarium.web.screens.checklist;
 import com.company.quarium.entity.checklist.SimpleChecklist;
 import com.company.quarium.entity.project.SimpleProject;
 import com.company.quarium.service.UploadChecklistFromXlsService;
+import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.components.FileMultiUploadField;
 import com.haulmont.cuba.gui.model.CollectionContainer;
@@ -33,6 +34,8 @@ public class ProjectExcelUploadWindow extends ExcelUploadWindow {
     private CollectionContainer<SimpleChecklist> checklistsDc;
     @Inject
     private InstanceContainer<SimpleProject> projectDc;
+    @Inject
+    private Messages messages;
 
     @Override
     public void onMultiUploadFieldQueueUploadComplete(FileMultiUploadField.QueueUploadCompleteEvent event) throws IOException, InvalidFormatException {
@@ -42,8 +45,17 @@ public class ProjectExcelUploadWindow extends ExcelUploadWindow {
             checklistNew.setProject(projectDc.getItem());
             checklistsDc.getMutableItems().add(checklistNew);
         }
+        String files = "";
+        for (String str : multiUploadField.getUploadsMap().values()) {
+            if (files.equals("")) {
+                files = files.concat(str);
+            } else {
+                files = files.concat(", " + str);
+            }
+        }
         notifications.create()
-                .withCaption("Uploaded files: " + multiUploadField.getUploadsMap().values())
+                .withCaption(String.format(messages.getMessage(getClass(), "exceluploadwindow.uploadCompleted"))
+                        + files)
                 .show();
         multiUploadField.clearUploads();
     }
