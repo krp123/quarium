@@ -29,6 +29,7 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
         checklistNew.setAssignedQa(checklist.getAssignedQa());
         checklistNew.setComment(checklist.getComment());
         checklistNew.setTicket(checklist.getTicket());
+        checklistNew.setInitialConditions(checklist.getInitialConditions());
 
         if (checklist.getTestCase() != null) {
             List<TestCase> tcList = new ArrayList<>();
