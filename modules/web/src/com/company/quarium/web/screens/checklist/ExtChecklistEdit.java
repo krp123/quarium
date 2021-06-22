@@ -100,6 +100,8 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     @Inject
     private Button closeBtn;
 
+    private TestCase testCaseOld;
+
 
     @Subscribe
     protected void onInit(InitEvent event) {
@@ -224,11 +226,15 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
 
         TestCase selectedItem = getBrowseContainer().getItemOrNull();
         if (selectedItem != null) {
-            View view = testCaseDc.getView();
-            boolean loadDynamicAttributes = getEditLoader().isLoadDynamicAttributes();
-            TestCase reloadedItem = getBeanLocator().get(DataManager.class)
-                    .reload(selectedItem, view, null, loadDynamicAttributes);
-            getBrowseContainer().replaceItem(reloadedItem);
+            if (PersistenceHelper.isNew(selectedItem)) {
+                getBrowseContainer().replaceItem(testCaseOld);
+            } else {
+                View view = testCaseDc.getView();
+                boolean loadDynamicAttributes = getEditLoader().isLoadDynamicAttributes();
+                TestCase reloadedItem = getBeanLocator().get(DataManager.class)
+                        .reload(selectedItem, view, null, loadDynamicAttributes);
+                getBrowseContainer().replaceItem(reloadedItem);
+            }
         }
 
         disableEditControls();
@@ -569,7 +575,9 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         List<Step> stepsList = new ArrayList<>();
         if (event.getItem().getTestCase() != null) {
             for (TestCase tc : event.getItem().getTestCase()) {
-                stepsList.addAll(tc.getCaseStep());
+                if (tc.getCaseStep() != null) {
+                    stepsList.addAll(tc.getCaseStep());
+                }
             }
         }
         entityLogItemsDl.setParameter("checklist", Objects.requireNonNull(event.getItem()).getId());

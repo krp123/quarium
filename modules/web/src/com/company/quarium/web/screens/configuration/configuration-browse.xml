@@ -15,7 +15,7 @@
         </collection>
     </data>
     <dialogMode height="600"
-                width="800"/>
+                width="1000"/>
     <layout expand="configurationsTable"
             spacing="true">
         <filter id="filter"
@@ -33,7 +33,7 @@
                 <action id="remove" type="remove"/>
             </actions>
             <columns>
-                <column id="configuration"/>
+                <column id="configuration" maxTextLength="20" expandRatio="90"/>
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"
