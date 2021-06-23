@@ -46,6 +46,7 @@ public class QaRole extends AnnotatedRoleDefinition {
             "quarium_Configuration.edit",
             "quarium_TestCase.edit",
             "quarium_Exceluploadwindow",
+            "quarium_ProjectExceluploadwindow",
             "diffFrame",
             "help",
             "aboutWindow",
