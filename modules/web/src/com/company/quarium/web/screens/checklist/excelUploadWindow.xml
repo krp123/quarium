@@ -24,7 +24,9 @@
                              permittedExtensions=".xlsx"/>
             </hbox>
             <hbox margin="true" spacing="true">
-                <label id="downloadTemplate"/>
+                <label id="downloadTemplate"
+                       contextHelpText="msg://downloadTemplate.contextHelp"
+                       contextHelpTextHtmlEnabled="true"/>
             </hbox>
         </vbox>
     </layout>
