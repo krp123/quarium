@@ -4,9 +4,7 @@ import com.company.quarium.entity.checklist.Checklist;
 import com.company.quarium.entity.checklist.SimpleChecklist;
 import com.haulmont.cuba.core.global.UserSessionSource;
 import com.haulmont.cuba.gui.ScreenBuilders;
-import com.haulmont.cuba.gui.Screens;
 import com.haulmont.cuba.gui.components.Button;
-import com.haulmont.cuba.gui.components.GroupTable;
 import com.haulmont.cuba.gui.model.CollectionContainer;
 import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.screen.*;
@@ -19,17 +17,11 @@ import javax.inject.Inject;
 @LoadDataBeforeShow
 public class ChecklistBrowse extends StandardLookup<Checklist> {
     @Inject
-    private Screens screens;
-    @Inject
     private ScreenBuilders screenBuilders;
     @Inject
     private CollectionContainer<SimpleChecklist> checklistsDc;
     @Inject
-    private GroupTable<SimpleChecklist> checklistsTable;
-    @Inject
     private CollectionLoader<SimpleChecklist> checklistsDl;
-    @Inject
-    private Button refreshBtn;
     @Inject
     private UserSessionSource userSessionSource;
     @Inject
