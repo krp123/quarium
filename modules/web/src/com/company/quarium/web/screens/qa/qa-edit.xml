@@ -12,7 +12,8 @@
         <collection id="usersDc" class="com.haulmont.cuba.security.entity.User" view="user.browse">
             <loader id="usersDl">
                 <query>
-                    <![CDATA[select e from sec$User e]]>
+                    <![CDATA[select e from sec$User e where e.id not in
+                        (select distinct q.user.id from quarium_Qa q)]]>
                 </query>
             </loader>
         </collection>
