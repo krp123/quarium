@@ -9,6 +9,8 @@ import com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit;
 import com.company.quarium.web.screens.simplechecklist.TestRunTestSuitBrowse;
 import com.haulmont.bali.util.ParamsMap;
 import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.Messages;
+import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.components.*;
@@ -19,6 +21,7 @@ import com.haulmont.cuba.gui.screen.*;
 import com.haulmont.reports.gui.actions.EditorPrintFormAction;
 
 import javax.inject.Inject;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,6 +57,14 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     private CollectionLoader<Module> moduleDl;
     @Inject
     private Button runReport;
+    @Inject
+    private DateField<LocalDateTime> runStartDate;
+    @Inject
+    private DateField<LocalDateTime> runFinishDate;
+    @Inject
+    private Notifications notifications;
+    @Inject
+    private Messages messages;
 
     @Subscribe("checklistTable.addChecklist")
     protected void onAddChecklist(Action.ActionPerformedEvent event) {
@@ -263,5 +274,25 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                         return label;
                     }
                 });
+    }
+
+    private boolean checkRunDates() {
+        if (runFinishDate.getValue() != null && runStartDate != null) {
+            LocalDateTime start = runStartDate.getValue();
+            LocalDateTime finish = runFinishDate.getValue();
+            if (finish.isBefore(start)) {
+                notifications.create(Notifications.NotificationType.TRAY)
+                        .withDescription(String.format(messages.getMessage(getClass(), "testRunEdit.startDateValidation")))
+                        .show();
+                return false;
+            } else return true;
+        } else return true;
+    }
+
+    @Subscribe
+    public void onBeforeCommitChanges(BeforeCommitChangesEvent event) {
+        if (!checkRunDates()) {
+            event.preventCommit();
+        }
     }
 }
