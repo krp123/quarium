@@ -54,14 +54,23 @@ public class UploadChecklistFromXlsServiceBean implements UploadChecklistFromXls
 
                     //Заполняем наименование кейса
                     testCaseNew.setName(rowCase.getCell(0).getStringCellValue());
+
                     //Заполняем начальные условия
-                    testCaseNew.setInitialConditions(rowCase.getCell(1).getStringCellValue());
+                    if (rowCase.getLastCellNum() > 1) {
+                        testCaseNew.setInitialConditions(rowCase.getCell(1).getStringCellValue());
+                    }
+
                     //Заполняем ожидаемый результат
-                    testCaseNew.setExpectedResult(rowCase.getCell(3).getStringCellValue());
+                    if (rowCase.getLastCellNum() > 3) {
+                        testCaseNew.setExpectedResult(rowCase.getCell(3).getStringCellValue());
+                    }
 
                     //Забираем шаги, парсим их по знаку ';' и присваиваем кейсу
                     List<Step> stepsList = new ArrayList<>();
-                    String[] steps = rowCase.getCell(2).getStringCellValue().split(";");
+                    String[] steps = new String[0];
+                    if (rowCase.getLastCellNum() > 2) {
+                        steps = rowCase.getCell(2).getStringCellValue().split(";");
+                    }
                     int stepsQty = 0;
                     for (String s : steps) {
                         Step step = dataManager.create(Step.class);
