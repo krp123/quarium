@@ -124,10 +124,12 @@ public class ProjectEdit extends StandardEditor<Project> {
                 .withSelectHandler(qas -> {
                     qas.stream()
                             .filter(qa -> {
+                                //если датасорс пустой, то добавляем всех
                                 if (qaProjectDc.getItems().isEmpty()) {
                                     return true;
                                 }
 
+                                //проверяем, если хоть в одной из записей есть QA, то возвращаем false
                                 boolean hasQa;
                                 for (QaProjectRelationship qpr : qaProjectDc.getItems()) {
                                     hasQa = qpr.getQa().equals(qa);
