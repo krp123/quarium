@@ -40,6 +40,7 @@ public class ViewRole extends AnnotatedRoleDefinition {
             "quarium_Module.edit",
             "ext_quarium_Checklist.edit",
             "quarium_RegressChecklist.edit",
+            "quarium_TestCase.edit",
             "diffFrame",
             "help",
             "aboutWindow",
