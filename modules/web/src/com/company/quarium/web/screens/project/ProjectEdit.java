@@ -18,7 +18,6 @@ import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.TimeSource;
 import com.haulmont.cuba.core.global.UserSessionSource;
 import com.haulmont.cuba.gui.ScreenBuilders;
-import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.components.Action;
 import com.haulmont.cuba.gui.components.Button;
 import com.haulmont.cuba.gui.components.Label;
@@ -54,8 +53,6 @@ public class ProjectEdit extends StandardEditor<Project> {
     private DataManager dataManager;
     @Inject
     private CopyChecklistService copyChecklistService;
-    @Inject
-    private UiComponents uiComponents;
     @Inject
     private CollectionLoader<TestCase> bugsDl;
     @Inject
@@ -126,6 +123,19 @@ public class ProjectEdit extends StandardEditor<Project> {
                 .withLaunchMode(OpenMode.DIALOG)
                 .withSelectHandler(qas -> {
                     qas.stream()
+                            .filter(qa -> {
+                                if (qaProjectDc.getItems().isEmpty()) {
+                                    return true;
+                                }
+
+                                boolean hasQa;
+                                for (QaProjectRelationship qpr : qaProjectDc.getItems()) {
+                                    hasQa = qpr.getQa().equals(qa);
+                                    if (hasQa)
+                                        return false;
+                                }
+                                return true;
+                            })
                             .map(this::createRelationshipFromQa)
                             .forEach(this::addQaToRelationships);
                 })
