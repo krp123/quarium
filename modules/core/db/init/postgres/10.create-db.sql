@@ -146,6 +146,7 @@ create table QUARIUM_TEST_CASE (
     MINUTES integer,
     PRIORITY_ID uuid,
     STATE_ID uuid,
+    RESULT_ varchar(50),
     EXPECTED_RESULT text,
     CHECKLIST_ID uuid,
     --
