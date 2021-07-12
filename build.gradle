@@ -74,6 +74,11 @@ configure([globalModule, coreModule, webModule]) {
 
 
 configure(globalModule) {
+    buildInfo {
+        appName = 'Quarium'
+        version = '0.9-SNAPSHOT'
+    }
+
     dependencies {
         if (!JavaVersion.current().isJava8()) {
             runtime('javax.xml.bind:jaxb-api:2.3.1')

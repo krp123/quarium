@@ -5,7 +5,6 @@ import com.company.quarium.entity.checklist.Step;
 import com.company.quarium.entity.checklist.TestCase;
 import com.company.quarium.entity.project.Module;
 import com.company.quarium.entity.project.QaProjectRelationship;
-import com.company.quarium.entity.references.Statement;
 import com.haulmont.cuba.core.app.EntitySnapshotService;
 import com.haulmont.cuba.core.app.LockService;
 import com.haulmont.cuba.core.entity.BaseGenericIdEntity;
@@ -31,9 +30,6 @@ import com.haulmont.cuba.security.entity.EntityOp;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.*;
-
-import static com.company.quarium.Constants.STATE_BUG;
-import static com.company.quarium.Constants.STATE_CHECKED;
 
 @UiController("ext_quarium_Checklist.edit")
 @UiDescriptor("ext-checklist-edit.xml")
@@ -70,8 +66,6 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     @Inject
     private TextArea<String> caseComment;
     @Inject
-    private LookupField<Statement> caseStateField;
-    @Inject
     private HBoxLayout ticketBox;
     @Inject
     private ScreenValidation screenValidation;
@@ -101,8 +95,6 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     private Button closeBtn;
     @Inject
     private TextField<Integer> checklistHours;
-
-    private TestCase testCaseOld;
     @Inject
     private Messages messages;
     @Inject
@@ -245,13 +237,14 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         TestCase selectedItem = getBrowseContainer().getItemOrNull();
         if (selectedItem != null) {
             if (PersistenceHelper.isNew(selectedItem)) {
-                getBrowseContainer().replaceItem(testCaseOld);
+                getBrowseContainer().replaceItem(selectedItem);
             } else {
                 View view = testCaseDc.getView();
                 boolean loadDynamicAttributes = getEditLoader().isLoadDynamicAttributes();
                 TestCase reloadedItem = getBeanLocator().get(DataManager.class)
                         .reload(selectedItem, view, null, loadDynamicAttributes);
                 getBrowseContainer().replaceItem(reloadedItem);
+                testCaseDc.setItem(reloadedItem);
             }
         }
 
@@ -274,24 +267,24 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         });
     }
 
-    @Subscribe("caseStateField")
-    public void onCaseStateFieldValueChange(HasValue.ValueChangeEvent<Statement> event) {
-        if (caseStateField.getValueSource().getValue() != null
-                && caseStateField.getValueSource().getValue().getId().toString().equals(STATE_BUG.toString())) {
-            ticketBox.setVisible(true);
-            caseComment.setVisible(true);
-        } else if (caseStateField.getValueSource().getValue() != null &&
-                caseStateField.getValueSource().getValue().getId().toString().equals(STATE_CHECKED.toString())) {
-            checkDate.setVisible(true);
-            if (checkDate.getValue() == null) {
-                checkDate.setValue(timeSource.now().toLocalDateTime());
-            }
-        } else {
-            ticketBox.setVisible(false);
-            caseComment.setVisible(false);
-            checkDate.setVisible(false);
-        }
-    }
+//    @Subscribe("caseStateField") //TODO переделать на RESULT
+//    public void onCaseStateFieldValueChange(HasValue.ValueChangeEvent<Statement> event) {
+//        if (caseStateField.getValueSource().getValue() != null
+//                && caseStateField.getValueSource().getValue().getId().toString().equals(STATE_BUG.toString())) {
+//            ticketBox.setVisible(true);
+//            caseComment.setVisible(true);
+//        } else if (caseStateField.getValueSource().getValue() != null &&
+//                caseStateField.getValueSource().getValue().getId().toString().equals(STATE_CHECKED.toString())) {
+//            checkDate.setVisible(true);
+//            if (checkDate.getValue() == null) {
+//                checkDate.setValue(timeSource.now().toLocalDateTime());
+//            }
+//        } else {
+//            ticketBox.setVisible(false);
+//            caseComment.setVisible(false);
+//            checkDate.setVisible(false);
+//        }
+//    }
 
     @Subscribe("stepsTable.createStep")
     public void onCreateStep(Action.ActionPerformedEvent event) {
@@ -612,5 +605,13 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         entityLogList.addAll(testCaseLogsDc.getItems());
         entityLogList.addAll(stepLogsDc.getItems());
         return entityLogList;
+    }
+
+    @Subscribe(id = "testCasesDc", target = Target.DATA_CONTAINER)
+    public void onTestCasesDcItemPropertyChange(InstanceContainer.ItemPropertyChangeEvent<TestCase> event) {
+        boolean hasUnchecked;
+        for (TestCase tc : testCasesDc.getItems()) {//TODO если результаты всех кейсов = Успешно, то выставлять состояние чек-листа = Пройден. Сократить кол-во состояний у чек-листа.
+//            if (tc.getState().getId().equals())
+        }
     }
 }

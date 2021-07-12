@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
-import static com.company.quarium.Constants.PRIORITY_HIGH;
+import static com.company.quarium.Constants.PRIORITY_MEDIUM;
 import static com.company.quarium.Constants.STATE_NOT_STARTED;
 
 @Table(name = "QUARIUM_TEST_CASE")
@@ -83,6 +83,9 @@ public class TestCase extends StandardEntity {
     @JoinColumn(name = "STATE_ID")
     private Statement state;
 
+    @Column(name = "RESULT_")
+    private String result;
+
     @Lob
     @Column(name = "EXPECTED_RESULT")
     private String expectedResult;
@@ -92,6 +95,14 @@ public class TestCase extends StandardEntity {
     @JoinColumn(name = "CHECKLIST_ID")
     @OnDeleteInverse(DeletePolicy.CASCADE)
     private Checklist checklist;
+
+    public CaseResult getResult() {
+        return result == null ? null : CaseResult.fromId(result);
+    }
+
+    public void setResult(CaseResult result) {
+        this.result = result == null ? null : result.getId();
+    }
 
     public LocalDateTime getCheckDate() {
         return checkDate;
@@ -188,7 +199,7 @@ public class TestCase extends StandardEntity {
 
     @PostConstruct
     private void initPriority(DataManager dataManager) {
-        setPriority(dataManager.load(Priority.class).id(PRIORITY_HIGH).one());
+        setPriority(dataManager.load(Priority.class).id(PRIORITY_MEDIUM).one());
     }
 
     public Checklist getChecklist() {
