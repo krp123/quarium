@@ -404,6 +404,7 @@
         <hbox id="editActions" spacing="true" align="BOTTOM_LEFT">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="closeBtn" action="windowClose"/>
+            <button id="saveBtn" caption="msg://projectEdit.save"/>
         </hbox>
     </layout>
 </window>

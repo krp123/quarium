@@ -15,12 +15,12 @@ import com.company.quarium.web.screens.checklist.ProjectExcelUploadWindow;
 import com.company.quarium.web.screens.checklist.TestSuitEdit;
 import com.company.quarium.web.screens.testrun.TestRunEdit;
 import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.core.global.TimeSource;
 import com.haulmont.cuba.core.global.UserSessionSource;
+import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.ScreenBuilders;
-import com.haulmont.cuba.gui.components.Action;
-import com.haulmont.cuba.gui.components.Button;
-import com.haulmont.cuba.gui.components.Label;
+import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.*;
 import com.haulmont.cuba.gui.screen.*;
 
@@ -63,6 +63,12 @@ public class ProjectEdit extends StandardEditor<Project> {
     private UserSessionSource userSessionSource;
     @Inject
     private Button uploadExcel;
+    @Inject
+    private Button saveBtn;
+    @Inject
+    private Notifications notifications;
+    @Inject
+    private Messages messages;
 
     @Subscribe
     public void onInitEntity(InitEntityEvent<Project> event) {
@@ -382,6 +388,16 @@ public class ProjectEdit extends StandardEditor<Project> {
         if (userSessionSource.getUserSession().getRoles().contains("View")) {
             uploadExcel.setVisible(false);
         }
+
+        saveBtn.setAction(new AbstractAction("saveCard") {
+            @Override
+            public void actionPerform(Component component) {
+                commitChanges();
+                notifications.create()
+                        .withCaption(messages.getMessage(getClass(), "saveNotification"))
+                        .show();
+            }
+        });
 
 //        runReport.setAction(new EditorPrintFormAction(this, null));
 
