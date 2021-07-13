@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class UploadChecklistFromXlsServiceBean implements UploadChecklistFromXls
     private DataManager dataManager;
 
     @Override
-    public SimpleChecklist createFromXls(File file) throws IOException, InvalidFormatException {
+    public SimpleChecklist createFromXls(File file) throws IOException, InvalidFormatException, IllegalStateException {
         XSSFWorkbook newExcel = new XSSFWorkbook(file);
         XSSFSheet newSheet = newExcel.getSheet("Checklist");
 
@@ -40,10 +41,22 @@ public class UploadChecklistFromXlsServiceBean implements UploadChecklistFromXls
         XSSFRow rowComment = newSheet.getRow(2);
         checklistNew.setComment(rowComment.getCell(1).getStringCellValue());
 
+        //Заполняем оценку
+        XSSFRow rowEstimation = newSheet.getRow(3);
+        try {
+            LocalDateTime estimationTime = rowEstimation.getCell(1).getLocalDateTimeCellValue();
+            checklistNew.setHours(estimationTime.getHour());
+            checklistNew.setMinutes(estimationTime.getMinute());
+        } catch (IllegalStateException ex) {
+            checklistNew.setHours(0);
+            checklistNew.setMinutes(0);
+        }
+
+        //Заполняем тест-кейсы
         List<TestCase> testCases = new ArrayList<>();
         int rowsQty = newSheet.getLastRowNum();
         int casesQty = 0;
-        for (int i = 4; i < rowsQty; i++) {
+        for (int i = 5; i < rowsQty; i++) {
             if (newSheet.getRow(i) != null) {
                 XSSFRow rowCase = newSheet.getRow(i);
                 if (!"".equals(rowCase.getCell(0).getStringCellValue())) {
