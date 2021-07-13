@@ -1,8 +1,6 @@
 package com.company.quarium.web.screens.testrun;
 
-import com.company.quarium.entity.checklist.Checklist;
-import com.company.quarium.entity.checklist.RegressChecklist;
-import com.company.quarium.entity.checklist.SimpleChecklist;
+import com.company.quarium.entity.checklist.*;
 import com.company.quarium.entity.project.*;
 import com.company.quarium.service.CopyChecklistService;
 import com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit;
@@ -23,6 +21,7 @@ import com.haulmont.reports.gui.actions.EditorPrintFormAction;
 
 import javax.inject.Inject;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -107,7 +106,7 @@ public class TestRunEdit extends StandardEditor<TestRun> {
         ((RegressChecklistEdit) editorScreen).setQaParameter(getEditedEntity().getProject().getQa());
     }
 
-    private void countTime(Label label, List<Checklist> checklistList) {
+    private String getTime(List<Checklist> checklistList) {
         int totalTime = 0;
         for (Checklist cl : checklistList) {
             totalTime += cl.getHours() * 60 + cl.getMinutes();
@@ -115,7 +114,7 @@ public class TestRunEdit extends StandardEditor<TestRun> {
 
         int hours = totalTime / 60;
         int minutes = totalTime % 60;
-        label.setValue(hours + "ч " + minutes + "м");
+        return hours + "ч " + minutes + "м";
     }
 
     @Subscribe(id = "checklistsDc", target = Target.DATA_CONTAINER)
@@ -133,35 +132,28 @@ public class TestRunEdit extends StandardEditor<TestRun> {
         repaintStatisticsTables();
     }
 
+    private List<Checklist> getSuitsWithModule(Module module) {
+        return checklistsDc.getMutableItems().stream()
+                .filter(s -> {
+                    if (s.getModule() != null
+                            && s.getAssignedQa() != null)
+                        return s.getModule().equals(module);
+
+                    return false;
+                })
+                .collect(Collectors.toList());
+    }
+
     @Subscribe
     protected void onInit(AfterShowEvent event) {
         runReport.setAction(new EditorPrintFormAction(this, messages.getMessage(getClass(), "testRunEdit.testRunReport")));
 
-        modulesStatisticsTable.addGeneratedColumn("timeTotal",
+        modulesStatisticsTable.addGeneratedColumn("timeLeftTotal",
                 new Table.ColumnGenerator<Module>() {
                     @Override
                     public Component generateCell(Module module) {
                         Label label = uiComponents.create(Label.NAME);
-                        List<Checklist> modules = checklistsDc.getMutableItems().stream()
-                                .filter(s -> {
-                                    if (s.getModule() != null
-                                            && s.getAssignedQa() != null)
-                                        return s.getModule().equals(module);
-
-                                    return false;
-                                })
-                                .collect(Collectors.toList());
-                        countTime(label, modules);
-                        return label;
-                    }
-                });
-
-        modulesStatisticsTable.addGeneratedColumn("timeLeft",
-                new Table.ColumnGenerator<Module>() {
-                    @Override
-                    public Component generateCell(Module module) {
-                        Label label = uiComponents.create(Label.NAME);
-                        List<Checklist> modules = checklistsDc.getMutableItems().stream()
+                        List<Checklist> suitsLeft = checklistsDc.getMutableItems().stream()
                                 .filter(s -> {
                                     if (s.getModule() != null
                                             && s.getAssignedQa() != null)
@@ -176,36 +168,9 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                                     return false;
                                 })
                                 .collect(Collectors.toList());
-                        countTime(label, modules);
-                        return label;
-                    }
-                });
+                        String timeLeft = getTime(suitsLeft);
 
-        modulesStatisticsTable.addGeneratedColumn("checklistsLeft",
-                new Table.ColumnGenerator<Module>() {
-                    @Override
-                    public Component generateCell(Module module) {
-                        Label label = uiComponents.create(Label.NAME);
-                        List<Checklist> modules = checklistsDc.getMutableItems().stream()
-                                .filter(s -> {
-                                    if (s.getModule() != null && !s.getState().getId().equals(STATE_CHECKED)
-                                            && s.getAssignedQa() != null)
-                                        return s.getModule().equals(module);
-
-                                    return false;
-                                })
-                                .collect(Collectors.toList());
-                        label.setValue(modules.size());
-                        return label;
-                    }
-                });
-
-        modulesStatisticsTable.addGeneratedColumn("checklistsTotal",
-                new Table.ColumnGenerator<Module>() {
-                    @Override
-                    public Component generateCell(Module module) {
-                        Label label = uiComponents.create(Label.NAME);
-                        List<Checklist> modules = checklistsDc.getMutableItems().stream()
+                        List<Checklist> suitsTotal = checklistsDc.getMutableItems().stream()
                                 .filter(s -> {
                                     if (s.getModule() != null
                                             && s.getAssignedQa() != null)
@@ -214,35 +179,66 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                                     return false;
                                 })
                                 .collect(Collectors.toList());
-                        label.setValue(modules.size());
+                        String timeTotal = getTime(suitsTotal);
+
+                        label.setValue(timeLeft + " / " + timeTotal);
                         return label;
                     }
                 });
-        modulesStatisticsTable.addGeneratedColumn("completed",
+
+        modulesStatisticsTable.addGeneratedColumn("testSuitsLeftTotal",
                 new Table.ColumnGenerator<Module>() {
                     @Override
                     public Component generateCell(Module module) {
                         Label label = uiComponents.create(Label.NAME);
-                        List<Checklist> modules = checklistsDc.getMutableItems().stream()
+                        List<Checklist> suitsTotal = getSuitsWithModule(module);
+
+                        List<Checklist> completedSuits = checklistsDc.getMutableItems().stream()
                                 .filter(s -> {
-                                    if (s.getModule() != null
+                                    if (s.getModule() != null && s.getState().getId().equals(STATE_CHECKED)
                                             && s.getAssignedQa() != null)
                                         return s.getModule().equals(module);
 
                                     return false;
                                 })
                                 .collect(Collectors.toList());
-                        List<Checklist> completed = modules.stream()
-                                .filter(s -> {
-                                    if (s.getState().getId().equals(STATE_CHECKED))
-                                        return true;
 
-                                    return false;
-                                })
-                                .collect(Collectors.toList());
+                        label.setValue(completedSuits.size() + "/" + suitsTotal.size());
+                        return label;
+                    }
+                });
+
+        modulesStatisticsTable.addGeneratedColumn("casesLeftTotal",
+                new Table.ColumnGenerator<Module>() {
+                    @Override
+                    public Component generateCell(Module module) {
+                        Label label = uiComponents.create(Label.NAME);
+                        List<Checklist> testSuitsWithModule = getSuitsWithModule(module);
+
+                        List<TestCase> allCases = getAllCasesFromTestSuits(testSuitsWithModule);
+
+                        List<TestCase> completedCases = getCompletedCases(allCases);
+
+                        String value = completedCases.size() + "/" + allCases.size();
+                        label.setValue(value);
+                        return label;
+                    }
+                });
+
+        modulesStatisticsTable.addGeneratedColumn("completedPercent",
+                new Table.ColumnGenerator<Module>() {
+                    @Override
+                    public Component generateCell(Module module) {
+                        Label label = uiComponents.create(Label.NAME);
+                        List<Checklist> testSuitsWithModule = getSuitsWithModule(module);
+
+                        List<TestCase> allCases = getAllCasesFromTestSuits(testSuitsWithModule);
+
+                        List<TestCase> completedCases = getCompletedCases(allCases);
+
                         double percent = 0.0;
-                        if (modules.size() > 0) {
-                            percent = completed.size() * 100 / (double) modules.size();
+                        if (allCases.size() > 0) {
+                            percent = completedCases.size() * 100 / (double) allCases.size();
                         }
 
                         label.setValue(String.format("%.2f", percent) + "%");
@@ -263,10 +259,11 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                                     return false;
                                 })
                                 .collect(Collectors.toList());
-                        countTime(label, qaChecklists);
+                        label.setValue(getTime(qaChecklists));
                         return label;
                     }
                 });
+
         testPlanQaStatisticsTable.addGeneratedColumn("timeLeft",
                 new Table.ColumnGenerator<QaProjectRelationship>() {
                     @Override
@@ -286,10 +283,30 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                                     return false;
                                 })
                                 .collect(Collectors.toList());
-                        countTime(label, qaChecklists);
+                        label.setValue(getTime(qaChecklists));
                         return label;
                     }
                 });
+    }
+
+    private List<TestCase> getCompletedCases(List<TestCase> allCases) {
+        return allCases.stream()
+                .filter(s -> {
+                    if (s.getResult() != null &&
+                            s.getResult().equals(CaseResult.PASSED))
+                        return true;
+
+                    return false;
+                })
+                .collect(Collectors.toList());
+    }
+
+    private List<TestCase> getAllCasesFromTestSuits(List<Checklist> testSuitsWithModule) {
+        List<TestCase> allCases = new ArrayList<>();
+        for (Checklist cl : testSuitsWithModule) {
+            allCases.addAll(cl.getTestCase());
+        }
+        return allCases;
     }
 
     private boolean checkRunDates() {

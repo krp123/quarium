@@ -39,22 +39,67 @@
     </data>
     <dialogMode height="600"
                 width="800"/>
-    <layout expand="checklistTable" spacing="true">
-        <form id="form" dataContainer="testRunDc">
-            <column width="350px">
-                <textField id="nameField" property="name" required="true"/>
-                <lookupField id="milestone" optionsContainer="milestoneDc" caption="msg://testRunEdit.milestone"/>
-            </column>
-            <column width="400px">
-                <textArea id="descriptionField" property="description" rowspan="2"/>
-            </column>
-        </form>
-        <form id="testPlanStatisticsForm" width="100%"
-              height="AUTO">
-            <column flex="1">
-                <groupBox caption="msg://com.company.quarium.entity/Project.qaStatistics" collapsable="true">
+    <layout spacing="true" expand="testRunTabSheet">
+        <tabSheet id="testRunTabSheet">
+            <tab id="mainTab" expand="checklistTable" caption="msg://mainTab" spacing="true" margin="true">
+                <form id="form" dataContainer="testRunDc">
+                    <column width="350px">
+                        <textField id="nameField" property="name" required="true"/>
+                        <lookupField id="milestone" optionsContainer="milestoneDc"
+                                     caption="msg://testRunEdit.milestone"/>
+                        <dateField id="runStartDate" property="runStartDate" width="AUTO"/>
+                    </column>
+                    <column width="400px">
+                        <textArea id="descriptionField" property="description" rowspan="2"/>
+                        <dateField id="runFinishDate" property="runFinishDate" width="AUTO"/>
+                    </column>
+                </form>
+                <groupTable id="checklistTable"
+                            width="100%"
+                            height="100%"
+                            dataContainer="checklistsDc"
+                            multiselect="true"
+                            presentations="true"
+                            editable="true">
+                    <actions>
+                        <action id="create" type="create">
+                            <properties>
+                                <property name="screenClass"
+                                          value="com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit"/>
+                            </properties>
+                        </action>
+                        <action id="addChecklist" type="add"/>
+                        <action id="edit" type="edit">
+                            <properties>
+                                <property name="screenClass"
+                                          value="com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit"/>
+                            </properties>
+                        </action>
+                        <action id="remove" type="remove"/>
+                    </actions>
+                    <columns>
+                        <column id="name"/>
+                        <column id="state"/>
+                        <column id="module"/>
+                        <column id="assignedQa"
+                                editable="true"
+                                optionsContainer="qaDc"
+                                width="300px"/>
+                    </columns>
+                    <rows/>
+                    <buttonsPanel id="buttonsPanel"
+                                  alwaysVisible="true">
+                        <button id="createBtn" action="checklistTable.create"/>
+                        <button id="addBtn" action="checklistTable.addChecklist" icon="ADD_TO_SET_ACTION"/>
+                        <button id="editBtn" action="checklistTable.edit"/>
+                        <button id="removeBtn" action="checklistTable.remove"/>
+                    </buttonsPanel>
+                </groupTable>
+            </tab>
+            <tab id="statistics" expand="modulesStatistics" caption="msg://statistics" spacing="true" margin="true">
+                <groupBox caption="msg://com.company.quarium.entity/Project.qaStatistics">
                     <table id="testPlanQaStatisticsTable"
-                           width="100%"
+                           width="50%"
                            height="AUTO"
                            dataContainer="qaDc"
                            showSelection="false">
@@ -66,82 +111,29 @@
                         <rows/>
                     </table>
                 </groupBox>
-            </column>
-            <column flex="2">
-                <groupBox caption="msg://testRunEdit.modulesStatistics" collapsable="true">
-                    <table id="modulesStatisticsTable"
-                           width="100%"
-                           height="AUTO"
-                           dataContainer="modulesDc"
-                           showSelection="false"
-                           responsive="true">
+                <groupBox id="modulesStatistics" caption="msg://testRunEdit.modulesStatistics">
+                    <groupTable id="modulesStatisticsTable"
+                                width="100%"
+                                height="100%"
+                                dataContainer="modulesDc"
+                                showSelection="false"
+                                responsive="true">
                         <columns>
                             <column id="name"/>
-                            <column id="timeLeft" caption="msg://testRunEdit.timeLeft"/>
-                            <column id="timeTotal" caption="msg://testRunEdit.timeTotal"/>
-                            <column id="checklistsLeft" caption="msg://testRunEdit.checklistsLeft"/>
-                            <column id="checklistsTotal" caption="msg://testRunEdit.checklistsTotal"/>
-                            <column id="completed" caption="msg://testRunEdit.completed"/>
+                            <column id="timeLeftTotal" caption="msg://testRunEdit.timeLeftTotal"/>
+                            <column id="testSuitsLeftTotal" caption="msg://testRunEdit.checklistsLeft"/>
+                            <column id="casesLeftTotal" caption="msg://testRunEdit.casesLeft"/>
+                            <column id="completedPercent" caption="msg://testRunEdit.completed"/>
                         </columns>
                         <rows/>
-                    </table>
+                    </groupTable>
                 </groupBox>
-            </column>
-        </form>
-        <form id="regressDateForm" dataContainer="testRunDc">
-            <column>
-                <dateField id="runStartDate" property="runStartDate"/>
-            </column>
-            <column>
-                <dateField id="runFinishDate" property="runFinishDate"/>
-            </column>
-            <column>
-                <button id="runReport" caption="msg://testRunEdit.report"/>
-            </column>
-        </form>
-        <groupTable id="checklistTable"
-                    width="100%"
-                    dataContainer="checklistsDc"
-                    multiselect="true"
-                    presentations="true"
-                    editable="true">
-            <actions>
-                <action id="create" type="create">
-                    <properties>
-                        <property name="screenClass"
-                                  value="com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit"/>
-                    </properties>
-                </action>
-                <action id="addChecklist" type="add"/>
-                <action id="edit" type="edit">
-                    <properties>
-                        <property name="screenClass"
-                                  value="com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit"/>
-                    </properties>
-                </action>
-                <action id="remove" type="remove"/>
-            </actions>
-            <columns>
-                <column id="name"/>
-                <column id="state"/>
-                <column id="module"/>
-                <column id="assignedQa"
-                        editable="true"
-                        optionsContainer="qaDc"
-                        width="300px"/>
-            </columns>
-            <rows/>
-            <buttonsPanel id="buttonsPanel"
-                          alwaysVisible="true">
-                <button id="createBtn" action="checklistTable.create"/>
-                <button id="addBtn" action="checklistTable.addChecklist" icon="ADD_TO_SET_ACTION"/>
-                <button id="editBtn" action="checklistTable.edit"/>
-                <button id="removeBtn" action="checklistTable.remove"/>
-            </buttonsPanel>
-        </groupTable>
+            </tab>
+        </tabSheet>
         <hbox id="editActions" spacing="true">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="closeBtn" action="windowClose"/>
+            <button id="runReport" caption="msg://testRunEdit.report"/>
         </hbox>
     </layout>
 </window>
