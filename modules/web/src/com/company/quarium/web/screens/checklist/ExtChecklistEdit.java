@@ -1,5 +1,6 @@
 package com.company.quarium.web.screens.checklist;
 
+import com.company.quarium.entity.checklist.CaseResult;
 import com.company.quarium.entity.checklist.Checklist;
 import com.company.quarium.entity.checklist.Step;
 import com.company.quarium.entity.checklist.TestCase;
@@ -103,6 +104,8 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     private TextField<Integer> caseHours;
     @Inject
     private TextField<Integer> caseMinutes;
+    @Inject
+    private LookupField<CaseResult> caseResult;
 
 
     @Subscribe
@@ -612,6 +615,43 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         boolean hasUnchecked;
         for (TestCase tc : testCasesDc.getItems()) {//TODO если результаты всех кейсов = Успешно, то выставлять состояние чек-листа = Пройден. Сократить кол-во состояний у чек-листа.
 //            if (tc.getState().getId().equals())
+        }
+    }
+
+    @Install(to = "caseResult", subject = "optionStyleProvider")
+    protected String caseResultOptionStyleProvider(CaseResult caseResult) {
+        if (caseResult != null) {
+            switch (caseResult) {
+                case PASSED:
+                    return "passed-result";
+                case FAILED:
+                    return "failed-result";
+                case BLOCKED:
+                    return "blocked-result";
+                case SKIPPED:
+                    return "skipped-result";
+            }
+        }
+        return null;
+    }
+
+    @Subscribe("caseResult")
+    public void onCaseResultValueChange(HasValue.ValueChangeEvent<CaseResult> event) {
+        if (event.getValue() != null) {
+            switch (event.getValue()) {
+                case PASSED:
+                    caseResult.setStyleName("passed-result");
+                    return;
+                case FAILED:
+                    caseResult.setStyleName("failed-result");
+                    return;
+                case BLOCKED:
+                    caseResult.setStyleName("blocked-result");
+                    return;
+                case SKIPPED:
+                    caseResult.setStyleName("skipped-result");
+                    return;
+            }
         }
     }
 }

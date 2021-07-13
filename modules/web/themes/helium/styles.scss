@@ -10,3 +10,35 @@
   @include com_company_quarium-helium-ext;
 
 }
+
+.v-filterselect-item-passed-result {
+     color: #00f819;
+}
+
+.v-filterselect-item-failed-result {
+     color: #fd0015;
+}
+
+.v-filterselect-item-blocked-result {
+     color: black;
+}
+
+.v-filterselect-item-skipped-result {
+     color: gray;
+}
+
+.helium .v-filterselect-passed-result [class*="input"] {
+     color: #00f819;
+}
+
+.helium .v-filterselect-failed-result [class*="input"] {
+     color: #fd0015;
+}
+
+.helium .v-filterselect-blocked-result [class*="input"] {
+     color: black;
+}
+
+.helium .v-filterselect-skipped-result [class*="input"] {
+     color: gray;
+}

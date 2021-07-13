@@ -253,7 +253,8 @@
                                                 <!--                                                             optionsContainer="statesDc" property="state"-->
                                                 <!--                                                             caption="msg://checklistEdit.state" width="90%"/>-->
 
-                                                <lookupField id="caseResult" dataContainer="testCaseDc"
+                                                <lookupField id="caseResult"
+                                                             dataContainer="testCaseDc"
                                                              property="result"
                                                              caption="msg://checklistEdit.result" width="90%"/>
                                             </row>

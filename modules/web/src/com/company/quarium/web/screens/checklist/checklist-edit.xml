@@ -251,9 +251,10 @@
                                                                     icon="font-icon:ANGLE_DOWN"/>
                                                         </buttonsPanel>
                                                     </table>
-                                                    <lookupField id="caseStateField" dataContainer="testCaseDc"
-                                                                 optionsContainer="statesDc" property="state"
-                                                                 caption="msg://checklistEdit.state" width="90%"
+                                                    <lookupField id="caseResult" dataContainer="testCaseDc"
+                                                                 property="result"
+                                                                 caption="msg://checklistEdit.result"
+                                                                 width="90%"
                                                                  visible="false"/>
                                                 </row>
                                                 <row>

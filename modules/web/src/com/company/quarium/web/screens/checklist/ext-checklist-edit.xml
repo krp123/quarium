@@ -255,7 +255,8 @@
 
                                                 <lookupField id="caseResult" dataContainer="testCaseDc"
                                                              property="result"
-                                                             caption="msg://checklistEdit.result" width="90%"/>
+                                                             caption="msg://checklistEdit.result"
+                                                             width="90%"/>
                                             </row>
                                             <row>
                                                 <dateField id="checkDate" dataContainer="testCaseDc"
