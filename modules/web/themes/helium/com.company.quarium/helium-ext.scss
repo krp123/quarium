@@ -1,4 +1,21 @@
 /* Define your theme modifications inside next mixin */
 @mixin com_company_quarium-helium-ext {
 $cuba-highlight-primary-action: false;
+
+
+.passed-result {
+     color: #00f819;
+}
+
+.failed-result {
+     color: #fd0015;
+}
+
+.blocked-result {
+     color: black;
+}
+
+.skipped-result {
+     color: gray;
+}
 }
