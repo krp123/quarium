@@ -135,7 +135,7 @@ public class TestRunEdit extends StandardEditor<TestRun> {
 
     @Subscribe
     protected void onInit(AfterShowEvent event) {
-        runReport.setAction(new EditorPrintFormAction(this, null));
+        runReport.setAction(new EditorPrintFormAction(this, messages.getMessage(getClass(), "testRunEdit.testRunReport")));
 
         modulesStatisticsTable.addGeneratedColumn("timeTotal",
                 new Table.ColumnGenerator<Module>() {
