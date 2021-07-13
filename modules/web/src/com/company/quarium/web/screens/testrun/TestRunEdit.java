@@ -14,6 +14,7 @@ import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.components.*;
+import com.haulmont.cuba.gui.model.CollectionContainer;
 import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.model.CollectionPropertyContainer;
 import com.haulmont.cuba.gui.model.InstanceContainer;
@@ -115,6 +116,21 @@ public class TestRunEdit extends StandardEditor<TestRun> {
         int hours = totalTime / 60;
         int minutes = totalTime % 60;
         label.setValue(hours + "ч " + minutes + "м");
+    }
+
+    @Subscribe(id = "checklistsDc", target = Target.DATA_CONTAINER)
+    public void onChecklistsDcItemPropertyChange(InstanceContainer.ItemPropertyChangeEvent<RegressChecklist> event) {
+        if ("assignedQa".equals(event.getProperty())
+                || "hours".equals(event.getProperty())
+                || "minutes".equals(event.getProperty())
+                || "module".equals(event.getProperty())) {
+            repaintStatisticsTables();
+        }
+    }
+
+    @Subscribe(id = "checklistsDc", target = Target.DATA_CONTAINER)
+    public void onChecklistsDcCollectionChange(CollectionContainer.CollectionChangeEvent<RegressChecklist> event) {
+        repaintStatisticsTables();
     }
 
     @Subscribe
@@ -294,5 +310,10 @@ public class TestRunEdit extends StandardEditor<TestRun> {
         if (!checkRunDates()) {
             event.preventCommit();
         }
+    }
+
+    private void repaintStatisticsTables() {
+        testPlanQaStatisticsTable.repaint();
+        modulesStatisticsTable.repaint();
     }
 }
