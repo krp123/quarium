@@ -29,7 +29,7 @@
             <collection id="milestonesDc" property="milestone"/>
             <collection id="testRunsDc" property="testRun"/>
         </instance>
-        <collection id="bugsDc" class="com.company.quarium.entity.checklist.TestCase" view="testCase-view">
+<!--        <collection id="bugsDc" class="com.company.quarium.entity.checklist.TestCase" view="testCase-view">
             <loader id="bugsDl">
                 <query>
                     <![CDATA[select e from quarium_TestCase e
@@ -37,7 +37,7 @@
                     and e.state.name = 'Баг']]>
                 </query>
             </loader>
-        </collection>
+        </collection>-->
         <collection id="qaDc" class="com.company.quarium.entity.project.QaProjectRelationship" view="edit">
             <loader id="qaDl">
                 <query>

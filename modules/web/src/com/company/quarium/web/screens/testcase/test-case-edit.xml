@@ -69,7 +69,7 @@
                                    caption="msg://checklistEdit.steps"
                                    multiLineCells="true"
                                    editable="false"
-                                   rowspan="3"
+                                   rowspan="2"
                                    showSelection="false"
                                    contextMenuEnabled="false">
                                 <actions>
@@ -85,11 +85,11 @@
                                          optionsContainer="prioritiesDc" property="priority"
                                          caption="msg://checklistEdit.priority" width="90%" editable="false"/>
                         </row>
-                        <row>
-                            <lookupField id="caseStateField" dataContainer="testCaseDc"
-                                         optionsContainer="statesDc" property="state"
-                                         caption="msg://checklistEdit.state" width="90%" editable="false"/>
-                        </row>
+                        <!--                        <row>-->
+                        <!--                            <lookupField id="caseStateField" dataContainer="testCaseDc"-->
+                        <!--                                         optionsContainer="statesDc" property="state"-->
+                        <!--                                         caption="msg://checklistEdit.state" width="90%" editable="false"/>-->
+                        <!--                        </row>-->
                         <row>
                             <!--                            <hbox id="ticketBox" spacing="true" caption="msg://checklistEdit.caseTicket"-->
                             <!--                                  width="90%"-->

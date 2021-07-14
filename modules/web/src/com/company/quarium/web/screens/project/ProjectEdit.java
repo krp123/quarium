@@ -3,7 +3,6 @@ package com.company.quarium.web.screens.project;
 import com.company.quarium.entity.checklist.Checklist;
 import com.company.quarium.entity.checklist.RegressChecklist;
 import com.company.quarium.entity.checklist.SimpleChecklist;
-import com.company.quarium.entity.checklist.TestCase;
 import com.company.quarium.entity.project.ConfigurationProjectRelationship;
 import com.company.quarium.entity.project.Project;
 import com.company.quarium.entity.project.QaProjectRelationship;
@@ -53,8 +52,6 @@ public class ProjectEdit extends StandardEditor<Project> {
     private DataManager dataManager;
     @Inject
     private CopyChecklistService copyChecklistService;
-    @Inject
-    private CollectionLoader<TestCase> bugsDl;
     @Inject
     private CollectionLoader<QaProjectRelationship> qaDl;
     @Inject
@@ -119,7 +116,7 @@ public class ProjectEdit extends StandardEditor<Project> {
 
     @Subscribe
     protected void onBeforeShow(BeforeShowEvent event) {
-        bugsDl.setParameter("project", getEditedEntity());
+//        bugsDl.setParameter("project", getEditedEntity());
         qaDl.setParameter("project", getEditedEntity());
     }
 

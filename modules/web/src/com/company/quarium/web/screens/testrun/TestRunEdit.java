@@ -19,6 +19,7 @@ import com.haulmont.cuba.gui.model.InstanceContainer;
 import com.haulmont.cuba.gui.screen.*;
 import com.haulmont.reports.gui.actions.EditorPrintFormAction;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -65,6 +66,10 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     private Notifications notifications;
     @Inject
     private Messages messages;
+    @Inject
+    private CollectionLoader<TestCase> bugsDl;
+    @Inject
+    private GroupTable<TestCase> bugsTable;
 
     @Subscribe("checklistTable.addChecklist")
     protected void onAddChecklist(Action.ActionPerformedEvent event) {
@@ -78,6 +83,11 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                 })
                 .build()
                 .show();
+    }
+
+    @Subscribe
+    protected void onBeforeShow(BeforeShowEvent event) {
+        bugsDl.setParameter("testRun", getEditedEntity());
     }
 
     private RegressChecklist createAndAddChecklist(Checklist checklist) {
@@ -284,6 +294,21 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                                 })
                                 .collect(Collectors.toList());
                         label.setValue(getTime(qaChecklists));
+                        return label;
+                    }
+                });
+
+        bugsTable.addGeneratedColumn("module",
+                new Table.ColumnGenerator<TestCase>() {
+                    @Nullable
+                    @Override
+                    public Component generateCell(TestCase testCase) {
+                        Label label = uiComponents.create(Label.NAME);
+                        String moduleName = "Без модуля";
+                        if (testCase.getChecklist().getModule() != null) {
+                            moduleName = testCase.getChecklist().getModule().getName();
+                        }
+                        label.setValue(moduleName);
                         return label;
                     }
                 });
