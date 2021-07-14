@@ -270,24 +270,29 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         });
     }
 
-//    @Subscribe("caseStateField") //TODO переделать на RESULT
-//    public void onCaseStateFieldValueChange(HasValue.ValueChangeEvent<Statement> event) {
-//        if (caseStateField.getValueSource().getValue() != null
-//                && caseStateField.getValueSource().getValue().getId().toString().equals(STATE_BUG.toString())) {
-//            ticketBox.setVisible(true);
-//            caseComment.setVisible(true);
-//        } else if (caseStateField.getValueSource().getValue() != null &&
-//                caseStateField.getValueSource().getValue().getId().toString().equals(STATE_CHECKED.toString())) {
-//            checkDate.setVisible(true);
-//            if (checkDate.getValue() == null) {
-//                checkDate.setValue(timeSource.now().toLocalDateTime());
-//            }
-//        } else {
-//            ticketBox.setVisible(false);
-//            caseComment.setVisible(false);
-//            checkDate.setVisible(false);
-//        }
-//    }
+    @Subscribe("caseResult")
+    public void onCaseResultValueChange1(HasValue.ValueChangeEvent<CaseResult> event) {
+        if (caseResult.getValue() != null
+                && caseResult.getValue().equals(CaseResult.FAILED)) {
+            ticketBox.setVisible(true);
+            caseComment.setVisible(true);
+            checkDate.setVisible(false);
+
+        } else if (caseResult.getValue() != null &&
+                caseResult.getValue().equals(CaseResult.PASSED)) {
+            checkDate.setVisible(true);
+            ticketBox.setVisible(false);
+            caseComment.setVisible(false);
+            if (checkDate.getValue() == null) {
+                checkDate.setValue(timeSource.now().toLocalDateTime());
+            }
+
+        } else {
+            ticketBox.setVisible(false);
+            caseComment.setVisible(false);
+            checkDate.setVisible(false);
+        }
+    }
 
     @Subscribe("stepsTable.createStep")
     public void onCreateStep(Action.ActionPerformedEvent event) {

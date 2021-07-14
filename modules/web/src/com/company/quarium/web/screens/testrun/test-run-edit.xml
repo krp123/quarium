@@ -36,6 +36,17 @@
                 </query>
             </loader>
         </collection>
+        <collection id="bugsDc" class="com.company.quarium.entity.checklist.TestCase" view="testCase-view">
+            <loader id="bugsDl">
+                <query>
+                    <![CDATA[select tc from quarium_TestCase tc
+                    join quarium_RegressChecklist rc
+                    where tc = rc.testCase
+                    and tc.result = 'Failed'
+                    and rc.testRun = :testRun]]>
+                </query>
+            </loader>
+        </collection>
     </data>
     <dialogMode height="600"
                 width="800"/>
@@ -124,6 +135,26 @@
                             <column id="testSuitsLeftTotal" caption="msg://testRunEdit.checklistsLeft"/>
                             <column id="casesLeftTotal" caption="msg://testRunEdit.casesLeft"/>
                             <column id="completedPercent" caption="msg://testRunEdit.completed"/>
+                        </columns>
+                        <rows/>
+                    </groupTable>
+                </groupBox>
+            </tab>
+            <tab id="defects" caption="msg://defects" spacing="true" margin="true">
+                <groupBox caption="msg://defects" collapsable="false" height="100%">
+                    <groupTable id="bugsTable"
+                                width="100%"
+                                height="100%"
+                                dataContainer="bugsDc"
+                                showSelection="false">
+                        <columns>
+                            <column id="name"
+                                    link="true"
+                                    linkScreen="quarium_TestCase.edit"
+                                    linkScreenOpenType="DIALOG"/>
+                            <column id="checklist"
+                                    caption="msg://testSuit"/>
+                            <column id="module" caption="msg://module"/>
                         </columns>
                         <rows/>
                     </groupTable>
