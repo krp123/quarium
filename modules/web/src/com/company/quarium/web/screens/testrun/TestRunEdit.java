@@ -19,7 +19,6 @@ import com.haulmont.cuba.gui.model.InstanceContainer;
 import com.haulmont.cuba.gui.screen.*;
 import com.haulmont.reports.gui.actions.EditorPrintFormAction;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -294,21 +293,6 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                                 })
                                 .collect(Collectors.toList());
                         label.setValue(getTime(qaChecklists));
-                        return label;
-                    }
-                });
-
-        bugsTable.addGeneratedColumn("module",
-                new Table.ColumnGenerator<TestCase>() {
-                    @Nullable
-                    @Override
-                    public Component generateCell(TestCase testCase) {
-                        Label label = uiComponents.create(Label.NAME);
-                        String moduleName = "Без модуля";
-                        if (testCase.getChecklist().getModule() != null) {
-                            moduleName = testCase.getChecklist().getModule().getName();
-                        }
-                        label.setValue(moduleName);
                         return label;
                     }
                 });

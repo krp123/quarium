@@ -154,7 +154,8 @@
                                     linkScreenOpenType="DIALOG"/>
                             <column id="checklist"
                                     caption="msg://testSuit"/>
-                            <column id="module" caption="msg://module"/>
+                            <column id="checklist.module"
+                                    caption="msg://module"/>
                         </columns>
                         <rows/>
                     </groupTable>
