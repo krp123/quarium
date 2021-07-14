@@ -28,6 +28,15 @@
                 </query>
             </loader>
         </collection>
+        <collection id="suitsDc" class="com.company.quarium.entity.checklist.RegressChecklist"
+                    view="regressChecklist-view">
+            <loader id="suitsDl">
+                <query>
+                    <![CDATA[select e from quarium_RegressChecklist e
+                    where e.testRun = :testRun]]>
+                </query>
+            </loader>
+        </collection>
         <collection id="milestoneDc" class="com.company.quarium.entity.project.Milestone" view="_local">
             <loader id="milestoneDl">
                 <query>
@@ -43,6 +52,49 @@
                     join quarium_RegressChecklist rc
                     where tc = rc.testCase
                     and tc.result = 'Failed'
+                    and rc.testRun = :testRun]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="skippedCasesDc" class="com.company.quarium.entity.checklist.TestCase" view="testCase-view">
+            <loader id="skippedCasesDl">
+                <query>
+                    <![CDATA[select tc from quarium_TestCase tc
+                    join quarium_RegressChecklist rc
+                    where tc = rc.testCase
+                    and tc.result = 'Skipped'
+                    and rc.testRun = :testRun]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="blockedCasesDc" class="com.company.quarium.entity.checklist.TestCase" view="testCase-view">
+            <loader id="blockedCasesDl">
+                <query>
+                    <![CDATA[select tc from quarium_TestCase tc
+                    join quarium_RegressChecklist rc
+                    where tc = rc.testCase
+                    and tc.result = 'Blocked'
+                    and rc.testRun = :testRun]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="passedCasesDc" class="com.company.quarium.entity.checklist.TestCase" view="testCase-view">
+            <loader id="passedCasesDl">
+                <query>
+                    <![CDATA[select tc from quarium_TestCase tc
+                    join quarium_RegressChecklist rc
+                    where tc = rc.testCase
+                    and tc.result = 'Passed'
+                    and rc.testRun = :testRun]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="totalCasesDc" class="com.company.quarium.entity.checklist.TestCase" view="testCase-view">
+            <loader id="totalCasesDl">
+                <query>
+                    <![CDATA[select tc from quarium_TestCase tc
+                    join quarium_RegressChecklist rc
+                    where tc = rc.testCase
                     and rc.testRun = :testRun]]>
                 </query>
             </loader>
@@ -111,7 +163,7 @@
                     </groupTable>
                 </groupBox>
             </tab>
-            <tab id="statistics" expand="modulesStatistics" caption="msg://statistics" spacing="true" margin="true">
+            <tab id="statistics" expand="suitsStatistics" caption="msg://statistics" spacing="true" margin="true">
                 <groupBox caption="msg://com.company.quarium.entity/Project.qaStatistics">
                     <table id="testPlanQaStatisticsTable"
                            width="50%"
@@ -126,19 +178,23 @@
                         <rows/>
                     </table>
                 </groupBox>
-                <groupBox id="modulesStatistics" caption="msg://testRunEdit.modulesStatistics">
-                    <groupTable id="modulesStatisticsTable"
+
+                <groupBox id="suitsStatistics" caption="msg://testRunEdit.suitsStatistics">
+                    <groupTable id="suitsStatisticsTable"
                                 width="100%"
                                 height="100%"
-                                dataContainer="modulesDc"
+                                dataContainer="suitsDc"
                                 showSelection="false"
                                 responsive="true">
                         <columns>
                             <column id="name"/>
-                            <column id="timeLeftTotal" caption="msg://testRunEdit.timeLeftTotal"/>
-                            <column id="testSuitsLeftTotal" caption="msg://testRunEdit.checklistsLeft"/>
-                            <column id="casesLeftTotal" caption="msg://testRunEdit.casesLeft"/>
-                            <column id="completedPercent" caption="msg://testRunEdit.completed"/>
+                            <column id="module"/>
+                            <column id="state"/>
+                            <column id="casesSkipped" caption="msg://casesSkipped"/>
+                            <column id="casesBlocked" caption="msg://casesBlocked"/>
+                            <column id="casesFailed" caption="msg://casesFailed"/>
+                            <column id="casesPassed" caption="msg://casesPassed"/>
+                            <column id="casesTotal" caption="msg://casesTotal"/>
                         </columns>
                         <rows/>
                     </groupTable>
