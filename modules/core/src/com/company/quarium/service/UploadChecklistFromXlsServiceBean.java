@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,9 +43,16 @@ public class UploadChecklistFromXlsServiceBean implements UploadChecklistFromXls
         //Заполняем оценку
         XSSFRow rowEstimation = newSheet.getRow(3);
         try {
-            LocalDateTime estimationTime = rowEstimation.getCell(1).getLocalDateTimeCellValue();
-            checklistNew.setHours(estimationTime.getHour());
-            checklistNew.setMinutes(estimationTime.getMinute());
+            String estimationString = String.valueOf(rowEstimation.getCell(1).getNumericCellValue());
+            if (estimationString.contains(".")) {
+                String[] estimationTime = estimationString.split("\\.");
+                checklistNew.setHours(Integer.parseInt(estimationTime[0]));
+                double minDouble = 60 * Double.parseDouble("0." + estimationTime[1]);
+                checklistNew.setMinutes((int) minDouble);
+            } else {
+                checklistNew.setHours(Integer.parseInt(estimationString));
+                checklistNew.setMinutes(0);
+            }
         } catch (IllegalStateException ex) {
             checklistNew.setHours(0);
             checklistNew.setMinutes(0);
