@@ -8,6 +8,7 @@ import com.company.quarium.web.screens.simplechecklist.TestRunTestSuitBrowse;
 import com.haulmont.bali.util.ParamsMap;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.Messages;
+import com.haulmont.cuba.core.global.UserSessionSource;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
@@ -69,6 +70,10 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     private CollectionLoader<TestCase> bugsDl;
     @Inject
     private GroupTable<TestCase> bugsTable;
+    @Inject
+    private UserSessionSource userSessionSource;
+    @Inject
+    private LookupField<Milestone> milestone;
 
     @Subscribe("checklistTable.addChecklist")
     protected void onAddChecklist(Action.ActionPerformedEvent event) {
@@ -156,6 +161,10 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     @Subscribe
     protected void onInit(AfterShowEvent event) {
         runReport.setAction(new EditorPrintFormAction(this, messages.getMessage(getClass(), "testRunEdit.testRunReport")));
+
+        if (userSessionSource.getUserSession().getRoles().contains("View")) {
+            milestone.setEditable(false); //Костыль. Почему то не удаляется доступ к редактированию поля через роль.
+        }
 
         modulesStatisticsTable.addGeneratedColumn("timeLeftTotal",
                 new Table.ColumnGenerator<Module>() {
