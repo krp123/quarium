@@ -52,7 +52,7 @@
                 width="800"/>
     <layout spacing="true" expand="testRunTabSheet">
         <tabSheet id="testRunTabSheet">
-            <tab id="mainTab" expand="checklistTable" caption="msg://mainTab" spacing="true" margin="true">
+            <tab id="mainTab" expand="testSuitsGroupBox" caption="msg://mainTab" spacing="true" margin="true">
                 <form id="form" dataContainer="testRunDc">
                     <column width="350px">
                         <textField id="nameField" property="name" required="true"/>
@@ -65,47 +65,51 @@
                         <dateField id="runFinishDate" property="runFinishDate" width="AUTO"/>
                     </column>
                 </form>
-                <groupTable id="checklistTable"
-                            width="100%"
-                            height="100%"
-                            dataContainer="checklistsDc"
-                            multiselect="true"
-                            presentations="true"
-                            editable="true">
-                    <actions>
-                        <action id="create" type="create">
-                            <properties>
-                                <property name="screenClass"
-                                          value="com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit"/>
-                            </properties>
-                        </action>
-                        <action id="addChecklist" type="add"/>
-                        <action id="edit" type="edit">
-                            <properties>
-                                <property name="screenClass"
-                                          value="com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit"/>
-                            </properties>
-                        </action>
-                        <action id="remove" type="remove"/>
-                    </actions>
-                    <columns>
-                        <column id="name"/>
-                        <column id="state"/>
-                        <column id="module"/>
-                        <column id="assignedQa"
-                                editable="true"
-                                optionsContainer="qaDc"
-                                width="300px"/>
-                    </columns>
-                    <rows/>
-                    <buttonsPanel id="buttonsPanel"
-                                  alwaysVisible="true">
-                        <button id="createBtn" action="checklistTable.create"/>
-                        <button id="addBtn" action="checklistTable.addChecklist" icon="ADD_TO_SET_ACTION"/>
-                        <button id="editBtn" action="checklistTable.edit"/>
-                        <button id="removeBtn" action="checklistTable.remove"/>
-                    </buttonsPanel>
-                </groupTable>
+                <groupBox id="testSuitsGroupBox"
+                          caption="msg://testSuits"
+                          collapsable="false">
+                    <groupTable id="checklistTable"
+                                width="100%"
+                                height="100%"
+                                dataContainer="checklistsDc"
+                                multiselect="true"
+                                presentations="true"
+                                editable="true">
+                        <actions>
+                            <action id="create" type="create">
+                                <properties>
+                                    <property name="screenClass"
+                                              value="com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit"/>
+                                </properties>
+                            </action>
+                            <action id="addChecklist" type="add"/>
+                            <action id="edit" type="edit">
+                                <properties>
+                                    <property name="screenClass"
+                                              value="com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit"/>
+                                </properties>
+                            </action>
+                            <action id="remove" type="remove"/>
+                        </actions>
+                        <columns>
+                            <column id="name"/>
+                            <column id="state"/>
+                            <column id="module"/>
+                            <column id="assignedQa"
+                                    editable="true"
+                                    optionsContainer="qaDc"
+                                    width="300px"/>
+                        </columns>
+                        <rows/>
+                        <buttonsPanel id="buttonsPanel"
+                                      alwaysVisible="true">
+                            <button id="createBtn" action="checklistTable.create"/>
+                            <button id="addBtn" action="checklistTable.addChecklist" icon="ADD_TO_SET_ACTION"/>
+                            <button id="editBtn" action="checklistTable.edit"/>
+                            <button id="removeBtn" action="checklistTable.remove"/>
+                        </buttonsPanel>
+                    </groupTable>
+                </groupBox>
             </tab>
             <tab id="statistics" expand="modulesStatistics" caption="msg://statistics" spacing="true" margin="true">
                 <groupBox caption="msg://com.company.quarium.entity/Project.qaStatistics">
