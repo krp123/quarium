@@ -81,7 +81,11 @@ public class ViewRole extends AnnotatedRoleDefinition {
         return super.screenPermissions();
     }
 
-    @SpecificAccess(permissions = {"cuba.gui.loginToClient"})
+    @SpecificAccess(permissions = {
+            "cuba.gui.loginToClient",
+            "cuba.gui.filter.customConditions",
+            "cuba.gui.filter.edit"
+    })
     @Override
     public SpecificPermissionsContainer specificPermissions() {
         return super.specificPermissions();
