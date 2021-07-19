@@ -192,8 +192,8 @@
                             <column id="state"/>
                             <column id="casesPassed" caption="msg://casesPassed"/>
                             <column id="casesFailed" caption="msg://casesFailed"/>
-                            <column id="casesBlocked" caption="msg://casesBlocked"/>
                             <column id="casesSkipped" caption="msg://casesSkipped"/>
+                            <column id="casesBlocked" caption="msg://casesBlocked"/>
                             <column id="casesTotal" caption="msg://casesTotal"/>
                         </columns>
                         <rows/>

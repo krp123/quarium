@@ -106,7 +106,7 @@
                                 <row>
                                     <lookupField id="stateField" dataContainer="checklistDc" optionsContainer="statesDc"
                                                  property="state" caption="msg://checklistEdit.State"
-                                                 width="90%"/>
+                                                 width="90%" required="true"/>
                                     <lookupField id="moduleField" dataContainer="checklistDc"
                                                  property="module" caption="msg://checklistEdit.module"
                                                  width="90%"/>

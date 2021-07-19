@@ -6,6 +6,7 @@ import com.company.quarium.entity.checklist.Step;
 import com.company.quarium.entity.checklist.TestCase;
 import com.company.quarium.entity.project.Module;
 import com.company.quarium.entity.project.QaProjectRelationship;
+import com.company.quarium.entity.references.Statement;
 import com.haulmont.cuba.core.app.EntitySnapshotService;
 import com.haulmont.cuba.core.app.LockService;
 import com.haulmont.cuba.core.entity.BaseGenericIdEntity;
@@ -108,6 +109,8 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     private LookupField<CaseResult> caseResult;
 
     private TestCase tempCase;
+    @Inject
+    private LookupField<Statement> stateField;
 
 
     @Subscribe
@@ -298,6 +301,7 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
             checkDate.setVisible(true);
             ticketBox.setVisible(false);
             caseComment.setVisible(false);
+
             if (testCaseDc.getItem().getCheckDate() == null) {
                 checkDate.setValue(timeSource.now().toLocalDateTime());
             }
@@ -632,9 +636,39 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
 
     @Subscribe(id = "testCasesDc", target = Target.DATA_CONTAINER)
     public void onTestCasesDcItemPropertyChange(InstanceContainer.ItemPropertyChangeEvent<TestCase> event) {
-        boolean hasUnchecked;
-        for (TestCase tc : testCasesDc.getItems()) {//TODO если результаты всех кейсов = Успешно, то выставлять состояние чек-листа = Пройден. Сократить кол-во состояний у чек-листа.
-//            if (tc.getState().getId().equals())
+        if (!event.getProperty().equals("result")) {
+            return;
+        }
+
+        Statement completedState = dataManager.load(Statement.class)
+                .id(UUID.fromString("d9d8fd34-068d-99db-5adc-9d95731bc419")).one();
+
+        boolean hasUnchecked = false;
+        for (TestCase tc : testCasesDc.getItems()) {
+            if (tc.getResult() == null ||
+                    !tc.getResult().equals(CaseResult.PASSED) &&
+                            !tc.getResult().equals(CaseResult.SKIPPED)) {
+                hasUnchecked = true;
+            }
+        }
+
+        if (!hasUnchecked) {
+            stateField.setValue(completedState);
+        }
+    }
+
+    @Subscribe("stateField")
+    public void onStateFieldValueChange(HasValue.ValueChangeEvent<Statement> event) {
+        if (event.getValue() != null &&
+                event.getValue().getId().equals(UUID.fromString("d9d8fd34-068d-99db-5adc-9d95731bc419"))) {
+            for (TestCase tc : testCasesDc.getMutableItems()) {
+                if (tc.getResult() == null ||
+                        !tc.getResult().equals(CaseResult.PASSED) &&
+                                !tc.getResult().equals(CaseResult.SKIPPED)) {
+                    tc.setResult(CaseResult.PASSED);
+                    tc.setCheckDate(timeSource.now().toLocalDateTime());
+                }
+            }
         }
     }
 
