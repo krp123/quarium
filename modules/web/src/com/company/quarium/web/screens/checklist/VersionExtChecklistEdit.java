@@ -24,14 +24,11 @@ import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.company.quarium.Constants.STATE_BUG;
-import static com.company.quarium.Constants.STATE_CHECKED;
-
 @UiController("quarium_VersionExtChecklist.edit")
 @UiDescriptor("version-ext-checklist-edit.xml")
 @EditedEntityContainer("checklistDc")
 @LoadDataBeforeShow
-public class VersionExtChecklistEdit extends StandardEditor<Checklist> {
+public class VersionExtChecklistEdit extends StandardEditor<Checklist> {//TODO удалить класс
 
     protected boolean editing;
     protected boolean creating;
@@ -88,22 +85,6 @@ public class VersionExtChecklistEdit extends StandardEditor<Checklist> {
         initOkCancelActions();
         initBrowseItemChangeListener();
         disableEditControls();
-    }
-
-    @Subscribe("caseStateField")
-    public void onCaseStateFieldValueChange(HasValue.ValueChangeEvent<Statement> event) {
-        if (caseStateField.getValueSource().getValue() != null
-                && caseStateField.getValueSource().getValue().getId().toString().equals(STATE_BUG.toString())) {
-            caseTicket.setVisible(true);
-            caseComment.setVisible(true);
-        } else if (caseStateField.getValueSource().getValue() != null &&
-                caseStateField.getValueSource().getValue().getId().toString().equals(STATE_CHECKED.toString())) {
-            checkDate.setVisible(true);
-        } else {
-            caseTicket.setVisible(false);
-            caseComment.setVisible(false);
-            checkDate.setVisible(false);
-        }
     }
 
     protected void initDataComponents() {
