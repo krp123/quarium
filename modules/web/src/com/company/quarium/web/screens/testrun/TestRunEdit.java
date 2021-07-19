@@ -69,8 +69,6 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     @Inject
     private CollectionLoader<TestCase> bugsDl;
     @Inject
-    private GroupTable<TestCase> bugsTable;
-    @Inject
     private UserSessionSource userSessionSource;
     @Inject
     private LookupField<Milestone> milestone;
