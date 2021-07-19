@@ -12,11 +12,11 @@
 }
 
 .v-filterselect-item-passed-result {
-     color: #00f819;
+     color: #36ab80;
 }
 
 .v-filterselect-item-failed-result {
-     color: #fd0015;
+     color: #ff647c;
 }
 
 .v-filterselect-item-blocked-result {
@@ -24,15 +24,15 @@
 }
 
 .v-filterselect-item-skipped-result {
-     color: gray;
+     color: #a0aac0;
 }
 
 .helium .v-filterselect-passed-result [class*="input"] {
-     color: #00f819;
+     color: #36ab80;
 }
 
 .helium .v-filterselect-failed-result [class*="input"] {
-     color: #fd0015;
+     color: #ff647c;
 }
 
 .helium .v-filterselect-blocked-result [class*="input"] {
@@ -40,5 +40,21 @@
 }
 
 .helium .v-filterselect-skipped-result [class*="input"] {
-     color: gray;
+     color: #a0aac0;
+}
+
+.skipped-result {
+     color: #a0aac0;
+}
+
+.passed-result {
+     color: #36ab80;
+}
+
+.failed-result {
+     color: #ff647c;
+}
+
+.blocked-result {
+     color: black;
 }
