@@ -85,19 +85,12 @@
                                          optionsContainer="prioritiesDc" property="priority"
                                          caption="msg://checklistEdit.priority" width="90%" editable="false"/>
                         </row>
-                        <!--                        <row>-->
-                        <!--                            <lookupField id="caseStateField" dataContainer="testCaseDc"-->
-                        <!--                                         optionsContainer="statesDc" property="state"-->
-                        <!--                                         caption="msg://checklistEdit.state" width="90%" editable="false"/>-->
-                        <!--                        </row>-->
+
                         <row>
-                            <!--                            <hbox id="ticketBox" spacing="true" caption="msg://checklistEdit.caseTicket"-->
-                            <!--                                  width="90%"-->
-                            <!--                                  visible="true">-->
-                            <link id="caseTicket"
+
+                        <link id="caseTicket"
                                   caption="msg://checklistEdit.caseTicket"
                                   target="_blank"/>
-                            <!--                            </hbox>-->
                         </row>
                         <row>
                             <textArea id="expectedResultField" property="expectedResult"

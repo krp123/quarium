@@ -190,10 +190,10 @@
                             <column id="name"/>
                             <column id="module"/>
                             <column id="state"/>
-                            <column id="casesSkipped" caption="msg://casesSkipped"/>
-                            <column id="casesBlocked" caption="msg://casesBlocked"/>
-                            <column id="casesFailed" caption="msg://casesFailed"/>
                             <column id="casesPassed" caption="msg://casesPassed"/>
+                            <column id="casesFailed" caption="msg://casesFailed"/>
+                            <column id="casesBlocked" caption="msg://casesBlocked"/>
+                            <column id="casesSkipped" caption="msg://casesSkipped"/>
                             <column id="casesTotal" caption="msg://casesTotal"/>
                         </columns>
                         <rows/>

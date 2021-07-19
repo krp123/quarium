@@ -304,6 +304,7 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                                         s.getChecklist().equals(checklist))
                                 .collect(Collectors.toList());
                         label.setValue(skippedCases.size());
+                        label.setStyleName("skipped-result");
                         return label;
                     }
                 });
@@ -318,6 +319,7 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                                         s.getChecklist().equals(checklist))
                                 .collect(Collectors.toList());
                         label.setValue(blockedCases.size());
+                        label.setStyleName("blocked-result");
                         return label;
                     }
                 });
@@ -332,6 +334,7 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                                         s.getChecklist().equals(checklist))
                                 .collect(Collectors.toList());
                         label.setValue(failedCases.size());
+                        label.setStyleName("failed-result");
                         return label;
                     }
                 });
@@ -346,6 +349,7 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                                         s.getChecklist().equals(checklist))
                                 .collect(Collectors.toList());
                         label.setValue(passedCases.size());
+                        label.setStyleName("passed-result");
                         return label;
                     }
                 });
