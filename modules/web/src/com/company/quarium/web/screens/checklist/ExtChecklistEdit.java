@@ -107,6 +107,8 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     @Inject
     private LookupField<CaseResult> caseResult;
 
+    private TestCase tempCase;
+
 
     @Subscribe
     protected void onInit(InitEvent event) {
@@ -232,15 +234,28 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         disableEditControls();
     }
 
+    @Subscribe("table.edit")
+    public void onTableEdit(Action.ActionPerformedEvent event) {
+        try {
+            TestCase selectedItem = getBrowseContainer().getItemOrNull();
+            if (selectedItem != null && PersistenceHelper.isNew(selectedItem)) {
+                tempCase = (TestCase) selectedItem.clone();
+            }
+        } catch (CloneNotSupportedException ex) {
+            return;
+        }
+    }
+
+
     protected void discardChanges() {
         releaseLock();
         getScreenData().getDataContext().evictModified();
         testCaseDc.setItem(null);
-
         TestCase selectedItem = getBrowseContainer().getItemOrNull();
         if (selectedItem != null) {
             if (PersistenceHelper.isNew(selectedItem)) {
-                getBrowseContainer().replaceItem(selectedItem);
+                getBrowseContainer().replaceItem(tempCase);
+                testCaseDc.setItem(tempCase);
             } else {
                 View view = testCaseDc.getView();
                 boolean loadDynamicAttributes = getEditLoader().isLoadDynamicAttributes();
@@ -283,7 +298,7 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
             checkDate.setVisible(true);
             ticketBox.setVisible(false);
             caseComment.setVisible(false);
-            if (checkDate.getValue() == null) {
+            if (testCaseDc.getItem().getCheckDate() == null) {
                 checkDate.setValue(timeSource.now().toLocalDateTime());
             }
 

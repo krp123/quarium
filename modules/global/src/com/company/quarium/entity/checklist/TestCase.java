@@ -27,7 +27,7 @@ import static com.company.quarium.Constants.STATE_NOT_STARTED;
 @Table(name = "QUARIUM_TEST_CASE")
 @Entity(name = "quarium_TestCase")
 @NamePattern("%s|name")
-public class TestCase extends StandardEntity {
+public class TestCase extends StandardEntity implements Cloneable {
     private static final long serialVersionUID = -2660701620585662317L;
 
     @Column(name = "NAME", nullable = false)
@@ -224,5 +224,10 @@ public class TestCase extends StandardEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
