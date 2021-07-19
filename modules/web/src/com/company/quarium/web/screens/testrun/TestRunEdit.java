@@ -1,6 +1,9 @@
 package com.company.quarium.web.screens.testrun;
 
-import com.company.quarium.entity.checklist.*;
+import com.company.quarium.entity.checklist.Checklist;
+import com.company.quarium.entity.checklist.RegressChecklist;
+import com.company.quarium.entity.checklist.SimpleChecklist;
+import com.company.quarium.entity.checklist.TestCase;
 import com.company.quarium.entity.project.*;
 import com.company.quarium.service.CopyChecklistService;
 import com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit;
@@ -22,7 +25,6 @@ import com.haulmont.reports.gui.actions.EditorPrintFormAction;
 
 import javax.inject.Inject;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -176,18 +178,6 @@ public class TestRunEdit extends StandardEditor<TestRun> {
         repaintStatisticsTables();
     }
 
-    private List<Checklist> getSuitsWithModule(Module module) {
-        return checklistsDc.getMutableItems().stream()
-                .filter(s -> {
-                    if (s.getModule() != null
-                            && s.getAssignedQa() != null)
-                        return s.getModule().equals(module);
-
-                    return false;
-                })
-                .collect(Collectors.toList());
-    }
-
     @Subscribe
     protected void onInit(AfterShowEvent event) {
         runReport.setAction(new EditorPrintFormAction(this, messages.getMessage(getClass(), "testRunEdit.testRunReport")));
@@ -195,104 +185,6 @@ public class TestRunEdit extends StandardEditor<TestRun> {
         if (userSessionSource.getUserSession().getRoles().contains("View")) {
             milestone.setEditable(false); //Костыль. Почему то не удаляется доступ к редактированию поля через роль.
         }
-
-//        modulesStatisticsTable.addGeneratedColumn("timeLeftTotal",
-//                new Table.ColumnGenerator<Module>() {
-//                    @Override
-//                    public Component generateCell(Module module) {
-//                        Label label = uiComponents.create(Label.NAME);
-//                        List<Checklist> suitsLeft = checklistsDc.getMutableItems().stream()
-//                                .filter(s -> {
-//                                    if (s.getModule() != null
-//                                            && s.getAssignedQa() != null)
-//                                        return s.getModule().equals(module);
-//
-//                                    return false;
-//                                })
-//                                .filter(s -> {
-//                                    if (s.getState() != null)
-//                                        return !s.getState().getId().equals(STATE_CHECKED);
-//
-//                                    return false;
-//                                })
-//                                .collect(Collectors.toList());
-//                        String timeLeft = getTime(suitsLeft);
-//
-//                        List<Checklist> suitsTotal = checklistsDc.getMutableItems().stream()
-//                                .filter(s -> {
-//                                    if (s.getModule() != null
-//                                            && s.getAssignedQa() != null)
-//                                        return s.getModule().equals(module);
-//
-//                                    return false;
-//                                })
-//                                .collect(Collectors.toList());
-//                        String timeTotal = getTime(suitsTotal);
-//
-//                        label.setValue(timeLeft + " / " + timeTotal);
-//                        return label;
-//                    }
-//                });
-//
-//        modulesStatisticsTable.addGeneratedColumn("testSuitsLeftTotal",
-//                new Table.ColumnGenerator<Module>() {
-//                    @Override
-//                    public Component generateCell(Module module) {
-//                        Label label = uiComponents.create(Label.NAME);
-//                        List<Checklist> suitsTotal = getSuitsWithModule(module);
-//
-//                        List<Checklist> completedSuits = checklistsDc.getMutableItems().stream()
-//                                .filter(s -> {
-//                                    if (s.getModule() != null && s.getState().getId().equals(STATE_CHECKED)
-//                                            && s.getAssignedQa() != null)
-//                                        return s.getModule().equals(module);
-//
-//                                    return false;
-//                                })
-//                                .collect(Collectors.toList());
-//
-//                        label.setValue(completedSuits.size() + "/" + suitsTotal.size());
-//                        return label;
-//                    }
-//                });
-//
-//        modulesStatisticsTable.addGeneratedColumn("casesLeftTotal",
-//                new Table.ColumnGenerator<Module>() {
-//                    @Override
-//                    public Component generateCell(Module module) {
-//                        Label label = uiComponents.create(Label.NAME);
-//                        List<Checklist> testSuitsWithModule = getSuitsWithModule(module);
-//
-//                        List<TestCase> allCases = getAllCasesFromTestSuits(testSuitsWithModule);
-//
-//                        List<TestCase> completedCases = getCompletedCases(allCases);
-//
-//                        String value = completedCases.size() + "/" + allCases.size();
-//                        label.setValue(value);
-//                        return label;
-//                    }
-//                });
-//
-//        modulesStatisticsTable.addGeneratedColumn("completedPercent",
-//                new Table.ColumnGenerator<Module>() {
-//                    @Override
-//                    public Component generateCell(Module module) {
-//                        Label label = uiComponents.create(Label.NAME);
-//                        List<Checklist> testSuitsWithModule = getSuitsWithModule(module);
-//
-//                        List<TestCase> allCases = getAllCasesFromTestSuits(testSuitsWithModule);
-//
-//                        List<TestCase> completedCases = getCompletedCases(allCases);
-//
-//                        double percent = 0.0;
-//                        if (allCases.size() > 0) {
-//                            percent = completedCases.size() * 100 / (double) allCases.size();
-//                        }
-//
-//                        label.setValue(String.format("%.2f", percent) + "%");
-//                        return label;
-//                    }
-//                });
 
         suitsStatisticsTable.addGeneratedColumn("casesSkipped",
                 new Table.ColumnGenerator<Checklist>() {
@@ -409,26 +301,6 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                         return label;
                     }
                 });
-    }
-
-    private List<TestCase> getCompletedCases(List<TestCase> allCases) {
-        return allCases.stream()
-                .filter(s -> {
-                    if (s.getResult() != null &&
-                            s.getResult().equals(CaseResult.PASSED))
-                        return true;
-
-                    return false;
-                })
-                .collect(Collectors.toList());
-    }
-
-    private List<TestCase> getAllCasesFromTestSuits(List<Checklist> testSuitsWithModule) {
-        List<TestCase> allCases = new ArrayList<>();
-        for (Checklist cl : testSuitsWithModule) {
-            allCases.addAll(cl.getTestCase());
-        }
-        return allCases;
     }
 
     private boolean checkRunDates() {
