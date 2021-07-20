@@ -10,7 +10,7 @@ import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.global.DeletePolicy;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Table(name = "QUARIUM_TEST_RUN")
@@ -23,10 +23,10 @@ public class TestRun extends StandardEntity {
     private String name;
 
     @Column(name = "RUN_START_DATE")
-    private LocalDateTime runStartDate;
+    private LocalDate runStartDate;
 
     @Column(name = "RUN_FINISH_DATE")
-    private LocalDateTime runFinishDate;
+    private LocalDate runFinishDate;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {})
     @JoinColumn(name = "MILESTONE_ID")
@@ -45,20 +45,20 @@ public class TestRun extends StandardEntity {
     @JoinColumn(name = "PROJECT_ID")
     private Project project;
 
-    public LocalDateTime getRunFinishDate() {
-        return runFinishDate;
+    public void setRunStartDate(LocalDate runStartDate) {
+        this.runStartDate = runStartDate;
     }
 
-    public void setRunFinishDate(LocalDateTime runFinishDate) {
-        this.runFinishDate = runFinishDate;
-    }
-
-    public LocalDateTime getRunStartDate() {
+    public LocalDate getRunStartDate() {
         return runStartDate;
     }
 
-    public void setRunStartDate(LocalDateTime runStartDate) {
-        this.runStartDate = runStartDate;
+    public void setRunFinishDate(LocalDate runFinishDate) {
+        this.runFinishDate = runFinishDate;
+    }
+
+    public LocalDate getRunFinishDate() {
+        return runFinishDate;
     }
 
     public Milestone getMilestone() {

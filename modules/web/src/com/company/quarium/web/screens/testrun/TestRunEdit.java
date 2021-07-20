@@ -24,7 +24,7 @@ import com.haulmont.cuba.gui.screen.*;
 import com.haulmont.reports.gui.actions.EditorPrintFormAction;
 
 import javax.inject.Inject;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,9 +59,9 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     @Inject
     private Button runReport;
     @Inject
-    private DateField<LocalDateTime> runStartDate;
+    private DateField<LocalDate> runStartDate;
     @Inject
-    private DateField<LocalDateTime> runFinishDate;
+    private DateField<LocalDate> runFinishDate;
     @Inject
     private Notifications notifications;
     @Inject
@@ -303,8 +303,8 @@ public class TestRunEdit extends StandardEditor<TestRun> {
 
     private boolean checkRunDates() {
         if (runFinishDate.getValue() != null && runStartDate != null) {
-            LocalDateTime start = runStartDate.getValue();
-            LocalDateTime finish = runFinishDate.getValue();
+            LocalDate start = runStartDate.getValue();
+            LocalDate finish = runFinishDate.getValue();
             if (finish.isBefore(start)) {
                 notifications.create(Notifications.NotificationType.TRAY)
                         .withDescription(String.format(messages.getMessage(getClass(), "testRunEdit.startDateValidation")))

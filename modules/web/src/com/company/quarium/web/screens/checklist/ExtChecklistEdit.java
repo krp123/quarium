@@ -7,7 +7,6 @@ import com.company.quarium.entity.checklist.TestCase;
 import com.company.quarium.entity.project.Module;
 import com.company.quarium.entity.project.QaProjectRelationship;
 import com.company.quarium.entity.references.Statement;
-import com.haulmont.cuba.core.app.EntitySnapshotService;
 import com.haulmont.cuba.core.app.LockService;
 import com.haulmont.cuba.core.entity.BaseGenericIdEntity;
 import com.haulmont.cuba.core.entity.Entity;
@@ -56,8 +55,6 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     @Inject
     private InstanceContainer<Checklist> checklistDc;
     @Inject
-    protected EntitySnapshotService entitySnapshotService;
-    @Inject
     private LookupField<QaProjectRelationship> assignedQaField;
     @Inject
     private LookupField<Module> moduleField;
@@ -80,21 +77,19 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     @Inject
     private Button testCaseDown;
     @Inject
-    private CollectionLoader<EntityLogItem> entityLogItemsDl;
+    protected CollectionLoader<EntityLogItem> entityLogItemsDl;
     @Inject
-    private CollectionContainer<EntityLogItem> entitylogsDc;
+    protected CollectionContainer<EntityLogItem> entitylogsDc;
     @Inject
-    private CollectionLoader<EntityLogItem> testCaseLogItemsDl;
+    protected CollectionLoader<EntityLogItem> testCaseLogItemsDl;
     @Inject
-    private CollectionLoader<EntityLogItem> stepLogItemsDl;
+    protected CollectionLoader<EntityLogItem> stepLogItemsDl;
     @Inject
-    private CollectionContainer<EntityLogItem> testCaseLogsDc;
+    protected CollectionContainer<EntityLogItem> testCaseLogsDc;
     @Inject
-    private CollectionContainer<EntityLogItem> stepLogsDc;
+    protected CollectionContainer<EntityLogItem> stepLogsDc;
     @Inject
-    private Table<EntityLogItem> logTable;
-    @Inject
-    private Button closeBtn;
+    protected Table<EntityLogItem> logTable;
     @Inject
     private TextField<Integer> checklistHours;
     @Inject
@@ -111,7 +106,6 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     private TestCase tempCase;
     @Inject
     private LookupField<Statement> stateField;
-
 
     @Subscribe
     protected void onInit(InitEvent event) {
@@ -132,11 +126,6 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
             testCaseUp.setEnabled(false);
             testCaseDown.setEnabled(false);
         }
-    }
-
-    @Subscribe
-    public void onAfterCommitChanges(AfterCommitChangesEvent event) {
-        entitySnapshotService.createSnapshot(checklistDc.getItem(), checklistDc.getView());
     }
 
     @Subscribe("getEstimation")
@@ -624,7 +613,7 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     }
 
     @Install(to = "entityLogItemsDl", target = Target.DATA_LOADER)
-    private List<EntityLogItem> entityLogItemsDlLoadDelegate(LoadContext<EntityLogItem> loadContext) {
+    public List<EntityLogItem> entityLogItemsDlLoadDelegate(LoadContext<EntityLogItem> loadContext) {
         List<EntityLogItem> entityLogList = new ArrayList();
         entityLogList.addAll(dataManager.loadList(loadContext));
         testCaseLogItemsDl.load();
