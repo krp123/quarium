@@ -110,11 +110,11 @@
                         <textField id="nameField" property="name" required="true"/>
                         <lookupField id="milestone" optionsContainer="milestoneDc"
                                      caption="msg://testRunEdit.milestone"/>
-                        <dateField id="runStartDate" property="runStartDate" width="AUTO"/>
+                        <dateField id="runStartDate" datatype="localDate" property="runStartDate" width="AUTO"/>
                     </column>
                     <column width="400px">
                         <textArea id="descriptionField" property="description" rowspan="2"/>
-                        <dateField id="runFinishDate" property="runFinishDate" width="AUTO"/>
+                        <dateField id="runFinishDate" datatype="localDate" property="runFinishDate" width="AUTO"/>
                     </column>
                 </form>
                 <groupBox id="testSuitsGroupBox"
