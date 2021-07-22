@@ -16,7 +16,6 @@ import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -30,8 +29,7 @@ import static com.company.quarium.Constants.STATE_NOT_STARTED;
 public class TestCase extends StandardEntity implements Cloneable {
     private static final long serialVersionUID = -2660701620585662317L;
 
-    @Column(name = "NAME", nullable = false)
-    @NotNull(message = "{msg://quarium_TestCase.name.validation.NotNull}")
+    @Column(name = "NAME")
     private String name;
 
     @Column(name = "CHECK_DATE")

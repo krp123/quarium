@@ -30,11 +30,11 @@ public class UploadChecklistFromXlsServiceBean implements UploadChecklistFromXls
 
         //Заполняем имя чек-листа из первой строки
         XSSFRow rowName = newSheet.getRow(0);
-        checklistNew.setName(rowName.getCell(1).getStringCellValue());
+        checklistNew.setName(getStringFromCell(rowName, 1));
 
         //Заполняем начальные условия
         XSSFRow rowInitialConditions = newSheet.getRow(1);
-        checklistNew.setInitialConditions(rowInitialConditions.getCell(1).getStringCellValue());
+        checklistNew.setInitialConditions(getStringFromCell(rowInitialConditions, 1));//TODO переделать в стиле 69 строчки
 
         //Заполняем комментарий
         XSSFRow rowComment = newSheet.getRow(2);
@@ -65,30 +65,33 @@ public class UploadChecklistFromXlsServiceBean implements UploadChecklistFromXls
         for (int i = 5; i < rowsQty; i++) {
             if (newSheet.getRow(i) != null) {
                 XSSFRow rowCase = newSheet.getRow(i);
-                if (!"".equals(rowCase.getCell(0).getStringCellValue())) {
+                String firstCell;
+                firstCell = getStringFromCell(rowCase, 0);
+
+                if (!"".equals(firstCell)) {
 
                     TestCase testCaseNew = dataManager.create(TestCase.class);
                     testCaseNew.setChecklist(checklistNew);
                     testCaseNew.setNumber(++casesQty);
 
                     //Заполняем наименование кейса
-                    testCaseNew.setName(rowCase.getCell(0).getStringCellValue());
+                    testCaseNew.setName(firstCell);
 
                     //Заполняем начальные условия
                     if (rowCase.getLastCellNum() > 1) {
-                        testCaseNew.setInitialConditions(rowCase.getCell(1).getStringCellValue());
+                        testCaseNew.setInitialConditions(getStringFromCell(rowCase, 1));
                     }
 
                     //Заполняем ожидаемый результат
                     if (rowCase.getLastCellNum() > 3) {
-                        testCaseNew.setExpectedResult(rowCase.getCell(3).getStringCellValue());
+                        testCaseNew.setExpectedResult(getStringFromCell(rowCase, 3));
                     }
 
                     //Забираем шаги, парсим их по знаку ';' и присваиваем кейсу
                     List<Step> stepsList = new ArrayList<>();
                     String[] steps = new String[0];
                     if (rowCase.getLastCellNum() > 2) {
-                        steps = rowCase.getCell(2).getStringCellValue().split(";");
+                        steps = getStringFromCell(rowCase, 2).split(";");
                     }
                     int stepsQty = 0;
                     for (String s : steps) {
@@ -106,5 +109,15 @@ public class UploadChecklistFromXlsServiceBean implements UploadChecklistFromXls
         checklistNew.setTestCase(testCases);
 
         return checklistNew;
+    }
+
+    private String getStringFromCell(XSSFRow rowCase, int cellNum) {
+        String cellValue;
+        try {
+            cellValue = rowCase.getCell(cellNum).getStringCellValue();
+        } catch (IllegalStateException ex) {
+            cellValue = rowCase.getCell(cellNum).getRawValue();
+        }
+        return cellValue;
     }
 }
