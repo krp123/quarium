@@ -315,6 +315,10 @@
         </property>
         <property name="testRun" view="_minimal">
             <property name="description"/>
+            <property name="runStartDate"/>
+            <property name="runFinishDate"/>
+            <property name="milestone" view="_minimal"/>
+            <property name="checklists" view="_minimal"/>
         </property>
     </view>
     <view entity="quarium_Project" name="project-view" extends="_local">

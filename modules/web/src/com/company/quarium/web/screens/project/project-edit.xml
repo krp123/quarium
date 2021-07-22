@@ -6,7 +6,7 @@
     <data>
         <instance id="projectDc"
                   class="com.company.quarium.entity.project.SimpleProject">
-            <view extends="_local">
+            <view extends="simpleProject-view">
                 <property name="qa" view="edit"/>
                 <property name="configuration" view="edit"/>
                 <property name="checklist" view="project-checklist-view"/>
@@ -17,7 +17,7 @@
                 <property name="dbms" view="_local"/>
                 <property name="thesisVersion" view="_local"/>
                 <property name="milestone" view="_local"/>
-                <property name="testRun" view="_local"/>
+                <property name="testRun" view="testRun-view"/>
             </view>
             <loader/>
             <collection id="qaProjectDc" property="qa"/>
