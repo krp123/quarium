@@ -16,6 +16,6 @@ public class MilestoneEdit extends StandardEditor<Milestone> {
 
     @Subscribe
     public void onInitEntity(InitEntityEvent<Milestone> event) {
-        event.getEntity().setStartDate(timeSource.now().toLocalDateTime());
+        event.getEntity().setStartDate(timeSource.now().toLocalDate());
     }
 }

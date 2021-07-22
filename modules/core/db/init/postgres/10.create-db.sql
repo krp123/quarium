@@ -266,8 +266,8 @@ create table QUARIUM_MILESTONE (
     DELETED_BY varchar(50),
     --
     NAME varchar(255),
-    START_DATE timestamp,
-    FINISH_DATE timestamp,
+    START_DATE date,
+    FINISH_DATE date,
     STATUS varchar(50),
     DESCRIPTION varchar(1000),
     PROJECT_ID uuid,

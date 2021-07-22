@@ -5,7 +5,7 @@ import com.haulmont.cuba.core.entity.StandardEntity;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Table(name = "QUARIUM_MILESTONE")
 @Entity(name = "quarium_Milestone")
@@ -17,10 +17,10 @@ public class Milestone extends StandardEntity {
     private String name;
 
     @Column(name = "START_DATE")
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "FINISH_DATE")
-    private LocalDateTime finishDate;
+    private LocalDate finishDate;
 
     @Column(name = "STATUS")
     private String status;
@@ -31,6 +31,22 @@ public class Milestone extends StandardEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PROJECT_ID")
     private Project project;
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setFinishDate(LocalDate finishDate) {
+        this.finishDate = finishDate;
+    }
+
+    public LocalDate getFinishDate() {
+        return finishDate;
+    }
 
     public Project getProject() {
         return project;
@@ -51,22 +67,6 @@ public class Milestone extends StandardEntity {
     @PostConstruct
     public void initStatus() {
         setStatus(MilestoneStatus.ACTIVE);
-    }
-
-    public LocalDateTime getFinishDate() {
-        return finishDate;
-    }
-
-    public void setFinishDate(LocalDateTime finishDate) {
-        this.finishDate = finishDate;
-    }
-
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
     }
 
     public String getDescription() {
