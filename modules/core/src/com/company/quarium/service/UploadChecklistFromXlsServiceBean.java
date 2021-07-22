@@ -34,7 +34,7 @@ public class UploadChecklistFromXlsServiceBean implements UploadChecklistFromXls
 
         //Заполняем начальные условия
         XSSFRow rowInitialConditions = newSheet.getRow(1);
-        checklistNew.setInitialConditions(getStringFromCell(rowInitialConditions, 1));//TODO переделать в стиле 69 строчки
+        checklistNew.setInitialConditions(getStringFromCell(rowInitialConditions, 1));
 
         //Заполняем комментарий
         XSSFRow rowComment = newSheet.getRow(2);
