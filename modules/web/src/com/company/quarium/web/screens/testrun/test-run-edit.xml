@@ -107,13 +107,13 @@
             <tab id="mainTab" expand="testSuitsGroupBox" caption="msg://mainTab" spacing="true" margin="true">
                 <form id="form" dataContainer="testRunDc">
                     <column width="350px">
-                        <textField id="nameField" property="name" required="true"/>
+                        <textField id="name" property="name" required="true"/>
                         <lookupField id="milestone" property="milestone" optionsContainer="milestoneDc"
                                      caption="msg://testRunEdit.milestone"/>
                         <dateField id="runStartDate" datatype="localDate" property="runStartDate" width="AUTO"/>
                     </column>
                     <column width="400px">
-                        <textArea id="descriptionField" property="description" rowspan="2"/>
+                        <textArea id="description" property="description" rowspan="2"/>
                         <dateField id="runFinishDate" datatype="localDate" property="runFinishDate" width="AUTO"/>
                     </column>
                 </form>
