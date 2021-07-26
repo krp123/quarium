@@ -76,6 +76,7 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
         checklistNew.setAssignedQa(checklist.getAssignedQa());
         checklistNew.setComment(checklist.getComment());
         checklistNew.setTicket(checklist.getTicket());
+        checklistNew.setInitialConditions(checklist.getInitialConditions());
 
         if (checklist.getTestCase() != null) {
             List<TestCase> tcList = new ArrayList<>();
@@ -103,6 +104,8 @@ public class CopyChecklistServiceBean implements CopyChecklistService {
                 newTC.setComment(tc.getComment());
                 newTC.setTicket(tc.getTicket());
                 newTC.setCheckDate(tc.getCheckDate());
+                newTC.setInitialConditions(tc.getInitialConditions());
+                newTC.setPriority(tc.getPriority());
                 tcList.add(newTC);
             }
             checklistNew.setTestCase(tcList);
