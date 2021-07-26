@@ -17,6 +17,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -185,6 +186,11 @@ public class TestCase extends StandardEntity implements Cloneable {
     @PostConstruct
     private void initState(DataManager dataManager) {
         setState(dataManager.load(Statement.class).id(STATE_NOT_STARTED).one());
+        List<Step> steps = new ArrayList<>();
+        Step step = dataManager.create(Step.class);
+        step.setNumber(1);
+        steps.add(step);
+        setCaseStep(steps);
     }
 
     public Priority getPriority() {

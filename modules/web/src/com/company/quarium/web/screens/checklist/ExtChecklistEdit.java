@@ -238,7 +238,6 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
         }
     }
 
-
     protected void discardChanges() {
         releaseLock();
         getScreenData().getDataContext().evictModified();
@@ -341,7 +340,8 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     @Subscribe("stepsTable.moveStepUp")
     public void onStepsTableMoveStepUp(Action.ActionPerformedEvent event) {
         Step selectedStep = stepsTable.getSingleSelected();
-        if (Objects.requireNonNull(selectedStep).getNumber() > 1) {
+        if (selectedStep != null &&
+                selectedStep.getNumber() > 1) {
             stepsCollection.getMutableItems().sort(Comparator.comparing(Step::getNumber));
             Step prevStep = stepsCollection.getMutableItems().get(selectedStep.getNumber() - 2);
             selectedStep.setNumber(selectedStep.getNumber() - 1);
@@ -356,7 +356,8 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     @Subscribe("stepsTable.moveStepDown")
     public void onStepsTableMoveStepDown(Action.ActionPerformedEvent event) {
         Step selectedStep = stepsTable.getSingleSelected();
-        if (Objects.requireNonNull(selectedStep).getNumber() < stepsCollection.getMutableItems().size()) {
+        if (selectedStep != null &&
+                selectedStep.getNumber() < stepsCollection.getMutableItems().size()) {
             stepsCollection.getMutableItems().sort(Comparator.comparing(Step::getNumber));
             Step nextStep = stepsCollection.getMutableItems().get(selectedStep.getNumber());
             selectedStep.setNumber(selectedStep.getNumber() + 1);
@@ -371,7 +372,8 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     @Subscribe("table.moveTestCaseUp")
     public void onTableMoveTestCaseUp(Action.ActionPerformedEvent event) {
         TestCase selectedCase = table.getSingleSelected();
-        if (Objects.requireNonNull(selectedCase).getNumber() > 1) {
+        if (selectedCase != null &&
+                selectedCase.getNumber() > 1) {
             testCasesDc.getMutableItems().sort(Comparator.comparing(TestCase::getNumber));
             TestCase prevCase = testCasesDc.getMutableItems().get(selectedCase.getNumber() - 2);
             selectedCase.setNumber(selectedCase.getNumber() - 1);
@@ -386,7 +388,8 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     @Subscribe("table.moveTestCaseDown")
     public void onTableMoveTestCaseDown(Action.ActionPerformedEvent event) {
         TestCase selectedCase = table.getSingleSelected();
-        if (Objects.requireNonNull(selectedCase).getNumber() < testCasesDc.getMutableItems().size()) {
+        if (selectedCase != null &&
+                selectedCase.getNumber() < testCasesDc.getMutableItems().size()) {
             testCasesDc.getMutableItems().sort(Comparator.comparing(TestCase::getNumber));
             TestCase nextCase = testCasesDc.getMutableItems().get(selectedCase.getNumber());
             selectedCase.setNumber(selectedCase.getNumber() + 1);
@@ -447,6 +450,9 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
             refreshOptionsForLookupFields();
             enableEditControls(true);
             table.setSelected(Collections.emptyList());
+//            stepsTable.focus();
+//            Step step = testCaseDc.getItem().getCaseStep().get(0);
+//            stepsTable.setSelected(step);
         });
     }
 
@@ -696,5 +702,19 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
                     return;
             }
         }
+    }
+
+    @Subscribe("stepsTable.createStep")
+    public void onStepsTableCreateStep(Action.ActionPerformedEvent event) {
+        Step toSelect = null;
+        for (Step s : stepsTable.getItems().getItems()) {
+            if (toSelect == null) {
+                toSelect = s;
+            } else if (s.getNumber() > toSelect.getNumber()) {
+                toSelect = s;
+            }
+        }
+        stepsTable.setSelected(toSelect);
+        stepsTable.focus();
     }
 }
