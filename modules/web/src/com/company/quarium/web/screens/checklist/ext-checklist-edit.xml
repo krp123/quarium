@@ -250,10 +250,6 @@
                                                                 icon="font-icon:ANGLE_DOWN"/>
                                                     </buttonsPanel>
                                                 </table>
-                                                <!--                                                <lookupField id="caseStateField" dataContainer="testCaseDc"-->
-                                                <!--                                                             optionsContainer="statesDc" property="state"-->
-                                                <!--                                                             caption="msg://checklistEdit.state" width="90%"/>-->
-
                                                 <lookupField id="caseResult" dataContainer="testCaseDc"
                                                              property="result"
                                                              caption="msg://checklistEdit.result"
@@ -275,13 +271,13 @@
                                                 </hbox>
                                             </row>
                                             <row>
-                                                <textArea id="expectedResultField" property="expectedResult"
-                                                          rows="4" dataContainer="testCaseDc"
-                                                          caption="msg://checklistEdit.expectedResult" width="90%"/>
-                                                <textArea id="caseComment" dataContainer="testCaseDc"
-                                                          rows="4" property="comment" width="90%"
-                                                          caption="msg://checklistEdit.comment"
-                                                          visible="false"/>
+                                                <richTextArea id="expectedResultField" property="expectedResult"
+                                                              dataContainer="testCaseDc"
+                                                              caption="msg://checklistEdit.expectedResult" width="90%"/>
+                                                <richTextArea id="caseComment" dataContainer="testCaseDc"
+                                                              property="comment" width="90%"
+                                                              caption="msg://checklistEdit.comment"
+                                                              visible="false"/>
                                             </row>
                                         </rows>
                                     </grid>
