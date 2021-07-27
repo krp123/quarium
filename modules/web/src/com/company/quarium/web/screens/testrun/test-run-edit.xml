@@ -99,6 +99,14 @@
                 </query>
             </loader>
         </collection>
+        <collection id="checklistsFilterDc" class="com.company.quarium.entity.checklist.RegressChecklist"
+                    view="regressChecklist-view">
+            <loader id="checklistsFilterDl">
+                <query>
+                    <![CDATA[select e from quarium_RegressChecklist e where e.testRun = :testRun]]>
+                </query>
+            </loader>
+        </collection>
     </data>
     <dialogMode height="600"
                 width="800"/>
@@ -119,22 +127,36 @@
                 </form>
                 <groupBox id="testSuitsGroupBox"
                           caption="msg://testSuits"
-                          collapsable="false">
+                          collapsable="false"
+                          expand="checklistTable"
+                          spacing="true">
+                    <filter id="testSuitFilter"
+                            width="100%"
+                            height="AUTO"
+                            dataLoader="checklistsFilterDl"
+                            applyTo="checklistTable"
+                            collapsed="true">
+                        <properties include=".*"/>
+                    </filter>
                     <groupTable id="checklistTable"
                                 width="100%"
-                                height="100%"
                                 dataContainer="checklistsDc"
                                 multiselect="true"
                                 presentations="true"
                                 editable="true">
                         <actions>
-                            <action id="create" type="create">
+                            <action id="create" type="create" caption="msg://new">
                                 <properties>
                                     <property name="screenClass"
                                               value="com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit"/>
                                 </properties>
                             </action>
-                            <action id="addChecklist" type="add"/>
+                            <action id="addChecklist" type="add" caption="msg://addFromProject">
+                                <properties>
+                                    <property name="screenClass"
+                                              value="com.company.quarium.web.screens.checklist.SuitCaseBrowser"/>
+                                </properties>
+                            </action>
                             <action id="edit" type="edit">
                                 <properties>
                                     <property name="screenClass"
@@ -155,8 +177,13 @@
                         <rows/>
                         <buttonsPanel id="buttonsPanel"
                                       alwaysVisible="true">
-                            <button id="createBtn" action="checklistTable.create"/>
-                            <button id="addBtn" action="checklistTable.addChecklist" icon="ADD_TO_SET_ACTION"/>
+                            <popupButton id="createPopup" caption="msg://create">
+                                <actions>
+                                    <action id="checklistTable.create"/>
+                                    <action id="copy" caption="msg://copy"/>
+                                    <action id="checklistTable.addChecklist"/>
+                                </actions>
+                            </popupButton>
                             <button id="editBtn" action="checklistTable.edit"/>
                             <button id="removeBtn" action="checklistTable.remove"/>
                         </buttonsPanel>

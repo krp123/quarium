@@ -18,10 +18,7 @@ import com.haulmont.cuba.core.global.TimeSource;
 import com.haulmont.cuba.core.global.UserSessionSource;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.ScreenBuilders;
-import com.haulmont.cuba.gui.components.AbstractAction;
-import com.haulmont.cuba.gui.components.Action;
-import com.haulmont.cuba.gui.components.Button;
-import com.haulmont.cuba.gui.components.Component;
+import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.*;
 import com.haulmont.cuba.gui.screen.*;
 
@@ -57,13 +54,17 @@ public class ProjectEdit extends StandardEditor<Project> {
     @Inject
     private UserSessionSource userSessionSource;
     @Inject
-    private Button uploadExcel;
-    @Inject
     private Button saveBtn;
     @Inject
     private Notifications notifications;
     @Inject
     private Messages messages;
+    @Inject
+    private CollectionLoader<Checklist> checklistsFilterDl;
+    @Inject
+    private PopupButton createPopup;
+    @Inject
+    private GroupTable<SimpleChecklist> checklistsTable;
 
     @Subscribe
     public void onInitEntity(InitEntityEvent<Project> event) {
@@ -73,6 +74,7 @@ public class ProjectEdit extends StandardEditor<Project> {
     @Subscribe
     protected void onBeforeShow(BeforeShowEvent event) {
         qaDl.setParameter("project", getEditedEntity());
+        checklistsFilterDl.setParameter("project", getEditedEntity());
     }
 
     @Subscribe("qaProjectRelationshipsTable.addQa")
@@ -207,13 +209,27 @@ public class ProjectEdit extends StandardEditor<Project> {
         });
 
         if (userSessionSource.getUserSession().getRoles().contains("View")) {
-            uploadExcel.setVisible(false);
+            createPopup.setVisible(false);
             saveBtn.setVisible(false);
         }
     }
 
-    @Subscribe("uploadExcel")
-    public void onUploadExcelClick(Button.ClickEvent event) {
+    @Subscribe("createPopup.copy")
+    public void onCreatePopupCopy(Action.ActionPerformedEvent event) {
+        if (checklistsTable.getSingleSelected() != null) {
+            SimpleChecklist newCl = copyChecklistService.copyChecklist(checklistsTable.getSingleSelected());
+            newCl.setProject(getEditedEntity());
+            checklistsDc.getMutableItems().add(newCl);
+
+            screenBuilders.editor(checklistsTable)
+                    .editEntity(newCl)
+                    .build()
+                    .show();
+        }
+    }
+
+    @Subscribe("createPopup.uploadExcel")
+    public void onCreatePopupUploadExcel(Action.ActionPerformedEvent event) {
         ProjectExcelUploadWindow uploadWindow = screenBuilders.screen(this)
                 .withScreenClass(ProjectExcelUploadWindow.class)
                 .build();

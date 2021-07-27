@@ -28,7 +28,7 @@
                     dataContainer="checklistsDc"
                     multiselect="true">
             <actions>
-                <action id="create" type="create"/>
+                <action id="create" type="create" caption="msg://new"/>
                 <action id="edit" type="edit"/>
                 <action id="remove" type="remove"/>
                 <action id="refresh" type="refresh"/>
@@ -39,13 +39,17 @@
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"
                           alwaysVisible="true">
-                <button id="createBtn" action="checklistsTable.create"/>
+                <popupButton id="createPopup" caption="msg://create">
+                    <actions>
+                        <action id="checklistsTable.create"/>
+                        <action id="copy" caption="msg://copy"/>
+                        <action id="uploadExcel" caption="msg://checklistBrowse.uploadXlsx"
+                                icon="font-icon:FILE_EXCEL_O"/>
+                    </actions>
+                </popupButton>
                 <button id="editBtn" action="checklistsTable.edit"/>
                 <button id="removeBtn" action="checklistsTable.remove"/>
                 <button id="refreshBtn" action="checklistsTable.refresh"/>
-                <button id="uploadExcel"
-                        caption="msg://checklistBrowse.uploadXlsx"
-                        icon="font-icon:FILE_EXCEL_O"/>
             </buttonsPanel>
         </groupTable>
         <hbox id="lookupActions" spacing="true" visible="false">

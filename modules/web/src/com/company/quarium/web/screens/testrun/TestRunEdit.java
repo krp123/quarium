@@ -6,6 +6,7 @@ import com.company.quarium.entity.checklist.SimpleChecklist;
 import com.company.quarium.entity.checklist.TestCase;
 import com.company.quarium.entity.project.*;
 import com.company.quarium.service.CopyChecklistService;
+import com.company.quarium.web.screens.checklist.SuitCaseBrowser;
 import com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit;
 import com.company.quarium.web.screens.simplechecklist.TestRunTestSuitBrowse;
 import com.haulmont.bali.util.ParamsMap;
@@ -94,6 +95,10 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     private CollectionLoader<TestCase> blockedCasesDl;
     @Inject
     private CollectionLoader<TestCase> skippedCasesDl;
+    @Inject
+    private CollectionLoader<RegressChecklist> checklistsFilterDl;
+    @Inject
+    private GroupTable<RegressChecklist> checklistTable;
 
     @Subscribe("checklistTable.addChecklist")
     protected void onAddChecklist(Action.ActionPerformedEvent event) {
@@ -117,6 +122,7 @@ public class TestRunEdit extends StandardEditor<TestRun> {
         passedCasesDl.setParameter("testRun", getEditedEntity());
         blockedCasesDl.setParameter("testRun", getEditedEntity());
         skippedCasesDl.setParameter("testRun", getEditedEntity());
+        checklistsFilterDl.setParameter("testRun", getEditedEntity());
     }
 
     private RegressChecklist createAndAddChecklist(Checklist checklist) {
@@ -131,6 +137,11 @@ public class TestRunEdit extends StandardEditor<TestRun> {
         qaDl.setParameter("project", project);
         milestoneDl.setParameter("project", project);
         moduleDl.setParameter("project", project);
+    }
+
+    @Install(to = "checklistTable.addChecklist", subject = "screenConfigurer")
+    private void checklistTableAddChecklistScreenConfigurer(Screen screen) {
+        ((SuitCaseBrowser) screen).setProjectParameter(getEditedEntity().getProject());
     }
 
     @Install(to = "checklistTable.create", subject = "screenConfigurer")
@@ -324,5 +335,19 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     private void repaintStatisticsTables() {
         testPlanQaStatisticsTable.repaint();
         suitsStatisticsTable.repaint();
+    }
+
+    @Subscribe("createPopup.copy")
+    public void onCreatePopupCopy(Action.ActionPerformedEvent event) {
+        if (checklistTable.getSingleSelected() != null) {
+            RegressChecklist newCl = copyChecklistService.copyRegressChecklist(checklistTable.getSingleSelected());
+            newCl.setTestRun(getEditedEntity());
+            checklistsDc.getMutableItems().add(newCl);
+
+            screenBuilders.editor(checklistTable)
+                    .editEntity(newCl)
+                    .build()
+                    .show();
+        }
     }
 }
