@@ -63,7 +63,7 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     @Inject
     private TimeSource timeSource;
     @Inject
-    private TextArea<String> caseComment;
+    private RichTextArea caseComment;
     @Inject
     private HBoxLayout ticketBox;
     @Inject
@@ -305,12 +305,13 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     public void onCreateStep(Action.ActionPerformedEvent event) {
         Step entity = dataManager.create(Step.class);
         entity.setTestCase(testCaseDc.getItem());
+        int lastNum = 0;
+
         if (testCaseDc
                 .getItem()
                 .getCaseStep() == null) {
             entity.setNumber(1);
         } else {
-            int lastNum = 0;
             for (Step s : testCaseDc.getItem().getCaseStep()) {
                 if (s.getNumber() > lastNum) {
                     lastNum = s.getNumber();
@@ -319,6 +320,7 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
             entity.setNumber(lastNum + 1);
         }
         stepsCollection.getMutableItems().add(entity);
+        stepsTable.requestFocus(entity, "step");
     }
 
     @Install(to = "stepsTable.removeStep", subject = "afterActionPerformedHandler")
@@ -702,19 +704,5 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
                     return;
             }
         }
-    }
-
-    @Subscribe("stepsTable.createStep")
-    public void onStepsTableCreateStep(Action.ActionPerformedEvent event) {
-        Step toSelect = null;
-        for (Step s : stepsTable.getItems().getItems()) {
-            if (toSelect == null) {
-                toSelect = s;
-            } else if (s.getNumber() > toSelect.getNumber()) {
-                toSelect = s;
-            }
-        }
-        stepsTable.setSelected(toSelect);
-        stepsTable.focus();
     }
 }
