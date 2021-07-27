@@ -51,6 +51,14 @@
                 </query>
             </loader>
         </collection>
+        <collection id="checklistsFilterDc" class="com.company.quarium.entity.checklist.Checklist"
+                    view="project-checklist-view">
+            <loader id="checklistsFilterDl">
+                <query>
+                    <![CDATA[select e from quarium_Checklist e where e.project = :project]]>
+                </query>
+            </loader>
+        </collection>
     </data>
     <dialogMode height="600"
                 width="800"/>
@@ -183,6 +191,7 @@
                         <column id="startDate"/>
                         <column id="finishDate"/>
                         <column id="status"/>
+                        <column id="description"/>
                     </columns>
                     <rows/>
                     <buttonsPanel id="milestonesButtonsPanel"
@@ -193,23 +202,30 @@
                     </buttonsPanel>
                 </groupTable>
             </tab>
-            <tab id="testSuitsTab" caption="msg://projectEdit.testSuits" spacing="true" margin="true">
-                <vbox expand="checklistBox" spacing="true" height="100%">
-                    <vbox id="checklistBox" width="100%" margin="true" spacing="true">
+            <tab id="testSuitsTab" caption="msg://projectEdit.testSuits" spacing="true" margin="true" expand="vbox">
+                <vbox id="vbox" expand="checklistBox" spacing="true" height="100%">
+                    <vbox id="checklistBox" width="100%" margin="true" spacing="true" expand="checklistsTable">
+                        <filter id="testSuitFilter"
+                                width="100%"
+                                height="AUTO"
+                                dataLoader="checklistsFilterDl"
+                                applyTo="checklistsTable"
+                                collapsed="true">
+                            <properties include=".*"/>
+                        </filter>
                         <groupTable id="checklistsTable"
                                     width="100%"
-                                    height="100%"
                                     dataContainer="checklistsDc"
                                     multiselect="true"
                                     presentations="true">
                             <actions>
-                                <action id="create" type="create">
+                                <action id="create" type="create" caption="msg://new">
                                     <properties>
                                         <property name="screenClass"
                                                   value="com.company.quarium.web.screens.checklist.TestSuitEdit"/>
                                     </properties>
                                 </action>
-                                <action id="addChecklist" type="add"/>
+                                <action id="addChecklist" type="add" icon="ADD_TO_SET_ACTION" caption="msg://fromList"/>
                                 <action id="edit" type="edit">
                                     <properties>
                                         <property name="screenClass"
@@ -220,18 +236,23 @@
                             </actions>
                             <columns>
                                 <column id="name"/>
+                                <column id="comment"/>
                                 <column id="module" caption="msg://projectEdit.module"/>
                             </columns>
                             <rowsCount/>
                             <buttonsPanel id="buttonsPanel"
                                           alwaysVisible="true">
-                                <button id="createBtn" action="checklistsTable.create"/>
-                                <button id="addBtn" action="checklistsTable.addChecklist" icon="ADD_TO_SET_ACTION"/>
+                                <popupButton id="createPopup" caption="msg://create">
+                                    <actions>
+                                        <action id="checklistsTable.create"/>
+                                        <action id="copy" caption="msg://copy"/>
+                                        <action id="checklistsTable.addChecklist" icon="ADD_TO_SET_ACTION"/>
+                                        <action id="uploadExcel" caption="msg://checklistBrowse.uploadXlsx"
+                                                icon="font-icon:FILE_EXCEL_O"/>
+                                    </actions>
+                                </popupButton>
                                 <button id="editBtn" action="checklistsTable.edit"/>
                                 <button id="removeBtn" action="checklistsTable.remove"/>
-                                <button id="uploadExcel"
-                                        caption="msg://checklistBrowse.uploadXlsx"
-                                        icon="font-icon:FILE_EXCEL_O"/>
                             </buttonsPanel>
                         </groupTable>
                     </vbox>
@@ -260,6 +281,10 @@
                     </actions>
                     <columns>
                         <column id="name"/>
+                        <column id="runStartDate"/>
+                        <column id="runFinishDate"/>
+                        <column id="description"/>
+                        <column id="milestone"/>
                     </columns>
                     <rows/>
                     <buttonsPanel id="testRunsButtonsPanel"

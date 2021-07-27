@@ -12,7 +12,8 @@
                   stylename="c-sidemenu-panel"
                   width="260px"
                   expand="sideMenu"
-                  margin="false,false,true,false">
+                  margin="false,false,true,false"
+                  responsive="true">
                 <button id="mobileMenuButton"
                         caption="mainMsg://app.menu"
                         icon="icons/mobile-menu.png"
