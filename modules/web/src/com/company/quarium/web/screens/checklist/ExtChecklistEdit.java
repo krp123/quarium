@@ -6,6 +6,7 @@ import com.company.quarium.entity.checklist.Step;
 import com.company.quarium.entity.checklist.TestCase;
 import com.company.quarium.entity.project.Module;
 import com.company.quarium.entity.project.QaProjectRelationship;
+import com.company.quarium.entity.references.Priority;
 import com.company.quarium.entity.references.Statement;
 import com.haulmont.cuba.core.app.LockService;
 import com.haulmont.cuba.core.entity.BaseGenericIdEntity;
@@ -53,8 +54,6 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     @Inject
     private Table<Step> stepsTable;
     @Inject
-    private InstanceContainer<Checklist> checklistDc;
-    @Inject
     private LookupField<QaProjectRelationship> assignedQaField;
     @Inject
     private LookupField<Module> moduleField;
@@ -63,7 +62,7 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     @Inject
     private TimeSource timeSource;
     @Inject
-    private RichTextArea caseComment;
+    private TextArea<String> caseComment;
     @Inject
     private HBoxLayout ticketBox;
     @Inject
@@ -106,6 +105,14 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
     private TestCase tempCase;
     @Inject
     private LookupField<Statement> stateField;
+    @Inject
+    private TextField<String> caseNameField;
+    @Inject
+    private TextArea<String> initialConditions;
+    @Inject
+    private LookupField<Priority> priorityField;
+    @Inject
+    private TextArea<String> expectedResultField;
 
     @Subscribe
     protected void onInit(InitEvent event) {
@@ -488,8 +495,20 @@ public class ExtChecklistEdit extends StandardEditor<Checklist> {
                 ((Component.Editable) component).setEditable(enabled);
         }
         getVBox().setEnabled(enabled);
+
         getActionsPane().setVisible(enabled);
         getLookupBox().setEnabled(!enabled);
+
+    }
+
+    @Subscribe("table")
+    public void onTableSelection(Table.SelectionEvent<TestCase> event) {
+        caseNameField.setStyleName("bright-disabled");
+        initialConditions.setStyleName("bright-disabled");
+        caseHours.setStyleName("bright-disabled");
+        caseMinutes.setStyleName("bright-disabled");
+        expectedResultField.setStyleName("bright-disabled");
+        caseComment.setStyleName("bright-disabled");
     }
 
     protected ComponentContainer getLookupBox() {

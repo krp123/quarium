@@ -18,4 +18,16 @@ $cuba-highlight-primary-action: false;
 .skipped-result {
      color: #a0aac0;
 }
+
+.bright-disabled {
+      color: #4f5c78 !important;
+ }
+
+ .helium .v-textarea.v-disabled .bright-disabled {
+     color: #4f5c78 !important;
+ }
+
+ .helium .v-textfield.v-disabled .bright-disabled {
+     color: #4f5c78 !important;
+ }
 }
