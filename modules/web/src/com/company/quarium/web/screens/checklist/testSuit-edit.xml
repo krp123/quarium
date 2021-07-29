@@ -276,14 +276,16 @@
                                                     </hbox>
                                                 </row>
                                                 <row>
-                                                    <richTextArea id="expectedResultField" property="expectedResult"
-                                                                  dataContainer="testCaseDc"
-                                                                  caption="msg://checklistEdit.expectedResult"
-                                                                  width="90%"/>
-                                                    <richTextArea id="caseComment" dataContainer="testCaseDc"
-                                                                  property="comment" width="90%"
-                                                                  caption="msg://checklistEdit.comment"
-                                                                  visible="false"/>
+                                                    <textArea id="expectedResultField" property="expectedResult"
+                                                              dataContainer="testCaseDc"
+                                                              caption="msg://checklistEdit.expectedResult"
+                                                              width="90%"
+                                                              rows="4"/>
+                                                    <textArea id="caseComment" dataContainer="testCaseDc"
+                                                              property="comment" width="90%"
+                                                              caption="msg://checklistEdit.comment"
+                                                              visible="false"
+                                                              rows="4"/>
                                                 </row>
                                             </rows>
                                         </grid>
