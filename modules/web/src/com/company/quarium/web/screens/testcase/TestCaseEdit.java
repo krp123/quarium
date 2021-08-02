@@ -17,6 +17,7 @@ import com.haulmont.cuba.gui.model.InstanceContainer;
 import com.haulmont.cuba.gui.screen.*;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -51,6 +52,11 @@ public class TestCaseEdit extends StandardEditor<TestCase> {
                 String.format(messages.getMessage(getClass(), "checklistEdit.hoursValidation")));
         caseMinutes.setConversionErrorMessage(
                 String.format(messages.getMessage(getClass(), "checklistEdit.minutesValidation")));
+    }
+
+    @Subscribe
+    public void onInitEntity(InitEntityEvent<TestCase> event) {
+        adjustStep(event.getEntity());
     }
 
     public void setCaseNumber(int number) {
@@ -140,7 +146,18 @@ public class TestCaseEdit extends StandardEditor<TestCase> {
             getEditedEntityContainer().setItem(newTestCase);
             newTestCase.setNumber(number);
             newTestCase.setTestSuit(testSuit);
+
+            adjustStep(newTestCase);
         }
+    }
+
+    private void adjustStep(TestCase newTestCase) {
+        List<Step> steps = new ArrayList<>();
+        Step step = dataManager.create(Step.class);
+        step.setNumber(1);
+        step.setTestCase(newTestCase);
+        steps.add(step);
+        newTestCase.setCaseStep(steps);
     }
 
     public void setTestCasesDc(CollectionContainer<TestCase> testCasesDc) {

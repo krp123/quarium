@@ -53,11 +53,6 @@ public class RunTestSuitEdit extends BaseTestSuitEdit {
         runTestCaseEdit.show();
     }
 
-//    @Install(to = "table.run", subject = "screenConfigurer")
-//    private void tableRunScreenConfigurer(Screen screen) {
-//        ((RunTestCaseEdit) screen).setTestCasesDc(testCasesDc);
-//    }
-
     @Subscribe
     public void onInit1(InitEvent event) {
         testRun.setStyleName("passed");
