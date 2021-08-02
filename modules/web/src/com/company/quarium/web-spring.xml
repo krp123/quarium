@@ -11,9 +11,9 @@
         <property name="serverSelector" ref="cuba_ServerSelector"/>
         <property name="remoteServices">
             <map>
-                <entry key="quarium_CopyChecklistService" value="com.company.quarium.service.CopyChecklistService"/>
-                <entry key="quarium_UploadChecklistFromXlsService"
-                       value="com.company.quarium.service.UploadChecklistFromXlsService"/>
+                <entry key="quarium_CopyTestSuitService" value="com.company.quarium.service.CopyTestSuitService"/>
+                <entry key="quarium_UploadTestSuitFromXlsService"
+                       value="com.company.quarium.service.UploadTestSuitFromXlsService"/>
             </map>
         </property>
     </bean>

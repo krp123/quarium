@@ -1,11 +1,11 @@
 package com.company.quarium.accessGroups;
 
-import com.company.quarium.entity.checklist.*;
 import com.company.quarium.entity.project.*;
 import com.company.quarium.entity.references.Configuration;
 import com.company.quarium.entity.references.Dbms;
 import com.company.quarium.entity.references.Qa;
 import com.company.quarium.entity.references.ThesisVersion;
+import com.company.quarium.entity.testSuit.*;
 import com.haulmont.cuba.core.entity.EntitySnapshot;
 import com.haulmont.cuba.security.app.group.AnnotatedAccessGroupDefinition;
 import com.haulmont.cuba.security.app.group.annotation.AccessGroup;
@@ -18,11 +18,10 @@ public class FullAccessGroup extends AnnotatedAccessGroupDefinition {
     public static final String NAME = "Full Access";
 
     @JpqlConstraint(target = SimpleProject.class, where = "{E}.createdBy is not null")
-    @JpqlConstraint(target = ProjectVersion.class, where = "{E}.createdBy is not null")
     @JpqlConstraint(target = Project.class, where = "{E}.createdBy is not null")
-    @JpqlConstraint(target = SimpleChecklist.class, where = "{E}.createdBy is not null")
-    @JpqlConstraint(target = RegressChecklist.class, where = "{E}.createdBy is not null")
-    @JpqlConstraint(target = Checklist.class, where = "{E}.createdBy is not null")
+    @JpqlConstraint(target = SharedTestSuit.class, where = "{E}.createdBy is not null")
+    @JpqlConstraint(target = RunTestSuit.class, where = "{E}.createdBy is not null")
+    @JpqlConstraint(target = TestSuit.class, where = "{E}.createdBy is not null")
     @JpqlConstraint(target = TestCase.class, where = "{E}.createdBy is not null")
     @JpqlConstraint(target = Step.class, where = "{E}.createdBy is not null")
     @JpqlConstraint(target = Module.class, where = "{E}.createdBy is not null")

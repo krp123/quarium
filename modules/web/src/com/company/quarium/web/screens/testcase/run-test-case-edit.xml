@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:app="http://schemas.company.com/demo/0.1/ui-component.xsd"
+        caption="msg://runTestCaseEdit.caption"
+        focusComponent="form"
+        messagesPack="com.company.quarium.web.screens.testcase">
+    <data>
+        <instance id="testCaseDc"
+                  class="com.company.quarium.entity.testSuit.TestCase">
+            <view extends="testCase-edit"/>
+            <loader/>
+            <collection id="stepsCollection" property="caseStep"/>
+        </instance>
+        <collection id="prioritiesDc" class="com.company.quarium.entity.references.Priority" view="_minimal">
+            <loader id="prioritiesDl">
+                <query>
+                    <![CDATA[select e from quarium_Priority e]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="statesDc" class="com.company.quarium.entity.references.Statement" view="_minimal">
+            <loader id="statesDl">
+                <query>
+                    <![CDATA[select e from quarium_Statement e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="800"
+                width="1100"
+                resizable="true"/>
+    <layout expand="scrollBox" spacing="true" width="100%">
+        <scrollBox id="scrollBox" spacing="true" width="100%">
+            <form id="form" dataContainer="testCaseDc" height="100%" width="100%">
+                <grid width="100%" spacing="true" margin="true">
+                    <columns>
+                        <column/>
+                        <column/>
+                        <column/>
+                        <column/>
+                    </columns>
+                    <rows>
+                        <row>
+                            <button id="passedButton"
+                                    caption="msg://passed"
+                                    icon="font-icon:CHECK"
+                                    width="150px"/>
+                            <button id="skippedButton"
+                                    caption="msg://skipped"
+                                    icon="font-icon:BAN"
+                                    width="150px"/>
+                            <button id="blockedButton"
+                                    caption="msg://blocked"
+                                    icon="font-icon:BAN"
+                                    width="150px"/>
+                            <button id="failedButton"
+                                    caption="msg://failed"
+                                    icon="font-icon:CLOSE"
+                                    width="150px"/>
+                        </row>
+                    </rows>
+                </grid>
+                <grid id="caseForm" spacing="true" width="100%">
+                    <columns>
+                        <column flex="3"/>
+                        <column flex="1"/>
+                    </columns>
+                    <rows>
+                        <row>
+                            <textField id="caseNameField" property="name"
+                                       dataContainer="testCaseDc"
+                                       caption="msg://checklistEdit.caseName"
+                                       width="90%"
+                                       editable="false"/>
+                            <hbox caption="msg://checklistEdit.estimation" spacing="true">
+                                <textField id="caseHours" property="hours"
+                                           dataContainer="testCaseDc" width="50"
+                                           editable="false"/>
+                                <label id="testCaseHoursLabel"
+                                       value="msg://checklistEdit.hoursLabel"
+                                       align="BOTTOM_LEFT"
+                                       width="20"/>
+                                <textField id="caseMinutes" property="minutes"
+                                           dataContainer="testCaseDc" width="50"
+                                           editable="false"/>
+                                <label id="testCaseMinLabel"
+                                       value="msg://checklistEdit.minutesLabel"
+                                       align="BOTTOM_LEFT"/>
+                            </hbox>
+                        </row>
+                        <row>
+                            <textArea id="initialConditions" dataContainer="testCaseDc"
+                                      property="initialConditions"
+                                      caption="msg://checklistEdit.initialConditions"
+                                      width="90%"
+                                      rows="3"
+                                      editable="false"/>
+
+                            <lookupField id="priorityField" dataContainer="testCaseDc"
+                                         optionsContainer="prioritiesDc" property="priority"
+                                         caption="msg://checklistEdit.priority" width="100%"
+                                         editable="false"/>
+                        </row>
+                        <row>
+                            <table id="stepsTable"
+                                   dataContainer="stepsCollection"
+                                   width="100%"
+                                   responsive="true"
+                                   multiselect="true"
+                                   columnHeaderVisible="false"
+                                   caption="msg://checklistEdit.steps"
+                                   multiLineCells="true"
+                                   colspan="2">
+                                <actions>
+                                    <action id="createStep" type="create"/>
+                                    <action id="removeStep" type="remove"/>
+                                    <action id="moveStepUp"/>
+                                    <action id="moveStepDown"/>
+                                </actions>
+                                <columns>
+                                    <column id="number" editable="false" width="20"/>
+                                    <column id="step" editable="true"/>
+                                </columns>
+                            </table>
+                        </row>
+                        <row>
+                            <textArea id="expectedResultField" property="expectedResult"
+                                      dataContainer="testCaseDc"
+                                      caption="msg://checklistEdit.expectedResult"
+                                      width="100%"
+                                      rows="4"
+                                      colspan="2"
+                                      editable="false"/>
+                        </row>
+                        <row>
+                            <hbox id="resultBox" colspan="2">
+                                <label id="resultCaption" value="msg://checklistEdit.result"/>
+                                <hbox width="5px"/>
+                                <label id="caseResult" dataContainer="testCaseDc" property="result"/>
+                            </hbox>
+                        </row>
+                        <row>
+                            <textArea id="caseComment" dataContainer="testCaseDc"
+                                      property="comment" width="100%"
+                                      caption="msg://checklistEdit.comment"
+                                      visible="false"
+                                      responsive="false"
+                                      rows="4"/>
+                            <hbox id="ticketBox" spacing="true"
+                                  caption="msg://checklistEdit.caseTicket"
+                                  width="90%"
+                                  visible="false">
+                                <app:linkField id="caseTicket" dataContainer="testCaseDc"
+                                               property="ticket"
+                                               maxTextLength="40"/>
+                            </hbox>
+                        </row>
+                        <row>
+                            <dateField id="checkDate" dataContainer="testCaseDc"
+                                       property="checkDate" caption="msg://checklistEdit.checkDate"
+                                       visible="false" colspan="2"/>
+                        </row>
+                    </rows>
+                </grid>
+            </form>
+        </scrollBox>
+        <grid width="100%">
+            <columns>
+                <column id="closeButtons"/>
+                <column id="changeButtons"/>
+            </columns>
+            <rows>
+                <row>
+                    <hbox/>
+                    <hbox id="countBox" align="MIDDLE_RIGHT" margin="true">
+                        <label id="count"/>
+                    </hbox>
+                </row>
+                <row>
+                    <hbox id="editActions" spacing="true">
+                        <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+                        <button id="closeBtn" action="windowClose"/>
+                        <button id="addNext" visible="false"/>
+                    </hbox>
+                    <hbox id="changeActions" spacing="true" align="MIDDLE_RIGHT">
+                        <button id="prev" caption="msg://prev"/>
+                        <button id="next" caption="msg://next"/>
+                    </hbox>
+                </row>
+            </rows>
+        </grid>
+    </layout>
+</window>

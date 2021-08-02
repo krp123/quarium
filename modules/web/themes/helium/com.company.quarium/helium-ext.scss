@@ -5,18 +5,22 @@ $cuba-highlight-primary-action: false;
 
 .passed-result {
      color: #36ab80;
+    font-weight: bold;
 }
 
 .failed-result {
      color: #ff647c;
+    font-weight: bold;
 }
 
 .blocked-result {
-     color: #ffa500;
+     color: #ffda79;
+    font-weight: bold;
 }
 
 .skipped-result {
-     color: #a0aac0;
+     color: #a8aac3;
+    font-weight: bold;
 }
 
 .bright-disabled {
@@ -29,5 +33,46 @@ $cuba-highlight-primary-action: false;
 
  .helium .v-textfield.v-disabled .bright-disabled {
      color: #4f5c78 !important;
+ }
+
+ .v-button-passed {
+     background: #36ab80;
+     color: #fff;
+ }
+
+ .v-button-failed {
+     background: #ff647c;
+     color: #fff;
+ }
+
+ .v-button-skipped {
+     background: #a8aac3;
+     color: #fff;
+ }
+
+ .v-button-blocked {
+     background: #ffda79;
+     color: #fff;
+ }
+
+ .v-button-pressed {
+    background: #a7a7a7;
+    color: #4f5c78;
+ }
+
+.v-window-failed {
+     color: #ff647c !important;
+ }
+
+.v-window-skipped {
+     color: #a8aac3 !important;
+ }
+
+.v-window-blocked {
+     color: #ffda79 !important;
+ }
+
+.v-window-passed {
+     color: #36ab80 !important;
  }
 }

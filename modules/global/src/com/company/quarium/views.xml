@@ -12,7 +12,7 @@
         </property>
         <property name="priority" view="_minimal"/>
         <property name="state" view="_minimal"/>
-        <property name="checklist" view="_minimal">
+        <property name="testSuit" view="_minimal">
             <property name="project" view="_minimal"/>
             <property name="parentCard" view="_minimal">
                 <property name="project" view="_minimal"/>
@@ -28,16 +28,17 @@
             <property name="creationDate"/>
             <property name="number"/>
         </property>
+        <property name="testSuit" view="_minimal"/>
     </view>
     <view entity="quarium_TestCase" name="testCase_full">
         <property name="name"/>
         <property name="expectedResult"/>
-        <property name="checklist" view="_minimal"/>
+        <property name="testSuit" view="_minimal"/>
         <property name="caseStep" view="_minimal">
             <property name="step"/>
         </property>
     </view>
-    <view entity="quarium_Checklist" name="edit" extends="_local">
+    <view entity="quarium_TestSuit" name="edit" extends="_local">
         <property name="testCase" view="_local">
             <property name="caseStep" view="_minimal">
                 <property name="step"/>
@@ -45,7 +46,7 @@
             </property>
         </property>
     </view>
-    <view entity="quarium_Checklist" name="for_project" extends="_local">
+    <view entity="quarium_TestSuit" name="for_project" extends="_local">
         <property name="assignedQa" view="_minimal"/>
         <property name="state" view="_local"/>
         <property name="testCase" view="_local"/>
@@ -66,7 +67,7 @@
         </property>
         <property name="user" view="_minimal"/>
     </view>
-    <view entity="quarium_Checklist" name="project-checklist-view" extends="_local">
+    <view entity="quarium_TestSuit" name="project-testSuit-view" extends="_local">
         <property name="assignedQa" view="_minimal"/>
         <property name="state" view="_minimal"/>
         <property name="testCase" view="_minimal">
@@ -91,11 +92,11 @@
         <property name="module" view="_local"/>
         <property name="parentCard" view="_minimal"/>
         <property name="project" view="_minimal">
-            <property name="checklist" view="_minimal"/>
-            <property name="regressChecklist" view="_minimal"/>
+            <property name="testSuit" view="_minimal"/>
+            <property name="runTestSuit" view="_minimal"/>
         </property>
     </view>
-    <view entity="quarium_SimpleChecklist" name="project-checklist-view" extends="_local">
+    <view entity="quarium_SharedTestSuit" name="project-testSuit-view" extends="_local">
         <property name="assignedQa" view="_minimal"/>
         <property name="state" view="_minimal"/>
         <property name="testCase" view="_minimal">
@@ -140,7 +141,7 @@
     <view entity="quarium_Module" name="edit" extends="_local">
         <property name="project" view="_minimal">
             <property name="module" view="_minimal"/>
-            <property name="checklist" view="_minimal"/>
+            <property name="testSuit" view="_minimal"/>
             <property name="qa" view="_minimal"/>
             <property name="configuration" view="_minimal"/>
             <property name="description"/>
@@ -150,14 +151,14 @@
         <property name="testCase" view="_minimal">
         </property>
     </view>
-    <view entity="quarium_Checklist" name="checklist-step" extends="_local">
+    <view entity="quarium_TestSuit" name="testSuit-step" extends="_local">
         <property name="testCase" view="_minimal">
             <property name="caseStep" view="_minimal">
                 <property name="step"/>
             </property>
         </property>
     </view>
-    <view entity="quarium_RegressChecklist" name="regressChecklist-view" extends="_local">
+    <view entity="quarium_RunTestSuit" name="runTestSuit-view" extends="_local">
         <property name="regressProject" view="_minimal">
             <property name="qa" view="_minimal"/>
             <property name="module" view="_minimal"/>
@@ -187,7 +188,7 @@
         </property>
         <property name="project" view="_minimal">
             <property name="module" view="_minimal"/>
-            <property name="checklist" view="_minimal"/>
+            <property name="testSuit" view="_minimal"/>
             <property name="currentRelease"/>
             <property name="qa" view="_minimal"/>
             <property name="configuration" view="_minimal"/>
@@ -198,85 +199,10 @@
             <property name="checklists" view="_minimal"/>
         </property>
     </view>
-    <view entity="quarium_ProjectVersion" name="projectVersion-view" extends="_local">
-        <property name="versionOf" view="_minimal">
-            <property name="regressChecklist" view="_minimal">
-                <property name="regressProject" view="_minimal"/>
-                <property name="parentCard" view="_minimal"/>
-                <property name="comment"/>
-                <property name="hours"/>
-                <property name="minutes"/>
-                <property name="ticket"/>
-                <property name="module" view="_minimal"/>
-                <property name="isUsedInRegress"/>
-                <property name="assignedQa" view="_minimal"/>
-                <property name="state" view="_minimal"/>
-                <property name="testCase" view="_minimal"/>
-            </property>
-            <property name="projectVersion" view="_minimal"/>
-            <property name="module" view="_minimal"/>
-            <property name="checklist" view="_minimal"/>
-            <property name="currentRelease"/>
-            <property name="qa" view="_minimal"/>
-            <property name="configuration" view="_minimal"/>
-            <property name="description"/>
-        </property>
-        <property name="regressChecklist" view="_minimal">
-            <property name="regressProject" view="_minimal"/>
-            <property name="parentCard" view="_minimal"/>
-            <property name="comment"/>
-            <property name="hours"/>
-            <property name="minutes"/>
-            <property name="ticket"/>
-            <property name="module" view="_minimal"/>
-            <property name="isUsedInRegress"/>
-            <property name="assignedQa" view="_minimal"/>
-            <property name="state" view="_minimal"/>
-            <property name="testCase" view="_minimal"/>
-        </property>
-        <property name="projectVersion" view="_minimal"/>
-        <property name="module" view="_minimal"/>
-        <property name="checklist" view="_minimal">
-            <property name="parentCard" view="_minimal"/>
-            <property name="comment"/>
-            <property name="hours"/>
-            <property name="minutes"/>
-            <property name="ticket"/>
-            <property name="module" view="_minimal"/>
-            <property name="isUsedInRegress"/>
-            <property name="assignedQa" view="_minimal"/>
-            <property name="state" view="_minimal"/>
-            <property name="testCase" view="_minimal">
-                <property name="creationDate"/>
-                <property name="comment"/>
-                <property name="ticket"/>
-                <property name="caseStep" view="_minimal">
-                    <property name="step"/>
-                    <property name="creationDate"/>
-                </property>
-                <property name="hours"/>
-                <property name="minutes"/>
-                <property name="priority" view="_minimal"/>
-                <property name="state" view="_minimal"/>
-                <property name="expectedResult"/>
-            </property>
-        </property>
-        <property name="qa" view="_minimal"/>
-        <property name="configuration" view="_minimal"/>
-        <property name="milestone" view="_minimal">
-            <property name="startDate"/>
-            <property name="finishDate"/>
-            <property name="status"/>
-            <property name="description"/>
-        </property>
-        <property name="testRun" view="_minimal">
-            <property name="description"/>
-        </property>
-    </view>
     <view entity="quarium_SimpleProject" name="simpleProject-view" extends="_local">
         <property name="dbms" view="_minimal"/>
         <property name="thesisVersion" view="_minimal"/>
-        <property name="regressChecklist" view="_minimal">
+        <property name="runTestSuit" view="_minimal">
             <property name="regressProject" view="_minimal"/>
             <property name="parentCard" view="_minimal"/>
             <property name="comment"/>
@@ -302,9 +228,8 @@
                 <property name="expectedResult"/>
             </property>
         </property>
-        <property name="projectVersion" view="_minimal"/>
         <property name="module" view="_minimal"/>
-        <property name="checklist" view="_minimal"/>
+        <property name="testSuit" view="_minimal"/>
         <property name="qa" view="_minimal"/>
         <property name="configuration" view="_minimal"/>
         <property name="milestone" view="_minimal">
@@ -324,7 +249,7 @@
     <view entity="quarium_Project" name="project-view" extends="_local">
         <property name="dbms" view="_minimal"/>
         <property name="thesisVersion" view="_minimal"/>
-        <property name="regressChecklist" view="_minimal">
+        <property name="runTestSuit" view="_minimal">
             <property name="regressProject" view="_minimal"/>
             <property name="initialConditions"/>
             <property name="parentCard" view="_minimal"/>
@@ -355,9 +280,8 @@
                 <property name="expectedResult"/>
             </property>
         </property>
-        <property name="projectVersion" view="_minimal"/>
         <property name="module" view="_minimal"/>
-        <property name="checklist" view="_minimal">
+        <property name="testSuit" view="_minimal">
             <property name="initialConditions"/>
             <property name="parentCard" view="_minimal"/>
             <property name="comment"/>
@@ -434,6 +358,7 @@
                 <property name="state" view="_minimal"/>
                 <property name="priority" view="_minimal"/>
                 <property name="expectedResult"/>
+                <property name="result"/>
             </property>
         </property>
         <property name="project" view="_minimal">
@@ -449,10 +374,9 @@
             <property name="regressFinishDate"/>
             <property name="thesisVersion" view="_minimal"/>
             <property name="creationDate"/>
-            <property name="regressChecklist" view="_minimal"/>
-            <property name="projectVersion" view="_minimal"/>
+            <property name="runTestSuit" view="_minimal"/>
             <property name="module" view="_minimal"/>
-            <property name="checklist" view="_minimal"/>
+            <property name="testSuit" view="_minimal"/>
             <property name="currentRelease"/>
             <property name="qa" view="_minimal"/>
             <property name="configuration" view="_minimal"/>

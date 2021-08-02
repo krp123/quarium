@@ -9,11 +9,10 @@
             <view extends="simpleProject-view">
                 <property name="qa" view="edit"/>
                 <property name="configuration" view="edit"/>
-                <property name="checklist" view="project-checklist-view"/>
+                <property name="testSuit" view="project-testSuit-view"/>
                 <property name="createTs"/>
                 <property name="module" view="edit"/>
-                <property name="regressChecklist" view="regressChecklist-view"/>
-                <property name="projectVersion" view="projectVersion-view"/>
+                <property name="runTestSuit" view="runTestSuit-view"/>
                 <property name="dbms" view="_local"/>
                 <property name="thesisVersion" view="_local"/>
                 <property name="milestone" view="_local"/>
@@ -22,10 +21,9 @@
             <loader/>
             <collection id="qaProjectDc" property="qa"/>
             <collection id="configurationProjectDc" property="configuration"/>
-            <collection id="checklistsDc" property="checklist"/>
+            <collection id="testSuitsDc" property="testSuit"/>
             <collection id="modulesDc" property="module"/>
-            <collection id="regressChecklistDc" property="regressChecklist"/>
-            <collection id="versionsDc" property="projectVersion"/>
+            <collection id="runTestSuitDc" property="runTestSuit"/>
             <collection id="milestonesDc" property="milestone"/>
             <collection id="testRunsDc" property="testRun"/>
         </instance>
@@ -51,11 +49,11 @@
                 </query>
             </loader>
         </collection>
-        <collection id="checklistsFilterDc" class="com.company.quarium.entity.checklist.Checklist"
-                    view="project-checklist-view">
-            <loader id="checklistsFilterDl">
+        <collection id="testSuitFilterDc" class="com.company.quarium.entity.testSuit.TestSuit"
+                    view="project-testSuit-view">
+            <loader id="testSuitsFilterDl">
                 <query>
-                    <![CDATA[select e from quarium_Checklist e where e.project = :project]]>
+                    <![CDATA[select e from quarium_TestSuit e where e.project = :project]]>
                 </query>
             </loader>
         </collection>
@@ -203,33 +201,33 @@
                 </groupTable>
             </tab>
             <tab id="testSuitsTab" caption="msg://projectEdit.testSuits" spacing="true" margin="true" expand="vbox">
-                <vbox id="vbox" expand="checklistBox" spacing="true" height="100%">
-                    <vbox id="checklistBox" width="100%" margin="true" spacing="true" expand="checklistsTable">
+                <vbox id="vbox" expand="testSuitsBox" spacing="true" height="100%">
+                    <vbox id="testSuitsBox" width="100%" margin="true" spacing="true" expand="testSuitsTable">
                         <filter id="testSuitFilter"
                                 width="100%"
                                 height="AUTO"
-                                dataLoader="checklistsFilterDl"
-                                applyTo="checklistsTable"
+                                dataLoader="testSuitsFilterDl"
+                                applyTo="testSuitsTable"
                                 collapsed="true">
                             <properties include=".*"/>
                         </filter>
-                        <groupTable id="checklistsTable"
+                        <groupTable id="testSuitsTable"
                                     width="100%"
-                                    dataContainer="checklistsDc"
+                                    dataContainer="testSuitsDc"
                                     multiselect="true"
                                     presentations="true">
                             <actions>
                                 <action id="create" type="create" caption="msg://new">
                                     <properties>
                                         <property name="screenClass"
-                                                  value="com.company.quarium.web.screens.checklist.TestSuitEdit"/>
+                                                  value="com.company.quarium.web.screens.testSuit.ProjectTestSuitEdit"/>
                                     </properties>
                                 </action>
-                                <action id="addChecklist" type="add" icon="ADD_TO_SET_ACTION" caption="msg://fromList"/>
+                                <action id="addTestSuit" type="add" icon="ADD_TO_SET_ACTION" caption="msg://fromList"/>
                                 <action id="edit" type="edit">
                                     <properties>
                                         <property name="screenClass"
-                                                  value="com.company.quarium.web.screens.checklist.TestSuitEdit"/>
+                                                  value="com.company.quarium.web.screens.testSuit.ProjectTestSuitEdit"/>
                                     </properties>
                                 </action>
                                 <action id="remove" type="remove"/>
@@ -244,15 +242,15 @@
                                           alwaysVisible="true">
                                 <popupButton id="createPopup" caption="msg://create">
                                     <actions>
-                                        <action id="checklistsTable.create"/>
+                                        <action id="testSuitsTable.create"/>
                                         <action id="copy" caption="msg://copy"/>
-                                        <action id="checklistsTable.addChecklist" icon="ADD_TO_SET_ACTION"/>
+                                        <action id="testSuitsTable.addTestSuit" icon="ADD_TO_SET_ACTION"/>
                                         <action id="uploadExcel" caption="msg://checklistBrowse.uploadXlsx"
                                                 icon="font-icon:FILE_EXCEL_O"/>
                                     </actions>
                                 </popupButton>
-                                <button id="editBtn" action="checklistsTable.edit"/>
-                                <button id="removeBtn" action="checklistsTable.remove"/>
+                                <button id="editBtn" action="testSuitsTable.edit"/>
+                                <button id="removeBtn" action="testSuitsTable.remove"/>
                             </buttonsPanel>
                         </groupTable>
                     </vbox>
@@ -285,6 +283,7 @@
                         <column id="runFinishDate"/>
                         <column id="description"/>
                         <column id="milestone"/>
+                        <column id="completedPercent" caption="msg://projectEdit.completed"/>
                     </columns>
                     <rows/>
                     <buttonsPanel id="testRunsButtonsPanel"

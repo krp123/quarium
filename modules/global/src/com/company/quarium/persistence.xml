@@ -7,15 +7,14 @@
         <class>com.company.quarium.entity.project.QaProjectRelationship</class>
         <class>com.company.quarium.entity.references.Priority</class>
         <class>com.company.quarium.entity.references.Statement</class>
-        <class>com.company.quarium.entity.checklist.Checklist</class>
-        <class>com.company.quarium.entity.checklist.TestCase</class>
+        <class>com.company.quarium.entity.testSuit.TestSuit</class>
+        <class>com.company.quarium.entity.testSuit.TestCase</class>
         <class>com.company.quarium.entity.references.Configuration</class>
         <class>com.company.quarium.entity.project.ConfigurationProjectRelationship</class>
         <class>com.company.quarium.entity.project.Module</class>
-        <class>com.company.quarium.entity.checklist.Step</class>
-        <class>com.company.quarium.entity.checklist.RegressChecklist</class>
-        <class>com.company.quarium.entity.checklist.SimpleChecklist</class>
-        <class>com.company.quarium.entity.project.ProjectVersion</class>
+        <class>com.company.quarium.entity.testSuit.Step</class>
+        <class>com.company.quarium.entity.testSuit.RunTestSuit</class>
+        <class>com.company.quarium.entity.testSuit.SharedTestSuit</class>
         <class>com.company.quarium.entity.project.SimpleProject</class>
         <class>com.company.quarium.entity.references.Dbms</class>
         <class>com.company.quarium.entity.references.ThesisVersion</class>

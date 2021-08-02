@@ -5,8 +5,8 @@
         messagesPack="com.company.quarium.web.screens.simplechecklist">
     <data readOnly="true">
         <collection id="simpleChecklistsDc"
-                    class="com.company.quarium.entity.checklist.SimpleChecklist">
-            <view extends="project-checklist-view">
+                    class="com.company.quarium.entity.testSuit.SharedTestSuit">
+            <view extends="project-testSuit-view">
                 <property name="module" view="edit"/>
                 <property name="assignedQa" view="_minimal"/>
                 <property name="state" view="_minimal"/>
@@ -22,7 +22,7 @@
             </view>
             <loader id="simpleChecklistsDl">
                 <query>
-                    <![CDATA[select e from quarium_SimpleChecklist e
+                    <![CDATA[select e from quarium_SharedTestSuit e
                     where e.project = :project]]>
                 </query>
             </loader>

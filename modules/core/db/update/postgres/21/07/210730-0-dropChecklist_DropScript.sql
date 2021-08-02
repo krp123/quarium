@@ -1,0 +1,1 @@
+drop table if exists QUARIUM_CHECKLIST__U40565 cascade ;

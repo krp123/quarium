@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:chart="http://schemas.haulmont.com/charts/charts.xsd"
         caption="msg://testRunEdit.caption"
         focusComponent="form"
         messagesPack="com.company.quarium.web.screens.testrun">
@@ -7,7 +8,7 @@
         <instance id="testRunDc"
                   class="com.company.quarium.entity.project.TestRun">
             <view extends="testRun-view">
-                <property name="checklists" view="regressChecklist-view"/>
+                <property name="checklists" view="runTestSuit-view"/>
             </view>
             <loader/>
             <collection id="checklistsDc" property="checklists"/>
@@ -28,11 +29,11 @@
                 </query>
             </loader>
         </collection>
-        <collection id="suitsDc" class="com.company.quarium.entity.checklist.RegressChecklist"
-                    view="regressChecklist-view">
+        <collection id="suitsDc" class="com.company.quarium.entity.testSuit.RunTestSuit"
+                    view="runTestSuit-view">
             <loader id="suitsDl">
                 <query>
-                    <![CDATA[select e from quarium_RegressChecklist e
+                    <![CDATA[select e from quarium_RunTestSuit e
                     where e.testRun = :testRun]]>
                 </query>
             </loader>
@@ -45,65 +46,65 @@
                 </query>
             </loader>
         </collection>
-        <collection id="bugsDc" class="com.company.quarium.entity.checklist.TestCase" view="testCase-view">
+        <collection id="bugsDc" class="com.company.quarium.entity.testSuit.TestCase" view="testCase-view">
             <loader id="bugsDl">
                 <query>
                     <![CDATA[select tc from quarium_TestCase tc
-                    join quarium_RegressChecklist rc
+                    join quarium_RunTestSuit rc
                     where tc = rc.testCase
                     and tc.result = 'Failed'
                     and rc.testRun = :testRun]]>
                 </query>
             </loader>
         </collection>
-        <collection id="skippedCasesDc" class="com.company.quarium.entity.checklist.TestCase" view="testCase-view">
+        <collection id="skippedCasesDc" class="com.company.quarium.entity.testSuit.TestCase" view="testCase-view">
             <loader id="skippedCasesDl">
                 <query>
                     <![CDATA[select tc from quarium_TestCase tc
-                    join quarium_RegressChecklist rc
+                    join quarium_RunTestSuit rc
                     where tc = rc.testCase
                     and tc.result = 'Skipped'
                     and rc.testRun = :testRun]]>
                 </query>
             </loader>
         </collection>
-        <collection id="blockedCasesDc" class="com.company.quarium.entity.checklist.TestCase" view="testCase-view">
+        <collection id="blockedCasesDc" class="com.company.quarium.entity.testSuit.TestCase" view="testCase-view">
             <loader id="blockedCasesDl">
                 <query>
                     <![CDATA[select tc from quarium_TestCase tc
-                    join quarium_RegressChecklist rc
+                    join quarium_RunTestSuit rc
                     where tc = rc.testCase
                     and tc.result = 'Blocked'
                     and rc.testRun = :testRun]]>
                 </query>
             </loader>
         </collection>
-        <collection id="passedCasesDc" class="com.company.quarium.entity.checklist.TestCase" view="testCase-view">
+        <collection id="passedCasesDc" class="com.company.quarium.entity.testSuit.TestCase" view="testCase-view">
             <loader id="passedCasesDl">
                 <query>
                     <![CDATA[select tc from quarium_TestCase tc
-                    join quarium_RegressChecklist rc
+                    join quarium_RunTestSuit rc
                     where tc = rc.testCase
                     and tc.result = 'Passed'
                     and rc.testRun = :testRun]]>
                 </query>
             </loader>
         </collection>
-        <collection id="totalCasesDc" class="com.company.quarium.entity.checklist.TestCase" view="testCase-view">
+        <collection id="totalCasesDc" class="com.company.quarium.entity.testSuit.TestCase" view="testCase-view">
             <loader id="totalCasesDl">
                 <query>
                     <![CDATA[select tc from quarium_TestCase tc
-                    join quarium_RegressChecklist rc
+                    join quarium_RunTestSuit rc
                     where tc = rc.testCase
                     and rc.testRun = :testRun]]>
                 </query>
             </loader>
         </collection>
-        <collection id="checklistsFilterDc" class="com.company.quarium.entity.checklist.RegressChecklist"
-                    view="regressChecklist-view">
+        <collection id="checklistsFilterDc" class="com.company.quarium.entity.testSuit.RunTestSuit"
+                    view="runTestSuit-view">
             <loader id="checklistsFilterDl">
                 <query>
-                    <![CDATA[select e from quarium_RegressChecklist e where e.testRun = :testRun]]>
+                    <![CDATA[select e from quarium_RunTestSuit e where e.testRun = :testRun]]>
                 </query>
             </loader>
         </collection>
@@ -148,19 +149,19 @@
                             <action id="create" type="create" caption="msg://new">
                                 <properties>
                                     <property name="screenClass"
-                                              value="com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit"/>
+                                              value="com.company.quarium.web.screens.runtestsuit.RunTestSuitEdit"/>
                                 </properties>
                             </action>
                             <action id="addChecklist" type="add" caption="msg://addFromProject">
                                 <properties>
                                     <property name="screenClass"
-                                              value="com.company.quarium.web.screens.checklist.SuitCaseBrowser"/>
+                                              value="com.company.quarium.web.screens.testSuit.SuitCaseBrowser"/>
                                 </properties>
                             </action>
                             <action id="edit" type="edit">
                                 <properties>
                                     <property name="screenClass"
-                                              value="com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit"/>
+                                              value="com.company.quarium.web.screens.runtestsuit.RunTestSuitEdit"/>
                                 </properties>
                             </action>
                             <action id="remove" type="remove"/>
@@ -191,20 +192,45 @@
                 </groupBox>
             </tab>
             <tab id="statistics" expand="suitsStatistics" caption="msg://statistics" spacing="true" margin="true">
-                <groupBox caption="msg://com.company.quarium.entity/Project.qaStatistics">
-                    <table id="testPlanQaStatisticsTable"
-                           width="50%"
-                           height="AUTO"
-                           dataContainer="qaDc"
-                           showSelection="false">
-                        <columns>
-                            <column id="qa"/>
-                            <column id="timeLeft" caption="msg://testRunEdit.timeLeft"/>
-                            <column id="timeTotal" caption="msg://testRunEdit.timeTotal"/>
-                        </columns>
-                        <rows/>
-                    </table>
-                </groupBox>
+                <grid width="100%">
+                    <columns>
+                        <column id="qaStatistics"/>
+                        <column id="chart"/>
+                    </columns>
+                    <rows>
+                        <row>
+                            <groupBox caption="msg://com.company.quarium.entity/Project.qaStatistics" width="50%">
+                                <table id="testPlanQaStatisticsTable"
+                                       width="100%"
+                                       height="AUTO"
+                                       dataContainer="qaDc"
+                                       showSelection="false">
+                                    <columns>
+                                        <column id="qa"/>
+                                        <column id="timeLeft" caption="msg://testRunEdit.timeLeft"/>
+                                        <column id="timeTotal" caption="msg://testRunEdit.timeTotal"/>
+                                    </columns>
+                                    <rows/>
+                                </table>
+                            </groupBox>
+                            <chart:pieChart id="pieChart"
+                                            dataContainer="totalCasesDc"
+                                            height="100%"
+                                            titleField="result"
+                                            valueField=""
+                                            width="50%"
+                                            align="MIDDLE_RIGHT">
+                                <chart:legend autoMargins="false"
+                                              marginRight="80"
+                                              markerType="CIRCLE"
+                                              position="RIGHT"/>
+                                <chart:balloon fixedPosition="true"/>
+                                <chart:export/>
+                            </chart:pieChart>
+                        </row>
+                    </rows>
+                </grid>
+
 
                 <groupBox id="suitsStatistics" caption="msg://testRunEdit.suitsStatistics">
                     <groupTable id="suitsStatisticsTable"
@@ -237,11 +263,11 @@
                         <columns>
                             <column id="name"
                                     link="true"
-                                    linkScreen="quarium_TestCase.edit"
+                                    linkScreen="quarium_Defect.edit"
                                     linkScreenOpenType="DIALOG"/>
-                            <column id="checklist"
+                            <column id="testSuit"
                                     caption="msg://testSuit"/>
-                            <column id="checklist.module"
+                            <column id="testSuit.module"
                                     caption="msg://module"/>
                         </columns>
                         <rows/>

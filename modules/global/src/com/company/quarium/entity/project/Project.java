@@ -1,16 +1,15 @@
 package com.company.quarium.entity.project;
 
-import com.company.quarium.entity.checklist.RegressChecklist;
-import com.company.quarium.entity.checklist.SimpleChecklist;
 import com.company.quarium.entity.references.Dbms;
 import com.company.quarium.entity.references.ThesisVersion;
+import com.company.quarium.entity.testSuit.RunTestSuit;
+import com.company.quarium.entity.testSuit.SharedTestSuit;
 import com.haulmont.chile.core.annotations.Composition;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.cuba.core.entity.annotation.Lookup;
 import com.haulmont.cuba.core.entity.annotation.LookupType;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
-import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
 import com.haulmont.cuba.core.global.DeletePolicy;
 
 import javax.persistence.*;
@@ -63,12 +62,7 @@ public class Project extends StandardEntity {
     @Composition
     @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "regressProject", cascade = CascadeType.PERSIST)
-    private List<RegressChecklist> regressChecklist;
-
-    @OnDeleteInverse(DeletePolicy.UNLINK)
-    @OnDelete(DeletePolicy.CASCADE)
-    @OneToMany(mappedBy = "versionOf")
-    private List<ProjectVersion> projectVersion;
+    private List<RunTestSuit> runTestSuit;
 
     @OneToMany(mappedBy = "project")
     @OnDelete(DeletePolicy.CASCADE)
@@ -78,7 +72,7 @@ public class Project extends StandardEntity {
     @Composition
     @OneToMany(mappedBy = "project", cascade = CascadeType.PERSIST)
     @OnDelete(DeletePolicy.CASCADE)
-    private List<SimpleChecklist> checklist;
+    private List<SharedTestSuit> testSuit;
 
     @Column(name = "CURRENT_RELEASE")
     private String currentRelease;
@@ -156,20 +150,12 @@ public class Project extends StandardEntity {
         this.creationDate = creationDate;
     }
 
-    public List<ProjectVersion> getProjectVersion() {
-        return projectVersion;
+    public List<RunTestSuit> getRunTestSuit() {
+        return runTestSuit;
     }
 
-    public void setProjectVersion(List<ProjectVersion> projectVersion) {
-        this.projectVersion = projectVersion;
-    }
-
-    public List<RegressChecklist> getRegressChecklist() {
-        return regressChecklist;
-    }
-
-    public void setRegressChecklist(List<RegressChecklist> regressChecklist) {
-        this.regressChecklist = regressChecklist;
+    public void setRunTestSuit(List<RunTestSuit> runTestSuit) {
+        this.runTestSuit = runTestSuit;
     }
 
     public String getCurrentRelease() {
@@ -196,12 +182,12 @@ public class Project extends StandardEntity {
         this.configuration = configuration;
     }
 
-    public List<SimpleChecklist> getChecklist() {
-        return checklist;
+    public List<SharedTestSuit> getTestSuit() {
+        return testSuit;
     }
 
-    public void setChecklist(List<SimpleChecklist> checklist) {
-        this.checklist = checklist;
+    public void setTestSuit(List<SharedTestSuit> testSuit) {
+        this.testSuit = testSuit;
     }
 
     public List<QaProjectRelationship> getQa() {

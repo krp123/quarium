@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fragment xmlns="http://schemas.haulmont.com/cuba/screen/fragment.xsd">
+    <data>
+        <collection id="testSuitDc"
+                    class="com.company.quarium.entity.testSuit.TestSuit">
+            <view extends="project-testSuit-view"/>
+            <loader id="testSuitsDl">
+                <query>
+                    <![CDATA[select e from quarium_Checklist e
+                            where e.project = :project]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <layout>
+        <filter id="filter"
+                width="100%"
+                dataLoader="testSuitsDl"
+                applyTo="testSuitsTable">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="testSuitsTable"
+                    width="100%"
+                    dataContainer="testSuitDc"
+                    multiselect="true">
+            <columns>
+                <column id="name"/>
+                <column id="module"/>
+                <column id="comment"/>
+            </columns>
+            <rows/>
+        </groupTable>
+    </layout>
+</fragment>
