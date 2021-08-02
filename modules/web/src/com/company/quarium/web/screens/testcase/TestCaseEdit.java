@@ -28,7 +28,7 @@ public class TestCaseEdit extends StandardEditor<TestCase> {
     @Inject
     private DataManager dataManager;
     @Inject
-    private InstanceContainer<TestCase> testCaseDc;
+    public InstanceContainer<TestCase> testCaseDc;
     @Inject
     private CollectionPropertyContainer<Step> stepsCollection;
     @Inject
@@ -39,7 +39,7 @@ public class TestCaseEdit extends StandardEditor<TestCase> {
     private TextField<Integer> caseMinutes;
     @Inject
     private Messages messages;
-    protected CollectionContainer<TestCase> testCasesDc;
+    public CollectionContainer<TestCase> testCasesDc;
     @Inject
     private Notifications notifications;
     @Inject
@@ -155,11 +155,7 @@ public class TestCaseEdit extends StandardEditor<TestCase> {
                     .withDescription(String.format(messages.getMessage(getClass(), "fillName")))
                     .show();
         } else {
-            if (testCasesDc.containsItem(getEditedEntity())) {
-                testCasesDc.replaceItem(getEditedEntity());
-            } else {
-                testCasesDc.getMutableItems().add(getEditedEntity());
-            }
+            testCasesDc.replaceItem(testCaseDc.getItem());
             getWindow().getContext().getFrame().getWindowManager().remove(this);
         }
     }

@@ -166,13 +166,7 @@
                                 <action id="remove" type="remove"/>
                                 <action id="moveTestCaseUp"/>
                                 <action id="moveTestCaseDown"/>
-                                <action id="run" type="edit">
-                                    <properties>
-                                        <property name="openMode" value="DIALOG"/>
-                                        <property name="screenClass"
-                                                  value="com.company.quarium.web.screens.testcase.RunTestCaseEdit"/>
-                                    </properties>
-                                </action>
+                                <action id="run"/>
                             </actions>
                             <columns>
                                 <column id="number" editable="false" width="20"/>

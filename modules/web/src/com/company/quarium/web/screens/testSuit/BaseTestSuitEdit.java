@@ -169,7 +169,7 @@ public class BaseTestSuitEdit extends StandardEditor<TestSuit> {
     }
 
     @Install(to = "table.edit", subject = "screenConfigurer")
-    private void tableEditScreenConfigurer(Screen screen) {
+    public void tableEditScreenConfigurer(Screen screen) {
         ((TestCaseEdit) screen).setTestCasesDc(testCasesDc);
     }
 

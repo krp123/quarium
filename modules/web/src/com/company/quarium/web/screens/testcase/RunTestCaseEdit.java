@@ -91,6 +91,11 @@ public class RunTestCaseEdit extends TestCaseEdit {
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
+        //Без этого сущность загружается не из датасорса, а из базы. Изменения не сохраняются. Не понял, почему.
+        testCaseDc.setItem(testCasesDc.getItem(getEditedEntity()));
+
+        resultCaption.setVisible(false);
+
         passedButton.setStyleName("passed");
         failedButton.setStyleName("failed");
         skippedButton.setStyleName("skipped");
@@ -135,7 +140,7 @@ public class RunTestCaseEdit extends TestCaseEdit {
     }
 
     protected void selectCase(int caseNumber) {
-        testCasesDc.replaceItem(testCasesDc.getItem(testCaseDc.getItem()));
+        testCasesDc.replaceItem(getEditedEntity());
         TestCase prevNextCase = testCasesDc.getMutableItems().get(caseNumber);
         getEditedEntityContainer().setItem(prevNextCase);
         setPressedButton(prevNextCase.getResult());
