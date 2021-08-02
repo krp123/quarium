@@ -178,7 +178,7 @@
                 </row>
                 <row>
                     <hbox id="editActions" spacing="true">
-                        <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+                        <button id="commitAndCloseBtn" caption="msg://ok" icon="OK" primary="true"/>
                         <button id="closeBtn" action="windowClose"/>
                         <button id="addNext" visible="false"/>
                     </hbox>

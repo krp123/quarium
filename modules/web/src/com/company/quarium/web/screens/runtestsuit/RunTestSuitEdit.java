@@ -6,6 +6,7 @@ import com.company.quarium.entity.testSuit.TestCase;
 import com.company.quarium.web.screens.testSuit.BaseTestSuitEdit;
 import com.company.quarium.web.screens.testcase.RunTestCaseEdit;
 import com.haulmont.cuba.core.global.Messages;
+import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.screen.*;
@@ -30,6 +31,8 @@ public class RunTestSuitEdit extends BaseTestSuitEdit {
     private UiComponents uiComponents;
     @Inject
     private Messages messages;
+    @Inject
+    private ScreenBuilders screenBuilders;
 
     public void setQaParameter(List<QaProjectRelationship> qaProjectRelationship) {
         assignedQaField.setOptionsList(qaProjectRelationship);
@@ -39,10 +42,21 @@ public class RunTestSuitEdit extends BaseTestSuitEdit {
         moduleField.setOptionsList(modules);
     }
 
-    @Install(to = "table.run", subject = "screenConfigurer")
-    private void tableRunScreenConfigurer(Screen screen) {
-        ((RunTestCaseEdit) screen).setTestCasesDc(testCasesDc);
+    @Subscribe("table.run")
+    public void onTableRun(Action.ActionPerformedEvent event) {
+        RunTestCaseEdit runTestCaseEdit = screenBuilders.editor(TestCase.class, this)
+                .withScreenClass(RunTestCaseEdit.class)
+                .editEntity(testCasesDc.getItem(table.getSingleSelected()))
+                .withLaunchMode(OpenMode.DIALOG)
+                .build();
+        runTestCaseEdit.setTestCasesDc(testCasesDc);
+        runTestCaseEdit.show();
     }
+
+//    @Install(to = "table.run", subject = "screenConfigurer")
+//    private void tableRunScreenConfigurer(Screen screen) {
+//        ((RunTestCaseEdit) screen).setTestCasesDc(testCasesDc);
+//    }
 
     @Subscribe
     public void onInit1(InitEvent event) {
