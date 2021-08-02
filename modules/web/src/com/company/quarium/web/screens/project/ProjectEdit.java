@@ -227,10 +227,12 @@ public class ProjectEdit extends StandardEditor<Project> {
 
                         List<TestCase> passedCases = new ArrayList<>();
                         for (TestSuit ts : testRun.getChecklists()) {
-                            for (TestCase tc : ts.getTestCase()) {
-                                if (tc.getResult() != null
-                                        && tc.getResult().equals(CaseResult.PASSED)) {
-                                    passedCases.add(tc);
+                            if (ts.getTestCase() != null) {
+                                for (TestCase tc : ts.getTestCase()) {
+                                    if (tc.getResult() != null
+                                            && tc.getResult().equals(CaseResult.PASSED)) {
+                                        passedCases.add(tc);
+                                    }
                                 }
                             }
                         }
@@ -238,12 +240,14 @@ public class ProjectEdit extends StandardEditor<Project> {
 
                         List<TestCase> allCases = new ArrayList<>();
                         for (TestSuit ts : testRun.getChecklists()) {
-                            allCases.addAll(ts.getTestCase());
+                            if (ts.getTestCase() != null) {
+                                allCases.addAll(ts.getTestCase());
+                            }
                         }
 
                         String percentCompleted = "0%";
 
-                        if (passedCases.size() > 0) {
+                        if (!passedCases.isEmpty()) {
                             percentCompleted = String.format("%.2f", passedCasesSize / allCases.size() * 100) + "%";
                         }
                         label.setValue(percentCompleted);
