@@ -2,12 +2,12 @@
 <fragment xmlns="http://schemas.haulmont.com/cuba/screen/fragment.xsd">
     <data>
         <collection id="testCaseDc"
-                    class="com.company.quarium.entity.checklist.TestCase">
+                    class="com.company.quarium.entity.testSuit.TestCase">
             <view extends="testCase-view"/>
             <loader id="testCasesDl">
                 <query>
                     <![CDATA[select e from quarium_TestCase e
-                            where e.checklist.project = :project]]>
+                            where e.testSuit.project = :project]]>
                 </query>
             </loader>
         </collection>
@@ -25,7 +25,7 @@
                     multiselect="true">
             <columns>
                 <group>
-                    <column id="checklist"/>
+                    <column id="testSuit"/>
                     <column id="priority"/>
                 </group>
                 <column id="name"/>

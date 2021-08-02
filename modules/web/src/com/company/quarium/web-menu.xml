@@ -5,7 +5,7 @@
         <item screen="quarium_MyProjects.browse" caption="mainMsg://menu_config.quarium_MyProjects.browse"/>
     </menu>
     <menu id="checklists" insertBefore="administration" caption="mainMsg://menu_config.checklists">
-        <item screen="quarium_Checklist.browse" caption="mainMsg://menu_config.quarium_Checklist.browse"/>
+        <item screen="quarium_SharedTestSuit.browse" caption="mainMsg://menu_config.quarium_Checklist.browse"/>
     </menu>
     <menu id="references" insertBefore="administration" caption="mainMsg://menu_config.references">
         <item screen="quarium_Qa.browse" caption="mainMsg://menu_config.quarium_Qa.browse"/>

@@ -1,6 +1,6 @@
 package com.company.quarium.web;
 
-import com.company.quarium.entity.checklist.Step;
+import com.company.quarium.entity.testSuit.Step;
 import com.haulmont.chile.core.model.MetaClass;
 import com.haulmont.chile.core.model.MetaPropertyPath;
 import com.haulmont.cuba.core.entity.Entity;

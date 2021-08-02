@@ -2,13 +2,13 @@
 <fragment xmlns="http://schemas.haulmont.com/cuba/screen/fragment.xsd">
     <data>
     <instance id="stepDc"
-              class="com.company.quarium.entity.checklist.Step"
+              class="com.company.quarium.entity.testSuit.Step"
               view="_local">
         <loader/>
     </instance>
     <data>
         <instance id="stepDc"
-                  class="com.company.quarium.entity.checklist.Step">
+                  class="com.company.quarium.entity.testSuit.Step">
             <view extends="_local">
                 <property name="testCase" view="_minimal"/>
                 <property name="createTs"/>

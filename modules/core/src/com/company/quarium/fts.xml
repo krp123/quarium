@@ -28,28 +28,25 @@
         <entity class="com.company.quarium.entity.references.Configuration">
             <include re=".*"/>
         </entity>
-        <entity class="com.company.quarium.entity.checklist.Step">
+        <entity class="com.company.quarium.entity.testSuit.Step">
             <include re=".*"/>
         </entity>
-        <entity class="com.company.quarium.entity.checklist.TestCase">
+        <entity class="com.company.quarium.entity.testSuit.TestCase">
             <include re=".*"/>
         </entity>
-        <entity class="com.company.quarium.entity.checklist.Checklist">
+        <entity class="com.company.quarium.entity.testSuit.TestSuit">
             <include re=".*"/>
         </entity>
         <entity class="com.company.quarium.entity.project.Module">
             <include re=".*"/>
         </entity>
-        <entity class="com.company.quarium.entity.project.ProjectVersion">
-            <include re=".*"/>
-        </entity>
         <entity class="com.company.quarium.entity.project.SimpleProject">
             <include re=".*"/>
         </entity>
-        <entity class="com.company.quarium.entity.checklist.SimpleChecklist">
+        <entity class="com.company.quarium.entity.testSuit.SharedTestSuit">
             <include re=".*"/>
         </entity>
-        <entity class="com.company.quarium.entity.checklist.RegressChecklist">
+        <entity class="com.company.quarium.entity.testSuit.RunTestSuit">
             <include re=".*"/>
         </entity>
         <entity class="com.company.quarium.entity.project.Milestone">

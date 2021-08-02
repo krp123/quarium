@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://suitCaseBrowser.caption"
+        messagesPack="com.company.quarium.web.screens.testSuit">
+    <layout>
+        <tabSheet id="tabsheet">
+            <tab id="testSuitsTab" caption="msg://suits">
+                <groupBox id="suitsBrowserFrame" caption="msg://suits">
+                    <fragment screen="quarium_ProjectTestSuitBrowserFrame"/>
+                </groupBox>
+            </tab>
+            <tab id="testCasesTab" caption="msg://cases">
+                <groupBox id="casesBrowserFrame" caption="msg://cases">
+                    <fragment screen="quarium_ProjectTestCaseBrowserFrame"/>
+                </groupBox>
+            </tab>
+        </tabSheet>
+    </layout>
+</window>

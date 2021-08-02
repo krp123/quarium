@@ -1,15 +1,16 @@
 package com.company.quarium.web.screens.testrun;
 
-import com.company.quarium.entity.checklist.Checklist;
-import com.company.quarium.entity.checklist.RegressChecklist;
-import com.company.quarium.entity.checklist.SimpleChecklist;
-import com.company.quarium.entity.checklist.TestCase;
 import com.company.quarium.entity.project.*;
-import com.company.quarium.service.CopyChecklistService;
-import com.company.quarium.web.screens.checklist.SuitCaseBrowser;
-import com.company.quarium.web.screens.regresschecklist.RegressChecklistEdit;
+import com.company.quarium.entity.testSuit.RunTestSuit;
+import com.company.quarium.entity.testSuit.SharedTestSuit;
+import com.company.quarium.entity.testSuit.TestCase;
+import com.company.quarium.entity.testSuit.TestSuit;
+import com.company.quarium.service.CopyTestSuitService;
+import com.company.quarium.web.screens.runtestsuit.RunTestSuitEdit;
 import com.company.quarium.web.screens.simplechecklist.TestRunTestSuitBrowse;
+import com.company.quarium.web.screens.testSuit.SuitCaseBrowser;
 import com.haulmont.bali.util.ParamsMap;
+import com.haulmont.charts.gui.components.charts.PieChart;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.core.global.UserSessionSource;
@@ -44,11 +45,11 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     @Inject
     private DataManager dataManager;
     @Inject
-    private CopyChecklistService copyChecklistService;
+    private CopyTestSuitService copyTestSuitService;
     @Inject
     private InstanceContainer<TestRun> testRunDc;
     @Inject
-    private CollectionPropertyContainer<RegressChecklist> checklistsDc;
+    private CollectionPropertyContainer<RunTestSuit> checklistsDc;
     @Inject
     private CollectionLoader<Milestone> milestoneDl;
     @Inject
@@ -74,9 +75,9 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     @Inject
     private LookupField<Milestone> milestone;
     @Inject
-    private CollectionLoader<RegressChecklist> suitsDl;
+    private CollectionLoader<RunTestSuit> suitsDl;
     @Inject
-    private GroupTable<RegressChecklist> suitsStatisticsTable;
+    private GroupTable<RunTestSuit> suitsStatisticsTable;
     @Inject
     private CollectionContainer<TestCase> skippedCasesDc;
     @Inject
@@ -96,13 +97,15 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     @Inject
     private CollectionLoader<TestCase> skippedCasesDl;
     @Inject
-    private CollectionLoader<RegressChecklist> checklistsFilterDl;
+    private CollectionLoader<RunTestSuit> checklistsFilterDl;
     @Inject
-    private GroupTable<RegressChecklist> checklistTable;
+    private GroupTable<RunTestSuit> checklistTable;
+    @Inject
+    private PieChart pieChart;
 
     @Subscribe("checklistTable.addChecklist")
     protected void onAddChecklist(Action.ActionPerformedEvent event) {
-        screenBuilders.lookup(SimpleChecklist.class, this)
+        screenBuilders.lookup(SharedTestSuit.class, this)
                 .withOptions(new MapScreenOptions(ParamsMap.of("project", getEditedEntity().getProject())))
                 .withScreenClass(TestRunTestSuitBrowse.class)
                 .withOpenMode(OpenMode.DIALOG)
@@ -123,11 +126,12 @@ public class TestRunEdit extends StandardEditor<TestRun> {
         blockedCasesDl.setParameter("testRun", getEditedEntity());
         skippedCasesDl.setParameter("testRun", getEditedEntity());
         checklistsFilterDl.setParameter("testRun", getEditedEntity());
+
     }
 
-    private RegressChecklist createAndAddChecklist(Checklist checklist) {
-        checklist = dataManager.load(Checklist.class).id(checklist.getId()).view("project-checklist-view").one();
-        RegressChecklist checklistNew = copyChecklistService.copyRegressChecklist(checklist);
+    private RunTestSuit createAndAddChecklist(TestSuit testSuit) {
+        testSuit = dataManager.load(TestSuit.class).id(testSuit.getId()).view("project-testSuit-view").one();
+        RunTestSuit checklistNew = copyTestSuitService.copyRunTestSuit(testSuit);
         checklistNew.setTestRun(testRunDc.getItem());
         checklistsDc.getMutableItems().add(checklistNew);
         return checklistNew;
@@ -146,19 +150,19 @@ public class TestRunEdit extends StandardEditor<TestRun> {
 
     @Install(to = "checklistTable.create", subject = "screenConfigurer")
     protected void testRunsTableCreateScreenConfigurer(Screen editorScreen) {
-        ((RegressChecklistEdit) editorScreen).setModuleParameter(getEditedEntity().getProject().getModule());
-        ((RegressChecklistEdit) editorScreen).setQaParameter(getEditedEntity().getProject().getQa());
+        ((RunTestSuitEdit) editorScreen).setModuleParameter(getEditedEntity().getProject().getModule());
+        ((RunTestSuitEdit) editorScreen).setQaParameter(getEditedEntity().getProject().getQa());
     }
 
     @Install(to = "checklistTable.edit", subject = "screenConfigurer")
     protected void testRunsTableEditScreenConfigurer(Screen editorScreen) {
-        ((RegressChecklistEdit) editorScreen).setModuleParameter(getEditedEntity().getProject().getModule());
-        ((RegressChecklistEdit) editorScreen).setQaParameter(getEditedEntity().getProject().getQa());
+        ((RunTestSuitEdit) editorScreen).setModuleParameter(getEditedEntity().getProject().getModule());
+        ((RunTestSuitEdit) editorScreen).setQaParameter(getEditedEntity().getProject().getQa());
     }
 
-    private String getTime(List<Checklist> checklistList) {
+    private String getTime(List<TestSuit> testSuitList) {
         int totalTime = 0;
-        for (Checklist cl : checklistList) {
+        for (TestSuit cl : testSuitList) {
             totalTime += cl.getHours() * 60 + cl.getMinutes();
         }
 
@@ -168,7 +172,7 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     }
 
     @Subscribe(id = "checklistsDc", target = Target.DATA_CONTAINER)
-    public void onChecklistsDcItemPropertyChange(InstanceContainer.ItemPropertyChangeEvent<RegressChecklist> event) {
+    public void onChecklistsDcItemPropertyChange(InstanceContainer.ItemPropertyChangeEvent<RunTestSuit> event) {
         if ("assignedQa".equals(event.getProperty())
                 || "hours".equals(event.getProperty())
                 || "minutes".equals(event.getProperty())
@@ -183,7 +187,7 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     }
 
     @Subscribe(id = "checklistsDc", target = Target.DATA_CONTAINER)
-    public void onChecklistsDcCollectionChange(CollectionContainer.CollectionChangeEvent<RegressChecklist> event) {
+    public void onChecklistsDcCollectionChange(CollectionContainer.CollectionChangeEvent<RunTestSuit> event) {
         repaintStatisticsTables();
     }
 
@@ -196,13 +200,13 @@ public class TestRunEdit extends StandardEditor<TestRun> {
         }
 
         suitsStatisticsTable.addGeneratedColumn("casesSkipped",
-                new Table.ColumnGenerator<Checklist>() {
+                new Table.ColumnGenerator<TestSuit>() {
                     @Override
-                    public Component generateCell(Checklist checklist) {
+                    public Component generateCell(TestSuit testSuit) {
                         Label label = uiComponents.create(Label.NAME);
                         List<TestCase> skippedCases = skippedCasesDc.getMutableItems().stream()
                                 .filter(s ->
-                                        s.getChecklist().equals(checklist))
+                                        s.getTestSuit().equals(testSuit))
                                 .collect(Collectors.toList());
                         label.setValue(skippedCases.size());
                         label.setStyleName("skipped-result");
@@ -211,13 +215,13 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                 });
 
         suitsStatisticsTable.addGeneratedColumn("casesBlocked",
-                new Table.ColumnGenerator<Checklist>() {
+                new Table.ColumnGenerator<TestSuit>() {
                     @Override
-                    public Component generateCell(Checklist checklist) {
+                    public Component generateCell(TestSuit testSuit) {
                         Label label = uiComponents.create(Label.NAME);
                         List<TestCase> blockedCases = blockedCasesDc.getMutableItems().stream()
                                 .filter(s ->
-                                        s.getChecklist().equals(checklist))
+                                        s.getTestSuit().equals(testSuit))
                                 .collect(Collectors.toList());
                         label.setValue(blockedCases.size());
                         label.setStyleName("blocked-result");
@@ -226,13 +230,13 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                 });
 
         suitsStatisticsTable.addGeneratedColumn("casesFailed",
-                new Table.ColumnGenerator<Checklist>() {
+                new Table.ColumnGenerator<TestSuit>() {
                     @Override
-                    public Component generateCell(Checklist checklist) {
+                    public Component generateCell(TestSuit testSuit) {
                         Label label = uiComponents.create(Label.NAME);
                         List<TestCase> failedCases = bugsDc.getMutableItems().stream()
                                 .filter(s ->
-                                        s.getChecklist().equals(checklist))
+                                        s.getTestSuit().equals(testSuit))
                                 .collect(Collectors.toList());
                         label.setValue(failedCases.size());
                         label.setStyleName("failed-result");
@@ -241,13 +245,13 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                 });
 
         suitsStatisticsTable.addGeneratedColumn("casesPassed",
-                new Table.ColumnGenerator<Checklist>() {
+                new Table.ColumnGenerator<TestSuit>() {
                     @Override
-                    public Component generateCell(Checklist checklist) {
+                    public Component generateCell(TestSuit testSuit) {
                         Label label = uiComponents.create(Label.NAME);
                         List<TestCase> passedCases = passedCasesDc.getMutableItems().stream()
                                 .filter(s ->
-                                        s.getChecklist().equals(checklist))
+                                        s.getTestSuit().equals(testSuit))
                                 .collect(Collectors.toList());
                         label.setValue(passedCases.size());
                         label.setStyleName("passed-result");
@@ -256,13 +260,13 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                 });
 
         suitsStatisticsTable.addGeneratedColumn("casesTotal",
-                new Table.ColumnGenerator<Checklist>() {
+                new Table.ColumnGenerator<TestSuit>() {
                     @Override
-                    public Component generateCell(Checklist checklist) {
+                    public Component generateCell(TestSuit testSuit) {
                         Label label = uiComponents.create(Label.NAME);
                         List<TestCase> totalCases = totalCasesDc.getMutableItems().stream()
                                 .filter(s ->
-                                        s.getChecklist().equals(checklist))
+                                        s.getTestSuit().equals(testSuit))
                                 .collect(Collectors.toList());
                         label.setValue(totalCases.size());
                         return label;
@@ -274,7 +278,7 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                     @Override
                     public Component generateCell(QaProjectRelationship qa) {
                         Label label = uiComponents.create(Label.NAME);
-                        List<Checklist> qaChecklists = checklistsDc.getMutableItems().stream()
+                        List<TestSuit> qaTestSuits = checklistsDc.getMutableItems().stream()
                                 .filter(s -> {
                                     if (s.getAssignedQa() != null)
                                         return s.getAssignedQa().equals(qa);
@@ -282,7 +286,7 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                                     return false;
                                 })
                                 .collect(Collectors.toList());
-                        label.setValue(getTime(qaChecklists));
+                        label.setValue(getTime(qaTestSuits));
                         return label;
                     }
                 });
@@ -292,7 +296,7 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                     @Override
                     public Component generateCell(QaProjectRelationship qa) {
                         Label label = uiComponents.create(Label.NAME);
-                        List<Checklist> qaChecklists = checklistsDc.getMutableItems().stream()
+                        List<TestSuit> qaTestSuits = checklistsDc.getMutableItems().stream()
                                 .filter(s -> {
                                     if (s.getAssignedQa() != null)
                                         return s.getAssignedQa().equals(qa);
@@ -306,7 +310,7 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                                     return false;
                                 })
                                 .collect(Collectors.toList());
-                        label.setValue(getTime(qaChecklists));
+                        label.setValue(getTime(qaTestSuits));
                         return label;
                     }
                 });
@@ -340,7 +344,7 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     @Subscribe("createPopup.copy")
     public void onCreatePopupCopy(Action.ActionPerformedEvent event) {
         if (checklistTable.getSingleSelected() != null) {
-            RegressChecklist newCl = copyChecklistService.copyRegressChecklist(checklistTable.getSingleSelected());
+            RunTestSuit newCl = copyTestSuitService.copyRunTestSuit(checklistTable.getSingleSelected());
             newCl.setTestRun(getEditedEntity());
             checklistsDc.getMutableItems().add(newCl);
 

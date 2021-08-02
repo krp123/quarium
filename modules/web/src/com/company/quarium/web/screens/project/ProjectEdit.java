@@ -1,16 +1,15 @@
 package com.company.quarium.web.screens.project;
 
-import com.company.quarium.entity.checklist.Checklist;
-import com.company.quarium.entity.checklist.SimpleChecklist;
-import com.company.quarium.entity.project.ConfigurationProjectRelationship;
-import com.company.quarium.entity.project.Project;
-import com.company.quarium.entity.project.QaProjectRelationship;
-import com.company.quarium.entity.project.SimpleProject;
+import com.company.quarium.entity.project.*;
 import com.company.quarium.entity.references.Configuration;
 import com.company.quarium.entity.references.Qa;
-import com.company.quarium.service.CopyChecklistService;
-import com.company.quarium.web.screens.checklist.ProjectExcelUploadWindow;
-import com.company.quarium.web.screens.checklist.TestSuitEdit;
+import com.company.quarium.entity.testSuit.CaseResult;
+import com.company.quarium.entity.testSuit.SharedTestSuit;
+import com.company.quarium.entity.testSuit.TestCase;
+import com.company.quarium.entity.testSuit.TestSuit;
+import com.company.quarium.service.CopyTestSuitService;
+import com.company.quarium.web.screens.testSuit.ProjectExcelUploadWindow;
+import com.company.quarium.web.screens.testSuit.ProjectTestSuitEdit;
 import com.company.quarium.web.screens.testrun.TestRunEdit;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.Messages;
@@ -18,12 +17,15 @@ import com.haulmont.cuba.core.global.TimeSource;
 import com.haulmont.cuba.core.global.UserSessionSource;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.ScreenBuilders;
+import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.*;
 import com.haulmont.cuba.gui.screen.*;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @UiController("quarium_SimpleProject.edit")
 @UiDescriptor("project-edit.xml")
@@ -42,11 +44,11 @@ public class ProjectEdit extends StandardEditor<Project> {
     @Inject
     protected InstanceContainer<SimpleProject> projectDc;
     @Inject
-    private CollectionContainer<SimpleChecklist> checklistsDc;
+    private CollectionContainer<SharedTestSuit> testSuitsDc;
     @Inject
     private DataManager dataManager;
     @Inject
-    private CopyChecklistService copyChecklistService;
+    private CopyTestSuitService copyTestSuitService;
     @Inject
     private CollectionLoader<QaProjectRelationship> qaDl;
     @Inject
@@ -60,11 +62,15 @@ public class ProjectEdit extends StandardEditor<Project> {
     @Inject
     private Messages messages;
     @Inject
-    private CollectionLoader<Checklist> checklistsFilterDl;
+    private CollectionLoader<TestSuit> testSuitsFilterDl;
     @Inject
     private PopupButton createPopup;
     @Inject
-    private GroupTable<SimpleChecklist> checklistsTable;
+    private GroupTable<SharedTestSuit> testSuitsTable;
+    @Inject
+    private GroupTable<TestRun> testRunsTable;
+    @Inject
+    private UiComponents uiComponents;
 
     @Subscribe
     public void onInitEntity(InitEntityEvent<Project> event) {
@@ -74,7 +80,7 @@ public class ProjectEdit extends StandardEditor<Project> {
     @Subscribe
     protected void onBeforeShow(BeforeShowEvent event) {
         qaDl.setParameter("project", getEditedEntity());
-        checklistsFilterDl.setParameter("project", getEditedEntity());
+        testSuitsFilterDl.setParameter("project", getEditedEntity());
     }
 
     @Subscribe("qaProjectRelationshipsTable.addQa")
@@ -119,13 +125,13 @@ public class ProjectEdit extends StandardEditor<Project> {
                 .show();
     }
 
-    @Subscribe("checklistsTable.addChecklist")
-    protected void onAddChecklist(Action.ActionPerformedEvent event) {
-        screenBuilders.lookup(Checklist.class, this)
+    @Subscribe("testSuitsTable.addTestSuit")
+    protected void onAddTestSuit(Action.ActionPerformedEvent event) {
+        screenBuilders.lookup(TestSuit.class, this)
                 .withLaunchMode(OpenMode.DIALOG)
                 .withSelectHandler(checklists -> {
                     checklists.stream()
-                            .forEach(this::createAndAddChecklist);
+                            .forEach(this::createAndAddTestSuit);
                 })
                 .build()
                 .show();
@@ -148,12 +154,12 @@ public class ProjectEdit extends StandardEditor<Project> {
         return configurationProjectRelationship;
     }
 
-    private Checklist createAndAddChecklist(Checklist checklist) {
-        checklist = dataManager.load(Checklist.class).id(checklist.getId()).view("project-checklist-view").one();
-        SimpleChecklist checklistNew = copyChecklistService.copyChecklist(checklist);
-        checklistNew.setProject(projectDc.getItem());
-        checklistsDc.getMutableItems().add(checklistNew);
-        return checklistNew;
+    private TestSuit createAndAddTestSuit(TestSuit testSuit) {
+        testSuit = dataManager.load(TestSuit.class).id(testSuit.getId()).view("project-testSuit-view").one();
+        SharedTestSuit testSuitNew = copyTestSuitService.copyTestSuit(testSuit);
+        testSuitNew.setProject(projectDc.getItem());
+        testSuitsDc.getMutableItems().add(testSuitNew);
+        return testSuitNew;
     }
 
     private void addQaToRelationships(QaProjectRelationship qaProjectRelationship) {
@@ -174,25 +180,25 @@ public class ProjectEdit extends StandardEditor<Project> {
         ((TestRunEdit) editorScreen).setProjectParameter(getEditedEntity());
     }
 
-    @Install(to = "checklistsTable.edit", subject = "screenConfigurer")
-    protected void checklistTableEditScreenConfigurer(Screen editorScreen) {
+    @Install(to = "testSuitsTable.edit", subject = "screenConfigurer")
+    protected void testSuitsTableEditScreenConfigurer(Screen editorScreen) {
         if (getEditedEntity().getQa() != null) {
-            ((TestSuitEdit) editorScreen).setQaParameter(getEditedEntity().getQa());
+            ((ProjectTestSuitEdit) editorScreen).setQaParameter(getEditedEntity().getQa());
         }
 
         if (getEditedEntity().getModule() != null) {
-            ((TestSuitEdit) editorScreen).setModuleParameter(getEditedEntity().getModule());
+            ((ProjectTestSuitEdit) editorScreen).setModuleParameter(getEditedEntity().getModule());
         }
     }
 
-    @Install(to = "checklistsTable.create", subject = "screenConfigurer")
-    protected void checklistTableCreateScreenConfigurer(Screen editorScreen) {
+    @Install(to = "testSuitsTable.create", subject = "screenConfigurer")
+    protected void testSuitsTableCreateScreenConfigurer(Screen editorScreen) {
         if (getEditedEntity().getQa() != null) {
-            ((TestSuitEdit) editorScreen).setQaParameter(getEditedEntity().getQa());
+            ((ProjectTestSuitEdit) editorScreen).setQaParameter(getEditedEntity().getQa());
         }
 
         if (getEditedEntity().getModule() != null) {
-            ((TestSuitEdit) editorScreen).setModuleParameter(getEditedEntity().getModule());
+            ((ProjectTestSuitEdit) editorScreen).setModuleParameter(getEditedEntity().getModule());
         }
     }
 
@@ -212,16 +218,48 @@ public class ProjectEdit extends StandardEditor<Project> {
             createPopup.setVisible(false);
             saveBtn.setVisible(false);
         }
+
+        testRunsTable.addGeneratedColumn("completedPercent",
+                new Table.ColumnGenerator<TestRun>() {
+                    @Override
+                    public Component generateCell(TestRun testRun) {
+                        Label label = uiComponents.create(Label.NAME);
+
+                        List<TestCase> passedCases = new ArrayList<>();
+                        for (TestSuit ts : testRun.getChecklists()) {
+                            for (TestCase tc : ts.getTestCase()) {
+                                if (tc.getResult() != null
+                                        && tc.getResult().equals(CaseResult.PASSED)) {
+                                    passedCases.add(tc);
+                                }
+                            }
+                        }
+                        double passedCasesSize = passedCases.size();
+
+                        List<TestCase> allCases = new ArrayList<>();
+                        for (TestSuit ts : testRun.getChecklists()) {
+                            allCases.addAll(ts.getTestCase());
+                        }
+
+                        String percentCompleted = "0%";
+
+                        if (passedCases.size() > 0) {
+                            percentCompleted = String.format("%.2f", passedCasesSize / allCases.size() * 100) + "%";
+                        }
+                        label.setValue(percentCompleted);
+                        return label;
+                    }
+                });
     }
 
     @Subscribe("createPopup.copy")
     public void onCreatePopupCopy(Action.ActionPerformedEvent event) {
-        if (checklistsTable.getSingleSelected() != null) {
-            SimpleChecklist newCl = copyChecklistService.copyChecklist(checklistsTable.getSingleSelected());
+        if (testSuitsTable.getSingleSelected() != null) {
+            SharedTestSuit newCl = copyTestSuitService.copyTestSuit(testSuitsTable.getSingleSelected());
             newCl.setProject(getEditedEntity());
-            checklistsDc.getMutableItems().add(newCl);
 
-            screenBuilders.editor(checklistsTable)
+            screenBuilders.editor(testSuitsTable)
+                    .withScreenId("quarium_ProjectTestSuit.edit")
                     .editEntity(newCl)
                     .build()
                     .show();
@@ -233,15 +271,15 @@ public class ProjectEdit extends StandardEditor<Project> {
         ProjectExcelUploadWindow uploadWindow = screenBuilders.screen(this)
                 .withScreenClass(ProjectExcelUploadWindow.class)
                 .build();
-        uploadWindow.setChecklistsDc(checklistsDc);
+        uploadWindow.setTestSuitsDc(testSuitsDc);
         uploadWindow.setProject((SimpleProject) getEditedEntity());
         uploadWindow.show();
     }
 
-    @Subscribe(id = "checklistsDc", target = Target.DATA_CONTAINER)
+    @Subscribe(id = "testSuitsDc", target = Target.DATA_CONTAINER)
     private void onChecklistsDcCollectionChange(
-            CollectionContainer.CollectionChangeEvent<SimpleChecklist> event) {
+            CollectionContainer.CollectionChangeEvent<SharedTestSuit> event) {
         CollectionChangeType changeType = event.getChangeType();
-        Collection<? extends SimpleChecklist> changes = event.getChanges();
+        Collection<? extends SharedTestSuit> changes = event.getChanges();
     }
 }

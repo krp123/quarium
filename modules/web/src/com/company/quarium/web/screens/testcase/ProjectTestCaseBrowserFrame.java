@@ -1,7 +1,7 @@
 package com.company.quarium.web.screens.testcase;
 
-import com.company.quarium.entity.checklist.TestCase;
 import com.company.quarium.entity.project.Project;
+import com.company.quarium.entity.testSuit.TestCase;
 import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.screen.ScreenFragment;
 import com.haulmont.cuba.gui.screen.UiController;

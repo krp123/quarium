@@ -1,6 +1,6 @@
 package com.company.quarium.entity.project;
 
-import com.company.quarium.entity.checklist.RegressChecklist;
+import com.company.quarium.entity.testSuit.RunTestSuit;
 import com.haulmont.chile.core.annotations.Composition;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
@@ -36,7 +36,7 @@ public class TestRun extends StandardEntity {
     @Composition
     @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "testRun")
-    private List<RegressChecklist> checklists;
+    private List<RunTestSuit> checklists;
 
     @Column(name = "DESCRIPTION", length = 1000)
     private String description;
@@ -69,11 +69,11 @@ public class TestRun extends StandardEntity {
         this.milestone = milestone;
     }
 
-    public List<RegressChecklist> getChecklists() {
+    public List<RunTestSuit> getChecklists() {
         return checklists;
     }
 
-    public void setChecklists(List<RegressChecklist> checklists) {
+    public void setChecklists(List<RunTestSuit> checklists) {
         this.checklists = checklists;
     }
 

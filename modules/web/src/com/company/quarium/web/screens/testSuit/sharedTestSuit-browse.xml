@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://checklistBrowse.caption"
+        focusComponent="testSuitsTable"
+        messagesPack="com.company.quarium.web.screens.testSuit">
+    <data readOnly="true">
+        <collection id="testSuitsDc"
+                    class="com.company.quarium.entity.testSuit.SharedTestSuit">
+            <view extends="project-testSuit-view"/>
+            <loader id="testSuitsDl">
+                <query>
+                    <![CDATA[select e from quarium_SharedTestSuit e where e.project IS NULL]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="testSuitsTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="testSuitsTable"
+                dataLoader="testSuitsDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="testSuitsTable"
+                    width="100%"
+                    dataContainer="testSuitsDc"
+                    multiselect="true">
+            <actions>
+                <action id="create" type="create" caption="msg://new"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="refresh" type="refresh"/>
+            </actions>
+            <columns>
+                <column id="name"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <popupButton id="createPopup" caption="msg://create">
+                    <actions>
+                        <action id="testSuitsTable.create"/>
+                        <action id="copy" caption="msg://copy"/>
+                        <action id="uploadExcel" caption="msg://checklistBrowse.uploadXlsx"
+                                icon="font-icon:FILE_EXCEL_O"/>
+                    </actions>
+                </popupButton>
+                <button id="editBtn" action="testSuitsTable.edit"/>
+                <button id="removeBtn" action="testSuitsTable.remove"/>
+                <button id="refreshBtn" action="testSuitsTable.refresh"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>
