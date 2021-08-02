@@ -44,9 +44,18 @@ public class RunTestSuitEdit extends BaseTestSuitEdit {
 
     @Subscribe("table.run")
     public void onTableRun(Action.ActionPerformedEvent event) {
+        TestCase testCase;
+        if (table.getSingleSelected() != null) {
+            testCase = table.getSingleSelected();
+        } else if (!testCasesDc.getItems().isEmpty()) {
+            testCase = testCasesDc.getMutableItems().get(0);
+        } else {
+            return;
+        }
+
         RunTestCaseEdit runTestCaseEdit = screenBuilders.editor(TestCase.class, this)
                 .withScreenClass(RunTestCaseEdit.class)
-                .editEntity(testCasesDc.getItem(table.getSingleSelected()))
+                .editEntity(testCase)
                 .withLaunchMode(OpenMode.DIALOG)
                 .build();
         runTestCaseEdit.setTestCasesDc(testCasesDc);
