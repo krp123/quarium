@@ -178,7 +178,7 @@
                             <rowsCount/>
                             <buttonsPanel id="buttonsPanel"
                                           alwaysVisible="true">
-                                <button id="testRun" action="table.run" caption="msg://run"
+                                <button id="testRunButton" action="table.run" caption="msg://run"
                                         icon="font-icon:PLAY"/>
                                 <button id="createBtn" action="table.create" caption="" visible="false"/>
                                 <button id="editBtn" action="table.edit" caption=""/>

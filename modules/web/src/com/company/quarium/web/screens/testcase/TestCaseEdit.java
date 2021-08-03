@@ -4,7 +4,6 @@ import com.company.quarium.entity.testSuit.Step;
 import com.company.quarium.entity.testSuit.TestCase;
 import com.company.quarium.entity.testSuit.TestSuit;
 import com.haulmont.cuba.core.global.DataManager;
-import com.haulmont.cuba.core.global.EntityStates;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.RemoveOperation;
@@ -46,8 +45,6 @@ public class TestCaseEdit extends StandardEditor<TestCase> {
     private Notifications notifications;
     @Inject
     private TextField<String> caseNameField;
-    @Inject
-    private EntityStates entityStates;
 
     @Subscribe
     public void onInit(InitEvent event) {
