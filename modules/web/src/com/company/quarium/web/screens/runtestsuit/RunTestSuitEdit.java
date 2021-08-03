@@ -14,6 +14,7 @@ import com.haulmont.cuba.gui.screen.*;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @UiController("quarium_RunTestSuit.edit")
 @UiDescriptor("runTestSuit-edit.xml")
@@ -25,7 +26,7 @@ public class RunTestSuitEdit extends BaseTestSuitEdit {
     @Inject
     private LookupField<Module> moduleField;
     @Inject
-    private Button testRun;
+    private Button testRunButton;
     @Inject
     private Table<TestCase> table;
     @Inject
@@ -51,7 +52,7 @@ public class RunTestSuitEdit extends BaseTestSuitEdit {
         if (table.getSingleSelected() != null) {
             testCase = table.getSingleSelected();
         } else if (!testCasesDc.getItems().isEmpty()) {
-            testCase = testCasesDc.getMutableItems().get(0);//TODO выбирать тут кейс, у которого отсутствует результат
+            testCase = testCasesDc.getItem(getFirstCaseWithoutResult());
         } else {
             notifications.create()
                     .withCaption(messages.getMessage(getClass(), "runNotification"))
@@ -68,9 +69,23 @@ public class RunTestSuitEdit extends BaseTestSuitEdit {
         runTestCaseEdit.show();
     }
 
+    private TestCase getFirstCaseWithoutResult() {
+        List<TestCase> casesWithoutResult = testCasesDc.getItems().stream().filter(tc -> {
+            if (tc.getResult() == null) {
+                return true;
+            }
+            return false;
+        }).collect(Collectors.toList());
+        if (casesWithoutResult.isEmpty()) {
+            return testCasesDc.getItems().get(0);
+        } else {
+            return casesWithoutResult.get(0);
+        }
+    }
+
     @Subscribe
     public void onInit1(InitEvent event) {
-        testRun.setStyleName("passed");
+        testRunButton.setStyleName("passed");
 
         table.addGeneratedColumn("estimation",
                 new Table.ColumnGenerator<TestCase>() {
@@ -91,12 +106,5 @@ public class RunTestSuitEdit extends BaseTestSuitEdit {
                         return label;
                     }
                 });
-    }
-
-    @Subscribe
-    public void onAfterShow(AfterShowEvent event) {
-        if (testCasesDc.getItems().size() > 0) {
-            table.setSelected(testCasesDc.getItems().get(0));
-        }
     }
 }
