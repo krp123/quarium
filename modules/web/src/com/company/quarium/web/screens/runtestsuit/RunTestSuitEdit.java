@@ -51,7 +51,7 @@ public class RunTestSuitEdit extends BaseTestSuitEdit {
         if (table.getSingleSelected() != null) {
             testCase = table.getSingleSelected();
         } else if (!testCasesDc.getItems().isEmpty()) {
-            testCase = testCasesDc.getMutableItems().get(0);
+            testCase = testCasesDc.getMutableItems().get(0);//TODO выбирать тут кейс, у которого отсутствует результат
         } else {
             notifications.create()
                     .withCaption(messages.getMessage(getClass(), "runNotification"))

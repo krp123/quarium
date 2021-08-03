@@ -43,6 +43,46 @@ public class RunTestCaseEdit extends TestCaseEdit {
     private Messages messages;
     @Inject
     private Label<String> resultCaption;
+    @Inject
+    private Label<String> hours;
+    @Inject
+    private Label<String> minutes;
+    @Inject
+    private Label<String> hm;
+    @Inject
+    private Label<String> ms;
+    @Inject
+    private Label<String> seconds;
+
+    private static int secondsCount;
+    @Inject
+    private Timer timer;
+    @Inject
+    private Button startTimer;
+    @Inject
+    private Button pauseTimer;
+    @Inject
+    private Button stopTimer;
+    @Inject
+    private Button resumeTimer;
+
+    @Subscribe("timer")
+    public void onTimerTimerAction(Timer.TimerActionEvent event) {
+        secondsCount++;
+        String h = String.valueOf(secondsCount / 3600);
+        String m = secondsCount > 3600 ?
+                String.valueOf((secondsCount - (secondsCount / 3600 * 3600)) / 60)
+                : String.valueOf(secondsCount / 60);
+        String s = String.valueOf(secondsCount % 60);
+
+        String hLabel = h.length() > 1 ? h : "0" + h;
+        String mLabel = m.length() > 1 ? m : "0" + m;
+        String sLabel = s.length() > 1 ? s : "0" + s;
+
+        hours.setValue(hLabel);
+        minutes.setValue(mLabel);
+        seconds.setValue(sLabel);
+    }
 
     @Subscribe("caseResult")
     public void onCaseResultValueChange(HasValue.ValueChangeEvent<CaseResult> event) {
@@ -116,10 +156,67 @@ public class RunTestCaseEdit extends TestCaseEdit {
                     failedButton.setStyleName("pressed");
             }
         }
-        setCount();
+        setCasesCount();
     }
 
-    private void setCount() {
+    @Subscribe
+    public void onAfterClose(AfterCloseEvent event) {
+        secondsCount = 0;
+    }
+
+    @Subscribe
+    public void onInit1(InitEvent event) {
+        resetTimerLabel();
+    }
+
+    private void resetTimerLabel() {
+        hours.setValue("00");
+        hm.setValue(":");
+        minutes.setValue("00");
+        ms.setValue(":");
+        seconds.setValue("00");
+        secondsCount = 0;
+    }
+
+
+    @Subscribe("startTimer")
+    public void onStartTimerClick(Button.ClickEvent event) {
+        resetTimerLabel();
+        timer.start();
+        startTimer.setVisible(false);
+        pauseTimer.setVisible(true);
+        resumeTimer.setVisible(false);
+        stopTimer.setVisible(true);
+    }
+
+    @Subscribe("stopTimer")
+    public void onStopTimerClick(Button.ClickEvent event) {
+        timer.stop();
+        startTimer.setVisible(true);
+        pauseTimer.setVisible(false);
+        resumeTimer.setVisible(false);
+        stopTimer.setVisible(false);
+    }
+
+    @Subscribe("pauseTimer")
+    public void onPauseTimerClick(Button.ClickEvent event) {
+        timer.stop();
+        startTimer.setVisible(false);
+        pauseTimer.setVisible(false);
+        resumeTimer.setVisible(true);
+        stopTimer.setVisible(true);
+    }
+
+    @Subscribe("resumeTimer")
+    public void onResumeTimerClick(Button.ClickEvent event) {
+        timer.start();
+        startTimer.setVisible(false);
+        pauseTimer.setVisible(true);
+        resumeTimer.setVisible(false);
+        stopTimer.setVisible(true);
+    }
+
+    private void setCasesCount() {
         count.setValue(testCasesDc.getItem(testCaseDc.getItem()).getNumber() + " " +
                 messages.getMessage(getClass(), "from") + " " +
                 testCasesDc.getItems().size());
@@ -144,7 +241,7 @@ public class RunTestCaseEdit extends TestCaseEdit {
         TestCase prevNextCase = testCasesDc.getMutableItems().get(caseNumber);
         getEditedEntityContainer().setItem(prevNextCase);
         setPressedButton(prevNextCase.getResult());
-        setCount();
+        setCasesCount();
     }
 
     @Subscribe("passedButton")

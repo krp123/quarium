@@ -329,12 +329,14 @@ public class TestRunEdit extends StandardEditor<TestRun> {
         } else return true;
     }
 
-    @Subscribe
-    public void onBeforeCommitChanges(BeforeCommitChangesEvent event) {
-        if (!checkRunDates()) {
-            event.preventCommit();
-        }
-    }
+//    @Subscribe
+//    public void onBeforeCommitChanges(BeforeCommitChangesEvent event) {
+//        if (!checkRunDates()) {
+//            event.preventCommit();
+//        } else {
+//            event.resume();
+//        }
+//    }
 
     private void repaintStatisticsTables() {
         testPlanQaStatisticsTable.repaint();
