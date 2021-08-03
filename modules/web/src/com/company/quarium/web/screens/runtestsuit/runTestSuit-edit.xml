@@ -66,7 +66,6 @@
                   class="com.company.quarium.entity.testSuit.TestCase">
             <view extends="testCase-view">
                 <property name="priority" view="_minimal"/>
-                <property name="state" view="_minimal"/>
                 <property name="caseStep" view="step-view"/>
             </view>
             <loader id="testCaseDl"/>
@@ -172,7 +171,7 @@
                                 <column id="number" editable="false" width="20"/>
                                 <column id="name" maxTextLength="20"/>
                                 <column id="priority"/>
-                                <column id="result"/>
+                                <column id="status"/>
                                 <column id="estimation" caption="msg://checklistEdit.estimation"/>
                             </columns>
                             <rowsCount/>
@@ -182,7 +181,6 @@
                                         icon="font-icon:PLAY"/>
                                 <button id="createBtn" action="table.create" caption="" visible="false"/>
                                 <button id="editBtn" action="table.edit" caption=""/>
-                                <button id="removeBtn" action="table.remove" caption=""/>
                                 <button id="testCaseUp" caption="" action="table.moveTestCaseUp"
                                         icon="font-icon:ANGLE_UP"/>
                                 <button id="testCaseDown" caption="" action="table.moveTestCaseDown"

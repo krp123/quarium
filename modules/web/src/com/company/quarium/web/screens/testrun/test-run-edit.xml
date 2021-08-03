@@ -52,7 +52,7 @@
                     <![CDATA[select tc from quarium_TestCase tc
                     join quarium_RunTestSuit rc
                     where tc = rc.testCase
-                    and tc.result = 'Failed'
+                    and tc.status = 'Failed'
                     and rc.testRun = :testRun]]>
                 </query>
             </loader>
@@ -63,7 +63,7 @@
                     <![CDATA[select tc from quarium_TestCase tc
                     join quarium_RunTestSuit rc
                     where tc = rc.testCase
-                    and tc.result = 'Skipped'
+                    and tc.status = 'Skipped'
                     and rc.testRun = :testRun]]>
                 </query>
             </loader>
@@ -74,7 +74,7 @@
                     <![CDATA[select tc from quarium_TestCase tc
                     join quarium_RunTestSuit rc
                     where tc = rc.testCase
-                    and tc.result = 'Blocked'
+                    and tc.status = 'Blocked'
                     and rc.testRun = :testRun]]>
                 </query>
             </loader>
@@ -85,7 +85,7 @@
                     <![CDATA[select tc from quarium_TestCase tc
                     join quarium_RunTestSuit rc
                     where tc = rc.testCase
-                    and tc.result = 'Passed'
+                    and tc.status = 'Passed'
                     and rc.testRun = :testRun]]>
                 </query>
             </loader>

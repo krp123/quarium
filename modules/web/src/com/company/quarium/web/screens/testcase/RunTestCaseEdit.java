@@ -1,6 +1,6 @@
 package com.company.quarium.web.screens.testcase;
 
-import com.company.quarium.entity.testSuit.CaseResult;
+import com.company.quarium.entity.testSuit.CaseStatus;
 import com.company.quarium.entity.testSuit.TestCase;
 import com.company.quarium.service.TestCaseTimerService;
 import com.haulmont.cuba.core.global.Messages;
@@ -20,7 +20,7 @@ import java.util.Map;
 public class RunTestCaseEdit extends TestCaseEdit {
 
     @Inject
-    private Label<CaseResult> caseResult;
+    private Label<CaseStatus> caseResult;
     @Inject
     private HBoxLayout ticketBox;
     @Inject
@@ -82,11 +82,11 @@ public class RunTestCaseEdit extends TestCaseEdit {
     }
 
     @Subscribe("caseResult")
-    public void onCaseResultValueChange(HasValue.ValueChangeEvent<CaseResult> event) {
-        if (getEditedEntity().getResult() != null) {
+    public void onCaseResultValueChange(HasValue.ValueChangeEvent<CaseStatus> event) {
+        if (getEditedEntity().getStatus() != null) {
             resultCaption.setVisible(true);
 
-            switch (getEditedEntity().getResult()) {
+            switch (getEditedEntity().getStatus()) {
                 case FAILED:
                     caseResult.setStyleName("failed-result");
                     ticketBox.setVisible(true);
@@ -138,8 +138,8 @@ public class RunTestCaseEdit extends TestCaseEdit {
         skippedButton.setStyleName("skipped");
         blockedButton.setStyleName("blocked");
 
-        if (getEditedEntity().getResult() != null) {
-            switch (getEditedEntity().getResult()) {
+        if (getEditedEntity().getStatus() != null) {
+            switch (getEditedEntity().getStatus()) {
                 case SKIPPED:
                     skippedButton.setStyleName("pressed");
                     break;
@@ -244,32 +244,32 @@ public class RunTestCaseEdit extends TestCaseEdit {
         testCasesDc.replaceItem(getEditedEntity());
         TestCase prevNextCase = testCasesDc.getMutableItems().get(caseNumber);
         getEditedEntityContainer().setItem(prevNextCase);
-        setPressedButton(prevNextCase.getResult());
+        setPressedButton(prevNextCase.getStatus());
         setCasesCount();
     }
 
     @Subscribe("passedButton")
     public void onPassedButtonClick(Button.ClickEvent event) {
-        setPressedButton(CaseResult.PASSED);
+        setPressedButton(CaseStatus.PASSED);
     }
 
     @Subscribe("failedButton")
     public void onFailedButtonClick(Button.ClickEvent event) {
-        setPressedButton(CaseResult.FAILED);
+        setPressedButton(CaseStatus.FAILED);
     }
 
     @Subscribe("skippedButton")
     public void onSkippedButtonClick(Button.ClickEvent event) {
-        setPressedButton(CaseResult.SKIPPED);
+        setPressedButton(CaseStatus.SKIPPED);
     }
 
     @Subscribe("blockedButton")
     public void onBlockedButtonClick(Button.ClickEvent event) {
-        setPressedButton(CaseResult.BLOCKED);
+        setPressedButton(CaseStatus.BLOCKED);
     }
 
-    private void setPressedButton(CaseResult result) {
-        getEditedEntity().setResult(result);
+    private void setPressedButton(CaseStatus result) {
+        getEditedEntity().setStatus(result);
 
         passedButton.setStyleName("passed");
         failedButton.setStyleName("failed");

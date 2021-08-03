@@ -71,7 +71,8 @@
                                    caption="msg://checklistEdit.steps"
                                    multiLineCells="true"
                                    editable="true"
-                                   colspan="2">
+                                   colspan="2"
+                                   showSelection="false">
                                 <actions>
                                     <action id="createStep" type="create"/>
                                     <action id="removeStep" type="remove"/>

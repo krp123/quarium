@@ -117,7 +117,10 @@
                                    columnHeaderVisible="false"
                                    caption="msg://checklistEdit.steps"
                                    multiLineCells="true"
-                                   colspan="2">
+                                   colspan="2"
+                                   contextMenuEnabled="false"
+                                   showSelection="false"
+                                   textSelectionEnabled="true">
                                 <actions>
                                     <action id="createStep" type="create"/>
                                     <action id="removeStep" type="remove"/>
@@ -143,7 +146,7 @@
                             <hbox id="resultBox" colspan="2">
                                 <label id="resultCaption" value="msg://checklistEdit.result"/>
                                 <hbox width="5px"/>
-                                <label id="caseResult" dataContainer="testCaseDc" property="result"/>
+                                <label id="caseResult" dataContainer="testCaseDc" property="status"/>
                             </hbox>
                         </row>
                         <row>
