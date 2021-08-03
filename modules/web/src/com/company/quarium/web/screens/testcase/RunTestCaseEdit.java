@@ -2,6 +2,7 @@ package com.company.quarium.web.screens.testcase;
 
 import com.company.quarium.entity.testSuit.CaseResult;
 import com.company.quarium.entity.testSuit.TestCase;
+import com.company.quarium.service.TestCaseTimerService;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.core.global.TimeSource;
 import com.haulmont.cuba.gui.components.*;
@@ -10,6 +11,7 @@ import com.haulmont.cuba.gui.screen.*;
 
 import javax.inject.Inject;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @UiController("quarium_RunTestCase.edit")
 @UiDescriptor("run-test-case-edit.xml")
@@ -55,6 +57,7 @@ public class RunTestCaseEdit extends TestCaseEdit {
     private Label<String> seconds;
 
     private static int secondsCount;
+
     @Inject
     private Timer timer;
     @Inject
@@ -65,23 +68,17 @@ public class RunTestCaseEdit extends TestCaseEdit {
     private Button stopTimer;
     @Inject
     private Button resumeTimer;
+    @Inject
+    private TestCaseTimerService testCaseTimerService;
 
     @Subscribe("timer")
     public void onTimerTimerAction(Timer.TimerActionEvent event) {
         secondsCount++;
-        String h = String.valueOf(secondsCount / 3600);
-        String m = secondsCount > 3600 ?
-                String.valueOf((secondsCount - (secondsCount / 3600 * 3600)) / 60)
-                : String.valueOf(secondsCount / 60);
-        String s = String.valueOf(secondsCount % 60);
+        Map<String, String> timeUnits = testCaseTimerService.getTimeUnitsValues(secondsCount);
 
-        String hLabel = h.length() > 1 ? h : "0" + h;
-        String mLabel = m.length() > 1 ? m : "0" + m;
-        String sLabel = s.length() > 1 ? s : "0" + s;
-
-        hours.setValue(hLabel);
-        minutes.setValue(mLabel);
-        seconds.setValue(sLabel);
+        hours.setValue(timeUnits.get("hours"));
+        minutes.setValue(timeUnits.get("minutes"));
+        seconds.setValue(timeUnits.get("seconds"));
     }
 
     @Subscribe("caseResult")
@@ -178,7 +175,6 @@ public class RunTestCaseEdit extends TestCaseEdit {
         secondsCount = 0;
     }
 
-
     @Subscribe("startTimer")
     public void onStartTimerClick(Button.ClickEvent event) {
         resetTimerLabel();
@@ -191,6 +187,10 @@ public class RunTestCaseEdit extends TestCaseEdit {
 
     @Subscribe("stopTimer")
     public void onStopTimerClick(Button.ClickEvent event) {
+        stopTimer();
+    }
+
+    private void stopTimer() {
         timer.stop();
         startTimer.setVisible(true);
         pauseTimer.setVisible(false);
@@ -225,6 +225,8 @@ public class RunTestCaseEdit extends TestCaseEdit {
     @Subscribe("next")
     public void onNextClick(Button.ClickEvent event) {
         if (testCasesDc.getMutableItems().size() > testCasesDc.getItem(testCaseDc.getItem()).getNumber()) {
+            stopTimer();
+            resetTimerLabel();
             selectCase(testCasesDc.getItem(testCaseDc.getItem()).getNumber());
         }
     }
@@ -232,6 +234,8 @@ public class RunTestCaseEdit extends TestCaseEdit {
     @Subscribe("prev")
     public void onPrevClick(Button.ClickEvent event) {
         if (testCasesDc.getItem(testCaseDc.getItem()).getNumber() > 1) {
+            stopTimer();
+            resetTimerLabel();
             selectCase(testCasesDc.getItem(testCaseDc.getItem()).getNumber() - 2);
         }
     }

@@ -4,6 +4,7 @@ import com.company.quarium.entity.testSuit.Step;
 import com.company.quarium.entity.testSuit.TestCase;
 import com.company.quarium.entity.testSuit.TestSuit;
 import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.EntityStates;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.RemoveOperation;
@@ -45,6 +46,8 @@ public class TestCaseEdit extends StandardEditor<TestCase> {
     private Notifications notifications;
     @Inject
     private TextField<String> caseNameField;
+    @Inject
+    private EntityStates entityStates;
 
     @Subscribe
     public void onInit(InitEvent event) {
@@ -59,6 +62,20 @@ public class TestCaseEdit extends StandardEditor<TestCase> {
         adjustStep(event.getEntity());
     }
 
+    @Subscribe
+    public void onAfterShow(AfterShowEvent event) {
+        if (testCasesDc.getItems().contains(getEditedEntity())) {
+            testCaseDc.setItem(testCasesDc.getItem(getEditedEntity()));
+        }
+    }
+
+    @Subscribe("stepsTable")
+    public void onStepsTableSelection(Table.SelectionEvent<Step> event) {
+        if (event.getSource().getSingleSelected() != null) {
+            stepsTable.requestFocus(event.getSource().getSingleSelected(), "step");
+        }
+    }
+
     public void setCaseNumber(int number) {
         if (getEditedEntity().getNumber() == null)
             getEditedEntity().setNumber(number);
@@ -66,24 +83,24 @@ public class TestCaseEdit extends StandardEditor<TestCase> {
 
     @Subscribe("stepsTable.createStep")
     public void onCreateStep(Action.ActionPerformedEvent event) {
-        Step entity = dataManager.create(Step.class);
-        entity.setTestCase(testCaseDc.getItem());
+        Step step = dataManager.create(Step.class);
+        step.setTestCase(getEditedEntity());
         int lastNum = 0;
 
         if (testCaseDc
                 .getItem()
                 .getCaseStep() == null) {
-            entity.setNumber(1);
+            step.setNumber(1);
         } else {
             for (Step s : testCaseDc.getItem().getCaseStep()) {
                 if (s.getNumber() > lastNum) {
                     lastNum = s.getNumber();
                 }
             }
-            entity.setNumber(lastNum + 1);
+            step.setNumber(lastNum + 1);
         }
-        stepsCollection.getMutableItems().add(entity);
-        stepsTable.requestFocus(entity, "step");
+        stepsCollection.getMutableItems().add(step);
+        stepsTable.requestFocus(step, "step");
     }
 
     @Install(to = "stepsTable.removeStep", subject = "afterActionPerformedHandler")
@@ -172,7 +189,11 @@ public class TestCaseEdit extends StandardEditor<TestCase> {
                     .withDescription(String.format(messages.getMessage(getClass(), "fillName")))
                     .show();
         } else {
-            testCasesDc.replaceItem(testCaseDc.getItem());
+            if (testCasesDc.containsItem(getEditedEntity())) {
+                testCasesDc.replaceItem(testCaseDc.getItem());
+            } else {
+                testCasesDc.getMutableItems().add(testCaseDc.getItem());
+            }
             getWindow().getContext().getFrame().getWindowManager().remove(this);
         }
     }
