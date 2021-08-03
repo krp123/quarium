@@ -29,6 +29,13 @@
     <dialogMode height="800"
                 width="1100"
                 resizable="true"/>
+
+    <facets>
+        <timer id="timer"
+               delay="1000"
+               autostart="false"
+               repeating="true"/>
+    </facets>
     <layout expand="scrollBox" spacing="true" width="100%">
         <scrollBox id="scrollBox" spacing="true" width="100%">
             <form id="form" dataContainer="testCaseDc" height="100%" width="100%">
@@ -159,6 +166,50 @@
                             <dateField id="checkDate" dataContainer="testCaseDc"
                                        property="checkDate" caption="msg://checklistEdit.checkDate"
                                        visible="false" colspan="2"/>
+                        </row>
+                        <row>
+                            <hbox/>
+                            <hbox id="timerBox" spacing="true" width="100%">
+                                <grid align="MIDDLE_RIGHT" spacing="true">
+                                    <columns>
+                                        <column/>
+                                    </columns>
+                                    <rows>
+                                        <row>
+                                            <hbox spacing="true">
+                                                <button id="startTimer"
+                                                        caption="msg://start"
+                                                        icon="font-icon:PLAY"
+                                                        width="270px"/>
+                                                <button id="pauseTimer"
+                                                        caption="msg://pause"
+                                                        icon="PAUSE"
+                                                        visible="false"
+                                                        width="130px"/>
+                                                <button id="resumeTimer"
+                                                        caption="msg://resume"
+                                                        icon="PLAY_CIRCLE_O"
+                                                        visible="false"
+                                                        width="130px"/>
+                                                <button id="stopTimer"
+                                                        caption="msg://stop"
+                                                        icon="SQUARE"
+                                                        visible="false"
+                                                        width="130px"/>
+                                            </hbox>
+                                        </row>
+                                        <row>
+                                            <hbox id="timerLabelBox" align="MIDDLE_CENTER">
+                                                <label id="hours"/>
+                                                <label id="hm"/>
+                                                <label id="minutes"/>
+                                                <label id="ms"/>
+                                                <label id="seconds"/>
+                                            </hbox>
+                                        </row>
+                                    </rows>
+                                </grid>
+                            </hbox>
                         </row>
                     </rows>
                 </grid>
