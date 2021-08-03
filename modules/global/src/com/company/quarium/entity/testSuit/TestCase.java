@@ -1,7 +1,6 @@
 package com.company.quarium.entity.testSuit;
 
 import com.company.quarium.entity.references.Priority;
-import com.company.quarium.entity.references.Statement;
 import com.haulmont.chile.core.annotations.Composition;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
@@ -73,15 +72,8 @@ public class TestCase extends StandardEntity implements Cloneable {
     @JoinColumn(name = "PRIORITY_ID")
     private Priority priority;
 
-    @Lookup(type = LookupType.DROPDOWN, actions = {})
-    @OnDeleteInverse(DeletePolicy.UNLINK)
-    @OnDelete(DeletePolicy.UNLINK)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "STATE_ID")
-    private Statement state;
-
-    @Column(name = "RESULT_")
-    private String result;
+    @Column(name = "STATUS_")
+    private String status;
 
     @Lob
     @Column(name = "EXPECTED_RESULT")
@@ -93,12 +85,12 @@ public class TestCase extends StandardEntity implements Cloneable {
     @OnDeleteInverse(DeletePolicy.CASCADE)
     private TestSuit testSuit;
 
-    public CaseResult getResult() {
-        return result == null ? null : CaseResult.fromId(result);
+    public CaseStatus getStatus() {
+        return status == null ? null : CaseStatus.fromId(status);
     }
 
-    public void setResult(CaseResult result) {
-        this.result = result == null ? null : result.getId();
+    public void setStatus(CaseStatus status) {
+        this.status = status == null ? null : status.getId();
     }
 
     public LocalDateTime getCheckDate() {
@@ -171,14 +163,6 @@ public class TestCase extends StandardEntity implements Cloneable {
 
     public void setHours(Integer hours) {
         this.hours = hours;
-    }
-
-    public Statement getState() {
-        return state;
-    }
-
-    public void setState(Statement state) {
-        this.state = state;
     }
 
     public Priority getPriority() {

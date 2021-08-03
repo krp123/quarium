@@ -48,7 +48,6 @@ public class CopyTestSuitServiceBean implements CopyTestSuitService {
                 newTC.setExpectedResult(tc.getExpectedResult());
                 newTC.setNumber(tc.getNumber());
                 newTC.setCreationDate(tc.getCreationDate());
-                newTC.setState(tc.getState());
                 newTC.setMinutes(tc.getMinutes());
                 newTC.setHours(tc.getHours());
                 newTC.setComment(tc.getComment());
@@ -97,7 +96,6 @@ public class CopyTestSuitServiceBean implements CopyTestSuitService {
                 newTC.setExpectedResult(tc.getExpectedResult());
                 newTC.setNumber(tc.getNumber());
                 newTC.setCreationDate(tc.getCreationDate());
-                newTC.setState(tc.getState());
                 newTC.setMinutes(tc.getMinutes());
                 newTC.setHours(tc.getHours());
                 newTC.setComment(tc.getComment());

@@ -3,7 +3,7 @@ package com.company.quarium.web.screens.project;
 import com.company.quarium.entity.project.*;
 import com.company.quarium.entity.references.Configuration;
 import com.company.quarium.entity.references.Qa;
-import com.company.quarium.entity.testSuit.CaseResult;
+import com.company.quarium.entity.testSuit.CaseStatus;
 import com.company.quarium.entity.testSuit.SharedTestSuit;
 import com.company.quarium.entity.testSuit.TestCase;
 import com.company.quarium.entity.testSuit.TestSuit;
@@ -229,8 +229,8 @@ public class ProjectEdit extends StandardEditor<Project> {
                         for (TestSuit ts : testRun.getChecklists()) {
                             if (ts.getTestCase() != null) {
                                 for (TestCase tc : ts.getTestCase()) {
-                                    if (tc.getResult() != null
-                                            && tc.getResult().equals(CaseResult.PASSED)) {
+                                    if (tc.getStatus() != null
+                                            && tc.getStatus().equals(CaseStatus.PASSED)) {
                                         passedCases.add(tc);
                                     }
                                 }

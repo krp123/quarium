@@ -3,7 +3,7 @@ package com.company.quarium.web.screens.testSuit;
 import com.company.quarium.entity.project.Module;
 import com.company.quarium.entity.project.QaProjectRelationship;
 import com.company.quarium.entity.references.Statement;
-import com.company.quarium.entity.testSuit.CaseResult;
+import com.company.quarium.entity.testSuit.CaseStatus;
 import com.company.quarium.entity.testSuit.Step;
 import com.company.quarium.entity.testSuit.TestCase;
 import com.company.quarium.entity.testSuit.TestSuit;
@@ -214,9 +214,9 @@ public class BaseTestSuitEdit extends StandardEditor<TestSuit> {
 
         boolean hasUnchecked = false;
         for (TestCase tc : testCasesDc.getItems()) {
-            if (tc.getResult() == null ||
-                    !tc.getResult().equals(CaseResult.PASSED) &&
-                            !tc.getResult().equals(CaseResult.SKIPPED)) {
+            if (tc.getStatus() == null ||
+                    !tc.getStatus().equals(CaseStatus.PASSED) &&
+                            !tc.getStatus().equals(CaseStatus.SKIPPED)) {
                 hasUnchecked = true;
             }
         }

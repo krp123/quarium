@@ -5,7 +5,7 @@ import com.haulmont.chile.core.datatypes.impl.EnumClass;
 import javax.annotation.Nullable;
 
 
-public enum CaseResult implements EnumClass<String> {
+public enum CaseStatus implements EnumClass<String> {
 
     PASSED("Passed"),
     FAILED("Failed"),
@@ -14,7 +14,7 @@ public enum CaseResult implements EnumClass<String> {
 
     private String id;
 
-    CaseResult(String value) {
+    CaseStatus(String value) {
         this.id = value;
     }
 
@@ -23,8 +23,8 @@ public enum CaseResult implements EnumClass<String> {
     }
 
     @Nullable
-    public static CaseResult fromId(String id) {
-        for (CaseResult at : CaseResult.values()) {
+    public static CaseStatus fromId(String id) {
+        for (CaseStatus at : CaseStatus.values()) {
             if (at.getId().equals(id)) {
                 return at;
             }

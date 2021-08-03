@@ -66,7 +66,6 @@
                   class="com.company.quarium.entity.testSuit.TestCase">
             <view extends="testCase-view">
                 <property name="priority" view="_minimal"/>
-                <property name="state" view="_minimal"/>
                 <property name="caseStep" view="step-view"/>
             </view>
             <loader id="testCaseDl"/>

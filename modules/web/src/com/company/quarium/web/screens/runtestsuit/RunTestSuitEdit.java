@@ -71,7 +71,7 @@ public class RunTestSuitEdit extends BaseTestSuitEdit {
 
     private TestCase getFirstCaseWithoutResult() {
         List<TestCase> casesWithoutResult = testCasesDc.getItems().stream().filter(tc -> {
-            if (tc.getResult() == null) {
+            if (tc.getStatus() == null) {
                 return true;
             }
             return false;
