@@ -136,7 +136,10 @@
                             height="AUTO"
                             dataLoader="checklistsFilterDl"
                             applyTo="checklistTable"
-                            collapsed="true">
+                            defaultMode="fts"
+                            collapsed="true"
+                            modeSwitchVisible="false"
+                            useMaxResults="false">
                         <properties include=".*"/>
                     </filter>
                     <groupTable id="checklistTable"

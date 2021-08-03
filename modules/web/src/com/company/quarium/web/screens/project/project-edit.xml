@@ -208,7 +208,8 @@
                                 height="AUTO"
                                 dataLoader="testSuitsFilterDl"
                                 applyTo="testSuitsTable"
-                                collapsed="true">
+                                collapsed="true"
+                                defaultMode="fts">
                             <properties include=".*"/>
                         </filter>
                         <groupTable id="testSuitsTable"
