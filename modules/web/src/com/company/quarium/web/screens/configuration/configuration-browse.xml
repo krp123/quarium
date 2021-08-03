@@ -18,11 +18,6 @@
                 width="1000"/>
     <layout expand="configurationsTable"
             spacing="true">
-        <filter id="filter"
-                applyTo="configurationsTable"
-                dataLoader="configurationsDl">
-            <properties include=".*"/>
-        </filter>
         <groupTable id="configurationsTable"
                     width="100%"
                     dataContainer="configurationsDc"

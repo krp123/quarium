@@ -6,6 +6,7 @@ import com.company.quarium.entity.testSuit.TestCase;
 import com.company.quarium.web.screens.testSuit.BaseTestSuitEdit;
 import com.company.quarium.web.screens.testcase.RunTestCaseEdit;
 import com.haulmont.cuba.core.global.Messages;
+import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.components.*;
@@ -33,6 +34,8 @@ public class RunTestSuitEdit extends BaseTestSuitEdit {
     private Messages messages;
     @Inject
     private ScreenBuilders screenBuilders;
+    @Inject
+    private Notifications notifications;
 
     public void setQaParameter(List<QaProjectRelationship> qaProjectRelationship) {
         assignedQaField.setOptionsList(qaProjectRelationship);
@@ -50,6 +53,9 @@ public class RunTestSuitEdit extends BaseTestSuitEdit {
         } else if (!testCasesDc.getItems().isEmpty()) {
             testCase = testCasesDc.getMutableItems().get(0);
         } else {
+            notifications.create()
+                    .withCaption(messages.getMessage(getClass(), "runNotification"))
+                    .show();
             return;
         }
 

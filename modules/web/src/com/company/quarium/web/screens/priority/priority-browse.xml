@@ -18,11 +18,6 @@
                 width="800"/>
     <layout expand="prioritiesTable"
             spacing="true">
-        <filter id="filter"
-                applyTo="prioritiesTable"
-                dataLoader="prioritiesDl">
-            <properties include=".*"/>
-        </filter>
         <groupTable id="prioritiesTable"
                     width="100%"
                     dataContainer="prioritiesDc">

@@ -24,7 +24,9 @@
             spacing="true">
         <filter id="filter"
                 applyTo="projectsTable"
-                dataLoader="projectsDl">
+                dataLoader="projectsDl"
+                defaultMode="fts"
+                collapsed="true">
             <properties include=".*"/>
         </filter>
         <groupTable id="projectsTable"

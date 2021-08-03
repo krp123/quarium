@@ -20,7 +20,9 @@
             spacing="true">
         <filter id="filter"
                 applyTo="qasTable"
-                dataLoader="qasDl">
+                dataLoader="qasDl"
+                defaultMode="fts"
+                collapsed="true">
             <properties include=".*"/>
         </filter>
         <groupTable id="qasTable"

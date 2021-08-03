@@ -18,11 +18,6 @@
                 width="800"/>
     <layout expand="statementsTable"
             spacing="true">
-        <filter id="filter"
-                applyTo="statementsTable"
-                dataLoader="statementsDl">
-            <properties include=".*"/>
-        </filter>
         <groupTable id="statementsTable"
                     width="100%"
                     dataContainer="statementsDc">
