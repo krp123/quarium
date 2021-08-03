@@ -14,6 +14,7 @@
                 <entry key="quarium_CopyTestSuitService" value="com.company.quarium.service.CopyTestSuitService"/>
                 <entry key="quarium_UploadTestSuitFromXlsService"
                        value="com.company.quarium.service.UploadTestSuitFromXlsService"/>
+                <entry key="quarium_TestCaseTimerService" value="com.company.quarium.service.TestCaseTimerService"/>
             </map>
         </property>
     </bean>
