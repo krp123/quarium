@@ -1,6 +1,6 @@
 package com.company.quarium.entity.project;
 
-import com.company.quarium.entity.testSuit.RunTestSuit;
+import com.company.quarium.entity.testsuit.RunTestSuit;
 import com.haulmont.chile.core.annotations.Composition;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;

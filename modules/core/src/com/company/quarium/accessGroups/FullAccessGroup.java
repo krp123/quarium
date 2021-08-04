@@ -5,7 +5,7 @@ import com.company.quarium.entity.references.Configuration;
 import com.company.quarium.entity.references.Dbms;
 import com.company.quarium.entity.references.Qa;
 import com.company.quarium.entity.references.ThesisVersion;
-import com.company.quarium.entity.testSuit.*;
+import com.company.quarium.entity.testsuit.*;
 import com.haulmont.cuba.core.entity.EntitySnapshot;
 import com.haulmont.cuba.security.app.group.AnnotatedAccessGroupDefinition;
 import com.haulmont.cuba.security.app.group.annotation.AccessGroup;

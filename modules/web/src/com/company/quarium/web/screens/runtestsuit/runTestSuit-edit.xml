@@ -5,7 +5,7 @@
         messagesPack="com.company.quarium.web.screens.testSuit">
     <data>
         <instance id="testSuitDc"
-                  class="com.company.quarium.entity.testSuit.TestSuit">
+                  class="com.company.quarium.entity.testsuit.TestSuit">
             <view extends="project-testSuit-view">
                 <property name="assignedQa" view="qaProjectRelationship-view"/>
                 <property name="state" view="_minimal"/>
@@ -63,7 +63,7 @@
             </loader>
         </collection>
         <instance id="testCaseDc"
-                  class="com.company.quarium.entity.testSuit.TestCase">
+                  class="com.company.quarium.entity.testsuit.TestCase">
             <view extends="testCase-view">
                 <property name="priority" view="_minimal"/>
                 <property name="caseStep" view="step-view"/>

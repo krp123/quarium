@@ -5,10 +5,9 @@
         messagesPack="com.company.quarium.web.screens.testcase">
     <data>
         <instance id="testCaseDc"
-                  class="com.company.quarium.entity.testSuit.TestCase">
+                  class="com.company.quarium.entity.testsuit.TestCase">
             <view extends="testCase-view">
                 <property name="priority" view="_minimal"/>
-                <property name="state" view="_minimal"/>
                 <property name="caseStep" view="step-view"/>
             </view>
             <loader/>

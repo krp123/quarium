@@ -28,13 +28,13 @@
         <entity class="com.company.quarium.entity.references.Configuration">
             <include re=".*"/>
         </entity>
-        <entity class="com.company.quarium.entity.testSuit.Step">
+        <entity class="com.company.quarium.entity.testsuit.Step">
             <include re=".*"/>
         </entity>
-        <entity class="com.company.quarium.entity.testSuit.TestCase">
+        <entity class="com.company.quarium.entity.testsuit.TestCase">
             <include re=".*"/>
         </entity>
-        <entity class="com.company.quarium.entity.testSuit.TestSuit">
+        <entity class="com.company.quarium.entity.testsuit.TestSuit">
             <include re=".*"/>
         </entity>
         <entity class="com.company.quarium.entity.project.Module">
@@ -43,16 +43,19 @@
         <entity class="com.company.quarium.entity.project.SimpleProject">
             <include re=".*"/>
         </entity>
-        <entity class="com.company.quarium.entity.testSuit.SharedTestSuit">
+        <entity class="com.company.quarium.entity.testsuit.SharedTestSuit">
             <include re=".*"/>
         </entity>
-        <entity class="com.company.quarium.entity.testSuit.RunTestSuit">
+        <entity class="com.company.quarium.entity.testsuit.RunTestSuit">
             <include re=".*"/>
         </entity>
         <entity class="com.company.quarium.entity.project.Milestone">
             <include re=".*"/>
         </entity>
         <entity class="com.company.quarium.entity.project.TestRun">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.company.quarium.entity.testsuit.CaseResult">
             <include re=".*"/>
         </entity>
     </entities>

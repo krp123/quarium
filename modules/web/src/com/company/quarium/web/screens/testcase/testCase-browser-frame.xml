@@ -2,7 +2,7 @@
 <fragment xmlns="http://schemas.haulmont.com/cuba/screen/fragment.xsd">
     <data>
         <collection id="testCaseDc"
-                    class="com.company.quarium.entity.testSuit.TestCase">
+                    class="com.company.quarium.entity.testsuit.TestCase">
             <view extends="testCase-view"/>
             <loader id="testCasesDl">
                 <query>

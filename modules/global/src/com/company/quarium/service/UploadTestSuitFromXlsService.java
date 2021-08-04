@@ -1,6 +1,6 @@
 package com.company.quarium.service;
 
-import com.company.quarium.entity.testSuit.SharedTestSuit;
+import com.company.quarium.entity.testsuit.SharedTestSuit;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import java.io.File;

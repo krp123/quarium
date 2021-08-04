@@ -7,18 +7,19 @@
         <class>com.company.quarium.entity.project.QaProjectRelationship</class>
         <class>com.company.quarium.entity.references.Priority</class>
         <class>com.company.quarium.entity.references.Statement</class>
-        <class>com.company.quarium.entity.testSuit.TestSuit</class>
-        <class>com.company.quarium.entity.testSuit.TestCase</class>
+        <class>com.company.quarium.entity.testsuit.TestSuit</class>
+        <class>com.company.quarium.entity.testsuit.TestCase</class>
         <class>com.company.quarium.entity.references.Configuration</class>
         <class>com.company.quarium.entity.project.ConfigurationProjectRelationship</class>
         <class>com.company.quarium.entity.project.Module</class>
-        <class>com.company.quarium.entity.testSuit.Step</class>
-        <class>com.company.quarium.entity.testSuit.RunTestSuit</class>
-        <class>com.company.quarium.entity.testSuit.SharedTestSuit</class>
+        <class>com.company.quarium.entity.testsuit.Step</class>
+        <class>com.company.quarium.entity.testsuit.RunTestSuit</class>
+        <class>com.company.quarium.entity.testsuit.SharedTestSuit</class>
         <class>com.company.quarium.entity.project.SimpleProject</class>
         <class>com.company.quarium.entity.references.Dbms</class>
         <class>com.company.quarium.entity.references.ThesisVersion</class>
         <class>com.company.quarium.entity.project.Milestone</class>
         <class>com.company.quarium.entity.project.TestRun</class>
+        <class>com.company.quarium.entity.testsuit.CaseResult</class>
     </persistence-unit>
 </persistence>

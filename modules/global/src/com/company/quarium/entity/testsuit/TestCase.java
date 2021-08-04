@@ -1,4 +1,4 @@
-package com.company.quarium.entity.testSuit;
+package com.company.quarium.entity.testsuit;
 
 import com.company.quarium.entity.references.Priority;
 import com.haulmont.chile.core.annotations.Composition;
@@ -15,8 +15,6 @@ import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 import static com.company.quarium.Constants.PRIORITY_MEDIUM;
@@ -30,30 +28,22 @@ public class TestCase extends StandardEntity implements Cloneable {
     @Column(name = "NAME")
     private String name;
 
-    @Column(name = "CHECK_DATE")
-    private LocalDateTime checkDate;
-
     @Column(name = "INITIAL_CONDITIONS", length = 1000)
     private String initialConditions;
 
     @Column(name = "NUMBER_")
     private Integer number;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "CREATION_DATE")
-    private Date creationDate;
-
-    @Column(name = "COMMENT_", length = 1000)
-    private String comment;
-
-    @Column(name = "TICKET", length = 1000)
-    private String ticket;
-
     @Composition
     @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "testCase", cascade = CascadeType.PERSIST)
     @OrderBy("number")
     private List<Step> caseStep;
+
+    @Composition
+    @OnDelete(DeletePolicy.CASCADE)
+    @OneToMany(mappedBy = "testCase")
+    private List<CaseResult> result;
 
     @Column(name = "HOURS")
     @Min(message = "{msg://quarium_TestCase.hours.validation.Min}", value = 0)
@@ -85,20 +75,20 @@ public class TestCase extends StandardEntity implements Cloneable {
     @OnDeleteInverse(DeletePolicy.CASCADE)
     private TestSuit testSuit;
 
+    public List<CaseResult> getResult() {
+        return result;
+    }
+
+    public void setResult(List<CaseResult> result) {
+        this.result = result;
+    }
+
     public CaseStatus getStatus() {
         return status == null ? null : CaseStatus.fromId(status);
     }
 
     public void setStatus(CaseStatus status) {
         this.status = status == null ? null : status.getId();
-    }
-
-    public LocalDateTime getCheckDate() {
-        return checkDate;
-    }
-
-    public void setCheckDate(LocalDateTime checkDate) {
-        this.checkDate = checkDate;
     }
 
     public String getInitialConditions() {
@@ -115,30 +105,6 @@ public class TestCase extends StandardEntity implements Cloneable {
 
     public void setNumber(Integer number) {
         this.number = number;
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public String getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(String ticket) {
-        this.ticket = ticket;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     public List<Step> getCaseStep() {

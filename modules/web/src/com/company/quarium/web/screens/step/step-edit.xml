@@ -5,7 +5,7 @@
         messagesPack="com.company.quarium.web.screens.step">
     <data>
         <instance id="stepDc"
-                  class="com.company.quarium.entity.testSuit.Step">
+                  class="com.company.quarium.entity.testsuit.Step">
             <view extends="_local"/>
             <loader/>
         </instance>
