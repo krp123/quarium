@@ -367,4 +367,7 @@
             <property name="description"/>
         </property>
     </view>
+    <view entity="quarium_CaseResult" name="caseResult-view" extends="_local" systemProperties="true">
+        <property name="testCase" view="_minimal"/>
+    </view>
 </views>

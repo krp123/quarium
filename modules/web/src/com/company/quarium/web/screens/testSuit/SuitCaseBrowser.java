@@ -27,6 +27,5 @@ public class SuitCaseBrowser extends Screen {
         ProjectTestSuitBrowserFrame suitBrowserFrame = fragments.create(this, ProjectTestSuitBrowserFrame.class);
         ProjectTestCaseBrowserFrame caseBrowserFrame = fragments.create(this, ProjectTestCaseBrowserFrame.class);
         suitBrowserFrame.setProjectParameter(project);
-        caseBrowserFrame.setProjectParameter(project);
     }
 }

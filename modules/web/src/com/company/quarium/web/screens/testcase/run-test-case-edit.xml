@@ -25,7 +25,7 @@
                 </query>
             </loader>
         </collection>
-        <collection id="resultsDc" class="com.company.quarium.entity.testsuit.CaseResult" view="_local">
+        <collection id="resultsDc" class="com.company.quarium.entity.testsuit.CaseResult" view="caseResult-view">
             <loader id="resultsDl">
                 <query>
                     <![CDATA[select e from quarium_CaseResult e where e.testCase = :testCase]]>
@@ -50,7 +50,7 @@
             <vbox expand="scrollBox" height="100%" margin="false, true, false, false">
                 <scrollBox id="scrollBox" spacing="true" width="100%">
                     <form id="form" dataContainer="testCaseDc" height="100%" width="100%">
-                        <grid width="100%" spacing="true" margin="true">
+                        <grid id="statusButtonsGrid" width="100%" spacing="true">
                             <columns>
                                 <column/>
                                 <column/>
@@ -78,6 +78,18 @@
                                 </row>
                             </rows>
                         </grid>
+                        <hbox id="statusBox" visible="false" width="100%">
+                            <hbox id="resultBox">
+                                <label id="resultCaption" value="msg://checklistEdit.result"/>
+                                <hbox width="5px"/>
+                                <label id="caseResult" dataContainer="testCaseDc" property="status"/>
+                            </hbox>
+                            <button id="retest"
+                                    caption="msg://retest"
+                                    icon="font-icon:REFRESH"
+                                    align="MIDDLE_RIGHT"
+                                    primary="true"/>
+                        </hbox>
                         <grid id="caseForm" spacing="true" width="100%">
                             <columns>
                                 <column flex="3"/>
@@ -152,13 +164,6 @@
                                               rows="4"
                                               colspan="2"
                                               editable="false"/>
-                                </row>
-                                <row>
-                                    <hbox id="resultBox" colspan="2">
-                                        <label id="resultCaption" value="msg://checklistEdit.result"/>
-                                        <hbox width="5px"/>
-                                        <label id="caseResult" dataContainer="testCaseDc" property="status"/>
-                                    </hbox>
                                 </row>
                                 <row>
                                     <hbox/>
@@ -244,7 +249,6 @@
                            showSelection="false"
                            contextMenuEnabled="false"
                            dataContainer="resultsDc"
-                           sortable="false"
                            columnControlVisible="false"
                            settingsEnabled="false"
                            stylename="borderless"
@@ -252,9 +256,8 @@
                            width="100%">
                         <columns>
                             <column id="status"/>
-                            <column id="dateAdded"
-                                    dateFormat="dd-MM-yyyy"
-                                    sort="ASCENDING"/>
+                            <column id="dateAdded"/>
+                            <column id="createTs" visible="false"/>
                         </columns>
                         <rows/>
                     </table>

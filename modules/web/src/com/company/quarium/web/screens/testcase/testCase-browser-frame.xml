@@ -7,16 +7,18 @@
             <loader id="testCasesDl">
                 <query>
                     <![CDATA[select e from quarium_TestCase e
-                            where e.testSuit.project = :project]]>
+                            where e.testSuit.project IS null]]>
                 </query>
             </loader>
         </collection>
     </data>
-    <layout>
+    <layout spacing="true" expand="testCasesTable">
         <filter id="filter"
                 width="100%"
                 dataLoader="testCasesDl"
-                applyTo="testCasesTable">
+                applyTo="testCasesTable"
+                defaultMode="fts"
+                collapsed="true">
             <properties include=".*"/>
         </filter>
         <groupTable id="testCasesTable"
@@ -26,10 +28,9 @@
             <columns>
                 <group>
                     <column id="testSuit"/>
-                    <column id="priority"/>
                 </group>
                 <column id="name"/>
-                <column id="comment"/>
+                <column id="priority"/>
             </columns>
             <rows/>
         </groupTable>

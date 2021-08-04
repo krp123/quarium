@@ -5,20 +5,20 @@ import com.company.quarium.entity.testsuit.CaseStatus;
 import com.company.quarium.entity.testsuit.TestCase;
 import com.company.quarium.service.TestCaseTimerService;
 import com.company.quarium.web.screens.caseresult.CaseResultEdit;
+import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.ScreenBuilders;
-import com.haulmont.cuba.gui.components.Button;
-import com.haulmont.cuba.gui.components.Label;
-import com.haulmont.cuba.gui.components.Table;
-import com.haulmont.cuba.gui.components.Timer;
+import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.CollectionContainer;
 import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.model.InstanceContainer;
 import com.haulmont.cuba.gui.screen.*;
 
 import javax.inject.Inject;
+import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @UiController("quarium_RunTestCase.edit")
@@ -76,6 +76,14 @@ public class RunTestCaseEdit extends TestCaseEdit {
     private CollectionLoader<CaseResult> resultsDl;
     @Inject
     private CollectionContainer<CaseResult> resultsDc;
+    @Inject
+    private DataManager dataManager;
+    @Inject
+    private GridLayout statusButtonsGrid;
+    @Inject
+    private HBoxLayout statusBox;
+    @Inject
+    private Label<CaseStatus> caseResult;
 
     @Subscribe("timer")
     public void onTimerTimerAction(Timer.TimerActionEvent event) {
@@ -97,28 +105,15 @@ public class RunTestCaseEdit extends TestCaseEdit {
         //Без этого сущность загружается не из датасорса, а из базы. Изменения не сохраняются. Не понял, почему.
         testCaseDc.setItem(testCasesDc.getItem(getEditedEntity()));
 
-        resultCaption.setVisible(false);
-
         passedButton.setStyleName("passed");
         failedButton.setStyleName("failed");
         skippedButton.setStyleName("skipped");
         blockedButton.setStyleName("blocked");
 
         if (getEditedEntity().getStatus() != null) {
-            switch (getEditedEntity().getStatus()) {
-                case SKIPPED:
-                    skippedButton.setStyleName("pressed");
-                    break;
-                case BLOCKED:
-                    blockedButton.setStyleName("pressed");
-                    break;
-                case PASSED:
-                    passedButton.setStyleName("pressed");
-                    break;
-                case FAILED:
-                    failedButton.setStyleName("pressed");
-            }
+            caseResult.setStyleName(getEditedEntity().getStatus().name().toLowerCase(Locale.ROOT) + "-result");
         }
+
         setCasesCount();
     }
 
@@ -143,6 +138,10 @@ public class RunTestCaseEdit extends TestCaseEdit {
 
     @Subscribe("startTimer")
     public void onStartTimerClick(Button.ClickEvent event) {
+        startTimer();
+    }
+
+    private void startTimer() {
         resetTimerLabel();
         timer.start();
         startTimer.setVisible(false);
@@ -154,6 +153,7 @@ public class RunTestCaseEdit extends TestCaseEdit {
     @Subscribe("stopTimer")
     public void onStopTimerClick(Button.ClickEvent event) {
         stopTimer();
+        adjustCaseResult(CaseStatus.PASSED);
     }
 
     private void stopTimer() {
@@ -190,6 +190,10 @@ public class RunTestCaseEdit extends TestCaseEdit {
 
     @Subscribe("next")
     public void onNextClick(Button.ClickEvent event) {
+        clickNext();
+    }
+
+    private void clickNext() {
         if (testCasesDc.getMutableItems().size() > testCasesDc.getItem(testCaseDc.getItem()).getNumber()) {
             stopTimer();
             resetTimerLabel();
@@ -210,7 +214,7 @@ public class RunTestCaseEdit extends TestCaseEdit {
         testCasesDc.replaceItem(getEditedEntity());
         TestCase prevNextCase = testCasesDc.getMutableItems().get(caseNumber);
         getEditedEntityContainer().setItem(prevNextCase);
-        setPressedButton(prevNextCase.getStatus());
+        setStatus(prevNextCase.getStatus());//TODO может быть такое, что перелистнули кейс без проставления статуса. Подумать, как исправить.
         setCasesCount();
     }
 
@@ -223,19 +227,17 @@ public class RunTestCaseEdit extends TestCaseEdit {
     @Subscribe("passedButton")
     public void onPassedButtonClick(Button.ClickEvent event) {
         adjustCaseResult(CaseStatus.PASSED);
-//        setPressedButton(CaseStatus.PASSED);
     }
 
     @Subscribe("failedButton")
     public void onFailedButtonClick(Button.ClickEvent event) {
         adjustCaseResult(CaseStatus.FAILED);
-//        setPressedButton(CaseStatus.FAILED);
     }
 
     @Subscribe("skippedButton")
     public void onSkippedButtonClick(Button.ClickEvent event) {
         adjustCaseResult(CaseStatus.SKIPPED);
-        setPressedButton(CaseStatus.SKIPPED);
+        setStatus(CaseStatus.SKIPPED);
     }
 
     @Subscribe("blockedButton")
@@ -244,16 +246,28 @@ public class RunTestCaseEdit extends TestCaseEdit {
     }
 
     private void adjustCaseResult(CaseStatus caseStatus) {
+        int resultDcSizeBefore = resultsDc.getItems().size();
+
+        CaseResult newResult = dataManager.create(CaseResult.class);
+        newResult.setTestCase(getEditedEntity());
+        newResult.setStatus(caseStatus);
+        newResult.setExecutionTime(LocalTime.of(
+                Integer.valueOf(hours.getValue()),
+                Integer.valueOf(minutes.getValue()),
+                Integer.valueOf(seconds.getValue())));
         CaseResultEdit caseResultEdit = screenBuilders.editor(CaseResult.class, this)
                 .withScreenClass(CaseResultEdit.class)
                 .withLaunchMode(OpenMode.DIALOG)
+                .newEntity(newResult)
                 .build();
-        caseResultEdit.setTestCase(getEditedEntity());
-        caseResultEdit.setCaseStatus(caseStatus);
         caseResultEdit.show();
 
         caseResultEdit.addAfterCloseListener(afterCloseEvent -> {
             reloadResultsTable();
+            int resultDcSizeAfter = resultsDc.getItems().size();
+            if (resultDcSizeAfter > resultDcSizeBefore) {
+                clickNext();
+            }
         });
     }
 
@@ -264,40 +278,34 @@ public class RunTestCaseEdit extends TestCaseEdit {
 
     @Subscribe(id = "resultsDc", target = Target.DATA_CONTAINER)
     public void onResultsDcCollectionChange(CollectionContainer.CollectionChangeEvent<CaseResult> event) {
-        List<CaseResult> resultsList = resultsDc.getItems();
-        resultsList.stream().sorted(new Comparator<CaseResult>() {
+        List<CaseResult> resultsList = resultsDc.getMutableItems();
+        resultsList.sort(new Comparator<CaseResult>() {
             @Override
             public int compare(CaseResult o1, CaseResult o2) {
-                return o1.getCreateTs().compareTo(o2.getCreateTs());
+                return o2.getCreateTs().compareTo(o1.getCreateTs());
             }
         });
-        CaseStatus lastStatus = resultsList.get(0).getStatus();
-        setPressedButton(lastStatus);
+        if (!resultsList.isEmpty()) {
+            CaseStatus lastStatus = resultsList.get(0).getStatus();
+            setStatus(lastStatus);
+        }
     }
 
-    private void setPressedButton(CaseStatus caseStatus) {
+    private void setStatus(CaseStatus caseStatus) {
         getEditedEntity().setStatus(caseStatus);
-
-        passedButton.setStyleName("passed");
-        failedButton.setStyleName("failed");
-        skippedButton.setStyleName("skipped");
-        blockedButton.setStyleName("blocked");
-
+        statusButtonsGrid.setVisible(false);
+        statusBox.setVisible(true);
+        stopTimer();
+        startTimer.setEnabled(false);
         if (caseStatus != null) {
-            switch (caseStatus) {
-                case SKIPPED:
-                    skippedButton.setStyleName("pressed");
-                    break;
-                case BLOCKED:
-                    blockedButton.setStyleName("pressed");
-                    break;
-                case PASSED:
-                    passedButton.setStyleName("pressed");
-                    break;
-                case FAILED:
-                    failedButton.setStyleName("pressed");
-                    break;
-            }
+            caseResult.setStyleName(caseStatus.name().toLowerCase(Locale.ROOT) + "-result");
         }
+    }
+
+    @Subscribe("retest")
+    public void onRetestClick(Button.ClickEvent event) {
+        statusButtonsGrid.setVisible(true);
+        statusBox.setVisible(false);
+        startTimer();
     }
 }

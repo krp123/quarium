@@ -128,7 +128,8 @@ public class ProjectEdit extends StandardEditor<Project> {
     @Subscribe("testSuitsTable.addTestSuit")
     protected void onAddTestSuit(Action.ActionPerformedEvent event) {
         screenBuilders.lookup(TestSuit.class, this)
-                .withLaunchMode(OpenMode.DIALOG)
+                .withLaunchMode(OpenMode.THIS_TAB)
+                .withScreenId("quarium_TestSuitCase.browse")
                 .withSelectHandler(checklists -> {
                     checklists.stream()
                             .forEach(this::createAndAddTestSuit);

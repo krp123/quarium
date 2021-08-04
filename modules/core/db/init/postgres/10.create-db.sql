@@ -305,7 +305,7 @@ create table QUARIUM_CASE_RESULT (
     TEST_CASE_ID uuid,
     LINK varchar(1000),
     DATE_ADDED timestamp,
-    EXECUTION_TIME varchar(255),
+    EXECUTION_TIME time,
     --
     primary key (ID)
 )^

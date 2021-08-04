@@ -1,9 +1,9 @@
 package com.company.quarium.web.screens.testcase;
 
-import com.company.quarium.entity.project.Project;
 import com.company.quarium.entity.testsuit.TestCase;
 import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.screen.ScreenFragment;
+import com.haulmont.cuba.gui.screen.Subscribe;
 import com.haulmont.cuba.gui.screen.UiController;
 import com.haulmont.cuba.gui.screen.UiDescriptor;
 
@@ -15,7 +15,8 @@ public class ProjectTestCaseBrowserFrame extends ScreenFragment {
     @Inject
     private CollectionLoader<TestCase> testCasesDl;
 
-    public void setProjectParameter(Project project) {
-        testCasesDl.setParameter("project", project);
+    @Subscribe
+    public void onInit(InitEvent event) {
+        testCasesDl.load();
     }
 }
