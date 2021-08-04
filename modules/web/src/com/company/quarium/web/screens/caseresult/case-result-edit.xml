@@ -12,15 +12,6 @@
             </view>
             <loader/>
         </instance>
-        <collection id="resultsDc"
-                    class="com.company.quarium.entity.testsuit.CaseResult">
-            <view extends="_local"/>
-            <loader id="resultsDl">
-                <query>
-                    <![CDATA[select e from quarium_CaseResult e where e.testCase = :testCase]]>
-                </query>
-            </loader>
-        </collection>
     </data>
     <dialogMode height="AUTO"
                 width="AUTO"
@@ -34,8 +25,10 @@
                              required="true"/>
                 <dateField id="dateAddedField"
                            property="dateAdded"
-                           required="true"/>
-                <textField id="executionTimeField" property="executionTime"/>
+                           required="true" width="AUTO"/>
+                <timeField id="executionTimeField"
+                           property="executionTime"
+                           showSeconds="true" width="AUTO"/>
                 <hbox id="ticketBox" spacing="true"
                       caption="msg://checklistEdit.caseTicket"
                       width="100%">

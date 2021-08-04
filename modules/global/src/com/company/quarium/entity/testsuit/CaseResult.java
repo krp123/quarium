@@ -7,6 +7,7 @@ import com.haulmont.cuba.core.global.DeletePolicy;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Table(name = "QUARIUM_CASE_RESULT")
 @Entity(name = "quarium_CaseResult")
@@ -32,7 +33,15 @@ public class CaseResult extends StandardEntity {
     private LocalDateTime dateAdded;
 
     @Column(name = "EXECUTION_TIME")
-    private String executionTime;
+    private LocalTime executionTime;
+
+    public void setExecutionTime(LocalTime executionTime) {
+        this.executionTime = executionTime;
+    }
+
+    public LocalTime getExecutionTime() {
+        return executionTime;
+    }
 
     public String getLink() {
         return link;
@@ -56,14 +65,6 @@ public class CaseResult extends StandardEntity {
 
     public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    public String getExecutionTime() {
-        return executionTime;
-    }
-
-    public void setExecutionTime(String executionTime) {
-        this.executionTime = executionTime;
     }
 
     public LocalDateTime getDateAdded() {
