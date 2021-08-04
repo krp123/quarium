@@ -1,6 +1,6 @@
 package com.company.quarium.service;
 
-import com.company.quarium.entity.testSuit.*;
+import com.company.quarium.entity.testsuit.*;
 import com.haulmont.cuba.core.global.DataManager;
 import org.springframework.stereotype.Service;
 
@@ -47,12 +47,8 @@ public class CopyTestSuitServiceBean implements CopyTestSuitService {
                 }
                 newTC.setExpectedResult(tc.getExpectedResult());
                 newTC.setNumber(tc.getNumber());
-                newTC.setCreationDate(tc.getCreationDate());
                 newTC.setMinutes(tc.getMinutes());
                 newTC.setHours(tc.getHours());
-                newTC.setComment(tc.getComment());
-                newTC.setTicket(tc.getTicket());
-                newTC.setCheckDate(tc.getCheckDate());
                 newTC.setInitialConditions(tc.getInitialConditions());
                 newTC.setPriority(tc.getPriority());
                 tcList.add(newTC);
@@ -95,12 +91,8 @@ public class CopyTestSuitServiceBean implements CopyTestSuitService {
                 }
                 newTC.setExpectedResult(tc.getExpectedResult());
                 newTC.setNumber(tc.getNumber());
-                newTC.setCreationDate(tc.getCreationDate());
                 newTC.setMinutes(tc.getMinutes());
                 newTC.setHours(tc.getHours());
-                newTC.setComment(tc.getComment());
-                newTC.setTicket(tc.getTicket());
-                newTC.setCheckDate(tc.getCheckDate());
                 newTC.setInitialConditions(tc.getInitialConditions());
                 newTC.setPriority(tc.getPriority());
                 tcList.add(newTC);

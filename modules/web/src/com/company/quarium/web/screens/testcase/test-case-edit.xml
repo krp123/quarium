@@ -5,7 +5,7 @@
         messagesPack="com.company.quarium.web.screens.testcase">
     <data>
         <instance id="testCaseDc"
-                  class="com.company.quarium.entity.testSuit.TestCase">
+                  class="com.company.quarium.entity.testsuit.TestCase">
             <view extends="testCase-edit"/>
             <loader/>
             <collection id="stepsCollection" property="caseStep"/>

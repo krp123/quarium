@@ -5,7 +5,7 @@
         messagesPack="com.company.quarium.web.screens.testSuit">
     <data readOnly="true">
         <collection id="testSuitsDc"
-                    class="com.company.quarium.entity.testSuit.SharedTestSuit">
+                    class="com.company.quarium.entity.testsuit.SharedTestSuit">
             <view extends="project-testSuit-view"/>
             <loader id="testSuitsDl">
                 <query>

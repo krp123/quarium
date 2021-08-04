@@ -102,12 +102,8 @@ create table QUARIUM_TEST_CASE (
     DELETED_BY varchar(50),
     --
     NAME varchar(255),
-    CHECK_DATE timestamp,
     INITIAL_CONDITIONS varchar(1000),
     NUMBER_ integer,
-    CREATION_DATE timestamp,
-    COMMENT_ varchar(1000),
-    TICKET varchar(1000),
     HOURS integer,
     MINUTES integer,
     PRIORITY_ID uuid,
@@ -293,3 +289,24 @@ create table QUARIUM_TESTSUIT (
     primary key (ID)
 )^
 -- end QUARIUM_TESTSUIT
+-- begin QUARIUM_CASE_RESULT
+create table QUARIUM_CASE_RESULT (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    STATUS varchar(50),
+    COMMENT_ varchar(1000),
+    TEST_CASE_ID uuid,
+    LINK varchar(1000),
+    DATE_ADDED timestamp,
+    EXECUTION_TIME varchar(255),
+    --
+    primary key (ID)
+)^
+-- end QUARIUM_CASE_RESULT

@@ -2,7 +2,7 @@ package com.company.quarium.web.screens.runtestsuit;
 
 import com.company.quarium.entity.project.Module;
 import com.company.quarium.entity.project.QaProjectRelationship;
-import com.company.quarium.entity.testSuit.TestCase;
+import com.company.quarium.entity.testsuit.TestCase;
 import com.company.quarium.web.screens.testSuit.BaseTestSuitEdit;
 import com.company.quarium.web.screens.testcase.RunTestCaseEdit;
 import com.haulmont.cuba.core.global.Messages;

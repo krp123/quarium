@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:app="http://schemas.company.com/demo/0.1/ui-component.xsd"
+        caption="msg://caseResultEdit.caption"
+        focusComponent="form"
+        messagesPack="com.company.quarium.web.screens.caseresult">
+    <data>
+        <instance id="caseResultDc"
+                  class="com.company.quarium.entity.testsuit.CaseResult">
+            <view extends="_local">
+                <property name="testCase" view="_minimal"/>
+            </view>
+            <loader/>
+        </instance>
+        <collection id="resultsDc"
+                    class="com.company.quarium.entity.testsuit.CaseResult">
+            <view extends="_local"/>
+            <loader id="resultsDl">
+                <query>
+                    <![CDATA[select e from quarium_CaseResult e where e.testCase = :testCase]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="AUTO"
+                width="AUTO"
+                modal="true"
+                forceDialog="true"/>
+    <layout expand="editActions" spacing="true">
+        <form id="form" dataContainer="caseResultDc">
+            <column width="350px">
+                <lookupField id="statusField"
+                             property="status"
+                             required="true"/>
+                <dateField id="dateAddedField"
+                           property="dateAdded"
+                           required="true"/>
+                <textField id="executionTimeField" property="executionTime"/>
+                <hbox id="ticketBox" spacing="true"
+                      caption="msg://checklistEdit.caseTicket"
+                      width="100%">
+                    <app:linkField id="link" dataContainer="caseResultDc"
+                                   property="link"
+                                   maxTextLength="1000"/>
+                </hbox>
+                <textArea id="commentField" property="comment" rows="4"/>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

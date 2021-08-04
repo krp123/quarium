@@ -5,7 +5,7 @@
         messagesPack="com.company.quarium.web.screens.simplechecklist">
     <data readOnly="true">
         <collection id="simpleChecklistsDc"
-                    class="com.company.quarium.entity.testSuit.SharedTestSuit">
+                    class="com.company.quarium.entity.testsuit.SharedTestSuit">
             <view extends="project-testSuit-view">
                 <property name="module" view="edit"/>
                 <property name="assignedQa" view="_minimal"/>
@@ -17,7 +17,6 @@
                         <property name="creationDate"/>
                     </property>
                     <property name="priority" view="_minimal"/>
-                    <property name="state" view="_minimal"/>
                 </property>
             </view>
             <loader id="simpleChecklistsDl">

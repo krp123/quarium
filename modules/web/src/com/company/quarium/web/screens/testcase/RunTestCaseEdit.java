@@ -1,16 +1,24 @@
 package com.company.quarium.web.screens.testcase;
 
-import com.company.quarium.entity.testSuit.CaseStatus;
-import com.company.quarium.entity.testSuit.TestCase;
+import com.company.quarium.entity.testsuit.CaseResult;
+import com.company.quarium.entity.testsuit.CaseStatus;
+import com.company.quarium.entity.testsuit.TestCase;
 import com.company.quarium.service.TestCaseTimerService;
+import com.company.quarium.web.screens.caseresult.CaseResultEdit;
 import com.haulmont.cuba.core.global.Messages;
-import com.haulmont.cuba.core.global.TimeSource;
-import com.haulmont.cuba.gui.components.*;
+import com.haulmont.cuba.gui.ScreenBuilders;
+import com.haulmont.cuba.gui.components.Button;
+import com.haulmont.cuba.gui.components.Label;
+import com.haulmont.cuba.gui.components.Table;
+import com.haulmont.cuba.gui.components.Timer;
+import com.haulmont.cuba.gui.model.CollectionContainer;
+import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.model.InstanceContainer;
 import com.haulmont.cuba.gui.screen.*;
 
 import javax.inject.Inject;
-import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 
 @UiController("quarium_RunTestCase.edit")
@@ -20,17 +28,7 @@ import java.util.Map;
 public class RunTestCaseEdit extends TestCaseEdit {
 
     @Inject
-    private Label<CaseStatus> caseResult;
-    @Inject
-    private HBoxLayout ticketBox;
-    @Inject
-    private TextArea<String> caseComment;
-    @Inject
-    private DateField<LocalDateTime> checkDate;
-    @Inject
     private InstanceContainer<TestCase> testCaseDc;
-    @Inject
-    private TimeSource timeSource;
     @Inject
     private Button passedButton;
     @Inject
@@ -70,6 +68,14 @@ public class RunTestCaseEdit extends TestCaseEdit {
     private Button resumeTimer;
     @Inject
     private TestCaseTimerService testCaseTimerService;
+    @Inject
+    private ScreenBuilders screenBuilders;
+    @Inject
+    private Table<CaseResult> resultsTable;
+    @Inject
+    private CollectionLoader<CaseResult> resultsDl;
+    @Inject
+    private CollectionContainer<CaseResult> resultsDc;
 
     @Subscribe("timer")
     public void onTimerTimerAction(Timer.TimerActionEvent event) {
@@ -81,49 +87,9 @@ public class RunTestCaseEdit extends TestCaseEdit {
         seconds.setValue(timeUnits.get("seconds"));
     }
 
-    @Subscribe("caseResult")
-    public void onCaseResultValueChange(HasValue.ValueChangeEvent<CaseStatus> event) {
-        if (getEditedEntity().getStatus() != null) {
-            resultCaption.setVisible(true);
-
-            switch (getEditedEntity().getStatus()) {
-                case FAILED:
-                    caseResult.setStyleName("failed-result");
-                    ticketBox.setVisible(true);
-                    caseComment.setVisible(true);
-                    checkDate.setVisible(false);
-                    break;
-
-                case PASSED:
-                    caseResult.setStyleName("passed-result");
-                    checkDate.setVisible(true);
-                    ticketBox.setVisible(false);
-                    caseComment.setVisible(false);
-                    if (testCaseDc.getItem().getCheckDate() == null) {
-                        checkDate.setValue(timeSource.now().toLocalDateTime());
-                    }
-                    break;
-
-                case BLOCKED:
-                    caseResult.setStyleName("blocked-result");
-                    ticketBox.setVisible(false);
-                    caseComment.setVisible(true);
-                    checkDate.setVisible(false);
-                    break;
-
-                case SKIPPED:
-                    caseResult.setStyleName("skipped-result");
-                    ticketBox.setVisible(false);
-                    caseComment.setVisible(true);
-                    checkDate.setVisible(false);
-                    break;
-            }
-        } else {
-            resultCaption.setVisible(false);
-            ticketBox.setVisible(false);
-            caseComment.setVisible(false);
-            checkDate.setVisible(false);
-        }
+    @Subscribe
+    public void onBeforeShow(BeforeShowEvent event) {
+        resultsDl.setParameter("testCase", getEditedEntity());
     }
 
     @Subscribe
@@ -248,36 +214,77 @@ public class RunTestCaseEdit extends TestCaseEdit {
         setCasesCount();
     }
 
+    @Subscribe(id = "testCaseDc", target = Target.DATA_CONTAINER)
+    public void onTestCaseDcItemChange(InstanceContainer.ItemChangeEvent<TestCase> event) {
+        resultsDl.setParameter("testCase", event.getItem());
+        reloadResultsTable();
+    }
+
     @Subscribe("passedButton")
     public void onPassedButtonClick(Button.ClickEvent event) {
-        setPressedButton(CaseStatus.PASSED);
+        adjustCaseResult(CaseStatus.PASSED);
+//        setPressedButton(CaseStatus.PASSED);
     }
 
     @Subscribe("failedButton")
     public void onFailedButtonClick(Button.ClickEvent event) {
-        setPressedButton(CaseStatus.FAILED);
+        adjustCaseResult(CaseStatus.FAILED);
+//        setPressedButton(CaseStatus.FAILED);
     }
 
     @Subscribe("skippedButton")
     public void onSkippedButtonClick(Button.ClickEvent event) {
+        adjustCaseResult(CaseStatus.SKIPPED);
         setPressedButton(CaseStatus.SKIPPED);
     }
 
     @Subscribe("blockedButton")
     public void onBlockedButtonClick(Button.ClickEvent event) {
-        setPressedButton(CaseStatus.BLOCKED);
+        adjustCaseResult(CaseStatus.BLOCKED);
     }
 
-    private void setPressedButton(CaseStatus result) {
-        getEditedEntity().setStatus(result);
+    private void adjustCaseResult(CaseStatus caseStatus) {
+        CaseResultEdit caseResultEdit = screenBuilders.editor(CaseResult.class, this)
+                .withScreenClass(CaseResultEdit.class)
+                .withLaunchMode(OpenMode.DIALOG)
+                .build();
+        caseResultEdit.setTestCase(getEditedEntity());
+        caseResultEdit.setCaseStatus(caseStatus);
+        caseResultEdit.show();
+
+        caseResultEdit.addAfterCloseListener(afterCloseEvent -> {
+            reloadResultsTable();
+        });
+    }
+
+    private void reloadResultsTable() {
+        resultsDl.load();
+        resultsTable.repaint();
+    }
+
+    @Subscribe(id = "resultsDc", target = Target.DATA_CONTAINER)
+    public void onResultsDcCollectionChange(CollectionContainer.CollectionChangeEvent<CaseResult> event) {
+        List<CaseResult> resultsList = resultsDc.getItems();
+        resultsList.stream().sorted(new Comparator<CaseResult>() {
+            @Override
+            public int compare(CaseResult o1, CaseResult o2) {
+                return o1.getCreateTs().compareTo(o2.getCreateTs());
+            }
+        });
+        CaseStatus lastStatus = resultsList.get(0).getStatus();
+        setPressedButton(lastStatus);
+    }
+
+    private void setPressedButton(CaseStatus caseStatus) {
+        getEditedEntity().setStatus(caseStatus);
 
         passedButton.setStyleName("passed");
         failedButton.setStyleName("failed");
         skippedButton.setStyleName("skipped");
         blockedButton.setStyleName("blocked");
 
-        if (result != null) {
-            switch (result) {
+        if (caseStatus != null) {
+            switch (caseStatus) {
                 case SKIPPED:
                     skippedButton.setStyleName("pressed");
                     break;

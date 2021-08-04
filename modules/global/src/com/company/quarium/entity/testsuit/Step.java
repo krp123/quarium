@@ -1,4 +1,4 @@
-package com.company.quarium.entity.testSuit;
+package com.company.quarium.entity.testsuit;
 
 import com.haulmont.cuba.core.entity.StandardEntity;
 

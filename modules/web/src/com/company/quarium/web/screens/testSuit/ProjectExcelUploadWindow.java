@@ -1,7 +1,7 @@
 package com.company.quarium.web.screens.testSuit;
 
 import com.company.quarium.entity.project.SimpleProject;
-import com.company.quarium.entity.testSuit.SharedTestSuit;
+import com.company.quarium.entity.testsuit.SharedTestSuit;
 import com.company.quarium.service.UploadTestSuitFromXlsService;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.Notifications;

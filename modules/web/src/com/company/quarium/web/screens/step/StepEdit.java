@@ -1,6 +1,6 @@
 package com.company.quarium.web.screens.step;
 
-import com.company.quarium.entity.testSuit.Step;
+import com.company.quarium.entity.testsuit.Step;
 import com.haulmont.cuba.gui.screen.*;
 
 @UiController("quarium_Step.edit")

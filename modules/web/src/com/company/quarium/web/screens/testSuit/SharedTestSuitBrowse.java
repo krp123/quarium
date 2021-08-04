@@ -1,7 +1,7 @@
 package com.company.quarium.web.screens.testSuit;
 
-import com.company.quarium.entity.testSuit.SharedTestSuit;
-import com.company.quarium.entity.testSuit.TestSuit;
+import com.company.quarium.entity.testsuit.SharedTestSuit;
+import com.company.quarium.entity.testsuit.TestSuit;
 import com.company.quarium.service.CopyTestSuitService;
 import com.haulmont.cuba.core.global.UserSessionSource;
 import com.haulmont.cuba.gui.ScreenBuilders;

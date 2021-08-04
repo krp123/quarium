@@ -49,7 +49,7 @@
                 </query>
             </loader>
         </collection>
-        <collection id="testSuitFilterDc" class="com.company.quarium.entity.testSuit.TestSuit"
+        <collection id="testSuitFilterDc" class="com.company.quarium.entity.testsuit.TestSuit"
                     view="project-testSuit-view">
             <loader id="testSuitsFilterDl">
                 <query>

@@ -1,10 +1,10 @@
 package com.company.quarium.web.screens.testrun;
 
 import com.company.quarium.entity.project.*;
-import com.company.quarium.entity.testSuit.RunTestSuit;
-import com.company.quarium.entity.testSuit.SharedTestSuit;
-import com.company.quarium.entity.testSuit.TestCase;
-import com.company.quarium.entity.testSuit.TestSuit;
+import com.company.quarium.entity.testsuit.RunTestSuit;
+import com.company.quarium.entity.testsuit.SharedTestSuit;
+import com.company.quarium.entity.testsuit.TestCase;
+import com.company.quarium.entity.testsuit.TestSuit;
 import com.company.quarium.service.CopyTestSuitService;
 import com.company.quarium.web.screens.runtestsuit.RunTestSuitEdit;
 import com.company.quarium.web.screens.simplechecklist.TestRunTestSuitBrowse;
@@ -35,7 +35,6 @@ import static com.company.quarium.Constants.STATE_CHECKED;
 @UiController("quarium_TestRun.edit")
 @UiDescriptor("test-run-edit.xml")
 @EditedEntityContainer("testRunDc")
-@LoadDataBeforeShow
 public class TestRunEdit extends StandardEditor<TestRun> {
 
     @Inject
@@ -119,6 +118,7 @@ public class TestRunEdit extends StandardEditor<TestRun> {
 
     @Subscribe
     protected void onBeforeShow(BeforeShowEvent event) {
+        testRunDc.setItem(getEditedEntity());
         bugsDl.setParameter("testRun", getEditedEntity());
         suitsDl.setParameter("testRun", getEditedEntity());
         totalCasesDl.setParameter("testRun", getEditedEntity());
@@ -127,6 +127,16 @@ public class TestRunEdit extends StandardEditor<TestRun> {
         skippedCasesDl.setParameter("testRun", getEditedEntity());
         checklistsFilterDl.setParameter("testRun", getEditedEntity());
 
+        qaDl.load();
+        bugsDl.load();
+        suitsDl.load();
+        totalCasesDl.load();
+        passedCasesDl.load();
+        blockedCasesDl.load();
+        skippedCasesDl.load();
+        checklistsFilterDl.load();
+        milestoneDl.load();
+        moduleDl.load();
     }
 
     private RunTestSuit createAndAddChecklist(TestSuit testSuit) {
@@ -329,14 +339,14 @@ public class TestRunEdit extends StandardEditor<TestRun> {
         } else return true;
     }
 
-//    @Subscribe
-//    public void onBeforeCommitChanges(BeforeCommitChangesEvent event) {
-//        if (!checkRunDates()) {
-//            event.preventCommit();
-//        } else {
-//            event.resume();
-//        }
-//    }
+    @Subscribe
+    public void onBeforeCommitChanges(BeforeCommitChangesEvent event) {
+        if (!checkRunDates()) {
+            event.preventCommit();
+        } else {
+            event.resume();
+        }
+    }
 
     private void repaintStatisticsTables() {
         testPlanQaStatisticsTable.repaint();

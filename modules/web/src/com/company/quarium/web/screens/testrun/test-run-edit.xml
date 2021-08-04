@@ -29,7 +29,7 @@
                 </query>
             </loader>
         </collection>
-        <collection id="suitsDc" class="com.company.quarium.entity.testSuit.RunTestSuit"
+        <collection id="suitsDc" class="com.company.quarium.entity.testsuit.RunTestSuit"
                     view="runTestSuit-view">
             <loader id="suitsDl">
                 <query>
@@ -46,7 +46,7 @@
                 </query>
             </loader>
         </collection>
-        <collection id="bugsDc" class="com.company.quarium.entity.testSuit.TestCase" view="testCase-view">
+        <collection id="bugsDc" class="com.company.quarium.entity.testsuit.TestCase" view="testCase-view">
             <loader id="bugsDl">
                 <query>
                     <![CDATA[select tc from quarium_TestCase tc
@@ -57,7 +57,7 @@
                 </query>
             </loader>
         </collection>
-        <collection id="skippedCasesDc" class="com.company.quarium.entity.testSuit.TestCase" view="testCase-view">
+        <collection id="skippedCasesDc" class="com.company.quarium.entity.testsuit.TestCase" view="testCase-view">
             <loader id="skippedCasesDl">
                 <query>
                     <![CDATA[select tc from quarium_TestCase tc
@@ -68,7 +68,7 @@
                 </query>
             </loader>
         </collection>
-        <collection id="blockedCasesDc" class="com.company.quarium.entity.testSuit.TestCase" view="testCase-view">
+        <collection id="blockedCasesDc" class="com.company.quarium.entity.testsuit.TestCase" view="testCase-view">
             <loader id="blockedCasesDl">
                 <query>
                     <![CDATA[select tc from quarium_TestCase tc
@@ -79,7 +79,7 @@
                 </query>
             </loader>
         </collection>
-        <collection id="passedCasesDc" class="com.company.quarium.entity.testSuit.TestCase" view="testCase-view">
+        <collection id="passedCasesDc" class="com.company.quarium.entity.testsuit.TestCase" view="testCase-view">
             <loader id="passedCasesDl">
                 <query>
                     <![CDATA[select tc from quarium_TestCase tc
@@ -90,7 +90,7 @@
                 </query>
             </loader>
         </collection>
-        <collection id="totalCasesDc" class="com.company.quarium.entity.testSuit.TestCase" view="testCase-view">
+        <collection id="totalCasesDc" class="com.company.quarium.entity.testsuit.TestCase" view="testCase-view">
             <loader id="totalCasesDl">
                 <query>
                     <![CDATA[select tc from quarium_TestCase tc
@@ -100,7 +100,7 @@
                 </query>
             </loader>
         </collection>
-        <collection id="checklistsFilterDc" class="com.company.quarium.entity.testSuit.RunTestSuit"
+        <collection id="checklistsFilterDc" class="com.company.quarium.entity.testsuit.RunTestSuit"
                     view="runTestSuit-view">
             <loader id="checklistsFilterDl">
                 <query>

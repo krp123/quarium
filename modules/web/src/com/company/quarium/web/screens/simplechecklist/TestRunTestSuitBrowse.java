@@ -1,7 +1,7 @@
 package com.company.quarium.web.screens.simplechecklist;
 
 import com.company.quarium.entity.project.Project;
-import com.company.quarium.entity.testSuit.SharedTestSuit;
+import com.company.quarium.entity.testsuit.SharedTestSuit;
 import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.screen.*;
 

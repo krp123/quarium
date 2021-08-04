@@ -1,8 +1,8 @@
 package com.company.quarium.service;
 
-import com.company.quarium.entity.testSuit.RunTestSuit;
-import com.company.quarium.entity.testSuit.SharedTestSuit;
-import com.company.quarium.entity.testSuit.TestSuit;
+import com.company.quarium.entity.testsuit.RunTestSuit;
+import com.company.quarium.entity.testsuit.SharedTestSuit;
+import com.company.quarium.entity.testsuit.TestSuit;
 
 public interface CopyTestSuitService {
     String NAME = "quarium_CopyTestSuitService";

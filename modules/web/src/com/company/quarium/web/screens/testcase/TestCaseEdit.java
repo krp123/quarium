@@ -1,8 +1,8 @@
 package com.company.quarium.web.screens.testcase;
 
-import com.company.quarium.entity.testSuit.Step;
-import com.company.quarium.entity.testSuit.TestCase;
-import com.company.quarium.entity.testSuit.TestSuit;
+import com.company.quarium.entity.testsuit.Step;
+import com.company.quarium.entity.testsuit.TestCase;
+import com.company.quarium.entity.testsuit.TestSuit;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.Notifications;

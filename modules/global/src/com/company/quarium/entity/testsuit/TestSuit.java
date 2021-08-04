@@ -1,4 +1,4 @@
-package com.company.quarium.entity.testSuit;
+package com.company.quarium.entity.testsuit;
 
 import com.company.quarium.entity.project.Module;
 import com.company.quarium.entity.project.Project;
