@@ -24,11 +24,13 @@ import com.haulmont.cuba.gui.model.CollectionPropertyContainer;
 import com.haulmont.cuba.gui.model.InstanceContainer;
 import com.haulmont.cuba.gui.screen.*;
 import com.haulmont.reports.gui.actions.EditorPrintFormAction;
+import org.apache.commons.collections4.CollectionUtils;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -371,12 +373,21 @@ public class TestRunEdit extends StandardEditor<TestRun> {
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
-        List<String> collect = totalCasesDc.getItems().stream().map(testCase -> testCase.getStatus().toString()).collect(Collectors.toList());
-        Map<String, Long> map = collect.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-        ListDataProvider dataProvider = new ListDataProvider();
-        for(Map.Entry<String, Long> entry: map.entrySet()) {
-            dataProvider.addItem(new MapDataItem().add("status", entry.getKey()).add("quantity", entry.getValue()));
+        if (CollectionUtils.isNotEmpty(totalCasesDc.getItems())) {
+
+            List<String> collect = totalCasesDc.getItems().stream()
+                    .filter(testCase -> Objects.nonNull(testCase.getStatus()))
+                    .map(testCase -> testCase.getStatus().toString())
+                    .collect(Collectors.toList());
+
+            Map<String, Long> map = collect.stream()
+                    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+            ListDataProvider dataProvider = new ListDataProvider();
+            for (Map.Entry<String, Long> entry : map.entrySet()) {
+                dataProvider.addItem(new MapDataItem().add("status", entry.getKey()).add("quantity", entry.getValue()));
+            }
+            pieChart.setDataProvider(dataProvider);
         }
-        pieChart.setDataProvider(dataProvider);
     }
 }
