@@ -1,16 +1,16 @@
 package com.company.quarium.web.screens.testrun;
 
 import com.company.quarium.entity.project.*;
-import com.company.quarium.entity.testsuit.RunTestSuit;
-import com.company.quarium.entity.testsuit.SharedTestSuit;
-import com.company.quarium.entity.testsuit.TestCase;
-import com.company.quarium.entity.testsuit.TestSuit;
+import com.company.quarium.entity.project.Module;
+import com.company.quarium.entity.testsuit.*;
 import com.company.quarium.service.CopyTestSuitService;
 import com.company.quarium.web.screens.runtestsuit.RunTestSuitEdit;
 import com.company.quarium.web.screens.simplechecklist.TestRunTestSuitBrowse;
 import com.company.quarium.web.screens.testSuit.SuitCaseBrowser;
 import com.haulmont.bali.util.ParamsMap;
 import com.haulmont.charts.gui.components.charts.PieChart;
+import com.haulmont.charts.gui.data.ListDataProvider;
+import com.haulmont.charts.gui.data.MapDataItem;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.core.global.UserSessionSource;
@@ -28,6 +28,8 @@ import com.haulmont.reports.gui.actions.EditorPrintFormAction;
 import javax.inject.Inject;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.company.quarium.Constants.STATE_CHECKED;
@@ -365,5 +367,16 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                     .build()
                     .show();
         }
+    }
+
+    @Subscribe
+    public void onAfterShow(AfterShowEvent event) {
+        List<String> collect = totalCasesDc.getItems().stream().map(testCase -> testCase.getStatus().toString()).collect(Collectors.toList());
+        Map<String, Long> map = collect.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        ListDataProvider dataProvider = new ListDataProvider();
+        for(Map.Entry<String, Long> entry: map.entrySet()) {
+            dataProvider.addItem(new MapDataItem().add("status", entry.getKey()).add("quantity", entry.getValue()));
+        }
+        pieChart.setDataProvider(dataProvider);
     }
 }

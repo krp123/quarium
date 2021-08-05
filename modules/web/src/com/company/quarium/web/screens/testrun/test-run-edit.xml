@@ -202,7 +202,7 @@
                     </columns>
                     <rows>
                         <row>
-                            <groupBox caption="msg://com.company.quarium.entity/Project.qaStatistics" width="50%">
+                            <groupBox caption="msg://com.company.quarium.entity/Project.qaStatistics" width="100%">
                                 <table id="testPlanQaStatisticsTable"
                                        width="100%"
                                        height="AUTO"
@@ -217,14 +217,13 @@
                                 </table>
                             </groupBox>
                             <chart:pieChart id="pieChart"
-                                            dataContainer="totalCasesDc"
-                                            height="100%"
-                                            titleField="result"
-                                            valueField=""
-                                            width="50%"
+                                            height="130%"
+                                            titleField="status"
+                                            valueField="quantity"
+                                            width="130%"
                                             align="MIDDLE_RIGHT">
                                 <chart:legend autoMargins="false"
-                                              marginRight="80"
+                                              marginRight="20"
                                               markerType="CIRCLE"
                                               position="RIGHT"/>
                                 <chart:balloon fixedPosition="true"/>
