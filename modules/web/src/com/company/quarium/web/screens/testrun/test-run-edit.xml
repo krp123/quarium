@@ -183,9 +183,9 @@
                                       alwaysVisible="true">
                             <popupButton id="createPopup" caption="msg://create">
                                 <actions>
-                                    <action id="checklistTable.create"/>
-                                    <action id="copy" caption="msg://copy"/>
+                                    <!--                                    <action id="checklistTable.create"/>-->
                                     <action id="checklistTable.addChecklist"/>
+                                    <action id="copy" caption="msg://copy"/>
                                 </actions>
                             </popupButton>
                             <button id="editBtn" action="checklistTable.edit"/>
