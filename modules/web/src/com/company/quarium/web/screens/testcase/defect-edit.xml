@@ -94,15 +94,6 @@
                                           editable="false"
                                           colspan="2"/>
                             </row>
-                            <row>
-                                <textArea id="caseComment" dataContainer="testCaseDc"
-                                          rows="4" property="comment" width="90%"
-                                          caption="msg://checklistEdit.comment"
-                                          visible="true" editable="false"/>
-                                <link id="caseTicket"
-                                      caption="msg://checklistEdit.caseTicket"
-                                      target="_blank"/>
-                            </row>
                         </rows>
                     </grid>
                 </column>

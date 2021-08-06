@@ -194,20 +194,21 @@
                     </groupTable>
                 </groupBox>
             </tab>
-            <tab id="statistics" expand="suitsStatistics" caption="msg://statistics" spacing="true" margin="true">
-                <grid width="100%">
+            <tab id="statistics" caption="msg://statistics" spacing="true" margin="true" expand="grid">
+                <grid id="grid" width="100%" spacing="true">
                     <columns>
-                        <column id="qaStatistics"/>
-                        <column id="chart"/>
+                        <column id="qaStatistics" flex="1"/>
+                        <column id="chart" flex="2"/>
                     </columns>
                     <rows>
                         <row>
-                            <groupBox caption="msg://com.company.quarium.entity/Project.qaStatistics" width="100%">
+                            <groupBox caption="msg://com.company.quarium.entity/Project.qaStatistics" width="100%"
+                                      height="80%">
                                 <table id="testPlanQaStatisticsTable"
                                        width="100%"
-                                       height="AUTO"
                                        dataContainer="qaDc"
-                                       showSelection="false">
+                                       showSelection="false"
+                                       height="100%">
                                     <columns>
                                         <column id="qa"/>
                                         <column id="timeLeft" caption="msg://testRunEdit.timeLeft"/>
@@ -217,43 +218,46 @@
                                 </table>
                             </groupBox>
                             <chart:pieChart id="pieChart"
-                                            height="130%"
+                                            height="100%"
                                             titleField="status"
                                             valueField="quantity"
-                                            width="130%"
-                                            align="MIDDLE_RIGHT">
+                                            width="100%"
+                                            caption="msg://chartCasesTotal">
                                 <chart:legend autoMargins="false"
                                               marginRight="20"
                                               markerType="CIRCLE"
                                               position="RIGHT"/>
-                                <chart:balloon fixedPosition="true"/>
+                                <chart:balloon fixedPosition="false"/>
                                 <chart:export/>
                             </chart:pieChart>
                         </row>
+                        <row>
+                            <groupBox id="suitsStatistics"
+                                      caption="msg://testRunEdit.suitsStatistics"
+                                      align="BOTTOM_CENTER"
+                                      expand="suitsStatisticsTable"
+                                      height="100%" colspan="2">
+                                <groupTable id="suitsStatisticsTable"
+                                            width="110%"
+                                            dataContainer="suitsDc"
+                                            showSelection="false"
+                                            responsive="true">
+                                    <columns>
+                                        <column id="name"/>
+                                        <column id="module"/>
+                                        <column id="state"/>
+                                        <column id="casesPassed" caption="msg://casesPassed"/>
+                                        <column id="casesFailed" caption="msg://casesFailed"/>
+                                        <column id="casesSkipped" caption="msg://casesSkipped"/>
+                                        <column id="casesBlocked" caption="msg://casesBlocked"/>
+                                        <column id="casesTotal" caption="msg://casesTotal"/>
+                                    </columns>
+                                    <rows/>
+                                </groupTable>
+                            </groupBox>
+                        </row>
                     </rows>
                 </grid>
-
-
-                <groupBox id="suitsStatistics" caption="msg://testRunEdit.suitsStatistics">
-                    <groupTable id="suitsStatisticsTable"
-                                width="100%"
-                                height="100%"
-                                dataContainer="suitsDc"
-                                showSelection="false"
-                                responsive="true">
-                        <columns>
-                            <column id="name"/>
-                            <column id="module"/>
-                            <column id="state"/>
-                            <column id="casesPassed" caption="msg://casesPassed"/>
-                            <column id="casesFailed" caption="msg://casesFailed"/>
-                            <column id="casesSkipped" caption="msg://casesSkipped"/>
-                            <column id="casesBlocked" caption="msg://casesBlocked"/>
-                            <column id="casesTotal" caption="msg://casesTotal"/>
-                        </columns>
-                        <rows/>
-                    </groupTable>
-                </groupBox>
             </tab>
             <tab id="defects" caption="msg://defects" spacing="true" margin="true">
                 <groupBox caption="msg://defects" collapsable="false" height="100%">
