@@ -1,8 +1,10 @@
 package com.company.quarium.web.screens.testrun;
 
 import com.company.quarium.entity.project.*;
-import com.company.quarium.entity.project.Module;
-import com.company.quarium.entity.testsuit.*;
+import com.company.quarium.entity.testsuit.RunTestSuit;
+import com.company.quarium.entity.testsuit.SharedTestSuit;
+import com.company.quarium.entity.testsuit.TestCase;
+import com.company.quarium.entity.testsuit.TestSuit;
 import com.company.quarium.service.CopyTestSuitService;
 import com.company.quarium.web.screens.runtestsuit.RunTestSuitEdit;
 import com.company.quarium.web.screens.simplechecklist.TestRunTestSuitBrowse;
@@ -30,7 +32,6 @@ import javax.inject.Inject;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -376,8 +377,13 @@ public class TestRunEdit extends StandardEditor<TestRun> {
         if (CollectionUtils.isNotEmpty(totalCasesDc.getItems())) {
 
             List<String> collect = totalCasesDc.getItems().stream()
-                    .filter(testCase -> Objects.nonNull(testCase.getStatus()))
-                    .map(testCase -> testCase.getStatus().toString())
+                    .map(testCase -> {
+                        if (testCase.getStatus() != null) {
+                            return testCase.getStatus().name();
+                        } else {
+                            return messages.getMessage(getClass(), "notTested");
+                        }
+                    })
                     .collect(Collectors.toList());
 
             Map<String, Long> map = collect.stream()
