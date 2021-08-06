@@ -115,6 +115,48 @@ public class RunTestCaseEdit extends TestCaseEdit {
         }
 
         setCasesCount();
+
+        Table.Column<CaseResult> statusColumn = resultsTable.getColumn("status");
+        statusColumn.addClickListener(caseResultClickEvent -> {
+                    screenBuilders.editor(CaseResult.class, this)
+                            .editEntity(caseResultClickEvent.getItem())
+                            .build()
+                            .show();
+                }
+        );
+
+        resultsTable.setStyleProvider(((entity, property) -> {
+            switch (entity.getStatus()) {
+                case FAILED:
+                    return "failed-result";
+                case PASSED:
+                    return "passed-result";
+                case BLOCKED:
+                    return "blocked-result";
+                case SKIPPED:
+                    return "skipped-result";
+            }
+            return null;
+        }));
+    }
+
+    @Subscribe
+    public void onAfterInit(AfterInitEvent event) {
+        resultsTable.setStyleProvider(((entity, property) -> {
+            if (property.equals("status")) {
+                switch (entity.getStatus()) {
+                    case FAILED:
+                        return "failed-result";
+                    case PASSED:
+                        return "passed-result";
+                    case BLOCKED:
+                        return "blocked-result";
+                    case SKIPPED:
+                        return "skipped-result";
+                }
+            }
+            return null;
+        }));
     }
 
     @Subscribe
@@ -125,6 +167,7 @@ public class RunTestCaseEdit extends TestCaseEdit {
     @Subscribe
     public void onInit1(InitEvent event) {
         resetTimerLabel();
+
     }
 
     private void resetTimerLabel() {
@@ -197,7 +240,7 @@ public class RunTestCaseEdit extends TestCaseEdit {
         if (testCasesDc.getMutableItems().size() > testCasesDc.getItem(testCaseDc.getItem()).getNumber()) {
             stopTimer();
             resetTimerLabel();
-            selectCase(testCasesDc.getItem(testCaseDc.getItem()).getNumber());
+            selectCase(testCasesDc.getItem(testCaseDc.getItem()).getNumber() + 1);
         }
     }
 
@@ -206,15 +249,19 @@ public class RunTestCaseEdit extends TestCaseEdit {
         if (testCasesDc.getItem(testCaseDc.getItem()).getNumber() > 1) {
             stopTimer();
             resetTimerLabel();
-            selectCase(testCasesDc.getItem(testCaseDc.getItem()).getNumber() - 2);
+            selectCase(testCasesDc.getItem(testCaseDc.getItem()).getNumber() - 1);
         }
     }
 
     protected void selectCase(int caseNumber) {
         testCasesDc.replaceItem(getEditedEntity());
-        TestCase prevNextCase = testCasesDc.getMutableItems().get(caseNumber);
+        TestCase prevNextCase = testCasesDc.getItems().stream().filter(testCase ->
+                testCase.getNumber().equals(caseNumber))
+                .findFirst()
+                .get();
         getEditedEntityContainer().setItem(prevNextCase);
-        setStatus(prevNextCase.getStatus());//TODO может быть такое, что перелистнули кейс без проставления статуса. Подумать, как исправить.
+        setStatus(prevNextCase.getStatus());
+
         setCasesCount();
     }
 
@@ -291,14 +338,35 @@ public class RunTestCaseEdit extends TestCaseEdit {
         }
     }
 
+//    @Install(to = "resultsTable", subject = "styleProvider")
+//    private String resultsTableStyleProvider(CaseResult entity, String property) {
+//        if (property.equals("status")) {
+//            switch (entity.getStatus()) {
+//                case FAILED:
+//                    return "failed-result";
+//                case PASSED:
+//                    return "passed-result";
+//                case BLOCKED:
+//                    return "blocked-result";
+//                case SKIPPED:
+//                    return "skipped-result";
+//            }
+//        }
+//        return null;
+//    }
+
     private void setStatus(CaseStatus caseStatus) {
-        getEditedEntity().setStatus(caseStatus);
-        statusButtonsGrid.setVisible(false);
-        statusBox.setVisible(true);
-        stopTimer();
-        startTimer.setEnabled(false);
         if (caseStatus != null) {
+            getEditedEntity().setStatus(caseStatus);
+            statusButtonsGrid.setVisible(false);
+            statusBox.setVisible(true);
+            stopTimer();
+            startTimer.setEnabled(false);
             caseResult.setStyleName(caseStatus.name().toLowerCase(Locale.ROOT) + "-result");
+        } else {
+            statusButtonsGrid.setVisible(true);
+            statusBox.setVisible(false);
+            startTimer.setEnabled(true);
         }
     }
 
@@ -308,4 +376,11 @@ public class RunTestCaseEdit extends TestCaseEdit {
         statusBox.setVisible(false);
         startTimer();
     }
+
+//    public void openResult() {
+//        screenBuilders.editor(CaseResult.class, this)
+//                .withScreenId("quarium_CaseResult.edit")
+//                .build()
+//                .show();
+//    }
 }

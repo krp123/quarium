@@ -36,7 +36,7 @@
                                        caption="msg://checklistEdit.caseName"
                                        width="90%"
                                        required="true"/>
-                            <hbox caption="msg://checklistEdit.estimation" spacing="true">
+                            <hbox caption="msg://checklistEdit.estimation" spacing="true" visible="false">
                                 <textField id="caseHours" property="hours"
                                            dataContainer="testCaseDc" width="50"/>
                                 <label id="testCaseHoursLabel"

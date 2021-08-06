@@ -166,9 +166,8 @@
                                               editable="false"/>
                                 </row>
                                 <row>
-                                    <hbox/>
                                     <hbox id="timerBox" spacing="true" width="100%">
-                                        <grid align="MIDDLE_RIGHT" spacing="true">
+                                        <grid spacing="true">
                                             <columns>
                                                 <column/>
                                             </columns>
@@ -208,6 +207,7 @@
                                             </rows>
                                         </grid>
                                     </hbox>
+                                    <hbox/>
                                 </row>
                             </rows>
                         </grid>
@@ -246,6 +246,8 @@
                           caption="msg://results"
                           stylename="borderless">
                     <table id="resultsTable"
+                           editable="true"
+                           enable="true"
                            showSelection="false"
                            contextMenuEnabled="false"
                            dataContainer="resultsDc"
@@ -255,9 +257,11 @@
                            columnHeaderVisible="false"
                            width="100%">
                         <columns>
-                            <column id="status"/>
+                            <column id="status"
+                                    link="true"
+                                    linkScreen="quarium_CaseResult.edit"
+                                    linkScreenOpenType="DIALOG"/>
                             <column id="dateAdded"/>
-                            <column id="createTs" visible="false"/>
                         </columns>
                         <rows/>
                     </table>
