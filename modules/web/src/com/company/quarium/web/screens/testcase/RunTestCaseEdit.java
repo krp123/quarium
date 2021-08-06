@@ -117,13 +117,10 @@ public class RunTestCaseEdit extends TestCaseEdit {
         setCasesCount();
 
         Table.Column<CaseResult> statusColumn = resultsTable.getColumn("status");
-        statusColumn.addClickListener(caseResultClickEvent -> {
-                    screenBuilders.editor(CaseResult.class, this)
-                            .editEntity(caseResultClickEvent.getItem())
-                            .build()
-                            .show();
-                }
-        );
+        statusColumn.addClickListener(this::openCaseResultViewer);
+
+        Table.Column<CaseResult> dateAddedColumn = resultsTable.getColumn("dateAdded");
+        dateAddedColumn.addClickListener(this::openCaseResultViewer);
 
         resultsTable.setStyleProvider(((entity, property) -> {
             switch (entity.getStatus()) {
@@ -138,6 +135,13 @@ public class RunTestCaseEdit extends TestCaseEdit {
             }
             return null;
         }));
+    }
+
+    private void openCaseResultViewer(Table.Column.ClickEvent<CaseResult> caseResultClickEvent) {
+        screenBuilders.editor(CaseResult.class, this)
+                .editEntity(caseResultClickEvent.getItem())
+                .build()
+                .show();
     }
 
     @Subscribe

@@ -39,11 +39,13 @@ public class RunTestSuitEdit extends BaseTestSuitEdit {
     private Notifications notifications;
 
     public void setQaParameter(List<QaProjectRelationship> qaProjectRelationship) {
-        assignedQaField.setOptionsList(qaProjectRelationship);
+        if (qaProjectRelationship != null)
+            assignedQaField.setOptionsList(qaProjectRelationship);
     }
 
     public void setModuleParameter(List<Module> modules) {
-        moduleField.setOptionsList(modules);
+        if (modules != null)
+            moduleField.setOptionsList(modules);
     }
 
     @Subscribe("table.run")
