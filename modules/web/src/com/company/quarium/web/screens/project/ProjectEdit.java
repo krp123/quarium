@@ -11,10 +11,8 @@ import com.company.quarium.service.CopyTestSuitService;
 import com.company.quarium.web.screens.testSuit.ProjectExcelUploadWindow;
 import com.company.quarium.web.screens.testSuit.ProjectTestSuitEdit;
 import com.company.quarium.web.screens.testrun.TestRunEdit;
-import com.haulmont.cuba.core.global.DataManager;
-import com.haulmont.cuba.core.global.Messages;
-import com.haulmont.cuba.core.global.TimeSource;
-import com.haulmont.cuba.core.global.UserSessionSource;
+import com.haulmont.cuba.core.global.*;
+import com.haulmont.cuba.gui.Dialogs;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
@@ -71,6 +69,50 @@ public class ProjectEdit extends StandardEditor<Project> {
     private GroupTable<TestRun> testRunsTable;
     @Inject
     private UiComponents uiComponents;
+    @Inject
+    private EntityStates entityStates;
+    @Inject
+    private Dialogs dialogs;
+    @Inject
+    private CollectionLoader<TestRun> testRunsDl;
+
+    @Subscribe("testRunCreateBtn")
+    public void onTestRunCreateBtnClick(Button.ClickEvent event) {
+        if (entityStates.isNew(getEditedEntity())) {
+            dialogs.createOptionDialog()
+                    .withCaption(messages.getMessage(getClass(), "attention"))
+                    .withMessage(messages.getMessage(getClass(), "createRunAttentionMessage"))
+                    .withActions(
+                            new DialogAction(DialogAction.Type.YES)
+                                    .withHandler(e -> {
+                                        commitChanges();
+                                        if (!entityStates.isNew(getEditedEntity())) {
+                                            buildAndShowTestRunEditor();
+                                        }
+                                    }),
+                            new DialogAction(DialogAction.Type.NO)
+                    )
+                    .show();
+        } else {
+            buildAndShowTestRunEditor();
+        }
+    }
+
+    private void buildAndShowTestRunEditor() {
+        TestRun newTestRun = dataManager.create(TestRun.class);
+        newTestRun.setProject(getEditedEntity());
+        TestRunEdit testRunEdit = screenBuilders.editor(TestRun.class, this)
+                .withScreenClass(TestRunEdit.class)
+                .withLaunchMode(OpenMode.THIS_TAB)
+                .newEntity(newTestRun)
+                .build();
+        testRunEdit.setProjectParameter(getEditedEntity());
+        testRunEdit.addAfterCloseListener(afterShowEvent -> {
+            testRunsDl.load();
+            testRunsTable.repaint();
+        });
+        testRunEdit.show();
+    }
 
     @Subscribe
     public void onInitEntity(InitEntityEvent<Project> event) {
@@ -80,6 +122,7 @@ public class ProjectEdit extends StandardEditor<Project> {
     @Subscribe
     protected void onBeforeShow(BeforeShowEvent event) {
         qaDl.setParameter("project", getEditedEntity());
+        testRunsDl.setParameter("project", getEditedEntity());
         testSuitsFilterDl.setParameter("project", getEditedEntity());
     }
 
@@ -171,10 +214,10 @@ public class ProjectEdit extends StandardEditor<Project> {
         configurationProjectDc.getMutableItems().add(configurationProjectRelationship);
     }
 
-    @Install(to = "testRunsTable.create", subject = "screenConfigurer")
-    protected void testRunsTableCreateScreenConfigurer(Screen editorScreen) {
-        ((TestRunEdit) editorScreen).setProjectParameter(getEditedEntity());
-    }
+//    @Install(to = "testRunsTable.createRun", subject = "screenConfigurer")
+//    protected void testRunsTableCreateScreenConfigurer(Screen editorScreen) {
+//        ((TestRunEdit) editorScreen).setProjectParameter(getEditedEntity());
+//    }
 
     @Install(to = "testRunsTable.edit", subject = "screenConfigurer")
     protected void testRunsTableEditScreenConfigurer(Screen editorScreen) {

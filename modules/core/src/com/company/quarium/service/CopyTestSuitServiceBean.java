@@ -23,7 +23,6 @@ public class CopyTestSuitServiceBean implements CopyTestSuitService {
         checklistNew.setState(testSuit.getState());
         checklistNew.setIsUsedInRegress(testSuit.getIsUsedInRegress());
         checklistNew.setModule(testSuit.getModule());
-        checklistNew.setAssignedQa(testSuit.getAssignedQa());
         checklistNew.setComment(testSuit.getComment());
         checklistNew.setTicket(testSuit.getTicket());
         checklistNew.setInitialConditions(testSuit.getInitialConditions());

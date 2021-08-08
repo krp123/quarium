@@ -20,11 +20,11 @@
 }
 
 .v-filterselect-item-blocked-result {
-     color: #ffa500;
+     color: #4f5c78;
 }
 
 .v-filterselect-item-skipped-result {
-     color: #a0aac0;
+     color: #ffa500;
 }
 
 .helium .v-filterselect-passed-result [class*="input"] {
@@ -36,15 +36,15 @@
 }
 
 .helium .v-filterselect-blocked-result [class*="input"] {
-     color: #ffa500;
+     color: #4f5c78;
 }
 
 .helium .v-filterselect-skipped-result [class*="input"] {
-     color: #a0aac0;
+     color: #ffa500;
 }
 
 .skipped-result {
-     color: #a0aac0;
+     color: #ffa500;
 }
 
 .passed-result {
@@ -56,7 +56,7 @@
 }
 
 .blocked-result {
-     color: #ffa500;
+     color: #4f5c78;
 }
 
 .helium .v-textfield.v-disabled-bright-disabled {
