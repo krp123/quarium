@@ -36,7 +36,8 @@
                 <action id="refresh" type="refresh"/>
             </actions>
             <columns>
-                <column id="name"/>
+                <column id="name" maxTextLength="70"/>
+                <column id="comment" maxTextLength="70"/>
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"

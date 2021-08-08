@@ -1,5 +1,6 @@
 package com.company.quarium.service;
 
+import com.company.quarium.entity.references.Priority;
 import com.company.quarium.entity.testsuit.SharedTestSuit;
 import com.company.quarium.entity.testsuit.Step;
 import com.company.quarium.entity.testsuit.TestCase;
@@ -13,8 +14,9 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
+import static com.company.quarium.Constants.*;
 
 @Service(UploadTestSuitFromXlsService.NAME)
 public class UploadTestSuitFromXlsServiceBean implements UploadTestSuitFromXlsService {
@@ -24,7 +26,7 @@ public class UploadTestSuitFromXlsServiceBean implements UploadTestSuitFromXlsSe
     @Override
     public SharedTestSuit createFromXls(File file) throws IOException, InvalidFormatException, IllegalStateException {
         XSSFWorkbook newExcel = new XSSFWorkbook(file);
-        XSSFSheet newSheet = newExcel.getSheet("Checklist");
+        XSSFSheet newSheet = newExcel.getSheet("TestSuit");
 
         SharedTestSuit testSuitNew = dataManager.create(SharedTestSuit.class);
 
@@ -38,7 +40,7 @@ public class UploadTestSuitFromXlsServiceBean implements UploadTestSuitFromXlsSe
 
         //Заполняем комментарий
         XSSFRow rowComment = newSheet.getRow(2);
-        testSuitNew.setComment(rowComment.getCell(1).getStringCellValue());
+        testSuitNew.setComment(getStringFromCell(rowComment, 1));
 
         //Заполняем оценку
         XSSFRow rowEstimation = newSheet.getRow(3);
@@ -58,11 +60,15 @@ public class UploadTestSuitFromXlsServiceBean implements UploadTestSuitFromXlsSe
             testSuitNew.setMinutes(0);
         }
 
+        //Заполняем ссылку
+        XSSFRow rowLink = newSheet.getRow(4);
+        testSuitNew.setTicket(getStringFromCell(rowLink, 1));
+
         //Заполняем тест-кейсы
         List<TestCase> testCases = new ArrayList<>();
         int rowsQty = newSheet.getLastRowNum();
         int casesQty = 0;
-        for (int i = 5; i < rowsQty; i++) {
+        for (int i = 6; i < rowsQty; i++) {
             if (newSheet.getRow(i) != null) {
                 XSSFRow rowCase = newSheet.getRow(i);
                 String firstCell;
@@ -103,6 +109,21 @@ public class UploadTestSuitFromXlsServiceBean implements UploadTestSuitFromXlsSe
                     }
                     testCaseNew.setCaseStep(stepsList);
                     testCases.add(testCaseNew);
+
+                    //Заполняем приоритет
+                    if (rowCase.getLastCellNum() > 4) {
+                        try {
+                            Map<Integer, UUID> priorityMap = new HashMap<>();
+                            priorityMap.put(1, PRIORITY_LOW);
+                            priorityMap.put(2, PRIORITY_MEDIUM);
+                            priorityMap.put(3, PRIORITY_HIGH);
+                            Priority rowPriority = dataManager.getReference(Priority.class,
+                                    priorityMap.get(((int) rowCase.getCell(4).getNumericCellValue())));
+                            testCaseNew.setPriority(rowPriority);
+                        } catch (IllegalStateException ignored) {
+
+                        }
+                    }
                 }
             }
         }

@@ -31,7 +31,7 @@ public class ProjectExcelUploadWindow extends ExcelUploadWindow {
     @Inject
     private UploadTestSuitFromXlsService uploadTestSuitFromXlsService;
     @Inject
-    private CollectionContainer<SharedTestSuit> checklistsDc;
+    private CollectionContainer<SharedTestSuit> testSuitsDc;
     @Inject
     private InstanceContainer<SimpleProject> projectDc;
     @Inject
@@ -43,7 +43,7 @@ public class ProjectExcelUploadWindow extends ExcelUploadWindow {
             File file = fileUploadingAPI.getFile(entry.getKey());
             SharedTestSuit testSuitNew = uploadTestSuitFromXlsService.createFromXls(file);
             testSuitNew.setProject(projectDc.getItem());
-            checklistsDc.getMutableItems().add(testSuitNew);
+            testSuitsDc.getMutableItems().add(testSuitNew);
         }
         String files = "";
         for (String str : multiUploadField.getUploadsMap().values()) {
@@ -61,7 +61,7 @@ public class ProjectExcelUploadWindow extends ExcelUploadWindow {
     }
 
     public void setTestSuitsDc(CollectionContainer<SharedTestSuit> testSuitsDc) {
-        this.checklistsDc = testSuitsDc;
+        this.testSuitsDc = testSuitsDc;
     }
 
     public void setProject(SimpleProject project) {

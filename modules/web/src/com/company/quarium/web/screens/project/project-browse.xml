@@ -36,8 +36,8 @@
                 <action id="refresh" type="refresh"/>
             </actions>
             <columns>
-                <column id="projectName"/>
-                <column id="description"/>
+                <column id="projectName" maxTextLength="70"/>
+                <column id="description" maxTextLength="70"/>
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"

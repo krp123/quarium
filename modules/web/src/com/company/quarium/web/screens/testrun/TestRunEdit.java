@@ -116,6 +116,8 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     private Dialogs dialogs;
     @Inject
     private CollectionContainer<RunTestSuit> checklistsFilterDc;
+    @Inject
+    private GroupTable<TestCase> bugsTable;
 
     @Subscribe("checklistTable.addChecklist")
     protected void onAddChecklist(Action.ActionPerformedEvent event) {
@@ -207,6 +209,10 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     protected void testRunsTableEditScreenConfigurer(Screen editorScreen) {
         ((RunTestSuitEdit) editorScreen).setModuleParameter(getEditedEntity().getProject().getModule());
         ((RunTestSuitEdit) editorScreen).setQaParameter(getEditedEntity().getProject().getQa());
+
+        if (hasUnsavedChanges()) {
+            commitChanges();
+        }
     }
 
     private String getTime(List<TestSuit> testSuitList) {
