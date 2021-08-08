@@ -79,7 +79,7 @@
         </property>
         <property name="user" view="_minimal"/>
     </view>
-    <view entity="quarium_TestSuit" name="project-testSuit-view" extends="_local">
+    <view entity="quarium_TestSuit" name="project-testSuit-view" extends="_local" systemProperties="true">
         <property name="assignedQa" view="_minimal"/>
         <property name="state" view="_minimal"/>
         <property name="testCase" view="_minimal">
@@ -368,6 +368,20 @@
         </property>
     </view>
     <view entity="quarium_CaseResult" name="caseResult-view" extends="_local" systemProperties="true">
-        <property name="testCase" view="_minimal"/>
+        <property name="testCase" view="_minimal">
+            <property name="initialConditions"/>
+            <property name="number"/>
+            <property name="caseStep" view="_minimal">
+                <property name="number"/>
+                <property name="creationDate"/>
+                <property name="testCase" view="_minimal"/>
+            </property>
+            <property name="result" view="_minimal"/>
+            <property name="hours"/>
+            <property name="minutes"/>
+            <property name="priority" view="_minimal"/>
+            <property name="status"/>
+            <property name="expectedResult"/>
+        </property>
     </view>
 </views>

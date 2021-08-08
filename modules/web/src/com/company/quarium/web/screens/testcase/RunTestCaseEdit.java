@@ -119,7 +119,7 @@ public class RunTestCaseEdit extends TestCaseEdit {
         Table.Column<CaseResult> statusColumn = resultsTable.getColumn("status");
         statusColumn.addClickListener(this::openCaseResultViewer);
 
-        Table.Column<CaseResult> dateAddedColumn = resultsTable.getColumn("dateAdded");
+        Table.Column<CaseResult> dateAddedColumn = resultsTable.getColumn("defectDateAdded");
         dateAddedColumn.addClickListener(this::openCaseResultViewer);
 
         resultsTable.setStyleProvider(((entity, property) -> {
