@@ -221,7 +221,7 @@
                         </filter>
                         <groupTable id="testSuitsTable"
                                     width="100%"
-                                    dataContainer="testSuitFilterDc"
+                                    dataContainer="testSuitsDc"
                                     multiselect="true"
                                     presentations="true">
                             <actions>
