@@ -170,7 +170,8 @@
                             <action id="remove" type="remove"/>
                         </actions>
                         <columns>
-                            <column id="name"/>
+                            <column id="name" maxTextLength="50"/>
+                            <column id="comment" maxTextLength="50"/>
                             <column id="state"/>
                             <column id="module"/>
                             <column id="assignedQa"

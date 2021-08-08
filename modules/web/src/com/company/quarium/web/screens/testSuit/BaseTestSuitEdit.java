@@ -21,7 +21,12 @@ import com.haulmont.cuba.gui.screen.*;
 import com.haulmont.cuba.security.entity.EntityLogItem;
 
 import javax.inject.Inject;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+
+import static com.company.quarium.Constants.STATE_CHECKED;
 
 @UiController("quarium_BaseTestSuit.edit")
 @UiDescriptor("baseTestSuit-edit.xml")
@@ -205,12 +210,12 @@ public class BaseTestSuitEdit extends StandardEditor<TestSuit> {
 
     @Subscribe(id = "testCasesDc", target = Target.DATA_CONTAINER)
     public void onTestCasesDcItemPropertyChange(InstanceContainer.ItemPropertyChangeEvent<TestCase> event) {
-        if (!event.getProperty().equals("result")) {
+        if (!event.getProperty().equals("status")) {
             return;
         }
 
         Statement completedState = dataManager.load(Statement.class)
-                .id(UUID.fromString("d9d8fd34-068d-99db-5adc-9d95731bc419")).one();
+                .id(STATE_CHECKED).one();
 
         boolean hasUnchecked = false;
         for (TestCase tc : testCasesDc.getItems()) {

@@ -221,7 +221,7 @@
                         </filter>
                         <groupTable id="testSuitsTable"
                                     width="100%"
-                                    dataContainer="testSuitsDc"
+                                    dataContainer="testSuitFilterDc"
                                     multiselect="true"
                                     presentations="true">
                             <actions>
@@ -241,8 +241,8 @@
                                 <action id="remove" type="remove"/>
                             </actions>
                             <columns>
-                                <column id="name"/>
-                                <column id="comment"/>
+                                <column id="name" maxTextLength="70"/>
+                                <column id="comment" maxTextLength="70"/>
                                 <column id="module" caption="msg://projectEdit.module"/>
                             </columns>
                             <rowsCount/>
@@ -280,10 +280,10 @@
                         <action id="remove" type="remove"/>
                     </actions>
                     <columns>
-                        <column id="name"/>
+                        <column id="name" maxTextLength="40"/>
                         <column id="runStartDate"/>
                         <column id="runFinishDate"/>
-                        <column id="description"/>
+                        <column id="description" maxTextLength="40"/>
                         <column id="milestone"/>
                         <column id="completedPercent" caption="msg://projectEdit.completed"/>
                     </columns>

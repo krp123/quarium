@@ -124,10 +124,10 @@
                                                    dataContainer="testSuitDc" required="true"/>
                                         <label id="checklistMinLabel" value="msg://checklistEdit.minutesLabel"
                                                align="BOTTOM_LEFT"/>
-                                        <button action="getEstimation" id="button"
-                                                width="AUTO" caption="msg://checklistEdit.getEstimation"
-                                                description="Заполнить поле 'Оценка' суммой оценок тест-кейсов"
-                                                align="MIDDLE_RIGHT"/>
+                                        <!--                                        <button action="getEstimation" id="button"-->
+                                        <!--                                                width="AUTO" caption="msg://checklistEdit.getEstimation"-->
+                                        <!--                                                description="Заполнить поле 'Оценка' суммой оценок тест-кейсов"-->
+                                        <!--                                                align="MIDDLE_RIGHT"/>-->
                                     </hbox>
                                 </row>
                                 <row>

@@ -78,7 +78,7 @@ public class ExcelUploadWindow extends Screen {
     public void onInit(InitEvent event) {
         com.vaadin.ui.Label label = (com.vaadin.ui.Label) WebComponentsHelper.unwrap(downloadTemplate);
         label.setContentMode(ContentMode.HTML);
-        String fileName = "ChecklistImportTemplate.xlsx";
+        String fileName = "TestSuitImportTemplate.xlsx";
         String templateFullPath = AppContext.getProperty("cuba.appDir") + File.separator + "static" + File.separator + fileName;
         File templateFull = new File(templateFullPath);
         if (!templateFull.exists()) {

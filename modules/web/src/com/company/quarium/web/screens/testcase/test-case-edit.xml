@@ -72,7 +72,7 @@
                                    multiLineCells="true"
                                    editable="true"
                                    colspan="2"
-                                   showSelection="false">
+                                   showSelection="true">
                                 <actions>
                                     <action id="createStep" type="create"/>
                                     <action id="removeStep" type="remove"/>
