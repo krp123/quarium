@@ -144,7 +144,7 @@
                     </filter>
                     <groupTable id="checklistTable"
                                 width="100%"
-                                dataContainer="checklistsDc"
+                                dataContainer="checklistsFilterDc"
                                 multiselect="true"
                                 presentations="true"
                                 editable="true">
@@ -284,6 +284,7 @@
         <hbox id="editActions" spacing="true">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="closeBtn" action="windowClose"/>
+            <button id="saveBtn" caption="msg://save" icon="font-icon:SAVE"/>
             <button id="runReport" caption="msg://testRunEdit.report"/>
         </hbox>
     </layout>

@@ -25,7 +25,7 @@
             <collection id="modulesDc" property="module"/>
             <collection id="runTestSuitDc" property="runTestSuit"/>
             <collection id="milestonesDc" property="milestone"/>
-            <collection id="testRunsDc" property="testRun"/>
+<!--            <collection id="testRunsDc" property="testRun"/>-->
         </instance>
         <collection id="qaDc" class="com.company.quarium.entity.project.QaProjectRelationship" view="edit">
             <loader id="qaDl">
@@ -54,6 +54,13 @@
             <loader id="testSuitsFilterDl">
                 <query>
                     <![CDATA[select e from quarium_TestSuit e where e.project = :project]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="testRunsDc" class="com.company.quarium.entity.project.TestRun" view="testRun-view">
+            <loader id="testRunsDl">
+                <query>
+                    <![CDATA[select e from quarium_TestRun e where e.project = :project]]>
                 </query>
             </loader>
         </collection>
@@ -264,12 +271,6 @@
                             dataContainer="testRunsDc"
                             height="100%">
                     <actions>
-                        <action id="create" type="create">
-                            <properties>
-                                <property name="screenClass"
-                                          value="com.company.quarium.web.screens.testrun.TestRunEdit"/>
-                            </properties>
-                        </action>
                         <action id="edit" type="edit">
                             <properties>
                                 <property name="screenClass"
@@ -289,7 +290,7 @@
                     <rows/>
                     <buttonsPanel id="testRunsButtonsPanel"
                                   alwaysVisible="true">
-                        <button id="testRunCreateBtn" action="testRunsTable.create"/>
+                        <button id="testRunCreateBtn" primary="true" caption="msg://create" icon="CREATE_ACTION"/>
                         <button id="testRunEditBtn" action="testRunsTable.edit"/>
                         <button id="testRunRemoveBtn" action="testRunsTable.remove"/>
                     </buttonsPanel>
@@ -299,7 +300,7 @@
         <hbox id="editActions" spacing="true" align="BOTTOM_LEFT">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="closeBtn" action="windowClose"/>
-            <button id="saveBtn" caption="msg://projectEdit.save"/>
+            <button id="saveBtn" caption="msg://projectEdit.save" icon="font-icon:SAVE"/>
         </hbox>
     </layout>
 </window>

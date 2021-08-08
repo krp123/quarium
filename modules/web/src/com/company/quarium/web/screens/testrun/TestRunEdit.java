@@ -14,8 +14,10 @@ import com.haulmont.charts.gui.components.charts.PieChart;
 import com.haulmont.charts.gui.data.ListDataProvider;
 import com.haulmont.charts.gui.data.MapDataItem;
 import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.EntityStates;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.core.global.UserSessionSource;
+import com.haulmont.cuba.gui.Dialogs;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
@@ -106,10 +108,39 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     private GroupTable<RunTestSuit> checklistTable;
     @Inject
     private PieChart pieChart;
+    @Inject
+    private Button saveBtn;
+    @Inject
+    private EntityStates entityStates;
+    @Inject
+    private Dialogs dialogs;
+    @Inject
+    private CollectionContainer<RunTestSuit> checklistsFilterDc;
 
     @Subscribe("checklistTable.addChecklist")
     protected void onAddChecklist(Action.ActionPerformedEvent event) {
-        screenBuilders.lookup(SharedTestSuit.class, this)
+        if (entityStates.isNew(getEditedEntity())) {
+            dialogs.createOptionDialog()
+                    .withCaption(messages.getMessage(getClass(), "attention"))
+                    .withMessage(messages.getMessage(getClass(), "createSuitAttentionMessage"))
+                    .withActions(
+                            new DialogAction(DialogAction.Type.YES)
+                                    .withHandler(e -> {
+                                        commitChanges();
+                                        if (!entityStates.isNew(getEditedEntity())) {
+                                            buildAndShowSuitsAddLookup();
+                                        }
+                                    }),
+                            new DialogAction(DialogAction.Type.NO)
+                    )
+                    .show();
+        } else {
+            buildAndShowSuitsAddLookup();
+        }
+    }
+
+    private void buildAndShowSuitsAddLookup() {
+        TestRunTestSuitBrowse testRunTestSuitBrowse = screenBuilders.lookup(SharedTestSuit.class, this)
                 .withOptions(new MapScreenOptions(ParamsMap.of("project", getEditedEntity().getProject())))
                 .withScreenClass(TestRunTestSuitBrowse.class)
                 .withOpenMode(OpenMode.DIALOG)
@@ -117,8 +148,8 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                     checklists.stream()
                             .forEach(this::createAndAddChecklist);
                 })
-                .build()
-                .show();
+                .build();
+        testRunTestSuitBrowse.show();
     }
 
     @Subscribe
@@ -148,7 +179,10 @@ public class TestRunEdit extends StandardEditor<TestRun> {
         testSuit = dataManager.load(TestSuit.class).id(testSuit.getId()).view("project-testSuit-view").one();
         RunTestSuit checklistNew = copyTestSuitService.copyRunTestSuit(testSuit);
         checklistNew.setTestRun(testRunDc.getItem());
-        checklistsDc.getMutableItems().add(checklistNew);
+        checklistsFilterDc.getMutableItems().add(checklistNew);
+        dataManager.commit(checklistNew);
+        checklistsFilterDl.load();
+        checklistTable.repaint();
         return checklistNew;
     }
 
@@ -209,6 +243,16 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     @Subscribe
     protected void onInit(AfterShowEvent event) {
         runReport.setAction(new EditorPrintFormAction(this, messages.getMessage(getClass(), "testRunEdit.testRunReport")));
+
+        saveBtn.setAction(new AbstractAction("saveCard") {
+            @Override
+            public void actionPerform(Component component) {
+                commitChanges();
+                notifications.create()
+                        .withCaption(messages.getMessage(getClass(), "saveNotification"))
+                        .show();
+            }
+        });
 
         if (userSessionSource.getUserSession().getRoles().contains("View")) {
             milestone.setEditable(false); //Костыль. Почему то не удаляется доступ к редактированию поля через роль.
