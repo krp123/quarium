@@ -241,7 +241,7 @@ public class RunTestCaseEdit extends TestCaseEdit {
     }
 
     private void clickNext() {
-        if (testCasesDc.getMutableItems().size() > testCasesDc.getItem(testCaseDc.getItem()).getNumber()) {
+        if (testCasesDc.getItems().size() > testCasesDc.getItem(testCaseDc.getItem()).getNumber()) {
             stopTimer();
             resetTimerLabel();
             selectCase(testCasesDc.getItem(testCaseDc.getItem()).getNumber() + 1);
@@ -258,7 +258,7 @@ public class RunTestCaseEdit extends TestCaseEdit {
     }
 
     protected void selectCase(int caseNumber) {
-        testCasesDc.replaceItem(getEditedEntity());
+        testCasesDc.replaceItem(testCaseDc.getItem());
         TestCase prevNextCase = testCasesDc.getItems().stream().filter(testCase ->
                 testCase.getNumber().equals(caseNumber))
                 .findFirst()
@@ -380,11 +380,4 @@ public class RunTestCaseEdit extends TestCaseEdit {
         statusBox.setVisible(false);
         startTimer();
     }
-
-//    public void openResult() {
-//        screenBuilders.editor(CaseResult.class, this)
-//                .withScreenId("quarium_CaseResult.edit")
-//                .build()
-//                .show();
-//    }
 }

@@ -144,7 +144,7 @@
                     </filter>
                     <groupTable id="checklistTable"
                                 width="100%"
-                                dataContainer="checklistsDc"
+                                dataContainer="checklistsFilterDc"
                                 multiselect="true"
                                 presentations="true"
                                 editable="true">
@@ -170,7 +170,8 @@
                             <action id="remove" type="remove"/>
                         </actions>
                         <columns>
-                            <column id="name"/>
+                            <column id="name" maxTextLength="50"/>
+                            <column id="comment" maxTextLength="50"/>
                             <column id="state"/>
                             <column id="module"/>
                             <column id="assignedQa"
@@ -183,9 +184,9 @@
                                       alwaysVisible="true">
                             <popupButton id="createPopup" caption="msg://create">
                                 <actions>
-                                    <action id="checklistTable.create"/>
-                                    <action id="copy" caption="msg://copy"/>
+                                    <!--                                    <action id="checklistTable.create"/>-->
                                     <action id="checklistTable.addChecklist"/>
+                                    <action id="copy" caption="msg://copy"/>
                                 </actions>
                             </popupButton>
                             <button id="editBtn" action="checklistTable.edit"/>
@@ -284,6 +285,7 @@
         <hbox id="editActions" spacing="true">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="closeBtn" action="windowClose"/>
+            <button id="saveBtn" caption="msg://save" icon="font-icon:SAVE"/>
             <button id="runReport" caption="msg://testRunEdit.report"/>
         </hbox>
     </layout>

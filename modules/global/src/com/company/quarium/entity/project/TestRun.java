@@ -41,8 +41,9 @@ public class TestRun extends StandardEntity {
     @Column(name = "DESCRIPTION", length = 1000)
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PROJECT_ID")
+    @OneToOne(fetch = FetchType.LAZY)
+    @Composition
     private Project project;
 
     public void setRunStartDate(LocalDate runStartDate) {

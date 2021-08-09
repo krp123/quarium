@@ -27,6 +27,13 @@
                 </query>
             </loader>
         </collection>
+        <collection id="resultsDc" class="com.company.quarium.entity.testsuit.CaseResult" view="caseResult-view">
+            <loader id="resultsDl">
+                <query>
+                    <![CDATA[select e from quarium_CaseResult e where e.testCase = :testCase]]>
+                </query>
+            </loader>
+        </collection>
     </data>
     <dialogMode height="800"
                 width="1100"
@@ -93,6 +100,22 @@
                                           width="100%"
                                           editable="false"
                                           colspan="2"/>
+                            </row>
+                            <row>
+                                <textArea id="commentField"
+                                          caption="msg://defectComment"
+                                          rows="4"
+                                          editable="false"/>
+                                <hbox id="ticketBox" spacing="true"
+                                      caption="msg://defectLink"
+                                      width="100%">
+                                    <link id="link"/>
+                                </hbox>
+                            </row>
+                            <row>
+                                <dateField id="dateAdded"
+                                           editable="false"
+                                           caption="msg://defectDateAdded"/>
                             </row>
                         </rows>
                     </grid>

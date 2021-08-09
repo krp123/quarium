@@ -1,8 +1,10 @@
 package com.company.quarium.web.screens.testrun;
 
 import com.company.quarium.entity.project.*;
-import com.company.quarium.entity.project.Module;
-import com.company.quarium.entity.testsuit.*;
+import com.company.quarium.entity.testsuit.RunTestSuit;
+import com.company.quarium.entity.testsuit.SharedTestSuit;
+import com.company.quarium.entity.testsuit.TestCase;
+import com.company.quarium.entity.testsuit.TestSuit;
 import com.company.quarium.service.CopyTestSuitService;
 import com.company.quarium.web.screens.runtestsuit.RunTestSuitEdit;
 import com.company.quarium.web.screens.simplechecklist.TestRunTestSuitBrowse;
@@ -12,8 +14,10 @@ import com.haulmont.charts.gui.components.charts.PieChart;
 import com.haulmont.charts.gui.data.ListDataProvider;
 import com.haulmont.charts.gui.data.MapDataItem;
 import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.EntityStates;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.core.global.UserSessionSource;
+import com.haulmont.cuba.gui.Dialogs;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
@@ -30,7 +34,6 @@ import javax.inject.Inject;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -105,10 +108,41 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     private GroupTable<RunTestSuit> checklistTable;
     @Inject
     private PieChart pieChart;
+    @Inject
+    private Button saveBtn;
+    @Inject
+    private EntityStates entityStates;
+    @Inject
+    private Dialogs dialogs;
+    @Inject
+    private CollectionContainer<RunTestSuit> checklistsFilterDc;
+    @Inject
+    private GroupTable<TestCase> bugsTable;
 
     @Subscribe("checklistTable.addChecklist")
     protected void onAddChecklist(Action.ActionPerformedEvent event) {
-        screenBuilders.lookup(SharedTestSuit.class, this)
+        if (entityStates.isNew(getEditedEntity())) {
+            dialogs.createOptionDialog()
+                    .withCaption(messages.getMessage(getClass(), "attention"))
+                    .withMessage(messages.getMessage(getClass(), "createSuitAttentionMessage"))
+                    .withActions(
+                            new DialogAction(DialogAction.Type.YES)
+                                    .withHandler(e -> {
+                                        commitChanges();
+                                        if (!entityStates.isNew(getEditedEntity())) {
+                                            buildAndShowSuitsAddLookup();
+                                        }
+                                    }),
+                            new DialogAction(DialogAction.Type.NO)
+                    )
+                    .show();
+        } else {
+            buildAndShowSuitsAddLookup();
+        }
+    }
+
+    private void buildAndShowSuitsAddLookup() {
+        TestRunTestSuitBrowse testRunTestSuitBrowse = screenBuilders.lookup(SharedTestSuit.class, this)
                 .withOptions(new MapScreenOptions(ParamsMap.of("project", getEditedEntity().getProject())))
                 .withScreenClass(TestRunTestSuitBrowse.class)
                 .withOpenMode(OpenMode.DIALOG)
@@ -116,8 +150,8 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                     checklists.stream()
                             .forEach(this::createAndAddChecklist);
                 })
-                .build()
-                .show();
+                .build();
+        testRunTestSuitBrowse.show();
     }
 
     @Subscribe
@@ -147,7 +181,10 @@ public class TestRunEdit extends StandardEditor<TestRun> {
         testSuit = dataManager.load(TestSuit.class).id(testSuit.getId()).view("project-testSuit-view").one();
         RunTestSuit checklistNew = copyTestSuitService.copyRunTestSuit(testSuit);
         checklistNew.setTestRun(testRunDc.getItem());
-        checklistsDc.getMutableItems().add(checklistNew);
+        checklistsFilterDc.getMutableItems().add(checklistNew);
+        dataManager.commit(checklistNew);
+        checklistsFilterDl.load();
+        checklistTable.repaint();
         return checklistNew;
     }
 
@@ -172,6 +209,10 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     protected void testRunsTableEditScreenConfigurer(Screen editorScreen) {
         ((RunTestSuitEdit) editorScreen).setModuleParameter(getEditedEntity().getProject().getModule());
         ((RunTestSuitEdit) editorScreen).setQaParameter(getEditedEntity().getProject().getQa());
+
+        if (hasUnsavedChanges()) {
+            commitChanges();
+        }
     }
 
     private String getTime(List<TestSuit> testSuitList) {
@@ -208,6 +249,16 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     @Subscribe
     protected void onInit(AfterShowEvent event) {
         runReport.setAction(new EditorPrintFormAction(this, messages.getMessage(getClass(), "testRunEdit.testRunReport")));
+
+        saveBtn.setAction(new AbstractAction("saveCard") {
+            @Override
+            public void actionPerform(Component component) {
+                commitChanges();
+                notifications.create()
+                        .withCaption(messages.getMessage(getClass(), "saveNotification"))
+                        .show();
+            }
+        });
 
         if (userSessionSource.getUserSession().getRoles().contains("View")) {
             milestone.setEditable(false); //Костыль. Почему то не удаляется доступ к редактированию поля через роль.
@@ -376,8 +427,13 @@ public class TestRunEdit extends StandardEditor<TestRun> {
         if (CollectionUtils.isNotEmpty(totalCasesDc.getItems())) {
 
             List<String> collect = totalCasesDc.getItems().stream()
-                    .filter(testCase -> Objects.nonNull(testCase.getStatus()))
-                    .map(testCase -> testCase.getStatus().toString())
+                    .map(testCase -> {
+                        if (testCase.getStatus() != null) {
+                            return testCase.getStatus().name();
+                        } else {
+                            return messages.getMessage(getClass(), "notTested");
+                        }
+                    })
                     .collect(Collectors.toList());
 
             Map<String, Long> map = collect.stream()
