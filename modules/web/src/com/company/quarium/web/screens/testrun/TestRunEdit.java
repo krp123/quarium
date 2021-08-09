@@ -1,6 +1,7 @@
 package com.company.quarium.web.screens.testrun;
 
 import com.company.quarium.entity.project.*;
+import com.company.quarium.entity.project.Module;
 import com.company.quarium.entity.testsuit.RunTestSuit;
 import com.company.quarium.entity.testsuit.SharedTestSuit;
 import com.company.quarium.entity.testsuit.TestCase;
@@ -8,7 +9,7 @@ import com.company.quarium.entity.testsuit.TestSuit;
 import com.company.quarium.service.CopyTestSuitService;
 import com.company.quarium.web.screens.runtestsuit.RunTestSuitEdit;
 import com.company.quarium.web.screens.simplechecklist.TestRunTestSuitBrowse;
-import com.company.quarium.web.screens.testSuit.SuitCaseBrowser;
+import com.company.quarium.web.screens.testsuit.SuitCaseBrowser;
 import com.haulmont.bali.util.ParamsMap;
 import com.haulmont.charts.gui.components.charts.PieChart;
 import com.haulmont.charts.gui.data.ListDataProvider;
@@ -28,6 +29,7 @@ import com.haulmont.cuba.gui.model.CollectionPropertyContainer;
 import com.haulmont.cuba.gui.model.InstanceContainer;
 import com.haulmont.cuba.gui.screen.*;
 import com.haulmont.reports.gui.actions.EditorPrintFormAction;
+import com.sun.xml.bind.v2.TODO;
 import org.apache.commons.collections4.CollectionUtils;
 
 import javax.inject.Inject;
@@ -142,16 +144,27 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     }
 
     private void buildAndShowSuitsAddLookup() {
-        TestRunTestSuitBrowse testRunTestSuitBrowse = screenBuilders.lookup(SharedTestSuit.class, this)
+//        TestRunTestSuitBrowse testRunTestSuitBrowse = screenBuilders.lookup(SharedTestSuit.class, this)
+//                .withOptions(new MapScreenOptions(ParamsMap.of("project", getEditedEntity().getProject())))
+//                .withScreenClass(TestRunTestSuitBrowse.class)
+//                .withOpenMode(OpenMode.DIALOG)
+//                .withSelectHandler(checklists -> {
+//                    checklists.stream()
+//                            .forEach(this::createAndAddChecklist);
+//                })
+//                .build();
+//        testRunTestSuitBrowse.show();
+
+        screenBuilders.lookup(TestSuit.class, this)
+                .withLaunchMode(OpenMode.THIS_TAB)
                 .withOptions(new MapScreenOptions(ParamsMap.of("project", getEditedEntity().getProject())))
-                .withScreenClass(TestRunTestSuitBrowse.class)
-                .withOpenMode(OpenMode.DIALOG)
+                .withScreenId("quarium_TestSuitCase.browse")
                 .withSelectHandler(checklists -> {
                     checklists.stream()
                             .forEach(this::createAndAddChecklist);
                 })
-                .build();
-        testRunTestSuitBrowse.show();
+                .build()
+                .show();
     }
 
     @Subscribe
@@ -178,7 +191,11 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     }
 
     private RunTestSuit createAndAddChecklist(TestSuit testSuit) {
-        testSuit = dataManager.load(TestSuit.class).id(testSuit.getId()).view("project-testSuit-view").one();
+        try {
+            testSuit = dataManager.load(TestSuit.class).id(testSuit.getId()).view("project-testSuit-view").one();
+        }catch (Exception e){
+            //TODO
+        }
         RunTestSuit checklistNew = copyTestSuitService.copyRunTestSuit(testSuit);
         checklistNew.setTestRun(testRunDc.getItem());
         checklistsFilterDc.getMutableItems().add(checklistNew);
