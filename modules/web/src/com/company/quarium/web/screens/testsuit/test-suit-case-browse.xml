@@ -30,7 +30,7 @@
             </view>
             <loader id="testSuitsDl">
                 <query>
-                    <![CDATA[select e from quarium_TestSuit e where e.project IS NULL]]>
+                    <![CDATA[select e from quarium_SharedTestSuit e where e.project IS NULL]]>
                 </query>
             </loader>
         </collection>
