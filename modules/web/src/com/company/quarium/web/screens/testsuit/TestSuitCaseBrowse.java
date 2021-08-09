@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @UiController("quarium_TestSuitCase.browse")
 @UiDescriptor("test-suit-case-browse.xml")
@@ -46,12 +47,22 @@ public class TestSuitCaseBrowse extends StandardLookup<TestSuit> {
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
 
+        Map<String, Object> params = this.getWindow().getContext().getParams();
+        if (hasProjectParameter(params)) {
+            findTestSuitByProject(params);
+        }
+
+
         Table testCasesTable = (Table) casesFragment.getFragment().getComponent("testCasesTable");
         tabsheet.addSelectedTabChangeListener(selectedTabChangeEvent -> {
             if (!testCasesTable.getLookupSelectedItems().isEmpty()) {
                 testCasesTable.setSelected(new ArrayList<>());
                 testSuitsTable.setSelected(new ArrayList<>());
-                testSuitsDl.load();
+                if (hasProjectParameter(params)) {
+                    findTestSuitByProject(params);
+                } else {
+                    testSuitsDl.load();
+                }
             }
         });
 
@@ -115,5 +126,19 @@ public class TestSuitCaseBrowse extends StandardLookup<TestSuit> {
             }
         }
         return null;
+    }
+
+    private boolean hasProjectParameter(Map<String, Object> params) {
+        if (params.containsKey("project")) {
+            return true;
+        }
+        return false;
+    }
+
+    private void findTestSuitByProject(Map<String, Object> params) {
+        List<TestSuit> testSuits = dataManager.load(TestSuit.class)
+                .query("select e from quarium_TestSuit e where e.project =:project")
+                .parameter("project", params.get("project")).list();
+        testSuitsDc.setItems(testSuits);
     }
 }
