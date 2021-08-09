@@ -6,8 +6,8 @@
             <view extends="testCase-view"/>
             <loader id="testCasesDl">
                 <query>
-                    <![CDATA[select e from quarium_TestCase e
-                            where e.testSuit.project IS null]]>
+                    <![CDATA[select tc from quarium_TestCase tc where tc.testSuit in
+                        (select ts from quarium_SharedTestSuit ts where ts.project IS NULL)]]>
                 </query>
             </loader>
         </collection>
@@ -24,12 +24,12 @@
         <groupTable id="testCasesTable"
                     width="100%"
                     dataContainer="testCaseDc"
-                    multiselect="true">
+                    multiselect="true" fixedGrouping="true">
             <columns>
                 <group>
-                    <column id="testSuit"/>
+                    <column id="testSuit" maxTextLength="50"/>
                 </group>
-                <column id="name"/>
+                <column id="name" maxTextLength="50"/>
                 <column id="priority"/>
             </columns>
             <rows/>
