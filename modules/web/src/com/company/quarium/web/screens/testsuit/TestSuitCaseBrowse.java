@@ -75,6 +75,12 @@ public class TestSuitCaseBrowse extends StandardLookup<TestSuit> {
             String testSuitName = testCase.getTestSuit().getName();
             TestSuit newTestSuit = dataManager.create(TestSuit.class);
             newTestSuit.setName(testSuitName);
+            newTestSuit.setMinutes(testCase.getTestSuit().getMinutes());
+            newTestSuit.setHours(testCase.getTestSuit().getHours());
+            newTestSuit.setModule(testCase.getTestSuit().getModule());
+            newTestSuit.setComment(testCase.getTestSuit().getComment());
+            newTestSuit.setTicket(testCase.getTestSuit().getTicket());
+            newTestSuit.setInitialConditions(testCase.getTestSuit().getInitialConditions());
             testSuitsDc.getMutableItems().add(newTestSuit);
 
             if (!checkIfTestSuitExist(testSuitList, testSuitName)) {
