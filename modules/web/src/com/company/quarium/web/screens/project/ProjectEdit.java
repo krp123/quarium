@@ -8,8 +8,8 @@ import com.company.quarium.entity.testsuit.SharedTestSuit;
 import com.company.quarium.entity.testsuit.TestCase;
 import com.company.quarium.entity.testsuit.TestSuit;
 import com.company.quarium.service.CopyTestSuitService;
-import com.company.quarium.web.screens.testSuit.ProjectExcelUploadWindow;
-import com.company.quarium.web.screens.testSuit.ProjectTestSuitEdit;
+import com.company.quarium.web.screens.testsuit.ProjectExcelUploadWindow;
+import com.company.quarium.web.screens.testsuit.ProjectTestSuitEdit;
 import com.company.quarium.web.screens.testrun.TestRunEdit;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.Messages;
@@ -156,7 +156,11 @@ public class ProjectEdit extends StandardEditor<Project> {
     }
 
     private TestSuit createAndAddTestSuit(TestSuit testSuit) {
-        testSuit = dataManager.load(TestSuit.class).id(testSuit.getId()).view("project-testSuit-view").one();
+        try {
+            testSuit = dataManager.load(TestSuit.class).id(testSuit.getId()).view("project-testSuit-view").one();
+        }catch (IllegalStateException e){
+
+        }
         SharedTestSuit testSuitNew = copyTestSuitService.copyTestSuit(testSuit);
         testSuitNew.setProject(projectDc.getItem());
         testSuitsDc.getMutableItems().add(testSuitNew);

@@ -30,7 +30,7 @@
             </view>
             <loader id="testSuitsDl">
                 <query>
-                    <![CDATA[select e from quarium_TestSuit e]]>
+                    <![CDATA[select e from quarium_TestSuit e where e.project IS NULL]]>
                 </query>
             </loader>
         </collection>
@@ -70,7 +70,7 @@
             </tab>
         </tabSheet>
         <hbox id="lookupActions" spacing="true" visible="false">
-            <button action="lookupSelectAction"/>
+            <button id="selectButton" action="lookupSelectAction"/>
             <button action="lookupCancelAction"/>
         </hbox>
     </layout>
