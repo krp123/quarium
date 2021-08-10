@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fragment xmlns="http://schemas.haulmont.com/cuba/screen/fragment.xsd">
+    <data>
+        <collection id="testCaseDc"
+                    class="com.company.quarium.entity.testsuit.TestCase">
+            <view extends="testCase-view"/>
+            <loader id="testCasesDl">
+                <query>
+                    <![CDATA[select tc from quarium_TestCase tc where tc.testSuit in
+                        (select ts from quarium_SharedTestSuit ts where ts.project = :project)]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <layout spacing="true" expand="testCasesTable">
+        <filter id="filter"
+                width="100%"
+                dataLoader="testCasesDl"
+                applyTo="testCasesTable"
+                defaultMode="fts"
+                collapsed="true">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="testCasesTable"
+                    width="100%"
+                    dataContainer="testCaseDc"
+                    multiselect="true" fixedGrouping="true">
+            <columns>
+                <group>
+                    <column id="testSuit" maxTextLength="50"/>
+                </group>
+                <column id="name" maxTextLength="50"/>
+                <column id="priority"/>
+            </columns>
+            <rows/>
+        </groupTable>
+    </layout>
+</fragment>

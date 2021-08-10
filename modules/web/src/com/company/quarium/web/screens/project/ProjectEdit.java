@@ -8,9 +8,9 @@ import com.company.quarium.entity.testsuit.SharedTestSuit;
 import com.company.quarium.entity.testsuit.TestCase;
 import com.company.quarium.entity.testsuit.TestSuit;
 import com.company.quarium.service.CopyTestSuitService;
-import com.company.quarium.web.screens.testSuit.ProjectExcelUploadWindow;
-import com.company.quarium.web.screens.testSuit.ProjectTestSuitEdit;
 import com.company.quarium.web.screens.testrun.TestRunEdit;
+import com.company.quarium.web.screens.testsuit.ProjectExcelUploadWindow;
+import com.company.quarium.web.screens.testsuit.ProjectTestSuitEdit;
 import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.Dialogs;
 import com.haulmont.cuba.gui.Notifications;
@@ -170,6 +170,27 @@ public class ProjectEdit extends StandardEditor<Project> {
 
     @Subscribe("testSuitsTable.addTestSuit")
     protected void onAddTestSuit(Action.ActionPerformedEvent event) {
+        if (entityStates.isNew(getEditedEntity())) {
+            dialogs.createOptionDialog()
+                    .withCaption(messages.getMessage(getClass(), "attention"))
+                    .withMessage(messages.getMessage(getClass(), "createRunAttentionMessage"))
+                    .withActions(
+                            new DialogAction(DialogAction.Type.YES)
+                                    .withHandler(e -> {
+                                        commitChanges();
+                                        if (!entityStates.isNew(getEditedEntity())) {
+                                            buildAddTestSuitWindow();
+                                        }
+                                    }),
+                            new DialogAction(DialogAction.Type.NO)
+                    )
+                    .show();
+        } else {
+            buildAddTestSuitWindow();
+        }
+    }
+
+    private void buildAddTestSuitWindow() {
         screenBuilders.lookup(TestSuit.class, this)
                 .withLaunchMode(OpenMode.THIS_TAB)
                 .withScreenId("quarium_TestSuitCase.browse")
@@ -201,7 +222,7 @@ public class ProjectEdit extends StandardEditor<Project> {
     private TestSuit createAndAddTestSuit(TestSuit testSuit) {
         try {
             testSuit = dataManager.load(TestSuit.class).id(testSuit.getId()).view("project-testSuit-view").one();
-        }catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
 
         }
         SharedTestSuit testSuitNew = copyTestSuitService.copyTestSuit(testSuit);

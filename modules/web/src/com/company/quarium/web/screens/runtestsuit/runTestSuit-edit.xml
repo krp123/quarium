@@ -2,7 +2,7 @@
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
         xmlns:app="http://schemas.company.com/demo/0.1/ui-component.xsd"
         caption="msg://extChecklistEdit.caption"
-        messagesPack="com.company.quarium.web.screens.testSuit">
+        messagesPack="com.company.quarium.web.screens.testsuit">
     <data>
         <instance id="testSuitDc"
                   class="com.company.quarium.entity.testsuit.TestSuit">

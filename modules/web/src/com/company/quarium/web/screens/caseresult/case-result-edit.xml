@@ -30,7 +30,7 @@
                            property="executionTime"
                            showSeconds="true" width="AUTO"/>
                 <hbox id="ticketBox" spacing="true"
-                      caption="msg://checklistEdit.caseTicket"
+                      caption="msg://link"
                       width="100%">
                     <app:linkField id="link" dataContainer="caseResultDc"
                                    property="link"

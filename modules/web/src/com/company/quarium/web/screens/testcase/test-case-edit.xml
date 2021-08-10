@@ -53,7 +53,7 @@
                         <row>
                             <textArea id="initialConditions" dataContainer="testCaseDc"
                                       property="initialConditions"
-                                      caption="msg://checklistEdit.initialConditions"
+                                      caption="msg://initialConditions"
                                       width="90%"
                                       rows="3"/>
 

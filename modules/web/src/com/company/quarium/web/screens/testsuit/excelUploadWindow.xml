@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
         caption="msg://exceluploadwindow.caption"
-        messagesPack="com.company.quarium.web.screens.testSuit">
+        messagesPack="com.company.quarium.web.screens.testsuit">
     <data readOnly="true">
         <collection id="testSuitsDc"
                     class="com.company.quarium.entity.testsuit.SharedTestSuit">

@@ -1,4 +1,4 @@
-package com.company.quarium.web.screens.testSuit;
+package com.company.quarium.web.screens.testsuit;
 
 import com.haulmont.cuba.gui.screen.EditedEntityContainer;
 import com.haulmont.cuba.gui.screen.LoadDataBeforeShow;

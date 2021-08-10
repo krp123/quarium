@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
         caption="msg://suitCaseBrowser.caption"
-        messagesPack="com.company.quarium.web.screens.testSuit">
+        messagesPack="com.company.quarium.web.screens.testsuit">
     <layout>
         <tabSheet id="tabsheet">
             <tab id="testSuitsTab" caption="msg://suits">

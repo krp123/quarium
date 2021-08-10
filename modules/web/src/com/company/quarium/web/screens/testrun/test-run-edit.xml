@@ -144,12 +144,12 @@
                     </filter>
                     <groupTable id="checklistTable"
                                 width="100%"
-                                dataContainer="checklistsFilterDc"
+                                dataContainer="checklistsDc"
                                 multiselect="true"
                                 presentations="true"
                                 editable="true">
                         <actions>
-                            <action id="create" type="create" caption="msg://new">
+                            <action id="create" type="create">
                                 <properties>
                                     <property name="screenClass"
                                               value="com.company.quarium.web.screens.runtestsuit.RunTestSuitEdit"/>
@@ -158,7 +158,7 @@
                             <action id="addChecklist" type="add" caption="msg://addFromProject">
                                 <properties>
                                     <property name="screenClass"
-                                              value="com.company.quarium.web.screens.testSuit.SuitCaseBrowser"/>
+                                              value="com.company.quarium.web.screens.testsuit.SuitCaseBrowser"/>
                                 </properties>
                             </action>
                             <action id="edit" type="edit">

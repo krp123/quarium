@@ -2,7 +2,7 @@
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
         xmlns:app="http://schemas.company.com/demo/0.1/ui-component.xsd"
         caption="msg://extChecklistEdit.caption"
-        messagesPack="com.company.quarium.web.screens.testSuit">
+        messagesPack="com.company.quarium.web.screens.testsuit">
     <data>
         <instance id="testSuitDc"
                   class="com.company.quarium.entity.testsuit.TestSuit">
@@ -96,7 +96,12 @@
                                                width="90%" required="true"/>
                                     <textArea id="commentField" dataContainer="testSuitDc"
                                               property="comment" caption="msg://checklistEdit.comment"
-                                              width="80%" rowspan="1" rows="4"/>
+                                              width="80%" rowspan="2" rows="4"/>
+                                </row>
+                                <row>
+                                    <lookupField id="moduleField" dataContainer="testSuitDc"
+                                                 property="module" caption="msg://checklistEdit.module"
+                                                 width="90%"/>
                                 </row>
                                 <row>
                                     <hbox spacing="true" caption="msg://checklistEdit.ticket" width="90%">
@@ -126,16 +131,13 @@
                                     </hbox>
                                 </row>
                                 <row>
-                                    <hbox/>
                                     <lookupField id="stateField" dataContainer="testSuitDc" optionsContainer="statesDc"
                                                  property="state" caption="msg://checklistEdit.State"
                                                  width="90%" visible="false"/>
+                                    <lookupField id="assignedQaField" visible="false"/>
                                 </row>
                                 <row>
-                                    <lookupField id="moduleField" dataContainer="testSuitDc"
-                                                 property="module" caption="msg://checklistEdit.module"
-                                                 width="90%" visible="false"/>
-                                    <lookupField id="assignedQaField" visible="false"/>
+                                    <hbox/>
                                 </row>
                             </rows>
                         </grid>

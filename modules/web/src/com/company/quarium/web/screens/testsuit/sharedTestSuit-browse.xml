@@ -2,7 +2,7 @@
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
         caption="msg://checklistBrowse.caption"
         focusComponent="testSuitsTable"
-        messagesPack="com.company.quarium.web.screens.testSuit">
+        messagesPack="com.company.quarium.web.screens.testsuit">
     <data readOnly="true">
         <collection id="testSuitsDc"
                     class="com.company.quarium.entity.testsuit.SharedTestSuit">

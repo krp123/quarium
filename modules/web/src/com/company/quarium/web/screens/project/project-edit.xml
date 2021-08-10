@@ -228,14 +228,14 @@
                                 <action id="create" type="create" caption="msg://new">
                                     <properties>
                                         <property name="screenClass"
-                                                  value="com.company.quarium.web.screens.testSuit.ProjectTestSuitEdit"/>
+                                                  value="com.company.quarium.web.screens.testsuit.ProjectTestSuitEdit"/>
                                     </properties>
                                 </action>
                                 <action id="addTestSuit" type="add" icon="ADD_TO_SET_ACTION" caption="msg://fromList"/>
                                 <action id="edit" type="edit">
                                     <properties>
                                         <property name="screenClass"
-                                                  value="com.company.quarium.web.screens.testSuit.ProjectTestSuitEdit"/>
+                                                  value="com.company.quarium.web.screens.testsuit.ProjectTestSuitEdit"/>
                                     </properties>
                                 </action>
                                 <action id="remove" type="remove"/>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://testSuitCaseBrowse.caption"
+        focusComponent="testSuitsTable"
+        messagesPack="com.company.quarium.web.screens.testsuit">
+    <data readOnly="true">
+        <collection id="testSuitsDc"
+                    class="com.company.quarium.entity.testsuit.TestSuit">
+            <view extends="_local">
+                <property name="state" view="_minimal"/>
+                <property name="testCase" view="_minimal">
+                    <property name="initialConditions"/>
+                    <property name="number"/>
+                    <property name="caseStep" view="_minimal">
+                        <property name="step"/>
+                        <property name="number"/>
+                        <property name="creationDate"/>
+                    </property>
+                    <property name="result" view="_minimal">
+                        <property name="comment"/>
+                        <property name="link"/>
+                        <property name="executionTime"/>
+                    </property>
+                    <property name="hours"/>
+                    <property name="minutes"/>
+                    <property name="priority" view="_minimal"/>
+                    <property name="status"/>
+                    <property name="expectedResult"/>
+                </property>
+            </view>
+            <loader id="testSuitsDl">
+                <query>
+                    <![CDATA[select e from quarium_SharedTestSuit e where e.project = :project]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="tabsheet"
+            spacing="true" margin="true">
+        <tabSheet id="tabsheet">
+            <tab id="testSuitsTab" caption="msg://suits" expand="testSuitsTable" spacing="true" margin="true">
+                <filter id="filter"
+                        applyTo="testSuitsTable"
+                        dataLoader="testSuitsDl"
+                        collapsed="true"
+                        defaultMode="fts">
+                    <properties include=".*"/>
+                </filter>
+                <groupTable id="testSuitsTable"
+                            width="100%"
+                            dataContainer="testSuitsDc"
+                            multiselect="true">
+                    <columns>
+                        <column id="name" maxTextLength="50"/>
+                        <column id="initialConditions" maxTextLength="50"/>
+                        <column id="comment" maxTextLength="50"/>
+                        <column id="ticket" maxTextLength="50"/>
+                    </columns>
+                    <rowsCount/>
+                </groupTable>
+            </tab>
+            <tab id="testCasesTab" caption="msg://cases" spacing="true" margin="true" expand="casesFragment">
+                <fragment id="casesFragment" screen="quarium_RunTestCaseBrowserFrame"/>
+            </tab>
+        </tabSheet>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button id="selectButton" action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

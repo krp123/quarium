@@ -1,8 +1,9 @@
-package com.company.quarium.web.screens.testsuit;
+package com.company.quarium.web.screens.sharedtestsuit;
 
+import com.company.quarium.entity.project.Project;
 import com.company.quarium.entity.testsuit.TestCase;
 import com.company.quarium.entity.testsuit.TestSuit;
-import com.company.quarium.web.screens.testcase.ProjectTestCaseBrowserFrame;
+import com.company.quarium.web.screens.testcase.RunTestCaseBrowserFrame;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.gui.components.Button;
 import com.haulmont.cuba.gui.components.GroupTable;
@@ -17,31 +18,36 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@UiController("quarium_TestSuitCase.browse")
-@UiDescriptor("test-suit-case-browse.xml")
+@UiController("quarium_RunTestSuitCase.browse")
+@UiDescriptor("run-test-suit-case-browse.xml")
 @LookupComponent("testSuitsTable")
 @LoadDataBeforeShow
-public class TestSuitCaseBrowse extends StandardLookup<TestSuit> {
-
+public class RunTestSuitCaseBrowse extends StandardLookup<TestSuit> {
     @Inject
     private CollectionLoader<TestSuit> testSuitsDl;
     @Inject
+    private RunTestCaseBrowserFrame casesFragment;
+    @Inject
     private TabSheet tabsheet;
-
-    @Inject
-    private ProjectTestCaseBrowserFrame casesFragment;
-
-    @Inject
-    private Button selectButton;
-
     @Inject
     private GroupTable<TestSuit> testSuitsTable;
-
+    @Inject
+    private Button selectButton;
     @Inject
     private DataManager dataManager;
-
     @Inject
     private CollectionContainer<TestSuit> testSuitsDc;
+
+    @Subscribe
+    public void onInit(InitEvent event) {
+        ScreenOptions options = event.getOptions();
+        if (options instanceof MapScreenOptions) {
+            Project project = (Project) ((MapScreenOptions) options).getParams().get("project");
+            testSuitsDl.setParameter("project", project);
+            casesFragment.setProjectParameter(project);
+//            testCasesTab.add(casesFragment.getFragment());
+        }
+    }
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
@@ -88,12 +94,12 @@ public class TestSuitCaseBrowse extends StandardLookup<TestSuit> {
                 newTestCaseList.add(testCase);
                 newTestSuit.setTestCase(newTestCaseList);
                 testSuitList.add(newTestSuit);
-                testSuitsDc.getMutableItems().add(newTestSuit);
 
             } else {
                 TestSuit testSuitByName = getTestSuitByName(testSuitList, testSuitName);
                 testSuitByName.getTestCase().add(testCase);
             }
+            testSuitsDc.getMutableItems().add(newTestSuit);
         }
 
         return testSuitList;

@@ -1,4 +1,4 @@
-package com.company.quarium.web.screens.testSuit;
+package com.company.quarium.web.screens.testsuit;
 
 import com.company.quarium.entity.project.Project;
 import com.company.quarium.web.screens.testcase.ProjectTestCaseBrowserFrame;

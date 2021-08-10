@@ -2,7 +2,7 @@
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
         xmlns:app="http://schemas.company.com/demo/0.1/ui-component.xsd"
         caption="msg://extChecklistEdit.caption"
-        messagesPack="com.company.quarium.web.screens.testSuit">
+        messagesPack="com.company.quarium.web.screens.testsuit">
     <data>
         <instance id="testSuitDc"
                   class="com.company.quarium.entity.testsuit.TestSuit">
@@ -81,24 +81,31 @@
                 width="800"/>
     <layout expand="tabsheet" spacing="true">
         <tabSheet id="tabsheet">
-            <tab id="detailsTab" caption="msg://checklistEdit.details" spacing="true" margin="true" expand="vbox">
-                <vbox id="vbox" spacing="true" expand="testCaseBox">
+            <tab id="detailsTab" caption="msg://checklistEdit.details" spacing="true" margin="true">
+                <vbox spacing="true">
                     <groupBox spacing="true" width="100%" collapsable="true" caption="msg://checklistEdit.general">
                         <grid spacing="true" width="100%">
                             <columns>
-                                <column flex="1"/>
+                                <column flex="4"/>
                                 <column flex="2"/>
+                                <column flex="7"/>
                             </columns>
                             <rows>
                                 <row>
                                     <textField id="nameField" dataContainer="testSuitDc" property="name"
                                                caption="msg://checklistEdit.name"
                                                width="90%" required="true"/>
+                                    <lookupField id="assignedQaField" dataContainer="testSuitDc"
+                                                 property="assignedQa" caption="msg://checklistEdit.QA"
+                                                 width="90%"/>
                                     <textArea id="commentField" dataContainer="testSuitDc"
                                               property="comment" caption="msg://checklistEdit.comment"
                                               width="80%" rowspan="2" rows="4"/>
                                 </row>
                                 <row>
+                                    <lookupField id="stateField" dataContainer="testSuitDc" optionsContainer="statesDc"
+                                                 property="state" caption="msg://checklistEdit.State"
+                                                 width="90%"/>
                                     <lookupField id="moduleField" dataContainer="testSuitDc"
                                                  property="module" caption="msg://checklistEdit.module"
                                                  width="90%"/>
@@ -108,6 +115,7 @@
                                         <app:linkField id="ticket" dataContainer="testSuitDc" property="ticket"
                                                        maxTextLength="40"/>
                                     </hbox>
+                                    <hbox/>
                                     <textArea id="initialContitionsField" dataContainer="testSuitDc"
                                               property="initialConditions"
                                               caption="msg://checklistEdit.initialConditions"
@@ -130,15 +138,6 @@
                                         <!--                                                align="MIDDLE_RIGHT"/>-->
                                     </hbox>
                                 </row>
-                                <row>
-                                    <lookupField id="stateField" dataContainer="testSuitDc" optionsContainer="statesDc"
-                                                 property="state" caption="msg://checklistEdit.State"
-                                                 width="90%" visible="false"/>
-                                    <lookupField id="assignedQaField" visible="false"/>
-                                </row>
-                                <row>
-                                    <hbox/>
-                                </row>
                             </rows>
                         </grid>
                     </groupBox>
@@ -146,7 +145,7 @@
                         <table id="table"
                                width="100%"
                                dataContainer="testCasesDc"
-                               multiselect="true"
+                               multiselect="false"
                                presentations="true">
                             <actions>
                                 <action id="create" type="create">
@@ -170,7 +169,8 @@
                             <columns>
                                 <column id="number" editable="false" width="20"/>
                                 <column id="name" maxTextLength="20" expandRatio="100"/>
-                                <column id="priority"/>
+                                <column id="priority" collapsed="true"/>
+                                <column id="state" collapsed="true"/>
                             </columns>
                             <rowsCount/>
                             <buttonsPanel id="buttonsPanel"

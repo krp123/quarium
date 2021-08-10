@@ -80,7 +80,7 @@
                         </grid>
                         <hbox id="statusBox" visible="false" width="100%">
                             <hbox id="resultBox">
-                                <label id="resultCaption" value="msg://checklistEdit.result"/>
+                                <label id="resultCaption" value="msg://result"/>
                                 <hbox width="5px"/>
                                 <label id="caseResult" dataContainer="testCaseDc" property="status"/>
                             </hbox>
@@ -121,7 +121,7 @@
                                 <row>
                                     <textArea id="initialConditions" dataContainer="testCaseDc"
                                               property="initialConditions"
-                                              caption="msg://checklistEdit.initialConditions"
+                                              caption="msg://initialConditions"
                                               width="90%"
                                               rows="3"
                                               editable="false"/>
