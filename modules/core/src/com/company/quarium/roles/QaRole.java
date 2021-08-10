@@ -54,6 +54,8 @@ public class QaRole extends AnnotatedRoleDefinition {
             "quarium_Milestone.edit",
             "quarium_TestSuitCase.browse",
             "quarium_ProjectTestCaseBrowserFrame",
+            "quarium_RunTestSuitCase.browse",
+            "quarium_RunTestCaseBrowserFrame",
             "ftsSearchResults",
             "fts_HitInfoDetailsScreen",
             "diffFrame",

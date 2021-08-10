@@ -44,6 +44,8 @@ public class ViewRole extends AnnotatedRoleDefinition {
             "quarium_TestRunTestSuitBrowse.browse",
             "quarium_ProjectTestSuit.edit",
             "quarium_Milestone.edit",
+            "quarium_RunTestSuitCase.browse",
+            "quarium_RunTestCaseBrowserFrame",
             "diffFrame",
             "ftsSearchResults",
             "fts_HitInfoDetailsScreen",
