@@ -11,10 +11,7 @@ import com.haulmont.bali.util.ParamsMap;
 import com.haulmont.charts.gui.components.charts.PieChart;
 import com.haulmont.charts.gui.data.ListDataProvider;
 import com.haulmont.charts.gui.data.MapDataItem;
-import com.haulmont.cuba.core.global.DataManager;
-import com.haulmont.cuba.core.global.EntityStates;
-import com.haulmont.cuba.core.global.Messages;
-import com.haulmont.cuba.core.global.UserSessionSource;
+import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.Dialogs;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.ScreenBuilders;
@@ -27,6 +24,7 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -115,6 +113,8 @@ public class TestRunEdit extends StandardEditor<TestRun> {
     private GroupTable<TestCase> bugsTable;
     @Inject
     private DataContext dataContext;
+    @Inject
+    private TimeSource timeSource;
 
     @Subscribe("checklistTable.addChecklist")
     protected void onAddChecklist(Action.ActionPerformedEvent event) {
@@ -453,6 +453,24 @@ public class TestRunEdit extends StandardEditor<TestRun> {
                 dataProvider.addItem(new MapDataItem().add("status", entry.getKey()).add("quantity", entry.getValue()));
             }
             pieChart.setDataProvider(dataProvider);
+        }
+    }
+
+    @Subscribe("status")
+    public void onStatusValueChange(HasValue.ValueChangeEvent<TestRunStatusEnum> event) {
+        switch (event.getValue()) {
+            case ACTIVE:
+                if (getEditedEntity().getRunStartDate() == null) {
+                    getEditedEntity().setRunStartDate(timeSource.currentTimestamp().toInstant()
+                            .atZone(ZoneId.systemDefault()).toLocalDate());
+                }
+                break;
+            case COMPLETED:
+                if (getEditedEntity().getRunFinishDate() == null) {
+                    getEditedEntity().setRunFinishDate(timeSource.currentTimestamp().toInstant()
+                            .atZone(ZoneId.systemDefault()).toLocalDate());
+                }
+                break;
         }
     }
 }

@@ -9,6 +9,7 @@ import com.haulmont.cuba.core.entity.annotation.LookupType;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.global.DeletePolicy;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -21,6 +22,9 @@ public class TestRun extends StandardEntity {
 
     @Column(name = "NAME")
     private String name;
+
+    @Column(name = "STATUS")
+    private String status;
 
     @Column(name = "RUN_START_DATE")
     private LocalDate runStartDate;
@@ -45,6 +49,14 @@ public class TestRun extends StandardEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @Composition
     private Project project;
+
+    public TestRunStatusEnum getStatus() {
+        return status == null ? null : TestRunStatusEnum.fromId(status);
+    }
+
+    public void setStatus(TestRunStatusEnum status) {
+        this.status = status == null ? null : status.getId();
+    }
 
     public void setRunStartDate(LocalDate runStartDate) {
         this.runStartDate = runStartDate;
@@ -100,5 +112,10 @@ public class TestRun extends StandardEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @PostConstruct
+    public void postConstruct() {
+        setStatus(TestRunStatusEnum.NOT_STARTED);
     }
 }

@@ -248,6 +248,7 @@ create table QUARIUM_TEST_RUN (
     DELETED_BY varchar(50),
     --
     NAME varchar(255),
+    STATUS varchar(50),
     RUN_START_DATE date,
     RUN_FINISH_DATE date,
     MILESTONE_ID uuid,

@@ -168,7 +168,7 @@
             </property>
         </property>
     </view>
-    <view entity="quarium_RunTestSuit" name="runTestSuit-view" extends="_local">
+    <view entity="quarium_RunTestSuit" name="runTestSuit-view" extends="_local" systemProperties="true">
         <property name="regressProject" view="_minimal">
             <property name="qa" view="_minimal"/>
             <property name="module" view="_minimal"/>
@@ -247,7 +247,7 @@
             <property name="checklists" view="_minimal"/>
         </property>
     </view>
-    <view entity="quarium_Project" name="project-view" extends="_local">
+    <view entity="quarium_Project" name="project-view" extends="_local" systemProperties="true">
         <property name="dbms" view="_minimal"/>
         <property name="thesisVersion" view="_minimal"/>
         <property name="runTestSuit" view="_minimal">
@@ -318,7 +318,7 @@
         <property name="user" view="_minimal"/>
         <property name="projects" view="_local"/>
     </view>
-    <view entity="quarium_TestRun" name="testRun-view" extends="_local">
+    <view entity="quarium_TestRun" name="testRun-view" extends="_local" systemProperties="true">
         <property name="checklists" view="_minimal">
             <property name="regressProject" view="_minimal"/>
             <property name="testRun" view="_minimal"/>

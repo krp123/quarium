@@ -285,7 +285,9 @@
                         <column id="runFinishDate"/>
                         <column id="description" maxTextLength="40"/>
                         <column id="milestone"/>
+                        <column id="status"/>
                         <column id="completedPercent" caption="msg://projectEdit.completed"/>
+                        <column id="createTs" caption="msg://createDate" dateFormat="dd.MM.yyyy" sort="DESCENDING"/>
                     </columns>
                     <rows/>
                     <buttonsPanel id="testRunsButtonsPanel"

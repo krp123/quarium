@@ -355,4 +355,15 @@ public class ProjectEdit extends StandardEditor<Project> {
         CollectionChangeType changeType = event.getChangeType();
         Collection<? extends SharedTestSuit> changes = event.getChanges();
     }
+
+    @Subscribe
+    public void onAfterShow(AfterShowEvent event) {
+        testRunsTable.setStyleProvider(((entity, property) -> {
+            switch (entity.getStatus()) {
+                case COMPLETED:
+                    return "completed-status";
+            }
+            return null;
+        }));
+    }
 }
